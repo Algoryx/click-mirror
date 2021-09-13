@@ -1,0 +1,171 @@
+// protoc -I=. --python_out=. messaging.proto
+syntax = "proto3";
+
+package iam;
+
+enum MessageType {
+  HandshakeInitMessageType = 0;
+  HandshakeMessageType = 1;
+  //  VersionNotSupported;
+  ControlMessageType = 2;
+  SensorMessageType = 3;
+  ResetMessageType = 4;
+}
+
+enum ValueType {
+  Angle = 0;               // radians
+  AngleVelocity = 1;       // radians/sec
+  Torque = 2;              // Nm
+  Position = 3;            // meters vec3
+  RPY = 4;                 // radians
+  Activated = 5;           // True/False
+  Acceleration = 6;        // m/s2   vec3
+  Force = 7;               // Newton vec3
+}
+
+message Message {
+  MessageType messageType = 1;
+  int32 id = 2; // Needed?
+}
+
+// Each message below has messageType set to the corresponding MessageType enum value
+// This makes it possible to implement messages as a flat class hierarchy with Message as parent
+
+
+message HandshakeInitMessage {
+  MessageType messageType = 1;
+  string version = 2;
+}
+
+/* HandshakeMessage example
+- Version: "0.1"
+- Objects:
+  - panda_2
+    - Joints
+      - ControlType: angles/velocities/torques          // one only - defined in brick
+      - ControlsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
+      - ControlEvents: gripper -> Activated
+      - Sensors: 
+        - joint1 --> 
+          - ControlTypes: angles,velocities,torques
+        - gripper --> 
+          - ControlTypes: angles,velocities,torques
+        - Sensors: force if any
+  - panda_tool
+    ...
+  - box
+    - objectSensors
+      - doubleRPY
+*/
+
+message HandshakeMessage {
+  MessageType messageType = 1;
+  string version = 2;
+
+  message Sensors {
+    repeated ValueType types = 1;
+  }
+    
+  message Object {
+    repeated string controlsInOrder = 3;       // The controls (joints) in the order they are expected in every ControlMessage
+    // TODO: How solve optional with respect to inital value?
+    map<string, ValueType> controlEvents = 4;  // Which controls are optional, ie not present in every ControlMessage, must be in first though!
+    map<string, Sensors> sensors = 5;          // Sensors per joint or other part
+    repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
+  };
+  
+  ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques
+  map<string, Object> objects = 4;            // Key is name of object/robot
+}
+
+
+/*
+- ControlMessage example:
+  - panda_2
+    - Joints
+      - Type: angles/velocities/torques
+      - Values: double[7]
+    - suction_cup_link
+      - Values: boolean[1]
+  - panda_tool
+    ...
+*/
+
+message ControlMessage {
+  MessageType messageType = 1;  
+
+  message Object { 
+    // - not clear by spec that is mutually exclusive
+    // - needs controlEvent type anyway probably(?)
+    // + can copy vectors more effectively, ie together with extend instead of individually
+    // + fewer bytes in message
+    repeated double angles = 1;            // Present in every ControlMessage
+    repeated double angleVelocities = 2;   // Present in every ControlMessage
+    repeated double torques = 3;           // Present in every ControlMessage
+    map<string, bool> controlEvents = 4;   // Optionals, if missing, keep same value as before
+  };
+
+  map<string, Object> objects = 2;
+}
+
+/*
+SensorMessage example:
+
+- panda_2
+  - sensors
+    - joint1
+      - sensor: angle
+      - sensor: velocity
+      - sensor: torque
+    - joint2 -->
+  ...
+  - suction_cup_link -->
+    - force? 
+  ...
+- box
+  - objectSensors
+    - position
+    - rpy
+*/
+
+
+message SensorMessage {
+  MessageType messageType = 1;
+
+  message Vec3 {
+    double X = 1;
+    double Y = 2;
+    double Z = 3;
+  }
+
+  message Vec3arr {
+    repeated double arr = 1;
+  }
+
+  message Sensor {
+    oneof value {
+      double angle = 2;
+      double angleVelocity = 3;
+      double torque = 4;
+      Vec3 position = 5;
+      Vec3arr rpy = 6;
+      Vec3 acceleration = 7;
+      Vec3 force = 8;
+    }
+  };
+
+  message Sensors {
+    repeated Sensor sensor = 1;
+  }
+  
+  message Object {
+    map<string, Sensors> sensors = 1;
+    repeated Sensor objectSensors = 2;
+  }
+
+  map<string, Object> objects = 3;
+}
+
+message ResetMessage {
+  MessageType messageType = 1;
+}

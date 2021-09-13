@@ -1,1 +1,4 @@
-build
+*/CMakeFiles/*
+Makefile
+cmake_install.cmake
+CMakeCache.txt
