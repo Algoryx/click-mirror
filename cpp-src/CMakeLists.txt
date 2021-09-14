@@ -7,8 +7,8 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 
 project(click VERSION 1.0
-                  DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
-                  LANGUAGES CXX)
+    DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
+    LANGUAGES CXX)
 
 
 # Output dirs
@@ -27,3 +27,4 @@ include(conanconf)
 add_subdirectory(../protobuf-src ./protobuf-bin)
 # TODO: Probably should rename to client later
 add_subdirectory(src)
+add_subdirectory(tests)

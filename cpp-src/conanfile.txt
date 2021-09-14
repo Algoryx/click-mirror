@@ -1,5 +1,6 @@
 [build_requires]
 protobuf/3.17.1
+catch2/2.11.1
 
 [requires]
 protobuf/3.17.1
