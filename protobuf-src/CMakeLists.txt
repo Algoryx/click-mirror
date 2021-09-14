@@ -8,11 +8,11 @@ set(PROTO_FILES
 )
 
 # Add Library target with protobuf sources
-add_library(myproto ${PROTO_FILES})
-target_link_libraries(myproto
+add_library(clicklib ${PROTO_FILES})
+target_link_libraries(clicklib
     PUBLIC
         protobuf::libprotobuf
 )
-target_include_directories(myproto PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(clicklib PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-protobuf_generate(TARGET myproto LANGUAGE cpp)
+protobuf_generate(TARGET clicklib LANGUAGE cpp)

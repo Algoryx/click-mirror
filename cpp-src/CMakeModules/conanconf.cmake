@@ -1,3 +1,4 @@
+# Optionally use CMAKE_SOURCE_DIR as conan.cmake location and version control the file to get better 
 set(CONAN_CMAKE_LOCAL_FILE ${CMAKE_BINARY_DIR}/conan.cmake)
 set(CONAN_CMAKE_MASTER_FILE ${CMAKE_BINARY_DIR}/.github.conan.cmake)
 

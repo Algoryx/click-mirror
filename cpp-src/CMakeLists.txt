@@ -6,7 +6,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(mexective VERSION 1.0
+project(click VERSION 1.0
                   DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
                   LANGUAGES CXX)
 
@@ -24,6 +24,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 include(conanconf)
 
 # Project directives
-add_executable(hello src/helloworld.cpp)
-
 add_subdirectory(../protobuf-src ./protobuf-bin)
+# TODO: Probably should rename to client later
+add_subdirectory(src)
