@@ -19,3 +19,13 @@ target_link_libraries(tests
     Catch2::Catch2WithMain
     clicklib
 )
+
+set(UNIT_TEST tests)
+# From https://stackoverflow.com/questions/32901679/unit-testing-as-part-of-the-build
+# TODO: Could not get integration with ctest to work though
+add_custom_command(
+     TARGET ${UNIT_TEST}
+     COMMENT "Run tests"
+     POST_BUILD 
+     COMMAND ${UNIT_TEST}
+)
