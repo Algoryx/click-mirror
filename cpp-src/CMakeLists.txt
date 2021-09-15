@@ -24,7 +24,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 include(conanconf)
 
 # Project directives
-add_subdirectory(../protobuf-src ./protobuf-bin)
+add_subdirectory(../protobuf-src ./protobuf-gen)
 # TODO: Probably should rename to client later
 add_subdirectory(src)
 add_subdirectory(tests)

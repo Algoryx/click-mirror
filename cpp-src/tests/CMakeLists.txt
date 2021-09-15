@@ -11,6 +11,7 @@ FetchContent_MakeAvailable(Catch2)
 
 set(TEST_SOURCES
     ../tests/test_messages.cpp
+    ../tests/test_message_integration.cpp
 )
 
 add_executable(tests ${TEST_SOURCES})

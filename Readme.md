@@ -22,3 +22,15 @@ rm -rf * .github.conan.cmake
 protoc -I=protobuf-src --python_out=python-src/src messaging.proto
 pytest
 ```
+
+## Testing
+
+### C++ catch2 framework
+
+We are using [Catch2](https://github.com/catchorg/Catch2/) testing framework with cmake integration
+
+- [catch2 matchers](https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top)
+
+### Python pytest
+
+Python tests are using pytest

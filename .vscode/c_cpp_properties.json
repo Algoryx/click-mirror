@@ -3,7 +3,10 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/build/**",
+                "${workspaceFolder}/build/_deps/catch2-src/src/**",
+                "${workspaceFolder}/build/protobuf-gen/**"
             ],
             "defines": [],
             "macFrameworkPath": [],

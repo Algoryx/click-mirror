@@ -4,6 +4,8 @@
 
 using namespace std;
 using namespace iam;
+// https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
+using Catch::Matchers::Equals;
 
 class MessageFactory {
 
@@ -24,7 +26,6 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
     GIVEN("A controlmessage with a robot with angle controls and a gripper") {
 
         ControlMessage * control_m = MessageFactory::create_controlMessage();
-        using Catch::Matchers::Equals;
 
         WHEN("adding robot controls") {
             google::protobuf::Map<string, iam::ControlMessage_Object> * map = control_m->mutable_objects();

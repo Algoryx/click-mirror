@@ -1,6 +1,8 @@
 from messaging_pb2 import Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
 from messaging_pb2 import ValueType
 from message_proto_helpers import MessageFactory, MessageSerializer
+from pathlib import Path
+import pytest
 
 # See [Python Generated Code](https://developers.google.com/protocol-buffers/docs/reference/python-generated) 
 # for details on how the generated protobuf code is used
@@ -134,7 +136,15 @@ objects {
 """
 
 
-def test_that_SensorMessage_serializes():
+@pytest.mark.skip
+def test_write_sensor_message_to_file(tmp_path: Path):
+    filename = tmp_path / "sensormessage.bin"
+    filename.write_bytes(sensor_message().SerializeToString())
+    print(filename)
+    assert False
+
+
+def sensor_message():
     sensor_m = MessageFactory.create_sensormessage()
     robot = sensor_m.objects["robot1"]
 
@@ -149,6 +159,11 @@ def test_that_SensorMessage_serializes():
     sensor.position.Y = 2.0
     sensor.position.Z = 3.0
     sensor.rpy.arr.extend([4.0, 5.0, 6.0])
+    return sensor_m
+
+
+def test_that_SensorMessage_serializes():
+    sensor_m = sensor_message()
 
     message = MessageSerializer.from_bytes(sensor_m.SerializeToString())
     assert len(sensor_m.SerializeToString()) == 98
