@@ -1,4 +1,4 @@
-# Build and test instructions
+# Click
 
 ## Build and test c++
 
