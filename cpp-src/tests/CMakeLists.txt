@@ -30,3 +30,10 @@ add_custom_command(
      POST_BUILD 
      COMMAND ${UNIT_TEST}
 )
+# junit reporter https://github.com/catchorg/Catch2/blob/devel/docs/reporters.md
+add_custom_command(
+     TARGET ${UNIT_TEST}
+     COMMENT "Run tests"
+     POST_BUILD 
+     COMMAND ${UNIT_TEST} "--reporter junit" "--out junit.xml"
+)
