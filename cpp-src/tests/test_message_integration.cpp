@@ -8,7 +8,7 @@ using namespace iam;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Contains;
 using Catch::Matchers::Equals;
-
+using google::protobuf::Map;
 
 SCENARIO("sensormessage serialization", "[clicklib]" ) {
 
@@ -24,8 +24,8 @@ SCENARIO("sensormessage serialization", "[clicklib]" ) {
 
             THEN("it should contain robot1 sensor values") {
 
-                google::protobuf::Map<string, iam::SensorMessage_Object> objects = sensorMessage.objects();
-                auto sensors = objects["robot1"].sensors();
+                Map<string, SensorMessage_Object> objects = sensorMessage.objects();
+                Map<string, SensorMessage_Sensors> sensors = objects["robot1"].sensors();
                 REQUIRE(sensors["joint1"].sensor()[0].angle() == 1.0);
                 REQUIRE(sensors["joint1"].sensor()[1].anglevelocity() == 2.0);
                 REQUIRE(sensors["joint1"].sensor()[2].torque() == 3.0);
@@ -35,8 +35,12 @@ SCENARIO("sensormessage serialization", "[clicklib]" ) {
 
             THEN("it should contain box position") {
 
-                google::protobuf::Map<string, iam::SensorMessage_Object> objects = sensorMessage.objects();
-                REQUIRE(objects["box"].objectsensors()[0].rpy().arr()[0] == 4.0);
+                Map<string, SensorMessage_Object> objects = sensorMessage.objects();
+                using google::protobuf::RepeatedField;
+                RepeatedField<double> vec = objects["box"].objectsensors()[0].rpy().arr();
+                vector<double> actual(vec.begin(), vec.end());
+                vector<double> expected = {4.0, 5.0, 6.0};
+                REQUIRE(actual == expected);
             }
         }
     }
