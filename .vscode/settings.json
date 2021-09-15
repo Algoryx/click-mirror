@@ -1,3 +1,20 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/cpp-src"
+    "cmake.sourceDirectory": "${workspaceFolder}/cpp-src",
+    "python.analysis.extraPaths": [
+        "./python-src/src"
+    ],
+    "files.insertFinalNewline": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleArgs": [
+        "--ignore=E501"
+    ],
+    "python.formatting.autopep8Args": [
+        "--max-line-length=180"
+    ],
+    "python.testing.pytestArgs": [
+        "python-src/tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
