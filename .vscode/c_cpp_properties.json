@@ -4,8 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/build/**",
-                "${workspaceFolder}/build/_deps/catch2-src/src/**",
+                "~/.conan/data/**",
                 "${workspaceFolder}/build/protobuf-gen/**"
             ],
             "defines": [],

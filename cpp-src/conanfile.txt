@@ -4,6 +4,7 @@ catch2/2.11.1
 
 [requires]
 protobuf/3.17.1
+zmqpp/4.2.0
 
 [generators]
 cmake
