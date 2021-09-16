@@ -1,22 +1,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
-#include "Messaging.pb.h"
+#include <Messaging.pb.h>
+#include <click/MessageFactory.h>
 
 using namespace std;
 using namespace algoryx::click;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 
-// TODO: Move to production code
-class MessageFactory {
-
-    public:
-        static ControlMessage * create_controlMessage() {
-            ControlMessage * control_m = new ControlMessage();
-            control_m->set_messagetype(ControlMessageType);
-            return control_m;
-        }
-};
 
 vector<double> double_vector_with(initializer_list<double> doubles) {
     return vector<double>(doubles);

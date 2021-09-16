@@ -10,15 +10,15 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 set(TEST_SOURCES
-    ../tests/test_messages.cpp
-    ../tests/test_message_integration.cpp
+    test_messages.cpp
+    test_message_integration.cpp
 )
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests 
-    PRIVATE 
+    PRIVATE
+    click_lib
     Catch2::Catch2WithMain
-    clicklib
 )
 
 set(UNIT_TEST tests)

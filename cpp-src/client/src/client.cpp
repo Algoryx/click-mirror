@@ -1,20 +1,9 @@
 #include <iostream>
 #include <zmqpp/zmqpp.hpp>
-#include "Messaging.pb.h"
+#include <click/MessageFactory.h>
 
 using namespace std;
 using namespace algoryx::click;
-
-class MessageFactory {
-
-    public:
-        static HandshakeInitMessage * create_handshakeInitMessage() {
-            HandshakeInitMessage * message = new HandshakeInitMessage();
-            message->set_messagetype(HandshakeInitMessageType);
-            message->set_version(CURRENT_VERSION);
-            return message;
-        }
-};
 
 
 void controlmessage()
