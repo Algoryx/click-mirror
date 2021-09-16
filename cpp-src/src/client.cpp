@@ -3,7 +3,7 @@
 #include "Messaging.pb.h"
 
 using namespace std;
-using namespace iam;
+using namespace algoryx::click;
 
 class MessageFactory {
 
@@ -11,8 +11,7 @@ class MessageFactory {
         static HandshakeInitMessage * create_handshakeInitMessage() {
             HandshakeInitMessage * message = new HandshakeInitMessage();
             message->set_messagetype(HandshakeInitMessageType);
-            // TODO: Should be defined in protocol!
-            message->set_version("0.1");
+            message->set_version(CURRENT_VERSION);
             return message;
         }
 };
@@ -20,10 +19,10 @@ class MessageFactory {
 
 void controlmessage()
 {
-    iam::ControlMessage *control_m = new iam::ControlMessage();
-    control_m->set_messagetype(iam::ControlMessageType);
-    google::protobuf::Map<string, iam::ControlMessage_Object> *map = control_m->mutable_objects();
-    (*map)["robot1"] = iam::ControlMessage_Object();
+    ControlMessage *control_m = new ControlMessage();
+    control_m->set_messagetype(ControlMessageType);
+    google::protobuf::Map<string, ControlMessage_Object> *map = control_m->mutable_objects();
+    (*map)["robot1"] = ControlMessage_Object();
 
     double src[] = {1, 2, 3, 4, 5};
     int n = sizeof(src) / sizeof(src[0]);

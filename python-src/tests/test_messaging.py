@@ -1,4 +1,4 @@
-from messaging_pb2 import Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
+from messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
 from messaging_pb2 import ValueType
 from message_proto_helpers import MessageFactory, MessageSerializer
 from pathlib import Path
@@ -10,7 +10,7 @@ import pytest
 
 def is_valid_message(message: Message):
     return type(message) == MessageFactory._mdict[message.messageType] and \
-        message.version == MessageFactory.VERSION
+        message.version == CURRENT_VERSION
 
 
 def test_understanding_of_protoc_classes():
@@ -20,7 +20,7 @@ def test_understanding_of_protoc_classes():
     assert type(sobject) == SensorMessage.Object
 
     hobject = HandshakeMessage.Object()
-    assert hobject.DESCRIPTOR.full_name == "iam.HandshakeMessage.Object"
+    assert hobject.DESCRIPTOR.full_name == "algoryx.click.HandshakeMessage.Object"
 
     # Misleading that type of two different classes has same name, but that's how this implementation is done.
     assert str(type(hobject)) == str(type(sobject))
@@ -67,14 +67,14 @@ def test_that_Handshake_props_are_set():
     object.objectSensors.append(ValueType.Position)
 
     message = MessageSerializer.from_bytes(handshake.SerializeToString())
-    assert len(handshake.SerializeToString()) == 86
+    assert len(handshake.SerializeToString()) == 83
 
     assert message.controlType == ValueType.Force
     assert message.objects["robot"].controlsInOrder[1] == "joint2"
     assert message.objects["robot"].sensors["joint2"].types[0] is ValueType.Angle
     assert message.objects["robot"].sensors["joint2"].types[2] is ValueType.Torque
     assert str(message) == """messageType: HandshakeMessageType
-version: "0.1"
+version: CURRENT_VERSION
 controlType: Force
 objects {
   key: "robot"

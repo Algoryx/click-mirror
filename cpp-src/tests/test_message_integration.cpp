@@ -4,7 +4,7 @@
 #include "Messaging.pb.h"
 
 using namespace std;
-using namespace iam;
+using namespace algoryx::click;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Contains;
 using Catch::Matchers::Equals;

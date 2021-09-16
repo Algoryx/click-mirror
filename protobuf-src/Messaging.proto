@@ -1,15 +1,15 @@
 // protoc -I=. --python_out=. messaging.proto
 syntax = "proto3";
 
-package iam;
+package algoryx.click;
 
 enum MessageType {
   HandshakeInitMessageType = 0;
   HandshakeMessageType = 1;
-  //  VersionNotSupported;
   ControlMessageType = 2;
   SensorMessageType = 3;
   ResetMessageType = 4;
+  ErrorMessageType = 5;
 }
 
 enum ValueType {
@@ -28,17 +28,24 @@ message Message {
   int32 id = 2; // Needed?
 }
 
+// Version is available in Handshake only to be able to break backward compatibility.
+// Then, and only then, update current by 1, and add reserved <old version>
+enum Version {
+  UNDEFINED = 0;
+  CURRENT_VERSION=1;
+}
+
 // Each message below has messageType set to the corresponding MessageType enum value
 // This makes it possible to implement messages as a flat class hierarchy with Message as parent
 
 
 message HandshakeInitMessage {
   MessageType messageType = 1;
-  string version = 2;
+  Version version = 2;
 }
 
 /* HandshakeMessage example
-- Version: "0.1"
+- Version: 1
 - Objects:
   - panda_2
     - Joints
@@ -60,7 +67,7 @@ message HandshakeInitMessage {
 
 message HandshakeMessage {
   MessageType messageType = 1;
-  string version = 2;
+  Version version = 2;
 
   message Sensors {
     repeated ValueType types = 1;
@@ -168,4 +175,15 @@ message SensorMessage {
 
 message ResetMessage {
   MessageType messageType = 1;
+}
+
+
+enum ErrorType {
+  VersionNotSupported = 0;
+}
+
+message ErrorMessage {
+  MessageType messageType = 1;
+  ErrorType error = 2;
+  string errormessage = 3;
 }

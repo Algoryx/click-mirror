@@ -52,7 +52,7 @@ def test_create_handshake_from_robot():
             object.sensors[joint].types.extend(jointsensors)
         if robot.suction_cup_body is not None:
             object.objectSensors.append(ValueType.Position)
-    assert len(handshake.SerializeToString()) == 214
+    assert len(handshake.SerializeToString()) == 211
     assert str(handshake) == handshake_facit
 
 
@@ -125,7 +125,7 @@ def test_create_SensorMessage_from_robots():
 
 
 handshake_facit = """messageType: HandshakeMessageType
-version: "0.1"
+version: CURRENT_VERSION
 controlType: AngleVelocity
 objects {
   key: "robot1"

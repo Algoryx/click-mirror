@@ -23,7 +23,7 @@ protoc -I=protobuf-src --python_out=python-src/src messaging.proto
 pytest
 ```
 
-## Testing
+## Test frameworks
 
 ### C++ catch2 framework
 

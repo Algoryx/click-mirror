@@ -16,16 +16,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='messaging.proto',
-  package='iam',
+  package='algoryx.click',
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0fmessaging.proto\x12\x03iam\"<\n\x07Message\x12%\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x10.iam.MessageType\x12\n\n\x02id\x18\x02 \x01(\x05\"N\n\x14HandshakeInitMessage\x12%\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x10.iam.MessageType\x12\x0f\n\x07version\x18\x02 \x01(\t\"\x80\x05\n\x10HandshakeMessage\x12%\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x10.iam.MessageType\x12\x0f\n\x07version\x18\x02 \x01(\t\x12#\n\x0b\x63ontrolType\x18\x03 \x01(\x0e\x32\x0e.iam.ValueType\x12\x33\n\x07objects\x18\x04 \x03(\x0b\x32\".iam.HandshakeMessage.ObjectsEntry\x1a(\n\x07Sensors\x12\x1d\n\x05types\x18\x01 \x03(\x0e\x32\x0e.iam.ValueType\x1a\xe1\x02\n\x06Object\x12\x17\n\x0f\x63ontrolsInOrder\x18\x03 \x03(\t\x12\x46\n\rcontrolEvents\x18\x04 \x03(\x0b\x32/.iam.HandshakeMessage.Object.ControlEventsEntry\x12:\n\x07sensors\x18\x05 \x03(\x0b\x32).iam.HandshakeMessage.Object.SensorsEntry\x12%\n\robjectSensors\x18\x06 \x03(\x0e\x32\x0e.iam.ValueType\x1a\x44\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1d\n\x05value\x18\x02 \x01(\x0e\x32\x0e.iam.ValueType:\x02\x38\x01\x1aM\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12,\n\x05value\x18\x02 \x01(\x0b\x32\x1d.iam.HandshakeMessage.Sensors:\x02\x38\x01\x1aL\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12+\n\x05value\x18\x02 \x01(\x0b\x32\x1c.iam.HandshakeMessage.Object:\x02\x38\x01\"\xf7\x02\n\x0e\x43ontrolMessage\x12%\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x10.iam.MessageType\x12\x31\n\x07objects\x18\x02 \x03(\x0b\x32 .iam.ControlMessage.ObjectsEntry\x1a\xbe\x01\n\x06Object\x12\x0e\n\x06\x61ngles\x18\x01 \x03(\x01\x12\x17\n\x0f\x61ngleVelocities\x18\x02 \x03(\x01\x12\x0f\n\x07torques\x18\x03 \x03(\x01\x12\x44\n\rcontrolEvents\x18\x04 \x03(\x0b\x32-.iam.ControlMessage.Object.ControlEventsEntry\x1a\x34\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1aJ\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12)\n\x05value\x18\x02 \x01(\x0b\x32\x1a.iam.ControlMessage.Object:\x02\x38\x01\"\xef\x05\n\rSensorMessage\x12%\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x10.iam.MessageType\x12\x30\n\x07objects\x18\x03 \x03(\x0b\x32\x1f.iam.SensorMessage.ObjectsEntry\x1a\'\n\x04Vec3\x12\t\n\x01X\x18\x01 \x01(\x01\x12\t\n\x01Y\x18\x02 \x01(\x01\x12\t\n\x01Z\x18\x03 \x01(\x01\x1a\x16\n\x07Vec3arr\x12\x0b\n\x03\x61rr\x18\x01 \x03(\x01\x1a\x80\x02\n\x06Sensor\x12\x0f\n\x05\x61ngle\x18\x02 \x01(\x01H\x00\x12\x17\n\rangleVelocity\x18\x03 \x01(\x01H\x00\x12\x10\n\x06torque\x18\x04 \x01(\x01H\x00\x12+\n\x08position\x18\x05 \x01(\x0b\x32\x17.iam.SensorMessage.Vec3H\x00\x12)\n\x03rpy\x18\x06 \x01(\x0b\x32\x1a.iam.SensorMessage.Vec3arrH\x00\x12/\n\x0c\x61\x63\x63\x65leration\x18\x07 \x01(\x0b\x32\x17.iam.SensorMessage.Vec3H\x00\x12(\n\x05\x66orce\x18\x08 \x01(\x0b\x32\x17.iam.SensorMessage.Vec3H\x00\x42\x07\n\x05value\x1a\x34\n\x07Sensors\x12)\n\x06sensor\x18\x01 \x03(\x0b\x32\x19.iam.SensorMessage.Sensor\x1a\xbf\x01\n\x06Object\x12\x37\n\x07sensors\x18\x01 \x03(\x0b\x32&.iam.SensorMessage.Object.SensorsEntry\x12\x30\n\robjectSensors\x18\x02 \x03(\x0b\x32\x19.iam.SensorMessage.Sensor\x1aJ\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12)\n\x05value\x18\x02 \x01(\x0b\x32\x1a.iam.SensorMessage.Sensors:\x02\x38\x01\x1aI\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.iam.SensorMessage.Object:\x02\x38\x01\"5\n\x0cResetMessage\x12%\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x10.iam.MessageType*\x8a\x01\n\x0bMessageType\x12\x1c\n\x18HandshakeInitMessageType\x10\x00\x12\x18\n\x14HandshakeMessageType\x10\x01\x12\x16\n\x12\x43ontrolMessageType\x10\x02\x12\x15\n\x11SensorMessageType\x10\x03\x12\x14\n\x10ResetMessageType\x10\x04*x\n\tValueType\x12\t\n\x05\x41ngle\x10\x00\x12\x11\n\rAngleVelocity\x10\x01\x12\n\n\x06Torque\x10\x02\x12\x0c\n\x08Position\x10\x03\x12\x07\n\x03RPY\x10\x04\x12\r\n\tActivated\x10\x05\x12\x10\n\x0c\x41\x63\x63\x65leration\x10\x06\x12\t\n\x05\x46orce\x10\x07\x62\x06proto3'
+  serialized_pb=b'\n\x0fmessaging.proto\x12\ralgoryx.click\"F\n\x07Message\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\x12\n\n\x02id\x18\x02 \x01(\x05\"p\n\x14HandshakeInitMessage\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\x12\'\n\x07version\x18\x02 \x01(\x0e\x32\x16.algoryx.click.Version\"\xfc\x05\n\x10HandshakeMessage\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\x12\'\n\x07version\x18\x02 \x01(\x0e\x32\x16.algoryx.click.Version\x12-\n\x0b\x63ontrolType\x18\x03 \x01(\x0e\x32\x18.algoryx.click.ValueType\x12=\n\x07objects\x18\x04 \x03(\x0b\x32,.algoryx.click.HandshakeMessage.ObjectsEntry\x1a\x32\n\x07Sensors\x12\'\n\x05types\x18\x01 \x03(\x0e\x32\x18.algoryx.click.ValueType\x1a\x93\x03\n\x06Object\x12\x17\n\x0f\x63ontrolsInOrder\x18\x03 \x03(\t\x12P\n\rcontrolEvents\x18\x04 \x03(\x0b\x32\x39.algoryx.click.HandshakeMessage.Object.ControlEventsEntry\x12\x44\n\x07sensors\x18\x05 \x03(\x0b\x32\x33.algoryx.click.HandshakeMessage.Object.SensorsEntry\x12/\n\robjectSensors\x18\x06 \x03(\x0e\x32\x18.algoryx.click.ValueType\x1aN\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0e\x32\x18.algoryx.click.ValueType:\x02\x38\x01\x1aW\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x36\n\x05value\x18\x02 \x01(\x0b\x32\'.algoryx.click.HandshakeMessage.Sensors:\x02\x38\x01\x1aV\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.algoryx.click.HandshakeMessage.Object:\x02\x38\x01\"\x9f\x03\n\x0e\x43ontrolMessage\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\x12;\n\x07objects\x18\x02 \x03(\x0b\x32*.algoryx.click.ControlMessage.ObjectsEntry\x1a\xc8\x01\n\x06Object\x12\x0e\n\x06\x61ngles\x18\x01 \x03(\x01\x12\x17\n\x0f\x61ngleVelocities\x18\x02 \x03(\x01\x12\x0f\n\x07torques\x18\x03 \x03(\x01\x12N\n\rcontrolEvents\x18\x04 \x03(\x0b\x32\x37.algoryx.click.ControlMessage.Object.ControlEventsEntry\x1a\x34\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1aT\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32$.algoryx.click.ControlMessage.Object:\x02\x38\x01\"\xdd\x06\n\rSensorMessage\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\x12:\n\x07objects\x18\x03 \x03(\x0b\x32).algoryx.click.SensorMessage.ObjectsEntry\x1a\'\n\x04Vec3\x12\t\n\x01X\x18\x01 \x01(\x01\x12\t\n\x01Y\x18\x02 \x01(\x01\x12\t\n\x01Z\x18\x03 \x01(\x01\x1a\x16\n\x07Vec3arr\x12\x0b\n\x03\x61rr\x18\x01 \x03(\x01\x1a\xa8\x02\n\x06Sensor\x12\x0f\n\x05\x61ngle\x18\x02 \x01(\x01H\x00\x12\x17\n\rangleVelocity\x18\x03 \x01(\x01H\x00\x12\x10\n\x06torque\x18\x04 \x01(\x01H\x00\x12\x35\n\x08position\x18\x05 \x01(\x0b\x32!.algoryx.click.SensorMessage.Vec3H\x00\x12\x33\n\x03rpy\x18\x06 \x01(\x0b\x32$.algoryx.click.SensorMessage.Vec3arrH\x00\x12\x39\n\x0c\x61\x63\x63\x65leration\x18\x07 \x01(\x0b\x32!.algoryx.click.SensorMessage.Vec3H\x00\x12\x32\n\x05\x66orce\x18\x08 \x01(\x0b\x32!.algoryx.click.SensorMessage.Vec3H\x00\x42\x07\n\x05value\x1a>\n\x07Sensors\x12\x33\n\x06sensor\x18\x01 \x03(\x0b\x32#.algoryx.click.SensorMessage.Sensor\x1a\xdd\x01\n\x06Object\x12\x41\n\x07sensors\x18\x01 \x03(\x0b\x32\x30.algoryx.click.SensorMessage.Object.SensorsEntry\x12:\n\robjectSensors\x18\x02 \x03(\x0b\x32#.algoryx.click.SensorMessage.Sensor\x1aT\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32$.algoryx.click.SensorMessage.Sensors:\x02\x38\x01\x1aS\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.algoryx.click.SensorMessage.Object:\x02\x38\x01\"?\n\x0cResetMessage\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\"~\n\x0c\x45rrorMessage\x12/\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1a.algoryx.click.MessageType\x12\'\n\x05\x65rror\x18\x02 \x01(\x0e\x32\x18.algoryx.click.ErrorType\x12\x14\n\x0c\x65rrormessage\x18\x03 \x01(\t*\xa0\x01\n\x0bMessageType\x12\x1c\n\x18HandshakeInitMessageType\x10\x00\x12\x18\n\x14HandshakeMessageType\x10\x01\x12\x16\n\x12\x43ontrolMessageType\x10\x02\x12\x15\n\x11SensorMessageType\x10\x03\x12\x14\n\x10ResetMessageType\x10\x04\x12\x14\n\x10\x45rrorMessageType\x10\x05*x\n\tValueType\x12\t\n\x05\x41ngle\x10\x00\x12\x11\n\rAngleVelocity\x10\x01\x12\n\n\x06Torque\x10\x02\x12\x0c\n\x08Position\x10\x03\x12\x07\n\x03RPY\x10\x04\x12\r\n\tActivated\x10\x05\x12\x10\n\x0c\x41\x63\x63\x65leration\x10\x06\x12\t\n\x05\x46orce\x10\x07*-\n\x07Version\x12\r\n\tUNDEFINED\x10\x00\x12\x13\n\x0f\x43URRENT_VERSION\x10\x01*$\n\tErrorType\x12\x17\n\x13VersionNotSupported\x10\x00\x62\x06proto3'
 )
 
 _MESSAGETYPE = _descriptor.EnumDescriptor(
   name='MessageType',
-  full_name='iam.MessageType',
+  full_name='algoryx.click.MessageType',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -55,18 +55,23 @@ _MESSAGETYPE = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None,
       create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='ErrorMessageType', index=5, number=5,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1997,
-  serialized_end=2135,
+  serialized_start=2463,
+  serialized_end=2623,
 )
 _sym_db.RegisterEnumDescriptor(_MESSAGETYPE)
 
 MessageType = enum_type_wrapper.EnumTypeWrapper(_MESSAGETYPE)
 _VALUETYPE = _descriptor.EnumDescriptor(
   name='ValueType',
-  full_name='iam.ValueType',
+  full_name='algoryx.click.ValueType',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -114,17 +119,65 @@ _VALUETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2137,
-  serialized_end=2257,
+  serialized_start=2625,
+  serialized_end=2745,
 )
 _sym_db.RegisterEnumDescriptor(_VALUETYPE)
 
 ValueType = enum_type_wrapper.EnumTypeWrapper(_VALUETYPE)
+_VERSION = _descriptor.EnumDescriptor(
+  name='Version',
+  full_name='algoryx.click.Version',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='UNDEFINED', index=0, number=0,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='CURRENT_VERSION', index=1, number=1,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=2747,
+  serialized_end=2792,
+)
+_sym_db.RegisterEnumDescriptor(_VERSION)
+
+Version = enum_type_wrapper.EnumTypeWrapper(_VERSION)
+_ERRORTYPE = _descriptor.EnumDescriptor(
+  name='ErrorType',
+  full_name='algoryx.click.ErrorType',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='VersionNotSupported', index=0, number=0,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=2794,
+  serialized_end=2830,
+)
+_sym_db.RegisterEnumDescriptor(_ERRORTYPE)
+
+ErrorType = enum_type_wrapper.EnumTypeWrapper(_ERRORTYPE)
 HandshakeInitMessageType = 0
 HandshakeMessageType = 1
 ControlMessageType = 2
 SensorMessageType = 3
 ResetMessageType = 4
+ErrorMessageType = 5
 Angle = 0
 AngleVelocity = 1
 Torque = 2
@@ -133,26 +186,29 @@ RPY = 4
 Activated = 5
 Acceleration = 6
 Force = 7
+UNDEFINED = 0
+CURRENT_VERSION = 1
+VersionNotSupported = 0
 
 
 
 _MESSAGE = _descriptor.Descriptor(
   name='Message',
-  full_name='iam.Message',
+  full_name='algoryx.click.Message',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageType', full_name='iam.Message.messageType', index=0,
+      name='messageType', full_name='algoryx.click.Message.messageType', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='id', full_name='iam.Message.id', index=1,
+      name='id', full_name='algoryx.click.Message.id', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -170,30 +226,30 @@ _MESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=24,
-  serialized_end=84,
+  serialized_start=34,
+  serialized_end=104,
 )
 
 
 _HANDSHAKEINITMESSAGE = _descriptor.Descriptor(
   name='HandshakeInitMessage',
-  full_name='iam.HandshakeInitMessage',
+  full_name='algoryx.click.HandshakeInitMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageType', full_name='iam.HandshakeInitMessage.messageType', index=0,
+      name='messageType', full_name='algoryx.click.HandshakeInitMessage.messageType', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='version', full_name='iam.HandshakeInitMessage.version', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='version', full_name='algoryx.click.HandshakeInitMessage.version', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -209,21 +265,21 @@ _HANDSHAKEINITMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=86,
-  serialized_end=164,
+  serialized_start=106,
+  serialized_end=218,
 )
 
 
 _HANDSHAKEMESSAGE_SENSORS = _descriptor.Descriptor(
   name='Sensors',
-  full_name='iam.HandshakeMessage.Sensors',
+  full_name='algoryx.click.HandshakeMessage.Sensors',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='types', full_name='iam.HandshakeMessage.Sensors.types', index=0,
+      name='types', full_name='algoryx.click.HandshakeMessage.Sensors.types', index=0,
       number=1, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -241,27 +297,27 @@ _HANDSHAKEMESSAGE_SENSORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=333,
-  serialized_end=373,
+  serialized_start=441,
+  serialized_end=491,
 )
 
 _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
   name='ControlEventsEntry',
-  full_name='iam.HandshakeMessage.Object.ControlEventsEntry',
+  full_name='algoryx.click.HandshakeMessage.Object.ControlEventsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.HandshakeMessage.Object.ControlEventsEntry.key', index=0,
+      name='key', full_name='algoryx.click.HandshakeMessage.Object.ControlEventsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.HandshakeMessage.Object.ControlEventsEntry.value', index=1,
+      name='value', full_name='algoryx.click.HandshakeMessage.Object.ControlEventsEntry.value', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -279,27 +335,27 @@ _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=582,
-  serialized_end=650,
+  serialized_start=730,
+  serialized_end=808,
 )
 
 _HANDSHAKEMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
   name='SensorsEntry',
-  full_name='iam.HandshakeMessage.Object.SensorsEntry',
+  full_name='algoryx.click.HandshakeMessage.Object.SensorsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.HandshakeMessage.Object.SensorsEntry.key', index=0,
+      name='key', full_name='algoryx.click.HandshakeMessage.Object.SensorsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.HandshakeMessage.Object.SensorsEntry.value', index=1,
+      name='value', full_name='algoryx.click.HandshakeMessage.Object.SensorsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -317,41 +373,41 @@ _HANDSHAKEMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=652,
-  serialized_end=729,
+  serialized_start=810,
+  serialized_end=897,
 )
 
 _HANDSHAKEMESSAGE_OBJECT = _descriptor.Descriptor(
   name='Object',
-  full_name='iam.HandshakeMessage.Object',
+  full_name='algoryx.click.HandshakeMessage.Object',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='controlsInOrder', full_name='iam.HandshakeMessage.Object.controlsInOrder', index=0,
+      name='controlsInOrder', full_name='algoryx.click.HandshakeMessage.Object.controlsInOrder', index=0,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='controlEvents', full_name='iam.HandshakeMessage.Object.controlEvents', index=1,
+      name='controlEvents', full_name='algoryx.click.HandshakeMessage.Object.controlEvents', index=1,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sensors', full_name='iam.HandshakeMessage.Object.sensors', index=2,
+      name='sensors', full_name='algoryx.click.HandshakeMessage.Object.sensors', index=2,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objectSensors', full_name='iam.HandshakeMessage.Object.objectSensors', index=3,
+      name='objectSensors', full_name='algoryx.click.HandshakeMessage.Object.objectSensors', index=3,
       number=6, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -369,27 +425,27 @@ _HANDSHAKEMESSAGE_OBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=376,
-  serialized_end=729,
+  serialized_start=494,
+  serialized_end=897,
 )
 
 _HANDSHAKEMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   name='ObjectsEntry',
-  full_name='iam.HandshakeMessage.ObjectsEntry',
+  full_name='algoryx.click.HandshakeMessage.ObjectsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.HandshakeMessage.ObjectsEntry.key', index=0,
+      name='key', full_name='algoryx.click.HandshakeMessage.ObjectsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.HandshakeMessage.ObjectsEntry.value', index=1,
+      name='value', full_name='algoryx.click.HandshakeMessage.ObjectsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -407,41 +463,41 @@ _HANDSHAKEMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=731,
-  serialized_end=807,
+  serialized_start=899,
+  serialized_end=985,
 )
 
 _HANDSHAKEMESSAGE = _descriptor.Descriptor(
   name='HandshakeMessage',
-  full_name='iam.HandshakeMessage',
+  full_name='algoryx.click.HandshakeMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageType', full_name='iam.HandshakeMessage.messageType', index=0,
+      name='messageType', full_name='algoryx.click.HandshakeMessage.messageType', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='version', full_name='iam.HandshakeMessage.version', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='version', full_name='algoryx.click.HandshakeMessage.version', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='controlType', full_name='iam.HandshakeMessage.controlType', index=2,
+      name='controlType', full_name='algoryx.click.HandshakeMessage.controlType', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objects', full_name='iam.HandshakeMessage.objects', index=3,
+      name='objects', full_name='algoryx.click.HandshakeMessage.objects', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -459,28 +515,28 @@ _HANDSHAKEMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=167,
-  serialized_end=807,
+  serialized_start=221,
+  serialized_end=985,
 )
 
 
 _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
   name='ControlEventsEntry',
-  full_name='iam.ControlMessage.Object.ControlEventsEntry',
+  full_name='algoryx.click.ControlMessage.Object.ControlEventsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.ControlMessage.Object.ControlEventsEntry.key', index=0,
+      name='key', full_name='algoryx.click.ControlMessage.Object.ControlEventsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.ControlMessage.Object.ControlEventsEntry.value', index=1,
+      name='value', full_name='algoryx.click.ControlMessage.Object.ControlEventsEntry.value', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -498,41 +554,41 @@ _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1057,
-  serialized_end=1109,
+  serialized_start=1265,
+  serialized_end=1317,
 )
 
 _CONTROLMESSAGE_OBJECT = _descriptor.Descriptor(
   name='Object',
-  full_name='iam.ControlMessage.Object',
+  full_name='algoryx.click.ControlMessage.Object',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='angles', full_name='iam.ControlMessage.Object.angles', index=0,
+      name='angles', full_name='algoryx.click.ControlMessage.Object.angles', index=0,
       number=1, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='angleVelocities', full_name='iam.ControlMessage.Object.angleVelocities', index=1,
+      name='angleVelocities', full_name='algoryx.click.ControlMessage.Object.angleVelocities', index=1,
       number=2, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='torques', full_name='iam.ControlMessage.Object.torques', index=2,
+      name='torques', full_name='algoryx.click.ControlMessage.Object.torques', index=2,
       number=3, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='controlEvents', full_name='iam.ControlMessage.Object.controlEvents', index=3,
+      name='controlEvents', full_name='algoryx.click.ControlMessage.Object.controlEvents', index=3,
       number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -550,27 +606,27 @@ _CONTROLMESSAGE_OBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=919,
-  serialized_end=1109,
+  serialized_start=1117,
+  serialized_end=1317,
 )
 
 _CONTROLMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   name='ObjectsEntry',
-  full_name='iam.ControlMessage.ObjectsEntry',
+  full_name='algoryx.click.ControlMessage.ObjectsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.ControlMessage.ObjectsEntry.key', index=0,
+      name='key', full_name='algoryx.click.ControlMessage.ObjectsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.ControlMessage.ObjectsEntry.value', index=1,
+      name='value', full_name='algoryx.click.ControlMessage.ObjectsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -588,27 +644,27 @@ _CONTROLMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1111,
-  serialized_end=1185,
+  serialized_start=1319,
+  serialized_end=1403,
 )
 
 _CONTROLMESSAGE = _descriptor.Descriptor(
   name='ControlMessage',
-  full_name='iam.ControlMessage',
+  full_name='algoryx.click.ControlMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageType', full_name='iam.ControlMessage.messageType', index=0,
+      name='messageType', full_name='algoryx.click.ControlMessage.messageType', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objects', full_name='iam.ControlMessage.objects', index=1,
+      name='objects', full_name='algoryx.click.ControlMessage.objects', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -626,35 +682,35 @@ _CONTROLMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=810,
-  serialized_end=1185,
+  serialized_start=988,
+  serialized_end=1403,
 )
 
 
 _SENSORMESSAGE_VEC3 = _descriptor.Descriptor(
   name='Vec3',
-  full_name='iam.SensorMessage.Vec3',
+  full_name='algoryx.click.SensorMessage.Vec3',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='X', full_name='iam.SensorMessage.Vec3.X', index=0,
+      name='X', full_name='algoryx.click.SensorMessage.Vec3.X', index=0,
       number=1, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='Y', full_name='iam.SensorMessage.Vec3.Y', index=1,
+      name='Y', full_name='algoryx.click.SensorMessage.Vec3.Y', index=1,
       number=2, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='Z', full_name='iam.SensorMessage.Vec3.Z', index=2,
+      name='Z', full_name='algoryx.click.SensorMessage.Vec3.Z', index=2,
       number=3, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -672,20 +728,20 @@ _SENSORMESSAGE_VEC3 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1294,
-  serialized_end=1333,
+  serialized_start=1532,
+  serialized_end=1571,
 )
 
 _SENSORMESSAGE_VEC3ARR = _descriptor.Descriptor(
   name='Vec3arr',
-  full_name='iam.SensorMessage.Vec3arr',
+  full_name='algoryx.click.SensorMessage.Vec3arr',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='arr', full_name='iam.SensorMessage.Vec3arr.arr', index=0,
+      name='arr', full_name='algoryx.click.SensorMessage.Vec3arr.arr', index=0,
       number=1, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -703,62 +759,62 @@ _SENSORMESSAGE_VEC3ARR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1335,
-  serialized_end=1357,
+  serialized_start=1573,
+  serialized_end=1595,
 )
 
 _SENSORMESSAGE_SENSOR = _descriptor.Descriptor(
   name='Sensor',
-  full_name='iam.SensorMessage.Sensor',
+  full_name='algoryx.click.SensorMessage.Sensor',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='angle', full_name='iam.SensorMessage.Sensor.angle', index=0,
+      name='angle', full_name='algoryx.click.SensorMessage.Sensor.angle', index=0,
       number=2, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='angleVelocity', full_name='iam.SensorMessage.Sensor.angleVelocity', index=1,
+      name='angleVelocity', full_name='algoryx.click.SensorMessage.Sensor.angleVelocity', index=1,
       number=3, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='torque', full_name='iam.SensorMessage.Sensor.torque', index=2,
+      name='torque', full_name='algoryx.click.SensorMessage.Sensor.torque', index=2,
       number=4, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='position', full_name='iam.SensorMessage.Sensor.position', index=3,
+      name='position', full_name='algoryx.click.SensorMessage.Sensor.position', index=3,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='rpy', full_name='iam.SensorMessage.Sensor.rpy', index=4,
+      name='rpy', full_name='algoryx.click.SensorMessage.Sensor.rpy', index=4,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='acceleration', full_name='iam.SensorMessage.Sensor.acceleration', index=5,
+      name='acceleration', full_name='algoryx.click.SensorMessage.Sensor.acceleration', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='force', full_name='iam.SensorMessage.Sensor.force', index=6,
+      name='force', full_name='algoryx.click.SensorMessage.Sensor.force', index=6,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -776,25 +832,25 @@ _SENSORMESSAGE_SENSOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='value', full_name='iam.SensorMessage.Sensor.value',
+      name='value', full_name='algoryx.click.SensorMessage.Sensor.value',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1360,
-  serialized_end=1616,
+  serialized_start=1598,
+  serialized_end=1894,
 )
 
 _SENSORMESSAGE_SENSORS = _descriptor.Descriptor(
   name='Sensors',
-  full_name='iam.SensorMessage.Sensors',
+  full_name='algoryx.click.SensorMessage.Sensors',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='sensor', full_name='iam.SensorMessage.Sensors.sensor', index=0,
+      name='sensor', full_name='algoryx.click.SensorMessage.Sensors.sensor', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -812,27 +868,27 @@ _SENSORMESSAGE_SENSORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1618,
-  serialized_end=1670,
+  serialized_start=1896,
+  serialized_end=1958,
 )
 
 _SENSORMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
   name='SensorsEntry',
-  full_name='iam.SensorMessage.Object.SensorsEntry',
+  full_name='algoryx.click.SensorMessage.Object.SensorsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.SensorMessage.Object.SensorsEntry.key', index=0,
+      name='key', full_name='algoryx.click.SensorMessage.Object.SensorsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.SensorMessage.Object.SensorsEntry.value', index=1,
+      name='value', full_name='algoryx.click.SensorMessage.Object.SensorsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -850,27 +906,27 @@ _SENSORMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1790,
-  serialized_end=1864,
+  serialized_start=2098,
+  serialized_end=2182,
 )
 
 _SENSORMESSAGE_OBJECT = _descriptor.Descriptor(
   name='Object',
-  full_name='iam.SensorMessage.Object',
+  full_name='algoryx.click.SensorMessage.Object',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='sensors', full_name='iam.SensorMessage.Object.sensors', index=0,
+      name='sensors', full_name='algoryx.click.SensorMessage.Object.sensors', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objectSensors', full_name='iam.SensorMessage.Object.objectSensors', index=1,
+      name='objectSensors', full_name='algoryx.click.SensorMessage.Object.objectSensors', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -888,27 +944,27 @@ _SENSORMESSAGE_OBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1673,
-  serialized_end=1864,
+  serialized_start=1961,
+  serialized_end=2182,
 )
 
 _SENSORMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   name='ObjectsEntry',
-  full_name='iam.SensorMessage.ObjectsEntry',
+  full_name='algoryx.click.SensorMessage.ObjectsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='iam.SensorMessage.ObjectsEntry.key', index=0,
+      name='key', full_name='algoryx.click.SensorMessage.ObjectsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='iam.SensorMessage.ObjectsEntry.value', index=1,
+      name='value', full_name='algoryx.click.SensorMessage.ObjectsEntry.value', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -926,27 +982,27 @@ _SENSORMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1866,
-  serialized_end=1939,
+  serialized_start=2184,
+  serialized_end=2267,
 )
 
 _SENSORMESSAGE = _descriptor.Descriptor(
   name='SensorMessage',
-  full_name='iam.SensorMessage',
+  full_name='algoryx.click.SensorMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageType', full_name='iam.SensorMessage.messageType', index=0,
+      name='messageType', full_name='algoryx.click.SensorMessage.messageType', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objects', full_name='iam.SensorMessage.objects', index=1,
+      name='objects', full_name='algoryx.click.SensorMessage.objects', index=1,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -964,21 +1020,21 @@ _SENSORMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1188,
-  serialized_end=1939,
+  serialized_start=1406,
+  serialized_end=2267,
 )
 
 
 _RESETMESSAGE = _descriptor.Descriptor(
   name='ResetMessage',
-  full_name='iam.ResetMessage',
+  full_name='algoryx.click.ResetMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageType', full_name='iam.ResetMessage.messageType', index=0,
+      name='messageType', full_name='algoryx.click.ResetMessage.messageType', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -996,12 +1052,59 @@ _RESETMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1941,
-  serialized_end=1994,
+  serialized_start=2269,
+  serialized_end=2332,
+)
+
+
+_ERRORMESSAGE = _descriptor.Descriptor(
+  name='ErrorMessage',
+  full_name='algoryx.click.ErrorMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='messageType', full_name='algoryx.click.ErrorMessage.messageType', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='error', full_name='algoryx.click.ErrorMessage.error', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='errormessage', full_name='algoryx.click.ErrorMessage.errormessage', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2334,
+  serialized_end=2460,
 )
 
 _MESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
 _HANDSHAKEINITMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
+_HANDSHAKEINITMESSAGE.fields_by_name['version'].enum_type = _VERSION
 _HANDSHAKEMESSAGE_SENSORS.fields_by_name['types'].enum_type = _VALUETYPE
 _HANDSHAKEMESSAGE_SENSORS.containing_type = _HANDSHAKEMESSAGE
 _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY.fields_by_name['value'].enum_type = _VALUETYPE
@@ -1015,6 +1118,7 @@ _HANDSHAKEMESSAGE_OBJECT.containing_type = _HANDSHAKEMESSAGE
 _HANDSHAKEMESSAGE_OBJECTSENTRY.fields_by_name['value'].message_type = _HANDSHAKEMESSAGE_OBJECT
 _HANDSHAKEMESSAGE_OBJECTSENTRY.containing_type = _HANDSHAKEMESSAGE
 _HANDSHAKEMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
+_HANDSHAKEMESSAGE.fields_by_name['version'].enum_type = _VERSION
 _HANDSHAKEMESSAGE.fields_by_name['controlType'].enum_type = _VALUETYPE
 _HANDSHAKEMESSAGE.fields_by_name['objects'].message_type = _HANDSHAKEMESSAGE_OBJECTSENTRY
 _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY.containing_type = _CONTROLMESSAGE_OBJECT
@@ -1064,27 +1168,32 @@ _SENSORMESSAGE_OBJECTSENTRY.containing_type = _SENSORMESSAGE
 _SENSORMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
 _SENSORMESSAGE.fields_by_name['objects'].message_type = _SENSORMESSAGE_OBJECTSENTRY
 _RESETMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
+_ERRORMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
+_ERRORMESSAGE.fields_by_name['error'].enum_type = _ERRORTYPE
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
 DESCRIPTOR.message_types_by_name['HandshakeInitMessage'] = _HANDSHAKEINITMESSAGE
 DESCRIPTOR.message_types_by_name['HandshakeMessage'] = _HANDSHAKEMESSAGE
 DESCRIPTOR.message_types_by_name['ControlMessage'] = _CONTROLMESSAGE
 DESCRIPTOR.message_types_by_name['SensorMessage'] = _SENSORMESSAGE
 DESCRIPTOR.message_types_by_name['ResetMessage'] = _RESETMESSAGE
+DESCRIPTOR.message_types_by_name['ErrorMessage'] = _ERRORMESSAGE
 DESCRIPTOR.enum_types_by_name['MessageType'] = _MESSAGETYPE
 DESCRIPTOR.enum_types_by_name['ValueType'] = _VALUETYPE
+DESCRIPTOR.enum_types_by_name['Version'] = _VERSION
+DESCRIPTOR.enum_types_by_name['ErrorType'] = _ERRORTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,), {
   'DESCRIPTOR' : _MESSAGE,
   '__module__' : 'messaging_pb2'
-  # @@protoc_insertion_point(class_scope:iam.Message)
+  # @@protoc_insertion_point(class_scope:algoryx.click.Message)
   })
 _sym_db.RegisterMessage(Message)
 
 HandshakeInitMessage = _reflection.GeneratedProtocolMessageType('HandshakeInitMessage', (_message.Message,), {
   'DESCRIPTOR' : _HANDSHAKEINITMESSAGE,
   '__module__' : 'messaging_pb2'
-  # @@protoc_insertion_point(class_scope:iam.HandshakeInitMessage)
+  # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeInitMessage)
   })
 _sym_db.RegisterMessage(HandshakeInitMessage)
 
@@ -1093,7 +1202,7 @@ HandshakeMessage = _reflection.GeneratedProtocolMessageType('HandshakeMessage', 
   'Sensors' : _reflection.GeneratedProtocolMessageType('Sensors', (_message.Message,), {
     'DESCRIPTOR' : _HANDSHAKEMESSAGE_SENSORS,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.HandshakeMessage.Sensors)
+    # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeMessage.Sensors)
     })
   ,
 
@@ -1102,31 +1211,31 @@ HandshakeMessage = _reflection.GeneratedProtocolMessageType('HandshakeMessage', 
     'ControlEventsEntry' : _reflection.GeneratedProtocolMessageType('ControlEventsEntry', (_message.Message,), {
       'DESCRIPTOR' : _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY,
       '__module__' : 'messaging_pb2'
-      # @@protoc_insertion_point(class_scope:iam.HandshakeMessage.Object.ControlEventsEntry)
+      # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeMessage.Object.ControlEventsEntry)
       })
     ,
 
     'SensorsEntry' : _reflection.GeneratedProtocolMessageType('SensorsEntry', (_message.Message,), {
       'DESCRIPTOR' : _HANDSHAKEMESSAGE_OBJECT_SENSORSENTRY,
       '__module__' : 'messaging_pb2'
-      # @@protoc_insertion_point(class_scope:iam.HandshakeMessage.Object.SensorsEntry)
+      # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeMessage.Object.SensorsEntry)
       })
     ,
     'DESCRIPTOR' : _HANDSHAKEMESSAGE_OBJECT,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.HandshakeMessage.Object)
+    # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeMessage.Object)
     })
   ,
 
   'ObjectsEntry' : _reflection.GeneratedProtocolMessageType('ObjectsEntry', (_message.Message,), {
     'DESCRIPTOR' : _HANDSHAKEMESSAGE_OBJECTSENTRY,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.HandshakeMessage.ObjectsEntry)
+    # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeMessage.ObjectsEntry)
     })
   ,
   'DESCRIPTOR' : _HANDSHAKEMESSAGE,
   '__module__' : 'messaging_pb2'
-  # @@protoc_insertion_point(class_scope:iam.HandshakeMessage)
+  # @@protoc_insertion_point(class_scope:algoryx.click.HandshakeMessage)
   })
 _sym_db.RegisterMessage(HandshakeMessage)
 _sym_db.RegisterMessage(HandshakeMessage.Sensors)
@@ -1142,24 +1251,24 @@ ControlMessage = _reflection.GeneratedProtocolMessageType('ControlMessage', (_me
     'ControlEventsEntry' : _reflection.GeneratedProtocolMessageType('ControlEventsEntry', (_message.Message,), {
       'DESCRIPTOR' : _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY,
       '__module__' : 'messaging_pb2'
-      # @@protoc_insertion_point(class_scope:iam.ControlMessage.Object.ControlEventsEntry)
+      # @@protoc_insertion_point(class_scope:algoryx.click.ControlMessage.Object.ControlEventsEntry)
       })
     ,
     'DESCRIPTOR' : _CONTROLMESSAGE_OBJECT,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.ControlMessage.Object)
+    # @@protoc_insertion_point(class_scope:algoryx.click.ControlMessage.Object)
     })
   ,
 
   'ObjectsEntry' : _reflection.GeneratedProtocolMessageType('ObjectsEntry', (_message.Message,), {
     'DESCRIPTOR' : _CONTROLMESSAGE_OBJECTSENTRY,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.ControlMessage.ObjectsEntry)
+    # @@protoc_insertion_point(class_scope:algoryx.click.ControlMessage.ObjectsEntry)
     })
   ,
   'DESCRIPTOR' : _CONTROLMESSAGE,
   '__module__' : 'messaging_pb2'
-  # @@protoc_insertion_point(class_scope:iam.ControlMessage)
+  # @@protoc_insertion_point(class_scope:algoryx.click.ControlMessage)
   })
 _sym_db.RegisterMessage(ControlMessage)
 _sym_db.RegisterMessage(ControlMessage.Object)
@@ -1171,28 +1280,28 @@ SensorMessage = _reflection.GeneratedProtocolMessageType('SensorMessage', (_mess
   'Vec3' : _reflection.GeneratedProtocolMessageType('Vec3', (_message.Message,), {
     'DESCRIPTOR' : _SENSORMESSAGE_VEC3,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.SensorMessage.Vec3)
+    # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.Vec3)
     })
   ,
 
   'Vec3arr' : _reflection.GeneratedProtocolMessageType('Vec3arr', (_message.Message,), {
     'DESCRIPTOR' : _SENSORMESSAGE_VEC3ARR,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.SensorMessage.Vec3arr)
+    # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.Vec3arr)
     })
   ,
 
   'Sensor' : _reflection.GeneratedProtocolMessageType('Sensor', (_message.Message,), {
     'DESCRIPTOR' : _SENSORMESSAGE_SENSOR,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.SensorMessage.Sensor)
+    # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.Sensor)
     })
   ,
 
   'Sensors' : _reflection.GeneratedProtocolMessageType('Sensors', (_message.Message,), {
     'DESCRIPTOR' : _SENSORMESSAGE_SENSORS,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.SensorMessage.Sensors)
+    # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.Sensors)
     })
   ,
 
@@ -1201,24 +1310,24 @@ SensorMessage = _reflection.GeneratedProtocolMessageType('SensorMessage', (_mess
     'SensorsEntry' : _reflection.GeneratedProtocolMessageType('SensorsEntry', (_message.Message,), {
       'DESCRIPTOR' : _SENSORMESSAGE_OBJECT_SENSORSENTRY,
       '__module__' : 'messaging_pb2'
-      # @@protoc_insertion_point(class_scope:iam.SensorMessage.Object.SensorsEntry)
+      # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.Object.SensorsEntry)
       })
     ,
     'DESCRIPTOR' : _SENSORMESSAGE_OBJECT,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.SensorMessage.Object)
+    # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.Object)
     })
   ,
 
   'ObjectsEntry' : _reflection.GeneratedProtocolMessageType('ObjectsEntry', (_message.Message,), {
     'DESCRIPTOR' : _SENSORMESSAGE_OBJECTSENTRY,
     '__module__' : 'messaging_pb2'
-    # @@protoc_insertion_point(class_scope:iam.SensorMessage.ObjectsEntry)
+    # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage.ObjectsEntry)
     })
   ,
   'DESCRIPTOR' : _SENSORMESSAGE,
   '__module__' : 'messaging_pb2'
-  # @@protoc_insertion_point(class_scope:iam.SensorMessage)
+  # @@protoc_insertion_point(class_scope:algoryx.click.SensorMessage)
   })
 _sym_db.RegisterMessage(SensorMessage)
 _sym_db.RegisterMessage(SensorMessage.Vec3)
@@ -1232,9 +1341,16 @@ _sym_db.RegisterMessage(SensorMessage.ObjectsEntry)
 ResetMessage = _reflection.GeneratedProtocolMessageType('ResetMessage', (_message.Message,), {
   'DESCRIPTOR' : _RESETMESSAGE,
   '__module__' : 'messaging_pb2'
-  # @@protoc_insertion_point(class_scope:iam.ResetMessage)
+  # @@protoc_insertion_point(class_scope:algoryx.click.ResetMessage)
   })
 _sym_db.RegisterMessage(ResetMessage)
+
+ErrorMessage = _reflection.GeneratedProtocolMessageType('ErrorMessage', (_message.Message,), {
+  'DESCRIPTOR' : _ERRORMESSAGE,
+  '__module__' : 'messaging_pb2'
+  # @@protoc_insertion_point(class_scope:algoryx.click.ErrorMessage)
+  })
+_sym_db.RegisterMessage(ErrorMessage)
 
 
 _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY._options = None

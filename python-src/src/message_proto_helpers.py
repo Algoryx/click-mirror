@@ -1,9 +1,8 @@
-from messaging_pb2 import Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
+from messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
 from messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType
 
 
 class MessageFactory:
-    VERSION = "0.1"
     _mdict = {HandshakeInitMessageType: HandshakeInitMessage,
               HandshakeMessageType: HandshakeMessage,
               ControlMessageType: ControlMessage,
@@ -14,7 +13,7 @@ class MessageFactory:
     def _create_message(cls, mtype):
         message = cls._mdict[mtype]()
         if hasattr(message, "version"):
-            message.version = cls.VERSION
+            message.version = CURRENT_VERSION
         message.messageType = mtype
         return message
 

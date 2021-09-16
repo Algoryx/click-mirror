@@ -3,10 +3,11 @@
 #include "Messaging.pb.h"
 
 using namespace std;
-using namespace iam;
+using namespace algoryx::click;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 
+// TODO: Move to production code
 class MessageFactory {
 
     public:
@@ -28,8 +29,8 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
         ControlMessage * control_m = MessageFactory::create_controlMessage();
 
         WHEN("adding robot controls") {
-            google::protobuf::Map<string, iam::ControlMessage_Object> * map = control_m->mutable_objects();
-            (*map)["robot1"] = iam::ControlMessage_Object();
+            google::protobuf::Map<string, ControlMessage_Object> * map = control_m->mutable_objects();
+            (*map)["robot1"] = ControlMessage_Object();
             vector<double> angles = double_vector_with({ 1, 2, 3, 4, 5 });
             (*map)["robot1"].mutable_anglevelocities()->Assign(angles.begin(), angles.end());
             (*(*map)["robot1"].mutable_controlevents())["gripper"] = true;
