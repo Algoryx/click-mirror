@@ -19,7 +19,7 @@ rm -rf * .github.conan.cmake
 ## Build and test python
 
 ```bash
-protoc -I=protobuf-src --python_out=python-src/src messaging.proto
+protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 pytest
 ```
 

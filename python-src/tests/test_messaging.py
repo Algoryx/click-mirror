@@ -24,7 +24,7 @@ def test_understanding_of_protoc_classes():
 
     # Misleading that type of two different classes has same name, but that's how this implementation is done.
     assert str(type(hobject)) == str(type(sobject))
-    assert str(type(hobject)) == "<class 'messaging_pb2.Object'>"
+    assert str(type(hobject)) == "<class 'Messaging_pb2.Object'>"
 
     # Enum values are int, not the enum
     assert type(ValueType.Torque) == int
