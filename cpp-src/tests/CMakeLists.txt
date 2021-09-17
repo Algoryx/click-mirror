@@ -17,7 +17,7 @@ set(TEST_SOURCES
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests 
     PRIVATE
-    click_lib
+    clicklib
     Catch2::Catch2WithMain
 )
 

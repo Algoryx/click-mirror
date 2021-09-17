@@ -26,5 +26,6 @@ include(conanconf)
 # Project directives
 add_subdirectory(../protobuf-src ./protobuf-gen)
 # TODO: Probably should rename to client later
-add_subdirectory(client)
+add_subdirectory(click)
+add_subdirectory(democlient)
 add_subdirectory(tests)
