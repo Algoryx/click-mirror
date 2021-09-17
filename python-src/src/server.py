@@ -6,7 +6,7 @@
 
 import zmq
 from message_proto_helpers import MessageFactory, MessageSerializer
-from messaging_pb2 import Message
+from Messaging_pb2 import Message
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)

@@ -14,7 +14,7 @@ SCENARIO("sensormessage serialization", "[clicklib]" ) {
 
     GIVEN("A serialized sensormessage") {
 
-        string sensorbinary = "../../testdata/sensormessage.bin";
+        string sensorbinary = "../../../testdata/sensormessage.bin";
         fstream input(sensorbinary, ios::in | ios::binary);
         REQUIRE(input);
 

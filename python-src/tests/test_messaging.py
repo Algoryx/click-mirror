@@ -1,5 +1,5 @@
-from messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
-from messaging_pb2 import ValueType
+from Messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
+from Messaging_pb2 import ValueType
 from message_proto_helpers import MessageFactory, MessageSerializer
 from pathlib import Path
 import pytest

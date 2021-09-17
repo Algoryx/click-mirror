@@ -1,5 +1,5 @@
-from messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
-from messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType
+from Messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
+from Messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType
 
 
 class MessageFactory:

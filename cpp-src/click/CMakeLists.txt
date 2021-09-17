@@ -14,3 +14,5 @@ target_link_libraries(clicklib
 target_include_directories(clicklib 
     PUBLIC 
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+add_subdirectory(tests)
