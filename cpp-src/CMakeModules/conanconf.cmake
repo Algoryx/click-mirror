@@ -28,20 +28,20 @@ include(${CONAN_CMAKE_LOCAL_FILE})
 # server. However, for performance reasons we only want to do that on the
 # first CMake run. We detect first run by checking for CMakeCache.txt.
 if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
-  set(RCP_UPDATE_CONAN_PACKAGES "")
+  set(GENERIC_UPDATE_CONAN_PACKAGES "")
 else()
-  set(RCP_UPDATE_CONAN_PACKAGES "UPDATE")
+  set(GENERIC_UPDATE_CONAN_PACKAGES "UPDATE")
 endif()
 
-set(RCP_CONAN_BUILD_RULE "never")
+set(GENERIC_CONAN_BUILD_RULE "never")
 
 conan_cmake_run(CONANFILE conanfile.txt
-  ${RCP_UPDATE_CONAN_PACKAGES}
+  ${GENERIC_UPDATE_CONAN_PACKAGES}
   BASIC_SETUP
   KEEP_RPATHS
   NO_OUTPUT_DIRS
   CMAKE_TARGETS
-  BUILD ${RCP_CONAN_BUILD_RULE}  # Set to 'all' to force rebuild of dependencies.
+  BUILD ${GENERIC_CONAN_BUILD_RULE}  # Set to 'all' to force rebuild of dependencies.
 )
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)

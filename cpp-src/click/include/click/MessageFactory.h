@@ -2,11 +2,13 @@
 #include "Messaging.pb.h"
 
 using namespace algoryx::click;
+namespace algoryx { namespace click {
 
-class MessageFactory {
+    class MessageFactory {
 
-    public:
-        static ControlMessage * create_controlMessage();
-        static HandshakeInitMessage * create_handshakeInitMessage();
-};
+        public:
+            static ControlMessage * create_controlMessage();
+            static HandshakeInitMessage * create_handshakeInitMessage();
+    };
 
+}}

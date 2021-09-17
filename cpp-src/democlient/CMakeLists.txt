@@ -1,4 +1,3 @@
-#find_package(Protobuf REQUIRED)
 
 set(SOURCES
     src/democlient.cpp

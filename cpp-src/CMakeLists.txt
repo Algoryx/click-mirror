@@ -10,6 +10,7 @@ project(click VERSION 1.0
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
     LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 17)
 
 # Output dirs
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

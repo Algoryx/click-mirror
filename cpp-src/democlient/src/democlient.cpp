@@ -1,5 +1,5 @@
 #include <iostream>
-#include <zmqpp/zmqpp.hpp>
+#include <click/Client.h>
 #include <click/MessageFactory.h>
 
 using namespace std;
@@ -32,26 +32,19 @@ int main(int argc, char *argv[])
 {
     const string endpoint = "tcp://localhost:5555";
 
-    // Init protobuf
+    // Verify protobuf version
     GOOGLE_PROTOBUF_VERIFY_VERSION;
-    // initialize the 0MQ context
-    zmqpp::context context;
+    Client client = Client();
+    cout << "Using Click client to connect to click server…" << endl;
+    client.connect(endpoint);
 
-    // generate a push socket
-    zmqpp::socket_type type = zmqpp::socket_type::req;
-    zmqpp::socket socket(context, type);
-
-    // open the connection
-    cout << "Connecting to click server…" << endl;
-    socket.connect(endpoint);
-
-    // create message
+    // Create-send-receive
     HandshakeInitMessage * message = MessageFactory::create_handshakeInitMessage();
     cout << "Type: " << message->messagetype() << endl;
     cout << "Sending " << message->DebugString() << endl;
-    socket.send(message->SerializeAsString());
+    client.send(message->SerializeAsString());
     string responseBytes;
-    socket.receive(responseBytes);
+    client.receive(responseBytes);
     HandshakeMessage response;
     response.ParseFromString(responseBytes);
     cout << "Received " << response.DebugString() << endl;
