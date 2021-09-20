@@ -1,6 +1,5 @@
 #include <click/SensorMessage.h>
-//#pragma warning(push)
-#include "protocol.pb.h"
+
 
 RCP::SensorMessage::SensorMessage()
 {

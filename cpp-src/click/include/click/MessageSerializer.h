@@ -8,5 +8,6 @@ namespace algoryx { namespace click {
     {
     public:
       CLICK_EXPORT std::string serializeToString(const Message &message);
+      CLICK_EXPORT Message * fromBytes(const std::string &bytes);
     };
 }}

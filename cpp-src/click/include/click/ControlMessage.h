@@ -32,5 +32,6 @@ namespace algoryx { namespace click {
     protobuf::ControlMessage * control_m;
 
     friend class ControlMessageBuilder;
+    friend class MessageSerializer;
   };
 }}

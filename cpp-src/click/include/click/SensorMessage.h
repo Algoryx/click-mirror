@@ -11,9 +11,6 @@ namespace algoryx { namespace click {
   public:
     CLICK_EXPORT SensorMessage();
 
-    CLICK_EXPORT std::vector<double> getJointAngles() const;
-    CLICK_EXPORT void addJointAngle(double angle);
-
     CLICK_EXPORT std::string getDebugString() const;
     CLICK_EXPORT ~SensorMessage();
 

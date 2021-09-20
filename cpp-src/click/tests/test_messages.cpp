@@ -126,9 +126,16 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
                 REQUIRE_THAT(control_m->DebugString(), Equals(control_facit));
             }
 
-            THEN("it should be serializable") {
+            THEN("it should serialize to string") {
                 MessageSerializer serializer;
                 REQUIRE(serializer.serializeToString(*control_m).length() > 10);
+            }
+            THEN("it should be deserialized from string") {
+                MessageSerializer serializer;
+                string bytes = serializer.serializeToString(*control_m);
+                
+                Message * message = serializer.fromBytes(bytes);
+                REQUIRE_THAT(message->DebugString(), Equals(control_m->DebugString()));
             }
         }
     }
