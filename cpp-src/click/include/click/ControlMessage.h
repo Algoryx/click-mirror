@@ -16,8 +16,6 @@ namespace algoryx { namespace click {
   class ControlMessage : public Message
   {
   public:
-//    CLICK_EXPORT std::vector<double> getJointTorques() const;
-
     CLICK_EXPORT std::vector<double>angles(std::string objectname) const;
     CLICK_EXPORT std::vector<double>angleVelocities(std::string objectname) const;
     CLICK_EXPORT std::vector<double>torques(std::string objectname) const;
@@ -28,7 +26,8 @@ namespace algoryx { namespace click {
     CLICK_EXPORT ~ControlMessage();
 
   private:
-    ControlMessage(protobuf::ControlMessage * control_m);
+    CLICK_EXPORT ControlMessage(protobuf::ControlMessage * control_m);
+    CLICK_EXPORT virtual std::string serializeToBytes() const;
 
     protobuf::ControlMessage * control_m;
 

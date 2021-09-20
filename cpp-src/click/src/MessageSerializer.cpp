@@ -6,6 +6,13 @@
 
 using namespace algoryx::click;
 
+
+std::string MessageSerializer::serializeToString(const Message& message)
+{
+  return message.serializeToBytes();
+}
+
+/*
 MessageSerializer::~MessageSerializer()
 {
 }
@@ -25,16 +32,6 @@ bool MessageSerializer::decodeMessage(const std::string& data, Message& message)
       errorString << "Unsupported message type when decoding message: " << grpcMessage.type();
       throw std::runtime_error(errorString.str());
     }
-}
-
-std::string MessageSerializer::encodeMessage(const ControlMessage& message)
-{
-  auto signal = Grpc::ControlSignals();
-  signal.set_type(Grpc::MessageType::ControlSignalType);
-  for (auto&& torque : message.getJointTorques())
-    signal.add_jointtorques(torque);
-  signal.set_triggerstep(message.getTriggerStep());
-  return signal.SerializeAsString();
 }
 
 std::string MessageSerializer::encodeMessage(const SensorMessage& message)
@@ -76,3 +73,4 @@ bool MessageSerializer::decodeSensorMessage(const std::string& data, Message& ou
     sensorMessage->addJointAngle(angle);
   return true;
 }
+*/

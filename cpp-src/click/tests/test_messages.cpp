@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <click/ControlMessage.h>
+#include <click/MessageSerializer.h>
 #include <Messaging.pb.h>
 
 using namespace std;
@@ -62,8 +63,6 @@ public:
 SCENARIO("controlmessage serialization", "[clicklib]" ) {
 
     GIVEN("A controlmessage") {
-
-//        ControlMessage * control_m = MessageFactory::create_controlMessage();
 
         WHEN("adding three robots with controls") {
             vector<double> angles = double_vector_from({ 1, 2, 3, 4, 5 });
@@ -128,7 +127,8 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
             }
 
             THEN("it should be serializable") {
-//                REQUIRE(control_m->SerializeAsString().length() == 69);
+                MessageSerializer serializer;
+                REQUIRE(serializer.serializeToString(*control_m).length() > 10);
             }
         }
     }

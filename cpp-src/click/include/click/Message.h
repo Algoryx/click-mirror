@@ -13,11 +13,18 @@ namespace algoryx { namespace click {
     ErrorMessageType = 5
   };
 
+  class MessageSerializer;
+
   class Message
   {
   public:
     // TODO: Do I need CLICK_EXPORT here?
-    CLICK_EXPORT virtual std::string DebugString() const = 0;
-    CLICK_EXPORT virtual MessageType messageType() const = 0;
+    virtual std::string DebugString() const = 0;
+    virtual MessageType messageType() const = 0;
+
+  private:
+    virtual std::string serializeToBytes() const = 0;
+  
+  friend class MessageSerializer;
 };
 }}

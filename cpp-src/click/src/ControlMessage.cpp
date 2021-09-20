@@ -37,6 +37,10 @@ MessageType ControlMessage::messageType() const {
   return static_cast<MessageType>(control_m->messagetype());
 }
 
+std::string ControlMessage::serializeToBytes() const {
+  return this->control_m->SerializeAsString();
+}
+
 
 ControlMessage::~ControlMessage() = default;
 }}

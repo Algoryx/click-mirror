@@ -5,6 +5,7 @@ set(LIBSOURCES
     include/click/ControlMessage.h
     include/click/Client.h
     src/MessageFactory.cpp
+    src/MessageSerializer.cpp
     src/Client.cpp
     src/ControlMessage.cpp
 )
