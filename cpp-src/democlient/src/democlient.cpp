@@ -8,6 +8,7 @@ using namespace algoryx::click;
 
 void controlmessage()
 {
+    using namespace protobuf;
     ControlMessage *control_m = new ControlMessage();
     control_m->set_messagetype(ControlMessageType);
     google::protobuf::Map<string, ControlMessage_Object> *map = control_m->mutable_objects();
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     client.connect(endpoint);
 
     // Create-send-receive
+    using namespace protobuf;
     HandshakeInitMessage * message = MessageFactory::create_handshakeInitMessage();
     cout << "Type: " << message->messagetype() << endl;
     cout << "Sending " << message->DebugString() << endl;

@@ -1,7 +1,7 @@
 // protoc -I=. --python_out=. messaging.proto
 syntax = "proto3";
 
-package algoryx.click;
+package algoryx.click.protobuf;
 
 enum MessageType {
   HandshakeInitMessageType = 0;

@@ -1,8 +1,7 @@
 #pragma once
 #include "Messaging.pb.h"
 
-using namespace algoryx::click;
-namespace algoryx { namespace click {
+namespace algoryx { namespace click { namespace protobuf {
 
     class MessageFactory {
 
@@ -11,4 +10,4 @@ namespace algoryx { namespace click {
             static HandshakeInitMessage * create_handshakeInitMessage();
     };
 
-}}
+}}}

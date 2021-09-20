@@ -1,5 +1,6 @@
 #include <click/MessageFactory.h>
 
+using namespace algoryx::click::protobuf;
 
 ControlMessage * MessageFactory::create_controlMessage() {
     ControlMessage * control_m = new ControlMessage();
