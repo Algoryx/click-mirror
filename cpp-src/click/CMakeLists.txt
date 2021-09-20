@@ -3,11 +3,13 @@ find_package(Protobuf REQUIRED)
 set(LIBSOURCES
     include/click/MessageFactory.h
     include/click/ControlMessage.h
+    include/click/SensorMessage.h
     include/click/Client.h
     src/MessageFactory.cpp
     src/MessageSerializer.cpp
     src/Client.cpp
     src/ControlMessage.cpp
+    src/SensorMessage.cpp
 )
 
 add_library(clicklib ${LIBSOURCES})

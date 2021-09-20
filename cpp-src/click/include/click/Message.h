@@ -19,7 +19,7 @@ namespace algoryx { namespace click {
   {
   public:
     // TODO: Do I need CLICK_EXPORT here?
-    virtual std::string DebugString() const = 0;
+    virtual std::string debugString() const = 0;
     virtual MessageType messageType() const = 0;
 
   private:

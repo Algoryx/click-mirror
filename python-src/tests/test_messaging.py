@@ -136,7 +136,7 @@ objects {
 """
 
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_write_sensor_message_to_file(tmp_path: Path):
     filename = tmp_path / "sensormessage.bin"
     filename.write_bytes(sensor_message().SerializeToString())

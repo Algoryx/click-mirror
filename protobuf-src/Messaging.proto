@@ -166,6 +166,7 @@ message SensorMessage {
   }
   
   message Object {
+    // TODO: For effectiveness and c++ convenience, use same scheme as in ControlMessage, ie one vector per sensor type
     map<string, Sensors> sensors = 1;
     repeated Sensor objectSensors = 2;
   }

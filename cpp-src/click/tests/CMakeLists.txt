@@ -13,6 +13,7 @@ set(TEST_SOURCES
     test_messages.cpp
     test_protobuf_messages.cpp
     test_message_integration.cpp
+    test_protobuf_message_integration.cpp
 )
 
 add_executable(tests ${TEST_SOURCES})
