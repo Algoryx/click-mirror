@@ -2,9 +2,11 @@ find_package(Protobuf REQUIRED)
 
 set(LIBSOURCES
     include/click/MessageFactory.h
+    include/click/ControlMessage.h
     include/click/Client.h
     src/MessageFactory.cpp
     src/Client.cpp
+    src/ControlMessage.cpp
 )
 
 add_library(clicklib ${LIBSOURCES})
