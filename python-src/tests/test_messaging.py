@@ -171,6 +171,7 @@ def sensor_message():
     sensor.position.X = 1.0
     sensor.position.Y = 2.0
     sensor.position.Z = 3.0
+    sensor = box.objectSensors.add()
     sensor.rpy.arr.extend([4.0, 5.0, 6.0])
     return sensor_m
 
@@ -179,7 +180,7 @@ def test_that_SensorMessage_serializes():
     sensor_m = sensor_message()
 
     message = MessageSerializer.from_bytes(sensor_m.SerializeToString())
-    assert len(sensor_m.SerializeToString()) == 98
+    assert len(sensor_m.SerializeToString()) == 129
 
     assert message.objects['robot1'].sensors['joint1'].sensor[1].HasField("angleVelocity")
     assert message.objects['robot1'].sensors['joint1'].sensor[2].WhichOneof("value") == "torque"
@@ -188,6 +189,13 @@ def test_that_SensorMessage_serializes():
 objects {
   key: "box"
   value {
+    objectSensors {
+      position {
+        X: 1.0
+        Y: 2.0
+        Z: 3.0
+      }
+    }
     objectSensors {
       rpy {
         arr: 4.0

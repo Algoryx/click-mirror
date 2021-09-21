@@ -26,27 +26,29 @@ SCENARIO("sensormessage serialization from file", "[clicklib]" ) {
             REQUIRE(message->messageType() == SensorMessageType);            
             unique_ptr<SensorMessage> sensorMessage = toSensorMessage(move(message));
 
-            // THEN("it should contain robot1 sensor values") {
-            //     REQUIRE_THAT(sensorMessage->debugString(), Equals("SensorMessageType"));
-            // }
-
-            THEN("it should contain robot1 sensor values") {
-
-                std::vector<double> angles = sensorMessage->angles("robot1");
-                std::vector<double> angleVelocities = sensorMessage->angleVelocities("robot1");
-                std::vector<double> torques = sensorMessage->torques("robot1");
-                REQUIRE(angles == std::vector<double>({1.0}));
-                REQUIRE(angleVelocities == std::vector<double>({2.0}));
-                REQUIRE(torques == std::vector<double>({3.0}));
+            THEN("it should have debugstring") {
                 REQUIRE_THAT(sensorMessage->debugString(), Catch::Matchers::StartsWith("messageType: SensorMessageType"));
+            //     REQUIRE_THAT(sensorMessage->debugString(), Equals("SensorMessageType"));
             }
 
-            THEN("it should contain box position") {
+            THEN("robot1 should have angles") {
+                REQUIRE(sensorMessage->angles("robot1") == std::vector<double>{1.0});
+            }
 
-                vector<double> rpy = sensorMessage->objectRPY("box", 0);
-//                vector<double> pos = sensorMessage->objectPosition("box", 0);
-                vector<double> expected = {4.0, 5.0, 6.0};
-                REQUIRE(rpy == expected);
+            AND_THEN("robot1 should have angleVelocities") {
+                REQUIRE(sensorMessage->angleVelocities("robot1") == std::vector<double>{2.0});
+            }
+
+            AND_THEN("robot1 should have torques") {
+                REQUIRE(sensorMessage->torques("robot1") == std::vector<double>{3.0});
+            }
+
+            THEN("box should have roll pitch yaw") {
+                REQUIRE_THAT(sensorMessage->objectRPY("box"), Equals(vector<double>{4.0, 5.0, 6.0}));
+            }
+
+            THEN("box should have position") {
+                REQUIRE(sensorMessage->objectPosition("box") == vector<double>{1.0, 2.0, 3.0});
             }
 
             THEN("it should roundtrip serialize to/from bytes") {

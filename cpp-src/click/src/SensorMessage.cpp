@@ -1,4 +1,5 @@
 #include <click/SensorMessage.h>
+#include<iostream>
 
 using namespace algoryx::click;
 using namespace std;
@@ -44,16 +45,27 @@ vector<double> SensorMessage::torques(const string &objectname) const {
   return res;
 }
 
-vector<double> SensorMessage::objectRPY(const string &objectname, int index) const {
-  int len = this->sensorMess->objects().at(objectname).objectsensors().size();
-  if (this->sensorMess->objects().at(objectname).objectsensors().at(0).has_rpy()) {
-    auto vec = this->sensorMess->objects().at(objectname).objectsensors().at(0).rpy().arr();
-    vector<double> res(vec.begin(), vec.end());
-    return res;
-  }
-  throw std::runtime_error("Expected rpy");
+vector<double> SensorMessage::objectRPY(const string &objectname) const {
+  for (auto sensor : this->sensorMess->objects().at(objectname).objectsensors())
+    if (sensor.has_rpy())
+    {
+      auto vec = sensor.rpy();
+      return vector<double>(vec.arr().begin(), vec.arr().end());
+    }
+  throw std::runtime_error("RPY not found in " + this->debugString());
 }
 
+// TODO: Add hasObjectPosition or return bool, take vector
+vector<double> SensorMessage::objectPosition(const string &objectname) const {
+  for (auto sensor : this->sensorMess->objects().at(objectname).objectsensors())
+    if (sensor.has_position()) {
+      auto vec3 = sensor.position();
+      return vector<double>{vec3.x(), vec3.y(), vec3.z()};
+    }
+  throw std::runtime_error("Position not found in " + this->debugString());
+}
+
+// TODO: Implement sensorevent!
 // bool SensorMessage::sensorEvent(const string &objectname, string sensorname) const {
 //   return this->sensor_m->objects().at(objectname).sensorevents().at(sensorname);
 // }

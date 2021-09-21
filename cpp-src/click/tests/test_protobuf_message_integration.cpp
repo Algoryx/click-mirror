@@ -32,11 +32,11 @@ SCENARIO("Protobuf sensormessage serialization from file", "[clicklib]" ) {
 //                REQUIRE_THAT(sensorMessage.DebugString(), Equals("SensorMessageType"));
             }
 
-            THEN("it should contain box position") {
+            THEN("it should contain box rpy") {
 
                 Map<string, SensorMessage_Object> objects = sensorMessage.objects();
                 using google::protobuf::RepeatedField;
-                RepeatedField<double> vec = objects["box"].objectsensors()[0].rpy().arr();
+                RepeatedField<double> vec = objects["box"].objectsensors()[1].rpy().arr();
                 vector<double> actual(vec.begin(), vec.end());
                 vector<double> expected = {4.0, 5.0, 6.0};
                 REQUIRE(actual == expected);

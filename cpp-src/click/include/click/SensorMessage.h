@@ -12,7 +12,8 @@ namespace algoryx { namespace click {
     CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
-    CLICK_EXPORT std::vector<double> objectRPY(const std::string &objectname, int index) const;
+    CLICK_EXPORT std::vector<double> objectRPY(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> objectPosition(const std::string &objectname) const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT ~SensorMessage();
