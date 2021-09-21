@@ -12,3 +12,4 @@ namespace algoryx { namespace click {
       CLICK_EXPORT std::unique_ptr<Message> sensorMessageFromIStream(std::istream *input);
     };
 }}
+

@@ -3,6 +3,7 @@ find_package(Protobuf REQUIRED)
 set(LIBSOURCES
     include/click/MessageFactory.h
     include/click/ControlMessage.h
+    include/click/ControlMessageBuilder.h
     include/click/SensorMessage.h
     include/click/Client.h
     src/MessageFactory.cpp
@@ -10,6 +11,7 @@ set(LIBSOURCES
     src/Client.cpp
     src/Message.cpp
     src/ControlMessage.cpp
+    src/ControlMessageBuilder.cpp
     src/SensorMessage.cpp
 )
 

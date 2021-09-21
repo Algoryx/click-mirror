@@ -5,6 +5,7 @@
 using namespace algoryx::click;
 using namespace std;
 
+
 string MessageSerializer::serializeToString(const Message& message)
 {
   return message.serializeToBytes();

@@ -3,6 +3,10 @@
 using namespace algoryx::click;
 using namespace std;
 
+unique_ptr<SensorMessage> algoryx::click::toSensorMessage(unique_ptr<Message> message) {
+    return unique_ptr<SensorMessage>(static_cast<SensorMessage *>(message.release()));
+}
+
 SensorMessage::SensorMessage(unique_ptr<protobuf::SensorMessage> sensorMessage)
 {
   this->sensorMess = move(sensorMessage);

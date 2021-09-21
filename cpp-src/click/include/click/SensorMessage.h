@@ -21,8 +21,10 @@ namespace algoryx { namespace click {
     SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMessage);
     virtual std::string serializeToBytes() const;
 
-    std::unique_ptr<protobuf::SensorMessage> sensor_m;
+    std::unique_ptr<protobuf::SensorMessage> sensorMess;
 
     friend class MessageSerializer;
   };
+
+  std::unique_ptr<SensorMessage> toSensorMessage(std::unique_ptr<Message> message);
 }}
