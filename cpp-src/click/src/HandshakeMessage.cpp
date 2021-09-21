@@ -24,12 +24,8 @@ vector<string> HandshakeMessage::controlsInOrder(const std::string &objectname) 
 vector<ValueType> HandshakeMessage::controlSensors(const std::string &objectname) const
 {
   vector<ValueType> sensors;
-  for (auto &pair : this->pm->objects().at(objectname).sensors()) {
-    for (auto &sensor : pair.second.types())
-      sensors.push_back(static_cast<ValueType>(sensor));
-    // TODO: Should enforce all these are the same? Or only send repeated, not map
-    break;
-  }
+  for (auto &sensor : this->pm->objects().at(objectname).controlsensors())
+    sensors.push_back(static_cast<ValueType>(sensor));
   return sensors;
 }
 

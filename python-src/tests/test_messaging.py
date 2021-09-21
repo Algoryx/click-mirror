@@ -59,12 +59,12 @@ def test_that_Handshake_props_are_set():
     handshake = handshake_message()
 
     message = MessageSerializer.from_bytes(handshake.SerializeToString())
-    assert len(handshake.SerializeToString()) == 83
+    assert len(handshake.SerializeToString()) ==54
 
     assert message.controlType == ValueType.Force
     assert message.objects["robot"].controlsInOrder[1] == "joint2"
-    assert message.objects["robot"].sensors["joint2"].types[0] is ValueType.Angle
-    assert message.objects["robot"].sensors["joint2"].types[2] is ValueType.Torque
+    assert message.objects["robot"].controlSensors[0] is ValueType.Angle
+    assert message.objects["robot"].controlSensors[2] is ValueType.Torque
     assert str(message) == """messageType: HandshakeMessageType
 version: CURRENT_VERSION
 controlType: Force
@@ -73,25 +73,12 @@ objects {
   value {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
+    controlSensors: Angle
+    controlSensors: AngleVelocity
+    controlSensors: Torque
     controlEvents {
       key: "gripper"
       value: Activated
-    }
-    sensors {
-      key: "joint1"
-      value {
-        types: Angle
-        types: AngleVelocity
-        types: Torque
-      }
-    }
-    sensors {
-      key: "joint2"
-      value {
-        types: Angle
-        types: AngleVelocity
-        types: Torque
-      }
     }
     objectSensors: Position
   }
@@ -106,8 +93,7 @@ def handshake_message():
 
     object.controlsInOrder.extend(["joint1", "joint2"])
     object.controlEvents["gripper"] = ValueType.Activated
-    object.sensors["joint1"].types.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
-    object.sensors["joint2"].types.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.controlSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
     object.objectSensors.append(ValueType.Position)
     return handshake
 
@@ -141,7 +127,7 @@ objects {
 """
 
 
-#@pytest.mark.skip
+@pytest.mark.skip
 def test_write_sensor_message_to_file(tmp_path: Path):
     filename = tmp_path / "sensormessage.bin"
     filename.write_bytes(sensor_message().SerializeToString())

@@ -40,19 +40,18 @@ def test_create_handshake_from_robot():
         object = handshake.objects[robot.name]
         object.controlsInOrder.extend(robot.jointnames)
         jointsensors = list()
-        if len(robot.torque_sensors) > 0:
-            jointsensors.append(ValueType.Force)
         if len(robot.angle_sensors) > 0:
             jointsensors.append(ValueType.Angle)
         if len(robot.velocity_sensors) > 0:
             jointsensors.append(ValueType.AngleVelocity)
+        if len(robot.torque_sensors) > 0:
+            jointsensors.append(ValueType.Force)
+        object.controlSensors.extend(jointsensors)
         object.controlEvents[robot.grippername] = ValueType.Activated
 
-        for joint in robot.jointnames:
-            object.sensors[joint].types.extend(jointsensors)
         if robot.suction_cup_body is not None:
             object.objectSensors.append(ValueType.Position)
-    assert len(handshake.SerializeToString()) == 211
+    assert len(handshake.SerializeToString()) == 95
     assert str(handshake) == handshake_facit
 
 
@@ -116,7 +115,7 @@ def test_create_SensorMessage_from_robots():
     rpy = box['rpy']
     sensor.rpy.arr.extend(rpy)
 
-    # TODO: 369 byte per mess is a bit much? 369x2000 = 748k/s
+    # NOTE: 229 byte per mess: 229x2000 = 458k/s
     print(sensor_m.SerializeToString())
     assert len(sensor_m.SerializeToString()) == 229
     assert str(sensor_m) == sensor_facit
@@ -135,65 +134,12 @@ objects {
     controlsInOrder: "joint5"
     controlsInOrder: "joint6"
     controlsInOrder: "joint7"
+    controlSensors: Angle
+    controlSensors: AngleVelocity
+    controlSensors: Force
     controlEvents {
       key: "gripper"
       value: Activated
-    }
-    sensors {
-      key: "joint1"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
-    }
-    sensors {
-      key: "joint2"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
-    }
-    sensors {
-      key: "joint3"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
-    }
-    sensors {
-      key: "joint4"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
-    }
-    sensors {
-      key: "joint5"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
-    }
-    sensors {
-      key: "joint6"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
-    }
-    sensors {
-      key: "joint7"
-      value {
-        types: Force
-        types: Angle
-        types: AngleVelocity
-      }
     }
     objectSensors: Position
   }

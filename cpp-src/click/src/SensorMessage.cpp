@@ -37,7 +37,7 @@ vector<double> SensorMessage::torques(const string &objectname) const {
 }
 
 vector<double> SensorMessage::objectRPY(const string &objectname) const {
-  for (auto sensor : this->sensorMess->objects().at(objectname).objectsensors())
+  for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_rpy())
     {
       auto vec = sensor.rpy();
@@ -48,7 +48,7 @@ vector<double> SensorMessage::objectRPY(const string &objectname) const {
 
 // TODO: Add hasObjectPosition or return bool, take vector
 vector<double> SensorMessage::objectPosition(const string &objectname) const {
-  for (auto sensor : this->sensorMess->objects().at(objectname).objectsensors())
+  for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position()) {
       auto vec3 = sensor.position();
       return vector<double>{vec3.x(), vec3.y(), vec3.z()};
