@@ -167,9 +167,13 @@ message SensorMessage {
   }
   
   message Object {
-    // TODO: For effectiveness and c++ convenience, use same scheme as in ControlMessage, ie one vector per sensor type
-    map<string, Sensors> sensors = 1;
-    repeated Sensor objectSensors = 2;
+    // Any of below are only present when handshake indicated it
+    repeated double angleSensors = 1;
+    repeated double angleVelocitySensors = 2;
+    repeated double torqueSensors = 3;
+    repeated Sensor objectSensors = 4;
+    // A possible generic sensor map, but difficult to use is
+    // map<string, Sensors> sensors = 1;
   }
 
   map<string, Object> objects = 3;

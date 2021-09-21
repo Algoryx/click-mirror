@@ -20,29 +20,20 @@ string SensorMessage::debugString() const
 
 // TODO: Fill provided vector instead of returning?
 vector<double> SensorMessage::angles(const string &objectname) const {
-  int len = this->sensorMess->objects().at(objectname).sensors().size();
-  vector<double> res;
-  // TODO: XXX Hard time parsing stdalone if nameorder not passed here, prefer 0-7!
-  for(int i=0; i<len; i++)
-    res.push_back(this->sensorMess->objects().at(objectname).sensors().at("joint1").sensor().at(0).angle());
-  return res;
+
+  auto vec = this->sensorMess->objects().at(objectname).anglesensors();
+  return vector<double>(vec.begin(), vec.end());
 }
 
-// TODO: How reduce duplication? (Note, we might change this protocol - fix later)
-vector<double> SensorMessage::angleVelocities(const string &objectname) const {
-  int len = this->sensorMess->objects().at(objectname).sensors().size();
-  vector<double> res;
-  for(int i=0; i<len; i++)
-    res.push_back(this->sensorMess->objects().at(objectname).sensors().at("joint1").sensor().at(1).anglevelocity());
-  return res;
+vector<double> SensorMessage::angleVelocities(const string &objectname) const
+{
+  auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
+  return vector<double>(vec.begin(), vec.end());
 }
 
 vector<double> SensorMessage::torques(const string &objectname) const {
-  int len = this->sensorMess->objects().at(objectname).sensors().size();
-  vector<double> res;
-  for(int i=0; i<len; i++)
-    res.push_back(this->sensorMess->objects().at(objectname).sensors().at("joint1").sensor().at(2).torque());
-  return res;
+  auto vec = this->sensorMess->objects().at(objectname).torquesensors();
+  return vector<double>(vec.begin(), vec.end());
 }
 
 vector<double> SensorMessage::objectRPY(const string &objectname) const {
@@ -64,11 +55,6 @@ vector<double> SensorMessage::objectPosition(const string &objectname) const {
     }
   throw std::runtime_error("Position not found in " + this->debugString());
 }
-
-// TODO: Implement sensorevent!
-// bool SensorMessage::sensorEvent(const string &objectname, string sensorname) const {
-//   return this->sensor_m->objects().at(objectname).sensorevents().at(sensorname);
-// }
 
 MessageType SensorMessage::messageType() const {
   return static_cast<MessageType>(sensorMess->messagetype());

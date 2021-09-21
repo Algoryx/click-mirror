@@ -141,7 +141,7 @@ objects {
 """
 
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_write_sensor_message_to_file(tmp_path: Path):
     filename = tmp_path / "sensormessage.bin"
     filename.write_bytes(sensor_message().SerializeToString())
@@ -161,10 +161,19 @@ def sensor_message():
     sensor_m = MessageFactory.create_sensormessage()
     robot = sensor_m.objects["robot1"]
 
-    sensors = robot.sensors['joint1']
-    sensors.sensor.add().angle = 1.0
-    sensors.sensor.add().angleVelocity = 2.0
-    sensors.sensor.add().torque = 3.0
+    robot.angleSensors.extend([1.0, 1.1])
+    robot.angleVelocitySensors.extend([2.0, 2.1])
+    robot.torqueSensors.extend([3.0, 3.1])
+
+    # sensors = robot.sensors['joint1']
+    # sensors.sensor.add().angle = 1.0
+    # sensors.sensor.add().angleVelocity = 2.0
+    # sensors.sensor.add().torque = 3.0
+
+    # sensors = robot.sensors['joint2']
+    # sensors.sensor.add().angle = 1.1
+    # sensors.sensor.add().angleVelocity = 2.1
+    # sensors.sensor.add().torque = 3.1
 
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()
@@ -180,10 +189,10 @@ def test_that_SensorMessage_serializes():
     sensor_m = sensor_message()
 
     message = MessageSerializer.from_bytes(sensor_m.SerializeToString())
-    assert len(sensor_m.SerializeToString()) == 129
+    assert len(sensor_m.SerializeToString()) == 138
 
-    assert message.objects['robot1'].sensors['joint1'].sensor[1].HasField("angleVelocity")
-    assert message.objects['robot1'].sensors['joint1'].sensor[2].WhichOneof("value") == "torque"
+    assert message.objects['robot1'].angleSensors[0] == 1.0
+    assert message.objects['robot1'].torqueSensors[1] == 3.1
     print(str(message))
     assert str(message) == """messageType: SensorMessageType
 objects {
@@ -208,20 +217,12 @@ objects {
 objects {
   key: "robot1"
   value {
-    sensors {
-      key: "joint1"
-      value {
-        sensor {
-          angle: 1.0
-        }
-        sensor {
-          angleVelocity: 2.0
-        }
-        sensor {
-          torque: 3.0
-        }
-      }
-    }
+    angleSensors: 1.0
+    angleSensors: 1.1
+    angleVelocitySensors: 2.0
+    angleVelocitySensors: 2.1
+    torqueSensors: 3.0
+    torqueSensors: 3.1
   }
 }
 """

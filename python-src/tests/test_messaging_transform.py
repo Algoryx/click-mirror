@@ -96,12 +96,10 @@ def test_update_robots_from_controlmessage():
 def test_create_SensorMessage_from_robots():
     sensor_m = MessageFactory.create_sensormessage()
     for robot in robots:
-        sensor_m.objects[robot.name]
-        for i, name in enumerate(robot.jointnames):
-            sensors = sensor_m.objects[robot.name].sensors[name]
-            sensors.sensor.add().angle = robot.angle_sensors[i]
-            sensors.sensor.add().angleVelocity = robot.velocity_sensors[i]
-            sensors.sensor.add().torque = robot.torque_sensors[i]
+        sensors = sensor_m.objects[robot.name]
+        sensors.angleSensors.extend(robot.angle_sensors)
+        sensors.angleVelocitySensors.extend(robot.velocity_sensors)
+        sensors.torqueSensors.extend(robot.torque_sensors)
 
     # TODO: Where get the box?
     box = {
@@ -120,7 +118,7 @@ def test_create_SensorMessage_from_robots():
 
     # TODO: 369 byte per mess is a bit much? 369x2000 = 748k/s
     print(sensor_m.SerializeToString())
-    assert len(sensor_m.SerializeToString()) == 370
+    assert len(sensor_m.SerializeToString()) == 229
     assert str(sensor_m) == sensor_facit
 
 
@@ -237,104 +235,27 @@ objects {
 objects {
   key: "robot1"
   value {
-    sensors {
-      key: "joint1"
-      value {
-        sensor {
-          angle: 0.0
-        }
-        sensor {
-          angleVelocity: 0.0
-        }
-        sensor {
-          torque: 0.0
-        }
-      }
-    }
-    sensors {
-      key: "joint2"
-      value {
-        sensor {
-          angle: 1.0
-        }
-        sensor {
-          angleVelocity: 1.0
-        }
-        sensor {
-          torque: 1.0
-        }
-      }
-    }
-    sensors {
-      key: "joint3"
-      value {
-        sensor {
-          angle: 2.0
-        }
-        sensor {
-          angleVelocity: 2.0
-        }
-        sensor {
-          torque: 2.0
-        }
-      }
-    }
-    sensors {
-      key: "joint4"
-      value {
-        sensor {
-          angle: 3.0
-        }
-        sensor {
-          angleVelocity: 3.0
-        }
-        sensor {
-          torque: 3.0
-        }
-      }
-    }
-    sensors {
-      key: "joint5"
-      value {
-        sensor {
-          angle: 4.0
-        }
-        sensor {
-          angleVelocity: 4.0
-        }
-        sensor {
-          torque: 4.0
-        }
-      }
-    }
-    sensors {
-      key: "joint6"
-      value {
-        sensor {
-          angle: 5.0
-        }
-        sensor {
-          angleVelocity: 5.0
-        }
-        sensor {
-          torque: 5.0
-        }
-      }
-    }
-    sensors {
-      key: "joint7"
-      value {
-        sensor {
-          angle: 6.0
-        }
-        sensor {
-          angleVelocity: 6.0
-        }
-        sensor {
-          torque: 6.0
-        }
-      }
-    }
+    angleSensors: 0.0
+    angleSensors: 1.0
+    angleSensors: 2.0
+    angleSensors: 3.0
+    angleSensors: 4.0
+    angleSensors: 5.0
+    angleSensors: 6.0
+    angleVelocitySensors: 0.0
+    angleVelocitySensors: 1.0
+    angleVelocitySensors: 2.0
+    angleVelocitySensors: 3.0
+    angleVelocitySensors: 4.0
+    angleVelocitySensors: 5.0
+    angleVelocitySensors: 6.0
+    torqueSensors: 0.0
+    torqueSensors: 1.0
+    torqueSensors: 2.0
+    torqueSensors: 3.0
+    torqueSensors: 4.0
+    torqueSensors: 5.0
+    torqueSensors: 6.0
   }
 }
 """

@@ -32,15 +32,15 @@ SCENARIO("sensormessage serialization from file", "[clicklib]" ) {
             }
 
             THEN("robot1 should have angles") {
-                REQUIRE(sensorMessage->angles("robot1") == std::vector<double>{1.0});
+                REQUIRE(sensorMessage->angles("robot1") == std::vector<double>{1.0, 1.1});
             }
 
             AND_THEN("robot1 should have angleVelocities") {
-                REQUIRE(sensorMessage->angleVelocities("robot1") == std::vector<double>{2.0});
+                REQUIRE(sensorMessage->angleVelocities("robot1") == std::vector<double>{2.0, 2.1});
             }
 
             AND_THEN("robot1 should have torques") {
-                REQUIRE(sensorMessage->torques("robot1") == std::vector<double>{3.0});
+                REQUIRE(sensorMessage->torques("robot1") == std::vector<double>{3.0, 3.1});
             }
 
             THEN("box should have roll pitch yaw") {
