@@ -1,5 +1,6 @@
 #include <click/MessageSerializer.h>
 #include <click/ControlMessage.h>
+#include <click/HandshakeInitMessage.h>
 #include <click/SensorMessage.h>
 
 using namespace algoryx::click;
@@ -26,10 +27,17 @@ unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
   switch(pm.messagetype()) {
     case protobuf::ControlMessageType:
     {
-      unique_ptr<protobuf::ControlMessage> cm = make_unique<protobuf::ControlMessage>();
-      cm->ParseFromString(bytes);
+      unique_ptr<protobuf::ControlMessage> pm = make_unique<protobuf::ControlMessage>();
+      pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<ControlMessage>(new ControlMessage(move(cm)));
+      return unique_ptr<ControlMessage>(new ControlMessage(move(pm)));
+    }
+    case protobuf::HandshakeInitMessageType:
+    {
+      unique_ptr<protobuf::HandshakeInitMessage> pm = make_unique<protobuf::HandshakeInitMessage>();
+      pm->ParseFromString(bytes);
+      // Need to explicitly call private constructor
+      return unique_ptr<HandshakeInitMessage>(new HandshakeInitMessage(move(pm)));
     }
     default:
       

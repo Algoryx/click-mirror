@@ -20,7 +20,7 @@ namespace algoryx { namespace click {
 
     CLICK_EXPORT void connect(const std::string& endpoint);
     CLICK_EXPORT bool send(const std::string& bytes) const;
-    CLICK_EXPORT bool receive(std::string& responseBytes);
+    CLICK_EXPORT bool receive(std::string& responseBytes) const;
     CLICK_EXPORT bool send(const Message& message) const;
     CLICK_EXPORT std::unique_ptr<Message> blockingReceive();
 

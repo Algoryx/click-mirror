@@ -12,6 +12,8 @@ set(LIBSOURCES
     src/Message.cpp
     src/ControlMessage.cpp
     src/ControlMessageBuilder.cpp
+    src/HandshakeInitMessage.cpp
+    src/HandshakeInitMessageBuilder.cpp
     src/SensorMessage.cpp
 )
 

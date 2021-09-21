@@ -21,22 +21,20 @@ SCENARIO("handshakeInit serialization", "[clicklib]" ) {
     GIVEN("A handshake init message") {
 
         WHEN("it has been constructed") {
-            unique_ptr<HandshakeInitMessage> HandshakeInitMessage = HandshakeInitMessageBuilder::builder().build();
+            unique_ptr<HandshakeInitMessage> HandshakeInitMessage = HandshakeInitMessageBuilder::builder()->build();
 
-            THEN("it should contain version and type") {
+            THEN("it should contain type") {
                 REQUIRE(HandshakeInitMessage->messageType() == HandshakeInitMessageType);
-                REQUIRE(HandshakeInitMessage->version() == 
-
-                string control_facit =
-                    "messageType: HandshakeInitMessageType\n"
-                    "}\n";
-
-                REQUIRE_THAT(HandshakeInitMessage->debugString(), Equals(control_facit));
             }
 
-            THEN("it should serialize to string") {
+            THEN("it should show empty debug string since it is all defaults") {
+
+                REQUIRE_THAT(HandshakeInitMessage->debugString(), Equals(""));
+            }
+
+            THEN("it should serialize to zero bytes, all defaults") {
                 MessageSerializer serializer;
-                REQUIRE(serializer.serializeToString(*HandshakeInitMessage).length() > 10);
+                REQUIRE(serializer.serializeToString(*HandshakeInitMessage).length() == 0);
             }
             
             THEN("it should be deserialized from string") {

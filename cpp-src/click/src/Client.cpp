@@ -30,7 +30,7 @@ bool Client::send(const std::string& bytes) const {
   return m_socket->send(bytes);
 }
 
-bool Client::receive(std::string& responseBytes) {
+bool Client::receive(std::string& responseBytes) const{
   return m_socket->receive(responseBytes);
 }
 
