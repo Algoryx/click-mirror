@@ -9,6 +9,7 @@ using namespace std;
 using namespace algoryx::click;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
+using Catch::Matchers::StartsWith;
 
 
 inline vector<double> double_vector_from(initializer_list<double> doubles) {
@@ -27,14 +28,14 @@ SCENARIO("handshakeInit serialization", "[clicklib]" ) {
                 REQUIRE(HandshakeInitMessage->messageType() == HandshakeInitMessageType);
             }
 
-            THEN("it should show empty debug string since it is all defaults") {
+            THEN("it should have debugstring without type since it is the default") {
 
-                REQUIRE_THAT(HandshakeInitMessage->debugString(), Equals(""));
+                REQUIRE_THAT(HandshakeInitMessage->debugString(), StartsWith("version: CURRENT_VERSION"));
             }
 
             THEN("it should serialize to zero bytes, all defaults") {
                 MessageSerializer serializer;
-                REQUIRE(serializer.serializeToString(*HandshakeInitMessage).length() == 0);
+                REQUIRE(serializer.serializeToString(*HandshakeInitMessage).length() > 1);
             }
             
             THEN("it should be deserialized from string") {

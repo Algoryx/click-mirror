@@ -15,6 +15,7 @@ SCENARIO("sensormessage serialization from file", "[clicklib]" ) {
 
     GIVEN("A serialized sensormessage") {
 
+        // This file is created by test_write_sensor_message_to_file in test_messaging.py
         string sensorbinary = "../../../testdata/sensormessage.bin";
         fstream input(sensorbinary, ios::in | ios::binary);
         REQUIRE(input);
@@ -25,9 +26,9 @@ SCENARIO("sensormessage serialization from file", "[clicklib]" ) {
             REQUIRE(message->messageType() == SensorMessageType);            
             unique_ptr<SensorMessage> sensorMessage = toSensorMessage(move(message));
 
-            THEN("it should contain robot1 sensor values") {
-                REQUIRE_THAT(sensorMessage->debugString(), Equals("SensorMessageType"));
-            }
+            // THEN("it should contain robot1 sensor values") {
+            //     REQUIRE_THAT(sensorMessage->debugString(), Equals("SensorMessageType"));
+            // }
 
             THEN("it should contain robot1 sensor values") {
 
@@ -47,6 +48,14 @@ SCENARIO("sensormessage serialization from file", "[clicklib]" ) {
                 vector<double> expected = {4.0, 5.0, 6.0};
                 REQUIRE(rpy == expected);
             }
+
+            THEN("it should roundtrip serialize to/from bytes") {
+                MessageSerializer serializer;
+                string bytes = serializer.serializeToString(*sensorMessage);
+                unique_ptr<Message> message = serializer.fromBytes(bytes);
+                REQUIRE_THAT(message->debugString(), Equals(sensorMessage->debugString()));
+            }
+
         }
     }
 }

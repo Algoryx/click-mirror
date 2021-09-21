@@ -56,15 +56,7 @@ def test_that_Resetmessage_serializes():
 
 
 def test_that_Handshake_props_are_set():
-    handshake = MessageFactory.create_handshake()
-    handshake.controlType = ValueType.Force
-    object = handshake.objects["robot"]
-
-    object.controlsInOrder.extend(["joint1", "joint2"])
-    object.controlEvents["gripper"] = ValueType.Activated
-    object.sensors["joint1"].types.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
-    object.sensors["joint2"].types.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
-    object.objectSensors.append(ValueType.Position)
+    handshake = handshake_message()
 
     message = MessageSerializer.from_bytes(handshake.SerializeToString())
     assert len(handshake.SerializeToString()) == 83
@@ -107,6 +99,19 @@ objects {
 """
 
 
+def handshake_message():
+    handshake = MessageFactory.create_handshake()
+    handshake.controlType = ValueType.Force
+    object = handshake.objects["robot"]
+
+    object.controlsInOrder.extend(["joint1", "joint2"])
+    object.controlEvents["gripper"] = ValueType.Activated
+    object.sensors["joint1"].types.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.sensors["joint2"].types.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.objectSensors.append(ValueType.Position)
+    return handshake
+
+
 def test_that_ControlMessage_serializes():
     control_m = MessageFactory.create_controlmessage()
     robot1 = control_m.objects["robot1"]
@@ -136,10 +141,18 @@ objects {
 """
 
 
-#@pytest.mark.skip
+@pytest.mark.skip
 def test_write_sensor_message_to_file(tmp_path: Path):
     filename = tmp_path / "sensormessage.bin"
     filename.write_bytes(sensor_message().SerializeToString())
+    print(filename)
+    assert False
+
+
+@pytest.mark.skip
+def test_write_handshake_message_to_file(tmp_path: Path):
+    filename = tmp_path / "handshakemessage.bin"
+    filename.write_bytes(handshake_message().SerializeToString())
     print(filename)
     assert False
 

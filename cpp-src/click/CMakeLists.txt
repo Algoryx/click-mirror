@@ -5,6 +5,9 @@ set(LIBSOURCES
     include/click/ControlMessage.h
     include/click/ControlMessageBuilder.h
     include/click/SensorMessage.h
+    include/click/HandshakeMessage.h
+    include/click/HandshakeInitMessage.h
+    include/click/HandshakeInitMessageBuilder.h
     include/click/Client.h
     src/MessageFactory.cpp
     src/MessageSerializer.cpp
@@ -12,6 +15,7 @@ set(LIBSOURCES
     src/Message.cpp
     src/ControlMessage.cpp
     src/ControlMessageBuilder.cpp
+    src/HandshakeMessage.cpp
     src/HandshakeInitMessage.cpp
     src/HandshakeInitMessageBuilder.cpp
     src/SensorMessage.cpp

@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
     unique_ptr<HandshakeInitMessage> hmessage = HandshakeInitMessageBuilder::builder()->build();
     cout << "Sending " << hmessage->debugString() << endl;
     client.send(*hmessage);
+    unique_ptr<Message> response = client.blockingReceive();
+    cout << "Received " << response->debugString() << endl;
 
     // Create-send-receive
     unique_ptr<ControlMessage> control_m = ControlMessageBuilder::builder()
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 
     cout << "Sending " << control_m->debugString() << endl;
     client.send(*control_m);
-    unique_ptr<Message> response = client.blockingReceive();
+    response = client.blockingReceive();
     cout << "Received " << response->debugString() << endl;
 
     // Optional according to https://developers.google.com/protocol-buffers/docs/cpptutorial
