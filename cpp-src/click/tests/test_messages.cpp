@@ -17,19 +17,19 @@ inline vector<double> double_vector_from(initializer_list<double> doubles) {
 
 
 class algoryx::click::ControlMessageBuilder {
-    protobuf::ControlMessage * message;
+    unique_ptr<protobuf::ControlMessage> message;
     protobuf::ControlMessage_Object * currObject;
 
 private:
-    ControlMessageBuilder(protobuf::ControlMessage * control_m) {
-        this->message = control_m;
+    ControlMessageBuilder(unique_ptr<protobuf::ControlMessage> control_m) {
+        this->message = move(control_m);
     }
 
 public:
     ControlMessageBuilder * object(string name) {
         google::protobuf::Map<string, protobuf::ControlMessage_Object> * map = this->message->mutable_objects();
-        // TODO: Why is this not a pointer?
-        (*map)[name] = protobuf::ControlMessage_Object();
+        // Allocate new object
+        map->operator[](name);
         currObject = &(*map)[name];
         return this;
     }
@@ -49,14 +49,14 @@ public:
         (*currObject->mutable_controlevents())["gripper"] = true;
         return this;
     }
-    ControlMessage * build() {
-        return new ControlMessage(message);
+    unique_ptr<ControlMessage> build() {
+        return unique_ptr<ControlMessage>(new ControlMessage(move(message)));
     }
 
-    static ControlMessageBuilder * builder() {
-        protobuf::ControlMessage * control_m = new protobuf::ControlMessage();
+    static unique_ptr<ControlMessageBuilder> builder() {
+        unique_ptr<protobuf::ControlMessage> control_m = make_unique<protobuf::ControlMessage>();
         control_m->set_messagetype(protobuf::ControlMessageType);
-        return new ControlMessageBuilder(control_m);
+        return unique_ptr<ControlMessageBuilder>(new ControlMessageBuilder(move(control_m)));
     }
 };
 
@@ -68,7 +68,7 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
             vector<double> angles = double_vector_from({ 1, 2, 3, 4, 5 });
             vector<double> angleVelocities = double_vector_from({ 2, 3, 4, 5, 6 });
             vector<double> torques = double_vector_from({ 3, 4, 5, 6, 7 });
-            ControlMessage * control_m = ControlMessageBuilder::builder()
+            unique_ptr<ControlMessage> control_m = ControlMessageBuilder::builder()
             ->object("robot1")
                     ->withAngles(angles)
                     ->withControlEvent("gripper", true)
@@ -77,7 +77,7 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
                 ->object("robot3")
                     ->withTorques(torques)
             ->build();
-            
+
             THEN("it should contain the control values") {
                 REQUIRE(control_m->messageType() == ControlMessageType);
                 REQUIRE(control_m->controlEvent("robot1", "gripper"));
@@ -130,11 +130,12 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
                 MessageSerializer serializer;
                 REQUIRE(serializer.serializeToString(*control_m).length() > 10);
             }
+            
             THEN("it should be deserialized from string") {
                 MessageSerializer serializer;
                 string bytes = serializer.serializeToString(*control_m);
                 
-                Message * message = serializer.fromBytes(bytes);
+                unique_ptr<Message> message = serializer.fromBytes(bytes);
                 REQUIRE(message->messageType() == ControlMessageType);
                 REQUIRE_THAT(message->debugString(), Equals(control_m->debugString()));
             }

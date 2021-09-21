@@ -2,9 +2,9 @@
 
 namespace algoryx { namespace click {
 
-ControlMessage::ControlMessage(algoryx::click::protobuf::ControlMessage * control_m)
+ControlMessage::ControlMessage(std::unique_ptr<protobuf::ControlMessage> control_m)
 {
-  this->control_m = control_m;
+  this->control_m = std::move(control_m);
 };
 
 std::string ControlMessage::debugString() const
@@ -40,8 +40,5 @@ std::string ControlMessage::serializeToBytes() const {
   return this->control_m->SerializeAsString();
 }
 
-ControlMessage::~ControlMessage() {
-  // TODO: How test that control_m is deallocated?
-  delete control_m;
-}
+ControlMessage::~ControlMessage() = default;
 }}

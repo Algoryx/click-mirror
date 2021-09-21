@@ -9,8 +9,6 @@ namespace algoryx { namespace click {
   class SensorMessage : public Message
   {
   public:
-    CLICK_EXPORT SensorMessage();
-
     CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
@@ -20,10 +18,10 @@ namespace algoryx { namespace click {
     CLICK_EXPORT ~SensorMessage();
 
   private:
-    CLICK_EXPORT SensorMessage(protobuf::SensorMessage * sensor_m);
-    CLICK_EXPORT virtual std::string serializeToBytes() const;
+    SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMessage);
+    virtual std::string serializeToBytes() const;
 
-    protobuf::SensorMessage * sensor_m;
+    std::unique_ptr<protobuf::SensorMessage> sensor_m;
 
     friend class MessageSerializer;
   };

@@ -8,6 +8,7 @@ set(LIBSOURCES
     src/MessageFactory.cpp
     src/MessageSerializer.cpp
     src/Client.cpp
+    src/Message.cpp
     src/ControlMessage.cpp
     src/SensorMessage.cpp
 )

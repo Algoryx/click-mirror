@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include<click/DllExport.h>
 
 namespace algoryx { namespace click {
 
@@ -18,9 +19,9 @@ namespace algoryx { namespace click {
   class Message
   {
   public:
-    // TODO: Do I need CLICK_EXPORT here?
-    virtual std::string debugString() const = 0;
-    virtual MessageType messageType() const = 0;
+    CLICK_EXPORT virtual std::string debugString() const = 0;
+    CLICK_EXPORT virtual MessageType messageType() const = 0;
+    CLICK_EXPORT virtual ~Message() = 0;
 
   private:
     virtual std::string serializeToBytes() const = 0;

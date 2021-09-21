@@ -3,55 +3,34 @@
 #include <click/SensorMessage.h>
 
 using namespace algoryx::click;
+using namespace std;
 
-
-std::string MessageSerializer::serializeToString(const Message& message)
+string MessageSerializer::serializeToString(const Message& message)
 {
   return message.serializeToBytes();
 }
 
-Message * MessageSerializer::fromIStream(std::istream *input) {
-  // protobuf::Message message;
-  // message.ParseFromIstream(input);
-  // switch(message.messagetype()) {
-  //   case protobuf::ControlMessageType:
-  //   {
-    //   protobuf::ControlMessage * cm = new protobuf::ControlMessage();
-    //   cm->ParseFromIstream(input);
-    //   return new ControlMessage(cm);
-    // }
-    // case protobuf::SensorMessageType:
-    // {
-      protobuf::SensorMessage * cm = new protobuf::SensorMessage();
-      cm->ParseFromIstream(input);
-      return new SensorMessage(cm);
-  //   }
-  //   default:
-  //   {
-  //     Message * bad;
-  //     bad->debugString();
-  //     return bad;
-  //   }
-  // }
-
+unique_ptr<Message> MessageSerializer::sensorMessageFromIStream(istream *input) {
+  // Is it possible to read from stream twice to facilitate switch?
+  unique_ptr<protobuf::SensorMessage> pm = make_unique<protobuf::SensorMessage>();
+  pm->ParseFromIstream(input);
+  // Need to explicitly call private constructor
+  return unique_ptr<SensorMessage>(new SensorMessage(move(pm)));
 }
 
-Message * MessageSerializer::fromBytes(const std::string &bytes)
+unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
 {
-  protobuf::Message message;
-  message.ParseFromString(bytes);
-  switch(message.messagetype()) {
+  protobuf::Message pm;
+  pm.ParseFromString(bytes);
+  switch(pm.messagetype()) {
     case protobuf::ControlMessageType:
     {
-      protobuf::ControlMessage * cm = new protobuf::ControlMessage();
+      unique_ptr<protobuf::ControlMessage> cm = make_unique<protobuf::ControlMessage>();
       cm->ParseFromString(bytes);
-      return new ControlMessage(cm);
+      // Need to explicitly call private constructor
+      return unique_ptr<ControlMessage>(new ControlMessage(move(cm)));
     }
     default:
-    {
-      Message * bad;
-      bad->debugString();
-      return bad;
-    }
+      throw runtime_error("Not implemented");
   }
 }

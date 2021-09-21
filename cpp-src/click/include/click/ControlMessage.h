@@ -26,12 +26,13 @@ namespace algoryx { namespace click {
     CLICK_EXPORT ~ControlMessage();
 
   private:
-    CLICK_EXPORT ControlMessage(protobuf::ControlMessage * control_m);
+    CLICK_EXPORT ControlMessage(std::unique_ptr<protobuf::ControlMessage> control_m);
     CLICK_EXPORT virtual std::string serializeToBytes() const;
 
-    protobuf::ControlMessage * control_m;
+    std::unique_ptr<protobuf::ControlMessage> control_m;
 
     friend class ControlMessageBuilder;
     friend class MessageSerializer;
+//    friend std::unique_ptr<ControlMessage> std::make_unique<ControlMessage>(protobuf::ControlMessage *);
   };
 }}
