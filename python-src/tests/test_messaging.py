@@ -151,16 +151,6 @@ def sensor_message():
     robot.angleVelocitySensors.extend([2.0, 2.1])
     robot.torqueSensors.extend([3.0, 3.1])
 
-    # sensors = robot.sensors['joint1']
-    # sensors.sensor.add().angle = 1.0
-    # sensors.sensor.add().angleVelocity = 2.0
-    # sensors.sensor.add().torque = 3.0
-
-    # sensors = robot.sensors['joint2']
-    # sensors.sensor.add().angle = 1.1
-    # sensors.sensor.add().angleVelocity = 2.1
-    # sensors.sensor.add().torque = 3.1
-
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()
     sensor.position.X = 1.0
