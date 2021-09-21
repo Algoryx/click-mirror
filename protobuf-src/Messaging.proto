@@ -89,9 +89,10 @@ message HandshakeMessage {
 /*
 - ControlMessage example:
   - panda_2
-    - Joints
-      - Type: angles/velocities/torques
-      - Values: double[7]
+    - Joints - in one of:
+      - angles
+      - angleVelocities
+      - torques
     - suction_cup_link
       - Values: boolean[1]
   - panda_tool

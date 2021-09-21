@@ -1,5 +1,25 @@
 # Click
 
+The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
+The name comes from the sound two Bricks makes when connected.
+
+There are three main considerations
+
+1. How the controller can send controls and receive sensor values in a similar fashion regardless of environment, ie real or sim.
+2. How Brick adds sensors or topology on top of urdf, and how this is communicated to the controller.
+3. How to communicate controls and sensors in an effective way.
+
+The current solution is to introduce a Handshake, which enables the simulation to tell the controller what to expect in terms of how to control and what sensor data is being sent.
+
+A typical flow is
+
+1. Client controller connects and sends HandshakeInit
+2. Server responds with Handshake
+3. Client receives Handshake and validates the setup.
+4. Client sends Controls
+5. Server responds with Sensors
+6. The loop 4-5 is repeated.
+
 ## Build and test c++
 
 ```bash
