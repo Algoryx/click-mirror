@@ -32,6 +32,7 @@ unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
       return unique_ptr<ControlMessage>(new ControlMessage(move(cm)));
     }
     default:
-      throw runtime_error("Not implemented");
+      
+      throw runtime_error("Serializing not implemented for: " + pm.DebugString());
   }
 }

@@ -19,12 +19,12 @@ inline vector<double> double_vector_from(initializer_list<double> doubles) {
 SCENARIO("controlmessage serialization", "[clicklib]" ) {
 
     GIVEN("A controlmessage") {
+        vector<double> angles = double_vector_from({ 1, 2, 3, 4, 5 });
+        vector<double> angleVelocities = double_vector_from({ 2, 3, 4, 5, 6 });
+        vector<double> torques = double_vector_from({ 3, 4, 5, 6, 7 });
 
         WHEN("adding three robots with controls") {
-            vector<double> angles = double_vector_from({ 1, 2, 3, 4, 5 });
-            vector<double> angleVelocities = double_vector_from({ 2, 3, 4, 5, 6 });
-            vector<double> torques = double_vector_from({ 3, 4, 5, 6, 7 });
-            unique_ptr<ControlMessage> control_m = ControlMessageBuilder::builder()
+            unique_ptr<ControlMessage> controlMessage = ControlMessageBuilder::builder()
             ->object("robot1")
                     ->withAngles(angles)
                     ->withControlEvent("gripper", true)
@@ -35,11 +35,11 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
             ->build();
 
             THEN("it should contain the control values") {
-                REQUIRE(control_m->messageType() == ControlMessageType);
-                REQUIRE(control_m->controlEvent("robot1", "gripper"));
-                REQUIRE_THAT(control_m->angles("robot1"), Equals(angles));
-                REQUIRE_THAT(control_m->angleVelocities("robot2"), Equals(angleVelocities));
-                REQUIRE_THAT(control_m->torques("robot3"), Equals(torques));
+                REQUIRE(controlMessage->messageType() == ControlMessageType);
+                REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
+                REQUIRE_THAT(controlMessage->angles("robot1"), Equals(angles));
+                REQUIRE_THAT(controlMessage->angleVelocities("robot2"), Equals(angleVelocities));
+                REQUIRE_THAT(controlMessage->torques("robot3"), Equals(torques));
 
 
                 string control_facit =
@@ -79,21 +79,21 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
                     "  }\n"
                     "}\n";
 
-                REQUIRE_THAT(control_m->debugString(), Equals(control_facit));
+                REQUIRE_THAT(controlMessage->debugString(), Equals(control_facit));
             }
 
             THEN("it should serialize to string") {
                 MessageSerializer serializer;
-                REQUIRE(serializer.serializeToString(*control_m).length() > 10);
+                REQUIRE(serializer.serializeToString(*controlMessage).length() > 10);
             }
             
             THEN("it should be deserialized from string") {
                 MessageSerializer serializer;
-                string bytes = serializer.serializeToString(*control_m);
+                string bytes = serializer.serializeToString(*controlMessage);
                 
                 unique_ptr<Message> message = serializer.fromBytes(bytes);
                 REQUIRE(message->messageType() == ControlMessageType);
-                REQUIRE_THAT(message->debugString(), Equals(control_m->debugString()));
+                REQUIRE_THAT(message->debugString(), Equals(controlMessage->debugString()));
             }
         }
     }
