@@ -10,6 +10,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 set(TEST_SOURCES
+    test_srcdir.cpp
     test_control_message.cpp
     test_inithandshake_message.cpp
     test_protobuf_messages.cpp

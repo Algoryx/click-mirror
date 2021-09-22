@@ -10,37 +10,38 @@ using namespace algoryx::click;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 
-
-inline vector<double> double_vector_from(initializer_list<double> doubles) {
+inline vector<double> double_vector_from(initializer_list<double> doubles)
+{
     return vector<double>(doubles);
 }
 
+SCENARIO("controlmessage serialization", "[clicklib]")
+{
+    GIVEN("A controlmessage")
+    {
+        vector<double> angles = double_vector_from({1, 2, 3, 4, 5});
+        vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
+        vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
-SCENARIO("controlmessage serialization", "[clicklib]" ) {
-
-    GIVEN("A controlmessage") {
-        vector<double> angles = double_vector_from({ 1, 2, 3, 4, 5 });
-        vector<double> angleVelocities = double_vector_from({ 2, 3, 4, 5, 6 });
-        vector<double> torques = double_vector_from({ 3, 4, 5, 6, 7 });
-
-        WHEN("adding three robots with controls") {
+        WHEN("adding three robots with controls")
+        {
             unique_ptr<ControlMessage> controlMessage = ControlMessageBuilder::builder()
-            ->object("robot1")
+                ->object("robot1")
                     ->withAngles(angles)
                     ->withControlEvent("gripper", true)
                 ->object("robot2")
                     ->withAngleVelocities(angleVelocities)
                 ->object("robot3")
                     ->withTorques(torques)
-            ->build();
+                ->build();
 
-            THEN("it should contain the control values") {
+            THEN("it should contain the control values")
+            {
                 REQUIRE(controlMessage->messageType() == ControlMessageType);
                 REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
                 REQUIRE_THAT(controlMessage->angles("robot1"), Equals(angles));
                 REQUIRE_THAT(controlMessage->angleVelocities("robot2"), Equals(angleVelocities));
                 REQUIRE_THAT(controlMessage->torques("robot3"), Equals(torques));
-
 
                 string control_facit =
                     "messageType: ControlMessageType\n"
@@ -82,15 +83,17 @@ SCENARIO("controlmessage serialization", "[clicklib]" ) {
                 REQUIRE_THAT(controlMessage->debugString(), Equals(control_facit));
             }
 
-            THEN("it should serialize to string") {
+            THEN("it should serialize to string")
+            {
                 MessageSerializer serializer;
                 REQUIRE(serializer.serializeToString(*controlMessage).length() > 10);
             }
-            
-            THEN("it should be deserialized from string") {
+
+            THEN("it should be deserialized from string")
+            {
                 MessageSerializer serializer;
                 string bytes = serializer.serializeToString(*controlMessage);
-                
+
                 unique_ptr<Message> message = serializer.fromBytes(bytes);
                 REQUIRE(message->messageType() == ControlMessageType);
                 REQUIRE_THAT(message->debugString(), Equals(controlMessage->debugString()));

@@ -1,8 +1,10 @@
-#include<string>
-#include<memory>
+#pragma once
+#include <string>
+#include <memory>
 #include <click/ControlMessage.h>
 
-class algoryx::click::ControlMessageBuilder {
+class algoryx::click::ControlMessageBuilder
+{
 
 public:
     ControlMessageBuilder *object(std::string name);
