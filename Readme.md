@@ -1,7 +1,5 @@
 # Click
 
-The main idea behind click is# Click
-
 The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
 The name comes from the sound two Bricks makes when connected.
 
@@ -13,7 +11,7 @@ There are three main considerations
 
 The current solution is to introduce a Handshake, which enables the simulation to tell the controller what to expect in terms of how to control and what sensor data is being sent.
 
-![Messaging overview diagram](messaging.drawio.svg)
+![Messaging overview diagram](doc/messaging.drawio.svg)
 
 A typical flow is
 
