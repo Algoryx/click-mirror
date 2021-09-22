@@ -1,5 +1,4 @@
 from typing import List
-from Messaging_pb2 import Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
 from Messaging_pb2 import ValueType
 from message_proto_helpers import MessageFactory, MessageSerializer
 
