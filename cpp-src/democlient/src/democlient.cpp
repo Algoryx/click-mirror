@@ -29,6 +29,15 @@ void sendReceiveHandshakeProtobuf(const Client &client)
     cout << "Received " << response.DebugString() << endl;
 }
 
+unique_ptr<Message> sendReceive(Client &client, unique_ptr<Message> message)
+{
+    cout << "Sending " << message->debugString() << endl;
+    client.send(*message);
+    unique_ptr<Message> response = client.blockingReceive();
+    cout << "Received " << response->debugString() << endl;
+    return response;
+}
+
 int main(int argc, char *argv[])
 {
     const string endpoint = "tcp://localhost:5555";
@@ -36,20 +45,16 @@ int main(int argc, char *argv[])
     // Verify protobuf version
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     Client client;
-    cout << "Using Click client to connect to click server…" << endl;
+    unique_ptr<Message> message;
+    unique_ptr<Message> reply;
     client.connect(endpoint);
 
-    // Create-send-receive
-    sendReceiveHandshakeProtobuf(client);
+    // Handshake
+    message = HandshakeInitMessageBuilder::builder()->build();
+    reply = sendReceive(client, move(message));
 
-    unique_ptr<HandshakeInitMessage> hmessage = HandshakeInitMessageBuilder::builder()->build();
-    cout << "Sending " << hmessage->debugString() << endl;
-    client.send(*hmessage);
-    unique_ptr<Message> response = client.blockingReceive();
-    cout << "Received " << response->debugString() << endl;
-
-    // Create-send-receive
-    unique_ptr<ControlMessage> control_m = ControlMessageBuilder::builder()
+    // Controlmessage
+    message = ControlMessageBuilder::builder()
         ->object("robot1")
             ->withAngles(angles)
             ->withControlEvent("gripper", true)
@@ -59,10 +64,7 @@ int main(int argc, char *argv[])
             ->withTorques(torques)
         ->build();
 
-    cout << "Sending " << control_m->debugString() << endl;
-    client.send(*control_m);
-    response = client.blockingReceive();
-    cout << "Received " << response->debugString() << endl;
+    reply = sendReceive(client, move(message));
 
     // Optional according to https://developers.google.com/protocol-buffers/docs/cpptutorial
     google::protobuf::ShutdownProtobufLibrary();
