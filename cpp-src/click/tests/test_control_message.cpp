@@ -25,7 +25,7 @@ SCENARIO("controlmessage serialization", "[clicklib]")
 
         WHEN("adding three robots with controls")
         {
-            unique_ptr<ControlMessage> controlMessage = ControlMessageBuilder::builder()
+            unique_ptr<ControlMessage> controlMessage = ControlMessageBuilderImpl::builder()
                 ->object("robot1")
                     ->withAngles(angles)
                     ->withControlEvent("gripper", true)

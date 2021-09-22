@@ -31,7 +31,7 @@ namespace algoryx { namespace click {
 
     std::unique_ptr<protobuf::ControlMessage> control_m;
 
-    friend class ControlMessageBuilder;
+    friend class ControlMessageBuilderImpl;
     friend class MessageSerializer;
   };
 }}
