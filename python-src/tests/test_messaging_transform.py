@@ -38,6 +38,7 @@ def test_create_handshake_from_robot():
     for robot in robots:
         object = handshake.objects[robot.name]
         object.controlsInOrder.extend(robot.jointnames)
+        object.jointSensorsInOrder.extend(robot.jointnames)
         jointsensors = list()
         if len(robot.angle_sensors) > 0:
             jointsensors.append(ValueType.Angle)
@@ -45,12 +46,12 @@ def test_create_handshake_from_robot():
             jointsensors.append(ValueType.AngleVelocity)
         if len(robot.torque_sensors) > 0:
             jointsensors.append(ValueType.Force)
-        object.controlSensors.extend(jointsensors)
+        object.jointSensors.extend(jointsensors)
         object.controlEvents[robot.grippername] = ValueType.Activated
 
         if robot.suction_cup_body is not None:
             object.objectSensors.append(ValueType.Position)
-    assert len(handshake.SerializeToString()) == 95
+    assert len(handshake.SerializeToString()) == 153
     assert str(handshake) == handshake_facit
 
 
@@ -133,14 +134,21 @@ objects {
     controlsInOrder: "joint5"
     controlsInOrder: "joint6"
     controlsInOrder: "joint7"
-    controlSensors: Angle
-    controlSensors: AngleVelocity
-    controlSensors: Force
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Force
     controlEvents {
       key: "gripper"
       value: Activated
     }
     objectSensors: Position
+    jointSensorsInOrder: "joint1"
+    jointSensorsInOrder: "joint2"
+    jointSensorsInOrder: "joint3"
+    jointSensorsInOrder: "joint4"
+    jointSensorsInOrder: "joint5"
+    jointSensorsInOrder: "joint6"
+    jointSensorsInOrder: "joint7"
   }
 }
 """

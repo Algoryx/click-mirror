@@ -43,7 +43,7 @@ vector<double> SensorMessage::objectRPY(const string &objectname) const {
       auto vec = sensor.rpy();
       return vector<double>(vec.arr().begin(), vec.arr().end());
     }
-  throw std::runtime_error("RPY not found in " + this->debugString());
+  throw runtime_error("RPY not found in " + this->debugString());
 }
 
 // TODO: Add hasObjectPosition or return bool, take vector
@@ -53,7 +53,17 @@ vector<double> SensorMessage::objectPosition(const string &objectname) const {
       auto vec3 = sensor.position();
       return vector<double>{vec3.x(), vec3.y(), vec3.z()};
     }
-  throw std::runtime_error("Position not found in " + this->debugString());
+  throw runtime_error("Position not found in " + this->debugString());
+}
+
+vector<double> SensorMessage::sensor(const string &objectname, const string &sensorname, int idx) const
+{
+  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
+    if (sensor.has_position()) {
+      auto vec3 = sensor.position();
+      return vector<double>{vec3.x(), vec3.y(), vec3.z()};
+    }
+  throw runtime_error("Position not found in " + this->debugString());
 }
 
 MessageType SensorMessage::messageType() const {

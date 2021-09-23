@@ -1,5 +1,6 @@
 #include <fstream>
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/matchers/catch_matchers_all.hpp>
 #include <click/MessageSerializer.h>
 #include <click/SensorMessage.h>
@@ -45,6 +46,16 @@ SCENARIO("sensormessage serialization from file", "[clicklib]")
             AND_THEN("robot1 should have torques")
             {
                 REQUIRE(sensorMessage->torques("robot1") == std::vector<double>{3.0, 3.1});
+            }
+
+            AND_THEN("robot1 should have external sensors")
+            {
+                REQUIRE(sensorMessage->sensor("robot1", "external_1", 0) == std::vector<double>{3.0, 3.1});
+            }
+
+            AND_THEN("robot2 should not be found")
+            {
+                REQUIRE_THROWS_WITH(sensorMessage->torques("robot2"), "CHECK failed: it != end(): key not found: robot2" );
             }
 
             THEN("box should have roll pitch yaw")

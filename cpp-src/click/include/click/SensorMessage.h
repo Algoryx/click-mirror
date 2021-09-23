@@ -15,6 +15,7 @@ namespace algoryx { namespace click {
     // TODO: Return std::array<double, 3> typedef:ed?
     CLICK_EXPORT std::vector<double> objectRPY(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> objectPosition(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> sensor(const std::string &objectname, const std::string &sensorname, int idx) const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT ~SensorMessage();

@@ -76,12 +76,10 @@ message HandshakeMessage {
     
   message Object {
     repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
-    // TODO: Test/Example this!
     repeated string jointSensorsInOrder = 7;   // The controls (joints) in the order they are expected in every SensorMessage
     repeated ValueType jointSensors = 2;       // sensor types per control (joints), indicates which vectors in SensorMessage are sent
     // TODO: How solve optional with respect to inital value?
     map<string, ValueType> controlEvents = 3;  // Which controls are optional, ie not present in every ControlMessage, must be in first though!
-    // TODO: Implement example:
     map<string, Sensors> sensors = 4;          // Sensors per joint or other part
     repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
   };
@@ -160,14 +158,16 @@ message SensorMessage {
 
   message Sensor {
     oneof value {
-      double angle = 2;
-      double angleVelocity = 3;
-      double torque = 4;
-      Vec3 position = 5;
-      Vec3arr rpy = 6;
+      double angle = 1;
+      double angleVelocity = 2;
+      double torque = 3;
+      Vec3 position = 4;
+      Vec3arr rpy = 5;
+      bool activated = 6;
       Vec3 acceleration = 7;
-      Vec3 force = 8;
-      Vec3 directionalTorque = 9;
+      Vec3arr force = 8;
+      Vec3arr directionalTorque = 9;
+      Vec3arr angularAcceleration = 10;    
     }
   };
 
@@ -176,16 +176,15 @@ message SensorMessage {
   }
   
   message Object {
-    // Sensors on joints, each present if declared in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
+    // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
     // TODO: Make it obvious these are per joint, rename?
     repeated double angleSensors = 1;
     repeated double angleVelocitySensors = 2;
     repeated double torqueSensors = 3;
     repeated Vec3 forceSensors = 5;
-    // Sensors on the object, order of ValueType declared in handshake.
+    // Sensors on the object, order of ValueType defined in handshake.
     repeated Sensor objectSensors = 4;
-    // TODO: Implement test/example
-    // Sensors identified by name, ie not per joint or object, names and order of ValueType declared in handshake.
+    // Sensors identified by name, ie not per joint or object, names and order of ValueType defined in handshake.
     map<string, Sensors> sensors = 6;
   }
 

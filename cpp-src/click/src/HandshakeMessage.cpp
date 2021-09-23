@@ -21,10 +21,23 @@ vector<string> HandshakeMessage::controlsInOrder(const std::string &objectname) 
   return vector<string>(vec.begin(), vec.end());
 }
 
+vector<string> HandshakeMessage::jointSensorsInOrder(const std::string &objectname) const{
+  auto vec = this->pm->objects().at(objectname).jointsensorsinorder();
+  return vector<string>(vec.begin(), vec.end());
+}
+
 vector<ValueType> HandshakeMessage::jointSensors(const std::string &objectname) const
 {
   vector<ValueType> sensors;
   for (auto &sensor : this->pm->objects().at(objectname).jointsensors())
+    sensors.push_back(static_cast<ValueType>(sensor));
+  return sensors;
+}
+
+vector<ValueType> HandshakeMessage::sensors(const std::string &objectname, const std::string &sensorname) const
+{
+  vector<ValueType> sensors;
+  for (auto &sensor : this->pm->objects().at(objectname).sensors().at(sensorname).types())
     sensors.push_back(static_cast<ValueType>(sensor));
   return sensors;
 }

@@ -59,12 +59,12 @@ def test_that_Handshake_props_are_set():
     handshake = handshake_message()
 
     message = MessageSerializer.from_bytes(handshake.SerializeToString())
-    assert len(handshake.SerializeToString()) ==54
+    assert len(handshake.SerializeToString()) == 90
 
     assert message.controlType == ValueType.Force
     assert message.objects["robot"].controlsInOrder[1] == "joint2"
-    assert message.objects["robot"].controlSensors[0] is ValueType.Angle
-    assert message.objects["robot"].controlSensors[2] is ValueType.Torque
+    assert message.objects["robot"].jointSensors[0] is ValueType.Angle
+    assert message.objects["robot"].jointSensors[2] is ValueType.Torque
     assert str(message) == """messageType: HandshakeMessageType
 version: CURRENT_VERSION
 controlType: Force
@@ -73,14 +73,23 @@ objects {
   value {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
-    controlSensors: Angle
-    controlSensors: AngleVelocity
-    controlSensors: Torque
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Torque
     controlEvents {
       key: "gripper"
       value: Activated
     }
+    sensors {
+      key: "external_1"
+      value {
+        types: Force
+        types: AngularAcceleration
+      }
+    }
     objectSensors: Position
+    jointSensorsInOrder: "joint1"
+    jointSensorsInOrder: "joint2"
   }
 }
 """
@@ -92,8 +101,10 @@ def handshake_message():
     object = handshake.objects["robot"]
 
     object.controlsInOrder.extend(["joint1", "joint2"])
+    object.jointSensorsInOrder.extend(["joint1", "joint2"])
     object.controlEvents["gripper"] = ValueType.Activated
-    object.controlSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.sensors["external_1"].types.extend([ValueType.Force, ValueType.AngularAcceleration])
+    object.jointSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
     object.objectSensors.append(ValueType.Position)
     return handshake
 
@@ -150,6 +161,11 @@ def sensor_message():
     robot.angleSensors.extend([1.0, 1.1])
     robot.angleVelocitySensors.extend([2.0, 2.1])
     robot.torqueSensors.extend([3.0, 3.1])
+    # robot.sensors["external_1"].sensor.extend([[4.0, 4.1, 4.2], [5.1, 5.2, 5.3]])
+    val = robot.sensors["external_1"].sensor.add()
+    val.force.arr.extend([4.0, 4.1, 4.2])
+    val = robot.sensors["external_1"].sensor.add()
+    val.angularAcceleration.arr.extend([5.0, 5.1, 5.2])
 
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()
@@ -165,7 +181,7 @@ def test_that_SensorMessage_serializes():
     sensor_m = sensor_message()
 
     message = MessageSerializer.from_bytes(sensor_m.SerializeToString())
-    assert len(sensor_m.SerializeToString()) == 138
+    assert len(sensor_m.SerializeToString()) == 216
 
     assert message.objects['robot1'].angleSensors[0] == 1.0
     assert message.objects['robot1'].torqueSensors[1] == 3.1
@@ -199,6 +215,25 @@ objects {
     angleVelocitySensors: 2.1
     torqueSensors: 3.0
     torqueSensors: 3.1
+    sensors {
+      key: "external_1"
+      value {
+        sensor {
+          force {
+            arr: 4.0
+            arr: 4.1
+            arr: 4.2
+          }
+        }
+        sensor {
+          angularAcceleration {
+            arr: 5.0
+            arr: 5.1
+            arr: 5.2
+          }
+        }
+      }
+    }
   }
 }
 """
