@@ -2,6 +2,7 @@ find_package(Protobuf REQUIRED)
 
 set(LIBSOURCES
     include/click/MessageFactory.h
+    include/click/Message.h
     include/click/ControlMessage.h
     include/click/ControlMessageBuilder.h
     include/click/SensorMessage.h
@@ -33,3 +34,22 @@ target_include_directories(clicklib
         ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_subdirectory(tests)
+
+install(TARGETS 
+    clicklib
+    clickprotobuf
+    DESTINATION lib
+)
+install(FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/Message.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/MessageFactory.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/Message.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/ControlMessage.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/ControlMessageBuilder.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/SensorMessage.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/HandshakeMessage.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/HandshakeInitMessage.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/HandshakeInitMessageBuilder.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/click/Client.h
+    DESTINATION include/click
+)
