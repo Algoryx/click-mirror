@@ -20,6 +20,8 @@ enum ValueType {
   Activated = 5;           // True/False
   Acceleration = 6;        // m/s2   vec3
   Force = 7;               // Newton vec3
+  DirectionalTorque = 8;   // Nm     vec3
+  AngularAcceleration = 9; // rad/s2 vec3
 }
 
 message Message {
@@ -48,20 +50,20 @@ message HandshakeInitMessage {
 - Objects:
   - panda_2
     - Joints
-      - ControlType: angles/velocities/torques          // one only - defined in brick
-      - ControlsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
-      - ControlEvents: gripper -> Activated
+      - controlType: angles/velocities/torques          // one only - defined in brick
+      - controlsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
+      - jointSensorsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
+      - jointSensors: Angle, Velocity, Torque
+      - controlEvents:
+        - gripper -> Activated
       - Sensors: 
-        - joint1 --> 
-          - ControlTypes: angles,velocities,torques
-        - gripper --> 
-          - ControlTypes: angles,velocities,torques
-        - Sensors: force if any
+        - external --> 
+          - Sensors: Force, AngularAcceleration
   - panda_tool
     ...
   - box
     - objectSensors
-      - doubleRPY
+      - Sensors: RPY, Position
 */
 
 message HandshakeMessage {
@@ -73,11 +75,14 @@ message HandshakeMessage {
   }
     
   message Object {
-    repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage and SensorMessage
-    repeated ValueType controlSensors = 2;     // sensor types per control (joints), indicates which vectors in SensorMessage are sent
+    repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
+    // TODO: Test/Example this!
+    repeated string jointSensorsInOrder = 7;   // The controls (joints) in the order they are expected in every SensorMessage
+    repeated ValueType jointSensors = 2;       // sensor types per control (joints), indicates which vectors in SensorMessage are sent
     // TODO: How solve optional with respect to inital value?
     map<string, ValueType> controlEvents = 3;  // Which controls are optional, ie not present in every ControlMessage, must be in first though!
-//    map<string, Sensors> sensors = 4;          // Sensors per joint or other part
+    // TODO: Implement example:
+    map<string, Sensors> sensors = 4;          // Sensors per joint or other part
     repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
   };
   
@@ -89,12 +94,11 @@ message HandshakeMessage {
 /*
 - ControlMessage example:
   - panda_2
-    - Joints - in one of:
       - angles
       - angleVelocities
       - torques
-    - suction_cup_link
-      - Values: boolean[1]
+    - gripper:
+      - true
   - panda_tool
     ...
 */
@@ -120,12 +124,18 @@ message ControlMessage {
 SensorMessage example:
 
 - panda_2
-  - angleSensors
-  - angleVelocitySensors
-  - torqueSensors
+  - angleSensors [1,2,3,4] size = #joints
+  - angleVelocitySensors ...
+  - torqueSensors ...
   ...
-  - suction_cup_link -->
-    - force? 
+
+  - Map: name_of_sensor --> List[Force, Torque] in order defined by handshake
+    - external_1 --> Sensors: List[force-vec3, torque-vec3]
+    - external_imu --> Sensors
+    - external_imu --> Sensors
+    # not in urdf file, not officically supported
+    # controller (mc-rtc) typically has additional file
+    # --> add in Brick, send it in handshake
   ...
 - box
   - objectSensors
@@ -143,6 +153,7 @@ message SensorMessage {
     double Z = 3;
   }
 
+  // TODO: Decide which one to use!
   message Vec3arr {
     repeated double arr = 1;
   }
@@ -156,21 +167,26 @@ message SensorMessage {
       Vec3arr rpy = 6;
       Vec3 acceleration = 7;
       Vec3 force = 8;
+      Vec3 directionalTorque = 9;
     }
   };
 
   message Sensors {
-    repeated Sensor sensor = 1;
+    repeated Sensor sensor = 1;  // 
   }
   
   message Object {
-    // Any of below are only present when handshake indicated it
+    // Sensors on joints, each present if declared in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
+    // TODO: Make it obvious these are per joint, rename?
     repeated double angleSensors = 1;
     repeated double angleVelocitySensors = 2;
     repeated double torqueSensors = 3;
+    repeated Vec3 forceSensors = 5;
+    // Sensors on the object, order of ValueType declared in handshake.
     repeated Sensor objectSensors = 4;
-    // A possible generic sensor map, but difficult to use is
-    // map<string, Sensors> sensors = 1;
+    // TODO: Implement test/example
+    // Sensors identified by name, ie not per joint or object, names and order of ValueType declared in handshake.
+    map<string, Sensors> sensors = 6;
   }
 
   map<string, Object> objects = 3;

@@ -43,7 +43,7 @@ SCENARIO("HandshakeMessage deserialization from file", "[clicklib]")
             THEN("it should contain controlsensors")
             {
                 vector<ValueType> expected = {ValueType::Angle, ValueType::AngleVelocity, ValueType::Torque};
-                REQUIRE_THAT(handshakeMessage->controlSensors("robot"), Equals(expected));
+                REQUIRE_THAT(handshakeMessage->jointSensors("robot"), Equals(expected));
             }
 
             THEN("it should contain objectsensors")

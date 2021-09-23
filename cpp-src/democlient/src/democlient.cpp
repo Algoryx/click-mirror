@@ -41,6 +41,7 @@ unique_ptr<Message> sendReceive(Client &client, unique_ptr<Message> message)
 int main(int argc, char *argv[])
 {
     const string endpoint = "tcp://localhost:5555";
+//    const string endpoint = "tcp://host.docker.internal:5555";
 
     // Verify protobuf version
     GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -54,7 +55,7 @@ int main(int argc, char *argv[])
     reply = sendReceive(client, move(message));
 
     // Controlmessage
-    message = ControlMessageBuilder::builder()
+    message = ControlMessageBuilderImpl::builder()
         ->object("robot1")
             ->withAngles(angles)
             ->withControlEvent("gripper", true)
