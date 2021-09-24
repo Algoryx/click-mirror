@@ -23,25 +23,32 @@ endif()
 
 include(${CONAN_CMAKE_LOCAL_FILE})
 
-
+# TODO: Discuss and possibly remove below!
 # We want to update packages in the Conan cache that have been changed on the
 # server. However, for performance reasons we only want to do that on the
 # first CMake run. We detect first run by checking for CMakeCache.txt.
-if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
-  set(GENERIC_UPDATE_CONAN_PACKAGES "")
-else()
-  set(GENERIC_UPDATE_CONAN_PACKAGES "UPDATE")
-endif()
+# if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
+#   set(GENERIC_UPDATE_CONAN_PACKAGES "")
+# else()
+#   set(GENERIC_UPDATE_CONAN_PACKAGES "UPDATE")
+# endif()
 
-set(GENERIC_CONAN_BUILD_RULE "never")
+# set(GENERIC_CONAN_BUILD_RULE "never")
 
-conan_cmake_run(CONANFILE conanfile.txt
-  ${GENERIC_UPDATE_CONAN_PACKAGES}
-  BASIC_SETUP
-  KEEP_RPATHS
-  NO_OUTPUT_DIRS
-  CMAKE_TARGETS
-  BUILD ${GENERIC_CONAN_BUILD_RULE}  # Set to 'all' to force rebuild of dependencies.
-)
+# Using recommendation at https://github.com/conan-io/cmake-conan to not use conan_cmake_run which is deprecated.
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_cmake_configure(REQUIRES 
+  protobuf/3.17.1
+  catch2/2.11.1
+  zmqpp/4.2.0
+  GENERATORS cmake cmake_find_package)
+
+  conan_cmake_autodetect(settings)
+
+  conan_cmake_install(PATH_OR_REFERENCE .
+                      BUILD missing
+                      REMOTE conancenter
+                      SETTINGS ${settings})
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake) 
+conan_basic_setup(TARGETS) 

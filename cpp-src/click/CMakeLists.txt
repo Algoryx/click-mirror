@@ -25,7 +25,7 @@ set(LIBSOURCES
 add_library(clicklib ${LIBSOURCES})
 target_link_libraries(clicklib
     PUBLIC
-        protobuf::libprotobuf
+        CONAN_PKG::protobuf
         CONAN_PKG::zmqpp
         clickprotobuf
 )
