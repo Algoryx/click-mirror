@@ -109,9 +109,7 @@ def test_create_SensorMessage_from_robots():
     box_m = sensor_m.objects[box['name']]
     sensor = box_m.objectSensors.add()
     pos = box['position']
-    sensor.position.X = pos[0]
-    sensor.position.X = pos[1]
-    sensor.position.X = pos[2]
+    sensor.position.arr.extend(pos)
     rpy = box['rpy']
     sensor.rpy.arr.extend(rpy)
 

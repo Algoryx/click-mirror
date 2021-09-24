@@ -38,6 +38,7 @@ def handshake_message():
     object.controlEvents["gripper"] = ValueType.Activated
     object.jointSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
     object.objectSensors.append(ValueType.Position)
+    object.sensors["external_1"].types.extend([ValueType.Force, ValueType.AngularAcceleration])
     return handshake
 
 
@@ -56,6 +57,11 @@ def sensor_message():
     sensor.position.Z = 3.0
     sensor = box.objectSensors.add()
     sensor.rpy.arr.extend([4.0, 5.0, 6.0])
+    val = robot.sensors["external_1"].sensor.add()
+    val.force.arr.extend([4.0, 4.1, 4.2])
+    val = robot.sensors["external_1"].sensor.add()
+    val.angularAcceleration.arr.extend([5.0, 5.1, 5.2])
+
     return sensor_m
 
 

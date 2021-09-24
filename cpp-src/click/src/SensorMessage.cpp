@@ -51,19 +51,45 @@ vector<double> SensorMessage::objectPosition(const string &objectname) const {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position()) {
       auto vec3 = sensor.position();
-      return vector<double>{vec3.x(), vec3.y(), vec3.z()};
+      return vector<double>{vec3.arr().begin(), vec3.arr().end()};
     }
   throw runtime_error("Position not found in " + this->debugString());
 }
 
-vector<double> SensorMessage::sensor(const string &objectname, const string &sensorname, int idx) const
+inline void copy_n(const protobuf::SensorMessage_Vec3 &src, Vec3 &trg) {
+  copy_n(src.arr().begin(), 3, trg.begin());
+}
+
+vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
 {
-  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
-    if (sensor.has_position()) {
-      auto vec3 = sensor.position();
-      return vector<double>{vec3.x(), vec3.y(), vec3.z()};
-    }
-  throw runtime_error("Position not found in " + this->debugString());
+  vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
+  auto target = res.begin();
+  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor()) {
+    if (sensor.has_acceleration())
+      copy_n(sensor.acceleration(), target->acceleration);
+    else if (sensor.has_activated())
+      target->activated = sensor.activated();
+    else if (sensor.has_angle())
+      target->angle = sensor.angle();
+    else if (sensor.has_anglevelocity())
+      target->angleVelocity = sensor.anglevelocity();
+    else if (sensor.has_angularacceleration())
+      copy_n(sensor.angularacceleration(), target->angularAcceleration);
+    else if (sensor.has_directionaltorque())
+      copy_n(sensor.directionaltorque(), target->directionalTorque);
+    else if (sensor.has_force())
+      copy_n(sensor.force(), target->force);
+    else if (sensor.has_position())
+      copy_n(sensor.position(), target->position);
+    else if (sensor.has_rpy())
+      copy_n(sensor.rpy(), target->rpy);
+    else if (sensor.has_torque())
+      target->torque = sensor.torque();
+    else
+      throw runtime_error("Return not implemented for " + sensor.DebugString());
+    target++;
+  }
+  return res;
 }
 
 MessageType SensorMessage::messageType() const {

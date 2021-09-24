@@ -4,18 +4,37 @@
 #include <click/Message.h>
 
 #include <vector>
+#include <array>
 
 namespace algoryx { namespace click {
+
+  typedef std::array<double, 3> Vec3;
+
+  // TODO: Perhaps wrap union in separate class, and add valueType to know which is set?  
+  union Sensor {
+      double angle;
+      double angleVelocity;
+      double torque;
+      Vec3 position;
+      Vec3 rpy;
+      bool activated;
+      Vec3 acceleration;
+      Vec3 force;
+      Vec3 directionalTorque;
+      Vec3 angularAcceleration;
+  };
+
   class SensorMessage : public Message
   {
   public:
     CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
-    // TODO: Return std::array<double, 3> typedef:ed?
+
     CLICK_EXPORT std::vector<double> objectRPY(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> objectPosition(const std::string &objectname) const;
-    CLICK_EXPORT std::vector<double> sensor(const std::string &objectname, const std::string &sensorname, int idx) const;
+
+    CLICK_EXPORT std::vector<Sensor> sensor(const std::string &objectname, const std::string &sensorname) const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT ~SensorMessage();

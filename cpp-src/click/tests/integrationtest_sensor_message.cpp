@@ -50,7 +50,9 @@ SCENARIO("sensormessage serialization from file", "[clicklib]")
 
             AND_THEN("robot1 should have external sensors")
             {
-                REQUIRE(sensorMessage->sensor("robot1", "external_1", 0) == std::vector<double>{3.0, 3.1});
+                vector<Sensor> sensors = sensorMessage->sensor("robot1", "external_1");
+                REQUIRE(sensors.at(0).force == Vec3({4.0,4.1,4.2}));
+                REQUIRE(sensors.at(1).angularAcceleration == Vec3({5.0,5.1,5.2}));
             }
 
             AND_THEN("robot2 should not be found")

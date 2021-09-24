@@ -169,9 +169,7 @@ def sensor_message():
 
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()
-    sensor.position.X = 1.0
-    sensor.position.Y = 2.0
-    sensor.position.Z = 3.0
+    sensor.position.arr.extend([1.0, 2.0, 3.0]);
     sensor = box.objectSensors.add()
     sensor.rpy.arr.extend([4.0, 5.0, 6.0])
     return sensor_m
@@ -181,7 +179,7 @@ def test_that_SensorMessage_serializes():
     sensor_m = sensor_message()
 
     message = MessageSerializer.from_bytes(sensor_m.SerializeToString())
-    assert len(sensor_m.SerializeToString()) == 216
+    assert len(sensor_m.SerializeToString()) == 215
 
     assert message.objects['robot1'].angleSensors[0] == 1.0
     assert message.objects['robot1'].torqueSensors[1] == 3.1
@@ -192,9 +190,9 @@ objects {
   value {
     objectSensors {
       position {
-        X: 1.0
-        Y: 2.0
-        Z: 3.0
+        arr: 1.0
+        arr: 2.0
+        arr: 3.0
       }
     }
     objectSensors {

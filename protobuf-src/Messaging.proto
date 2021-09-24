@@ -146,13 +146,6 @@ message SensorMessage {
   MessageType messageType = 1;
 
   message Vec3 {
-    double X = 1;
-    double Y = 2;
-    double Z = 3;
-  }
-
-  // TODO: Decide which one to use!
-  message Vec3arr {
     repeated double arr = 1;
   }
 
@@ -162,12 +155,12 @@ message SensorMessage {
       double angleVelocity = 2;
       double torque = 3;
       Vec3 position = 4;
-      Vec3arr rpy = 5;
+      Vec3 rpy = 5;
       bool activated = 6;
       Vec3 acceleration = 7;
-      Vec3arr force = 8;
-      Vec3arr directionalTorque = 9;
-      Vec3arr angularAcceleration = 10;    
+      Vec3 force = 8;
+      Vec3 directionalTorque = 9;
+      Vec3 angularAcceleration = 10;    
     }
   };
 
