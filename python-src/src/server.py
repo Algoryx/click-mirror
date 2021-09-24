@@ -34,8 +34,9 @@ def handshake_message():
     object = handshake.objects["robot"]
 
     object.controlsInOrder.extend(["joint1", "joint2"])
+    object.jointSensorsInOrder.extend(["joint1", "joint2"])
     object.controlEvents["gripper"] = ValueType.Activated
-    object.controlSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.jointSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
     object.objectSensors.append(ValueType.Position)
     return handshake
 
