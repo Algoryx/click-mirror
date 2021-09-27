@@ -15,9 +15,9 @@ class ControllableRobot():
     # Number of input signals == number of output signals
     num_motors = 0
     name = None
-    # TODO: control should be accessible in same object?
+    # TODO: Brick: control should be accessible in same object?
     control = ValueType.AngleVelocity
-    # TODO: Where does jointnames and suction cup name come from?
+    # TODO: Brick: Where does jointnames and suction cup name come from?
     jointnames = ["joint1", "joint2", "joint3", "joint4", "joint5", "joint6", "joint7"]
     grippername = "gripper"
 
@@ -100,7 +100,7 @@ def test_create_SensorMessage_from_robots():
         sensors.angleVelocitySensors.extend(robot.velocity_sensors)
         sensors.torqueSensors.extend(robot.torque_sensors)
 
-    # TODO: Where get the box?
+    # TODO: Brick: Where get the box?
     box = {
         "name": "box",
         "position": [1, 2, 3],

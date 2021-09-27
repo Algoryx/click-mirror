@@ -170,7 +170,7 @@ message SensorMessage {
   
   message Object {
     // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
-    // TODO: Make it obvious these are per joint, rename?
+    // TODO: Make it obvious these are per joint? rename?
     repeated double angleSensors = 1;
     repeated double angleVelocitySensors = 2;
     repeated double torqueSensors = 3;
@@ -178,6 +178,7 @@ message SensorMessage {
     // Sensors on the object, order of ValueType defined in handshake.
     repeated Sensor objectSensors = 4;
     // Sensors identified by name, ie not per joint or object, names and order of ValueType defined in handshake.
+    // TODO: Discuss with Pierre et al if these can be less generic, ie can we define a vector in handshake instead of using map?
     map<string, Sensors> sensors = 6;
   }
 
