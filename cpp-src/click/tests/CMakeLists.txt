@@ -40,5 +40,5 @@ add_custom_command(
      TARGET ${UNIT_TEST}
      COMMENT "Run tests"
      POST_BUILD 
-     COMMAND ${UNIT_TEST} "--reporter junit" "--out junit.xml"
+     COMMAND ${UNIT_TEST} "--reporter junit" "--out catch2-junit.xml"
 )
