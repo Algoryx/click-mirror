@@ -1,6 +1,8 @@
 # From https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#cmake-targets
 Include(FetchContent)
 
+set(TEST_EXECUTABLE_TARGET click-test)
+
 FetchContent_Declare(
     Catch2
     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -19,28 +21,22 @@ set(TEST_SOURCES
     test_protobuf_message_integration.cpp
 )
 
-add_executable(tests ${TEST_SOURCES})
-target_link_libraries(tests 
+add_executable(${TEST_EXECUTABLE_TARGET} ${TEST_SOURCES})
+target_link_libraries(${TEST_EXECUTABLE_TARGET}
     PRIVATE
     clicklib
     Catch2::Catch2WithMain
 )
 
-# TODO: Nils will provide example for running tests separately
-
-set(UNIT_TEST tests)
+# Test execution target
 # From https://stackoverflow.com/questions/32901679/unit-testing-as-part-of-the-build
-# TODO: Could not get integration with ctest to work though
-add_custom_command(
-     TARGET ${UNIT_TEST}
-     COMMENT "Run tests"
-     POST_BUILD 
-     COMMAND ${UNIT_TEST}
+add_custom_target(test
+  DEPENDS ${TEST_EXECUTABLE_TARGET}
 )
-# junit reporter https://github.com/catchorg/Catch2/blob/devel/docs/reporters.md
+
 add_custom_command(
-     TARGET ${UNIT_TEST}
+     TARGET test
      COMMENT "Run tests"
-     POST_BUILD 
-     COMMAND ${UNIT_TEST} "--reporter junit" "--out junit.xml"
+     POST_BUILD
+     COMMAND ${TEST_EXECUTABLE_TARGET}
 )
