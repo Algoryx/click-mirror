@@ -18,7 +18,7 @@ stages:
     - docker-host
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
-    # TODO: Discuss why differs with Nils
+    # TODO: Discuss why differs with Emanuel
 #    - export
 #    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
@@ -54,6 +54,7 @@ build-cpp-lib-linux:
   script:
     - mkdir build
     - cd build
+    # TODO: Add cmake flag for adding d to debuglibs
     - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja ../cpp-src
     - ninja
     - ninja install
@@ -102,6 +103,7 @@ build-cpp-lib-windows:
     - mkdir build
     - cd build
     - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A x64 ../cpp-src
+#    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A Win32 ../cpp-src
     - cmake --build . --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release .
     - cmake --build . --target INSTALL --config Release
