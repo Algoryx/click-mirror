@@ -169,7 +169,7 @@ def sensor_message():
 
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()
-    sensor.position.arr.extend([1.0, 2.0, 3.0]);
+    sensor.position.arr.extend([1.0, 2.0, 3.0])
     sensor = box.objectSensors.add()
     sensor.rpy.arr.extend([4.0, 5.0, 6.0])
     return sensor_m

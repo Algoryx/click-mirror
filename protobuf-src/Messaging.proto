@@ -76,7 +76,7 @@ message HandshakeMessage {
     
   message Object {
     repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
-    repeated string jointSensorsInOrder = 7;   // The controls (joints) in the order they are expected in every SensorMessage
+    repeated string jointSensorsInOrder = 7;   // The sensors in the order they are expected in every SensorMessage
     repeated ValueType jointSensors = 2;       // sensor types per control (joints), indicates which vectors in SensorMessage are sent
     // TODO: How solve optional with respect to inital value?
     map<string, ValueType> controlEvents = 3;  // Which controls are optional, ie not present in every ControlMessage, must be in first though!
@@ -93,8 +93,6 @@ message HandshakeMessage {
 - ControlMessage example:
   - panda_2
       - angles
-      - angleVelocities
-      - torques
     - gripper:
       - true
   - panda_tool
@@ -148,6 +146,13 @@ message SensorMessage {
   message Vec3 {
     repeated double arr = 1;
   }
+  
+  // This is 1 byte longer than Vec3
+  // message XYZ {
+  //   double x = 1;
+  //   double y = 2;
+  //   double z = 3;
+  // }
 
   message Sensor {
     oneof value {
