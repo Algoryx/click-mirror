@@ -59,6 +59,48 @@ inline void copy_n(const protobuf::SensorMessage_Vec3 &src, Vec3 &trg) {
   copy_n(src.arr().begin(), 3, trg.begin());
 }
 
+inline Vec3 createFrom(const protobuf::SensorMessage_Vec3 & src) {
+  return Vec3{src.arr().at(0), src.arr().at(1), src.arr().at(2)};
+}
+
+Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const {
+  auto & sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+    if (sensor.has_acceleration())
+      return createFrom(sensor.acceleration());
+    else if (sensor.has_angularacceleration())
+      return createFrom(sensor.angularacceleration());
+    else if (sensor.has_directionaltorque())
+      return createFrom(sensor.directionaltorque());
+    else if (sensor.has_force())
+      return createFrom(sensor.force());
+    else if (sensor.has_position())
+      return createFrom(sensor.position());
+    else if (sensor.has_rpy())
+      return createFrom(sensor.rpy());
+    else
+      throw runtime_error("Not a Vec3: " + sensor.DebugString());
+}
+
+double SensorMessage::sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const{
+  auto & sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+    if (sensor.has_angle())
+      return sensor.angle();
+    else if (sensor.has_anglevelocity())
+      return sensor.anglevelocity();
+    else if (sensor.has_torque())
+      return sensor.torque();
+    else
+      throw runtime_error("Not a double: " + sensor.DebugString());
+}
+
+bool SensorMessage::sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const{
+  auto & sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+    if (sensor.has_activated())
+      return sensor.activated();
+    else
+      throw runtime_error("Not a bool: " + sensor.DebugString());
+}
+
 vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
 {
   vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());

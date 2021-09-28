@@ -48,24 +48,28 @@ SCENARIO("sensormessage serialization from file", "[clicklib]")
                 REQUIRE(sensorMessage->torques("robot1") == std::vector<double>{3.0, 3.1});
             }
 
-            AND_THEN("robot1 should have external sensors")
+            AND_THEN("robot1 should have list of external sensors")
             {
                 vector<Sensor> sensors = sensorMessage->sensor("robot1", "external_1");
                 REQUIRE(sensors.at(0).force == Vec3({4.0,4.1,4.2}));
                 REQUIRE(sensors.at(1).angularAcceleration == Vec3({5.0,5.1,5.2}));
             }
-
+            AND_THEN("robot1 should have external sensors individually accessible")
+            {
+                Vec3 v = sensorMessage->sensorVec3("robot1", "external_1", 0);
+                REQUIRE(v == Vec3({4.0,4.1,4.2}));
+                v = sensorMessage->sensorVec3("robot1", "external_1", 1);
+                REQUIRE(v == Vec3({5.0,5.1,5.2}));
+            }
             AND_THEN("robot2 should not be found")
             {
                 REQUIRE_THROWS_WITH(sensorMessage->torques("robot2"), "CHECK failed: it != end(): key not found: robot2" );
             }
-
-            THEN("box should have roll pitch yaw")
+            AND_THEN("box should have roll pitch yaw")
             {
                 REQUIRE(sensorMessage->objectRPY("box") == Vec3{4.0, 5.0, 6.0});
             }
-
-            THEN("box should have position")
+            AND_THEN("box should have position")
             {
                 REQUIRE(sensorMessage->objectPosition("box") == Vec3{1.0, 2.0, 3.0});
             }

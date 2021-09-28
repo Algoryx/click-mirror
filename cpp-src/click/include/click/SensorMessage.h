@@ -10,7 +10,8 @@ namespace click {
 
   typedef std::array<double, 3> Vec3;
 
-  // TODO: Perhaps wrap union in separate class, and add valueType to know which is set?  
+  // Sensor field/type is defined in handshake
+  // TODO: But we should allow asking which anyway.
   union Sensor {
       double angle;
       double angleVelocity;
@@ -35,6 +36,9 @@ namespace click {
     CLICK_EXPORT Vec3 objectPosition(const std::string &objectname) const;
 
     CLICK_EXPORT std::vector<Sensor> sensor(const std::string &objectname, const std::string &sensorname) const;
+    CLICK_EXPORT Vec3 sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const;
+    CLICK_EXPORT double sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const;
+    CLICK_EXPORT bool sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT ~SensorMessage();
