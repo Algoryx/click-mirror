@@ -175,7 +175,6 @@ message SensorMessage {
   
   message Object {
     // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
-    // TODO: Make it obvious these are per joint? rename?
     repeated double angleSensors = 1;
     repeated double angleVelocitySensors = 2;
     repeated double torqueSensors = 3;
@@ -188,6 +187,7 @@ message SensorMessage {
   }
 
   // TODO: Suggest System instead of Object, ok for Pierre?
+  // If so, perhaps one map for objects, one for systems?
   map<string, Object> objects = 3;
 }
 

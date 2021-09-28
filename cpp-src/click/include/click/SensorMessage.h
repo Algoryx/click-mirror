@@ -31,9 +31,8 @@ namespace click {
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
 
-    // TODO: Use Vec3 below:
-    CLICK_EXPORT std::vector<double> objectRPY(const std::string &objectname) const;
-    CLICK_EXPORT std::vector<double> objectPosition(const std::string &objectname) const;
+    CLICK_EXPORT Vec3 objectRPY(const std::string &objectname) const;
+    CLICK_EXPORT Vec3 objectPosition(const std::string &objectname) const;
 
     CLICK_EXPORT std::vector<Sensor> sensor(const std::string &objectname, const std::string &sensorname) const;
     CLICK_EXPORT MessageType messageType() const;

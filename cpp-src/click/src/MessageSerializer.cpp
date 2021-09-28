@@ -14,7 +14,6 @@ string MessageSerializer::serializeToString(const Message& message)
 }
 
 unique_ptr<Message> MessageSerializer::sensorMessageFromIStream(istream *input) {
-  // TODO: Is it possible to read from stream twice to facilitate switch?
   unique_ptr<protobuf::SensorMessage> pm = make_unique<protobuf::SensorMessage>();
   pm->ParseFromIstream(input);
   // Need to explicitly call private constructor

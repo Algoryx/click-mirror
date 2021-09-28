@@ -62,12 +62,12 @@ SCENARIO("sensormessage serialization from file", "[clicklib]")
 
             THEN("box should have roll pitch yaw")
             {
-                REQUIRE_THAT(sensorMessage->objectRPY("box"), Equals(vector<double>{4.0, 5.0, 6.0}));
+                REQUIRE(sensorMessage->objectRPY("box") == Vec3{4.0, 5.0, 6.0});
             }
 
             THEN("box should have position")
             {
-                REQUIRE(sensorMessage->objectPosition("box") == vector<double>{1.0, 2.0, 3.0});
+                REQUIRE(sensorMessage->objectPosition("box") == Vec3{1.0, 2.0, 3.0});
             }
 
             THEN("it should roundtrip serialize to/from bytes")

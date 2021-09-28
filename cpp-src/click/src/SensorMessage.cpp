@@ -18,7 +18,6 @@ string SensorMessage::debugString() const
   return this->sensorMess->DebugString();
 }
 
-// TODO: Fill provided vector instead of returning?
 vector<double> SensorMessage::angles(const string &objectname) const {
 
   auto vec = this->sensorMess->objects().at(objectname).anglesensors();
@@ -36,25 +35,22 @@ vector<double> SensorMessage::torques(const string &objectname) const {
   return vector<double>(vec.begin(), vec.end());
 }
 
-vector<double> SensorMessage::objectRPY(const string &objectname) const {
+Vec3 SensorMessage::objectRPY(const string &objectname) const {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_rpy())
     {
       auto vec = sensor.rpy();
-      return vector<double>(vec.arr().begin(), vec.arr().end());
+      return Vec3{vec.arr().at(0), vec.arr().at(1), vec.arr().at(2)};
     }
   throw runtime_error("RPY not found in " + this->debugString());
 }
 
-// TODO: Add hasObjectPosition or return bool, take vector
-// Vec3 && SensorMessage::objectPosition(const string &objectname, const vector<double> &target) const {
-
-// TODO: Test && as retval!
-vector<double> SensorMessage::objectPosition(const string &objectname) const {
+// Vec3 will RVO:d according to https://stackoverflow.com/questions/27368236/return-value-or-rvalue-reference
+Vec3 SensorMessage::objectPosition(const string &objectname) const {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position()) {
       auto vec3 = sensor.position();
-      return vector<double>{vec3.arr().begin(), vec3.arr().end()};
+      return move(Vec3{vec3.arr().at(0), vec3.arr().at(1), vec3.arr().at(2)});
     }
   throw runtime_error("Position not found in " + this->debugString());
 }
