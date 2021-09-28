@@ -37,17 +37,24 @@ include(${CONAN_CMAKE_LOCAL_FILE})
 
 # Using recommendation at https://github.com/conan-io/cmake-conan to not use conan_cmake_run which is deprecated.
 
-conan_cmake_configure(REQUIRES 
-  protobuf/3.17.1
-  catch2/2.11.1
-  zmqpp/4.2.0
-  GENERATORS cmake cmake_find_package)
+# TODO: Use CONANFILE?
+conan_cmake_configure(
+  REQUIRES 
+    protobuf/3.17.1
+    zmqpp/4.2.0
+  BUILD_REQUIRES
+    protobuf/3.17.1
+    catch2/2.11.1
+  GENERATORS
+    cmake
+    cmake_find_package
+  )
 
   conan_cmake_autodetect(settings)
 
   conan_cmake_install(PATH_OR_REFERENCE .
                       BUILD missing
-                      REMOTE conancenter
+#                      REMOTE conancenter
                       SETTINGS ${settings})
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake) 
