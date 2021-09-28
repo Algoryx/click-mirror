@@ -48,6 +48,9 @@ conan_cmake_configure(
   GENERATORS
     cmake
     cmake_find_package
+  OPTIONS
+    # Needed for 32 bit builds
+    zeromq:encryption=None
   )
 
   conan_cmake_autodetect(settings)

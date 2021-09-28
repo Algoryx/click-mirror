@@ -44,6 +44,7 @@ namespace algoryx { namespace click {
     SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMessage);
     virtual std::string serializeToBytes() const;
 
+    // TODO: AGX dev guidelines says use m_ for privates, think about it.
     std::unique_ptr<protobuf::SensorMessage> sensorMess;
 
     friend class MessageSerializer;

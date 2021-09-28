@@ -26,6 +26,8 @@ target_link_libraries(tests
     Catch2::Catch2WithMain
 )
 
+# TODO: Nils will provide example for running tests separately
+
 set(UNIT_TEST tests)
 # From https://stackoverflow.com/questions/32901679/unit-testing-as-part-of-the-build
 # TODO: Could not get integration with ctest to work though

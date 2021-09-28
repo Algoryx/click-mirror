@@ -1,6 +1,4 @@
 # From https://www.f-ax.de/dev/2020/11/08/grpc-plugin-cmake-support.html
-# TODO: Discuss difference btw CONFIG and without - CONFIG is recommended?
-#find_package(protobuf CONFIG REQUIRED)
 find_package(Protobuf REQUIRED)
 
 set(PROTO_FILES

@@ -47,6 +47,9 @@ vector<double> SensorMessage::objectRPY(const string &objectname) const {
 }
 
 // TODO: Add hasObjectPosition or return bool, take vector
+// Vec3 && SensorMessage::objectPosition(const string &objectname, const vector<double> &target) const {
+
+// TODO: Test && as retval!
 vector<double> SensorMessage::objectPosition(const string &objectname) const {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position()) {

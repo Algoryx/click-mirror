@@ -78,7 +78,7 @@ message HandshakeMessage {
     repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
     repeated string jointSensorsInOrder = 7;   // The sensors in the order they are expected in every SensorMessage
     repeated ValueType jointSensors = 2;       // sensor types per control (joints), indicates which vectors in SensorMessage are sent
-    // TODO: How solve optional with respect to inital value?
+    // TODO: How solve optional with respect to inital value? Suggestion: Use default scalar values, ie "0"/False/...
     map<string, ValueType> controlEvents = 3;  // Which controls are optional, ie not present in every ControlMessage, must be in first though!
     map<string, Sensors> sensors = 4;          // Sensors per joint or other part
     repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
@@ -187,6 +187,7 @@ message SensorMessage {
     map<string, Sensors> sensors = 6;
   }
 
+  // TODO: Suggest System instead of Object, ok for Pierre?
   map<string, Object> objects = 3;
 }
 
