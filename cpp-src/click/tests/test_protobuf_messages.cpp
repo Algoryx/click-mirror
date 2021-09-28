@@ -4,7 +4,7 @@
 #include <click/MessageFactory.h>
 
 using namespace std;
-using namespace algoryx::click::protobuf;
+using namespace click::protobuf;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 

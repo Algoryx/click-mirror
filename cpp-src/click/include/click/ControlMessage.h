@@ -8,7 +8,7 @@
 #include <memory>
 
 
-namespace algoryx { namespace click {
+namespace click {
 
   class ControlMessageBuilder;
 
@@ -34,4 +34,4 @@ namespace algoryx { namespace click {
     friend class ControlMessageBuilderImpl;
     friend class MessageSerializer;
   };
-}}
+}

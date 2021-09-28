@@ -1,7 +1,7 @@
 #include <memory>
 #include <click/ControlMessageBuilder.h>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
 ControlMessageBuilderImpl::ControlMessageBuilderImpl(unique_ptr<protobuf::ControlMessage> control_m)

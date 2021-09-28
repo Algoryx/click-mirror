@@ -4,7 +4,7 @@
 #include <click/HandshakeInitMessage.h>
 #include <click/SensorMessage.h>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
 

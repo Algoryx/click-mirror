@@ -20,7 +20,7 @@ def test_understanding_of_protoc_classes():
     assert type(sobject) == SensorMessage.Object
 
     hobject = HandshakeMessage.Object()
-    assert hobject.DESCRIPTOR.full_name == "algoryx.click.protobuf.HandshakeMessage.Object"
+    assert hobject.DESCRIPTOR.full_name == "click.protobuf.HandshakeMessage.Object"
 
     # Misleading that type of two different classes has same name, but that's how this implementation is done.
     assert str(type(hobject)) == str(type(sobject))

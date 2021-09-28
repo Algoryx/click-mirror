@@ -1,10 +1,10 @@
 #include <click/SensorMessage.h>
 #include<iostream>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
-unique_ptr<SensorMessage> algoryx::click::toSensorMessage(unique_ptr<Message> message) {
+unique_ptr<SensorMessage> click::toSensorMessage(unique_ptr<Message> message) {
     return unique_ptr<SensorMessage>(static_cast<SensorMessage *>(message.release()));
 }
 

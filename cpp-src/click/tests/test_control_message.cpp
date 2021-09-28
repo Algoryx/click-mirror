@@ -6,7 +6,7 @@
 #include <Messaging.pb.h>
 
 using namespace std;
-using namespace algoryx::click;
+using namespace click;
 // https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 

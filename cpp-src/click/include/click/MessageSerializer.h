@@ -3,7 +3,7 @@
 #include <click/Message.h>
 #include <click/DllExport.h>
 
-namespace algoryx { namespace click {
+namespace click {
     class MessageSerializer
     {
     public:
@@ -14,5 +14,5 @@ namespace algoryx { namespace click {
       std::unique_ptr<Message> sensorMessageFromIStream(std::istream *input);
       std::unique_ptr<Message> handshakeMessageFromIStream(std::istream *input);
     };
-}}
+}
 

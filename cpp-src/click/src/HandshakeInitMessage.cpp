@@ -1,6 +1,6 @@
 #include <click/HandshakeInitMessage.h>
 
-namespace algoryx { namespace click {
+namespace click {
 
 HandshakeInitMessage::HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage> control_m)
 {
@@ -21,4 +21,4 @@ std::string HandshakeInitMessage::serializeToBytes() const {
 }
 
 HandshakeInitMessage::~HandshakeInitMessage() = default;
-}}
+}

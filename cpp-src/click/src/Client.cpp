@@ -11,7 +11,7 @@
 
 #include <memory>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
 Client::Client()

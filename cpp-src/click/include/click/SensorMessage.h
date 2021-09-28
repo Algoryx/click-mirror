@@ -6,7 +6,7 @@
 #include <vector>
 #include <array>
 
-namespace algoryx { namespace click {
+namespace click {
 
   typedef std::array<double, 3> Vec3;
 
@@ -51,4 +51,4 @@ namespace algoryx { namespace click {
   };
 
   std::unique_ptr<SensorMessage> toSensorMessage(std::unique_ptr<Message> message);
-}}
+}

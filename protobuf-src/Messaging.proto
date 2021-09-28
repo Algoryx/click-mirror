@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package algoryx.click.protobuf;
+package click.protobuf;
 
 enum MessageType {
   HandshakeInitMessageType = 0;

@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-namespace algoryx { namespace click {
+namespace click {
   class HandshakeMessage : public Message
   {
   public:
@@ -32,4 +32,4 @@ namespace algoryx { namespace click {
   };
 
   std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);
-}}
+}
