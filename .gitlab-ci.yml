@@ -54,11 +54,12 @@ build-cpp-lib-linux:
   script:
     - mkdir build
     - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja ../cpp-src
+    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja ../cpp-src
     - ninja
+    - ninja install
   artifacts:
     paths:
-      - build/lib
+      - build/install
       - build/bin
 
 
@@ -91,3 +92,36 @@ test-python-lib:
     reports:
       junit: pytest-junit.xml
 
+
+build-cpp-lib-windows:
+  stage: build
+  tags:
+    - windows
+    - vs2019
+  script:
+    - mkdir build
+    - cd build
+    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A x64 ../cpp-src
+    - cmake --build . --target INSTALL --config Debug
+    - cmake -D CMAKE_BUILD_TYPE=Release .
+    - cmake --build . --target INSTALL --config Release
+  artifacts:
+    paths:
+      - build/install
+      - build/bin
+
+
+test-cpp-lib-windows:
+  stage: test
+  tags:
+    - windows
+    - vs2019
+  needs:
+    - job: build-cpp-lib-windows
+      artifacts: true
+  script:
+    - build/bin/tests --reporter junit --out win-catch2-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: win-catch2-junit.xml
