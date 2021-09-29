@@ -58,6 +58,9 @@ build-cpp-lib-linux:
     - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja ../cpp-src
     - ninja
     - ninja install
+    - cmake -DCMAKE_BUILD_TYPE=Debug .
+    - ninja
+    - ninja install
   artifacts:
     paths:
       - build/install

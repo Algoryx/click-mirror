@@ -12,6 +12,7 @@ project(click VERSION 0.1
 
 # TODO: Change this into target_compile_features
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_DEBUG_POSTFIX "-d")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 #message("modpath: ${CMAKE_MODULE_PATH}")
