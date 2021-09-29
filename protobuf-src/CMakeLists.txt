@@ -11,7 +11,11 @@ target_link_libraries(clickprotobuf
     PUBLIC
         CONAN_PKG::protobuf
 )
-target_include_directories(clickprotobuf PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(clickprotobuf 
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>  
+    $<INSTALL_INTERFACE:include/click>
+    )
 
 protobuf_generate(TARGET clickprotobuf LANGUAGE cpp)
 # Update generated python
