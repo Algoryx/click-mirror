@@ -6,11 +6,12 @@
 #include <vector>
 #include <array>
 
-namespace algoryx { namespace click {
+namespace click {
 
   typedef std::array<double, 3> Vec3;
 
-  // TODO: Perhaps wrap union in separate class, and add valueType to know which is set?  
+  // Sensor field/type is defined in handshake
+  // TODO: But we should allow asking which anyway.
   union Sensor {
       double angle;
       double angleVelocity;
@@ -31,11 +32,13 @@ namespace algoryx { namespace click {
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
     CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
 
-    // TODO: Use Vec3 below:
-    CLICK_EXPORT std::vector<double> objectRPY(const std::string &objectname) const;
-    CLICK_EXPORT std::vector<double> objectPosition(const std::string &objectname) const;
+    CLICK_EXPORT Vec3 objectRPY(const std::string &objectname) const;
+    CLICK_EXPORT Vec3 objectPosition(const std::string &objectname) const;
 
     CLICK_EXPORT std::vector<Sensor> sensor(const std::string &objectname, const std::string &sensorname) const;
+    CLICK_EXPORT Vec3 sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const;
+    CLICK_EXPORT double sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const;
+    CLICK_EXPORT bool sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT ~SensorMessage();
@@ -44,10 +47,11 @@ namespace algoryx { namespace click {
     SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMessage);
     virtual std::string serializeToBytes() const;
 
+    // TODO: AGX dev guidelines says use m_ for privates, think about it.
     std::unique_ptr<protobuf::SensorMessage> sensorMess;
 
     friend class MessageSerializer;
   };
 
   std::unique_ptr<SensorMessage> toSensorMessage(std::unique_ptr<Message> message);
-}}
+}

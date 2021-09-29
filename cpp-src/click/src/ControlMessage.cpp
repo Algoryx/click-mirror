@@ -1,6 +1,6 @@
 #include <click/ControlMessage.h>
 
-namespace algoryx { namespace click {
+namespace click {
 
 ControlMessage::ControlMessage(std::unique_ptr<protobuf::ControlMessage> control_m)
 {
@@ -41,4 +41,4 @@ std::string ControlMessage::serializeToBytes() const {
 }
 
 ControlMessage::~ControlMessage() = default;
-}}
+}

@@ -3,7 +3,7 @@
 #include <memory>
 #include <click/ControlMessage.h>
 
-namespace algoryx { namespace click {
+namespace click {
 
     class AddControlBuilder;
     class AddControlEventBuilder;
@@ -51,4 +51,4 @@ namespace algoryx { namespace click {
         std::unique_ptr<protobuf::ControlMessage> message;
         protobuf::ControlMessage_Object *currObject;
     };
-}}
+}

@@ -5,7 +5,7 @@
 // NOTE: Include used to keep types consistent with protobuf only
 #include<Messaging.pb.h>
 
-namespace algoryx { namespace click {
+namespace click {
 
   enum MessageType {
     HandshakeInitMessageType = protobuf::HandshakeInitMessageType,
@@ -43,4 +43,4 @@ namespace algoryx { namespace click {
   
   friend class MessageSerializer;
 };
-}}
+}

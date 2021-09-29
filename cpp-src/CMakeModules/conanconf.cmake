@@ -37,7 +37,6 @@ include(${CONAN_CMAKE_LOCAL_FILE})
 
 # Using recommendation at https://github.com/conan-io/cmake-conan to not use conan_cmake_run which is deprecated.
 
-# TODO: Use CONANFILE?
 conan_cmake_configure(
   REQUIRES 
     protobuf/3.17.1
@@ -48,6 +47,9 @@ conan_cmake_configure(
   GENERATORS
     cmake
     cmake_find_package
+  OPTIONS
+    # Needed for 32 bit builds
+    zeromq:encryption=None
   )
 
   conan_cmake_autodetect(settings)

@@ -1,3 +1,3 @@
 #include<click/Message.h>
 
-algoryx::click::Message::~Message() = default;
+click::Message::~Message() = default;

@@ -10,7 +10,7 @@ namespace zmqpp {
   class context;
 }
 
-namespace algoryx { namespace click {
+namespace click {
   class Message;
 
   class Client
@@ -30,4 +30,4 @@ namespace algoryx { namespace click {
     std::unique_ptr<zmqpp::socket> m_socket;
     std::unique_ptr<zmqpp::context> m_context;
   };
-}}
+}

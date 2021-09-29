@@ -1,10 +1,10 @@
 #include <click/SensorMessage.h>
 #include<iostream>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
-unique_ptr<SensorMessage> algoryx::click::toSensorMessage(unique_ptr<Message> message) {
+unique_ptr<SensorMessage> click::toSensorMessage(unique_ptr<Message> message) {
     return unique_ptr<SensorMessage>(static_cast<SensorMessage *>(message.release()));
 }
 
@@ -18,7 +18,6 @@ string SensorMessage::debugString() const
   return this->sensorMess->DebugString();
 }
 
-// TODO: Fill provided vector instead of returning?
 vector<double> SensorMessage::angles(const string &objectname) const {
 
   auto vec = this->sensorMess->objects().at(objectname).anglesensors();
@@ -36,28 +35,70 @@ vector<double> SensorMessage::torques(const string &objectname) const {
   return vector<double>(vec.begin(), vec.end());
 }
 
-vector<double> SensorMessage::objectRPY(const string &objectname) const {
+Vec3 SensorMessage::objectRPY(const string &objectname) const {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_rpy())
     {
       auto vec = sensor.rpy();
-      return vector<double>(vec.arr().begin(), vec.arr().end());
+      return Vec3{vec.arr().at(0), vec.arr().at(1), vec.arr().at(2)};
     }
   throw runtime_error("RPY not found in " + this->debugString());
 }
 
-// TODO: Add hasObjectPosition or return bool, take vector
-vector<double> SensorMessage::objectPosition(const string &objectname) const {
+// Vec3 will RVO:d according to https://stackoverflow.com/questions/27368236/return-value-or-rvalue-reference
+Vec3 SensorMessage::objectPosition(const string &objectname) const {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position()) {
       auto vec3 = sensor.position();
-      return vector<double>{vec3.arr().begin(), vec3.arr().end()};
+      return move(Vec3{vec3.arr().at(0), vec3.arr().at(1), vec3.arr().at(2)});
     }
   throw runtime_error("Position not found in " + this->debugString());
 }
 
 inline void copy_n(const protobuf::SensorMessage_Vec3 &src, Vec3 &trg) {
   copy_n(src.arr().begin(), 3, trg.begin());
+}
+
+inline Vec3 createFrom(const protobuf::SensorMessage_Vec3 & src) {
+  return Vec3{src.arr().at(0), src.arr().at(1), src.arr().at(2)};
+}
+
+Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const {
+  auto & sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+    if (sensor.has_acceleration())
+      return createFrom(sensor.acceleration());
+    else if (sensor.has_angularacceleration())
+      return createFrom(sensor.angularacceleration());
+    else if (sensor.has_directionaltorque())
+      return createFrom(sensor.directionaltorque());
+    else if (sensor.has_force())
+      return createFrom(sensor.force());
+    else if (sensor.has_position())
+      return createFrom(sensor.position());
+    else if (sensor.has_rpy())
+      return createFrom(sensor.rpy());
+    else
+      throw runtime_error("Not a Vec3: " + sensor.DebugString());
+}
+
+double SensorMessage::sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const{
+  auto & sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+    if (sensor.has_angle())
+      return sensor.angle();
+    else if (sensor.has_anglevelocity())
+      return sensor.anglevelocity();
+    else if (sensor.has_torque())
+      return sensor.torque();
+    else
+      throw runtime_error("Not a double: " + sensor.DebugString());
+}
+
+bool SensorMessage::sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const{
+  auto & sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+    if (sensor.has_activated())
+      return sensor.activated();
+    else
+      throw runtime_error("Not a bool: " + sensor.DebugString());
 }
 
 vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const

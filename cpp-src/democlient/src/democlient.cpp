@@ -5,7 +5,7 @@
 #include <click/HandshakeInitMessageBuilder.h>
 
 using namespace std;
-using namespace algoryx::click;
+using namespace click;
 
 inline vector<double> double_vector_from(initializer_list<double> doubles)
 {

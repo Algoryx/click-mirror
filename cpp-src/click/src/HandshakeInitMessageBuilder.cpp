@@ -1,7 +1,7 @@
 #include <memory>
 #include <click/HandshakeInitMessageBuilder.h>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
 HandshakeInitMessageBuilder::HandshakeInitMessageBuilder(unique_ptr<protobuf::HandshakeInitMessage> pm)

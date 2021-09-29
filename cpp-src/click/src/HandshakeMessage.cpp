@@ -1,9 +1,9 @@
 #include <click/HandshakeMessage.h>
 
-using namespace algoryx::click;
+using namespace click;
 using namespace std;
 
-unique_ptr<HandshakeMessage> algoryx::click::toHandshakeMessage(unique_ptr<Message> message) {
+unique_ptr<HandshakeMessage> click::toHandshakeMessage(unique_ptr<Message> message) {
     return unique_ptr<HandshakeMessage>(static_cast<HandshakeMessage *>(message.release()));
 }
 

@@ -3,7 +3,7 @@
 #include<memory>
 #include <click/HandshakeInitMessage.h>
 
-class algoryx::click::HandshakeInitMessageBuilder {
+class click::HandshakeInitMessageBuilder {
 
 public:
     std::unique_ptr<HandshakeInitMessage> build();
