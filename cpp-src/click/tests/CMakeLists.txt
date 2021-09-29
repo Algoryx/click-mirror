@@ -1,7 +1,7 @@
 # From https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#cmake-targets
 Include(FetchContent)
 
-set(TEST_EXECUTABLE_TARGET click-test)
+set(TEST_EXECUTABLE_TARGET click-tests)
 
 FetchContent_Declare(
     Catch2

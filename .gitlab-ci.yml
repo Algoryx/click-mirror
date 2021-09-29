@@ -72,7 +72,7 @@ test-cpp-lib-linux:
     - job: build-cpp-lib-linux
       artifacts: true
   script:
-    - build/bin/tests --reporter junit --out catch2-junit.xml
+    - build/bin/click-tests --reporter junit --out catch2-junit.xml
   artifacts:
     when: always
     reports:

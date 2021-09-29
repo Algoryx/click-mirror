@@ -62,3 +62,13 @@ install(FILES
     include/click/Client.h
     DESTINATION include/click
 )
+
+# Version handling, From https://www.youtube.com/watch?v=bsXLMQ6WgIk 42:00
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file("ClickConfigVersion.cmake"
+    VERSION ${CLICK_VERSION}
+    COMPATIBILITY SameMajorVersion
+    )
+install(FILES "ClickConfig.cmake" "${CMAKE_BINARY_DIR}/click/ClickConfigVersion.cmake"
+    DESTINATION lib/cmake/click
+    )
