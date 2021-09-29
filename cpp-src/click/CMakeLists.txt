@@ -1,3 +1,16 @@
+set(PUBLIC_INCLUDE_SOURCES
+    include/click/Client.h
+    include/click/ControlMessage.h
+    include/click/ControlMessageBuilder.h
+    include/click/DllExport.h
+    include/click/HandshakeInitMessage.h
+    include/click/HandshakeInitMessageBuilder.h
+    include/click/HandshakeMessage.h
+    include/click/Message.h
+    include/click/MessageSerializer.h
+    include/click/SensorMessage.h
+    )
+
 add_library(clicklib)
 target_sources(clicklib
     PRIVATE
@@ -11,15 +24,8 @@ target_sources(clicklib
         src/HandshakeInitMessage.cpp
         src/HandshakeInitMessageBuilder.cpp
         src/SensorMessage.cpp
+        ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h
-        include/click/Message.h
-        include/click/ControlMessage.h
-        include/click/ControlMessageBuilder.h
-        include/click/SensorMessage.h
-        include/click/HandshakeMessage.h
-        include/click/HandshakeInitMessage.h
-        include/click/HandshakeInitMessageBuilder.h
-        include/click/Client.h
     )
 target_link_libraries(clicklib
     PUBLIC
@@ -47,19 +53,12 @@ install(TARGETS
 install(EXPORT ClickTargets
     FILE ClickTargets.cmake
     NAMESPACE Click::
-    DESTINATION lib/cmake/Click
+    DESTINATION lib/cmake/click
     )
 
 install(FILES 
     ../../build/protobuf-gen/Messaging.pb.h
-    include/click/Message.h
-    include/click/ControlMessage.h
-    include/click/ControlMessageBuilder.h
-    include/click/SensorMessage.h
-    include/click/HandshakeMessage.h
-    include/click/HandshakeInitMessage.h
-    include/click/HandshakeInitMessageBuilder.h
-    include/click/Client.h
+    ${PUBLIC_INCLUDE_SOURCES}
     DESTINATION include/click
 )
 
