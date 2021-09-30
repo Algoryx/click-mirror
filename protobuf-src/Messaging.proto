@@ -1,0 +1,207 @@
+syntax = "proto3";
+
+package click.protobuf;
+
+enum MessageType {
+  HandshakeInitMessageType = 0;
+  HandshakeMessageType = 1;
+  ControlMessageType = 2;
+  SensorMessageType = 3;
+  ResetMessageType = 4;
+  ErrorMessageType = 5;
+}
+
+enum ValueType {
+  Angle = 0;               // radians
+  AngleVelocity = 1;       // radians/sec
+  Torque = 2;              // Nm
+  Position = 3;            // meters vec3
+  RPY = 4;                 // radians
+  Activated = 5;           // True/False
+  Acceleration = 6;        // m/s2   vec3
+  Force = 7;               // Newton vec3
+  DirectionalTorque = 8;   // Nm     vec3
+  AngularAcceleration = 9; // rad/s2 vec3
+}
+
+message Message {
+  MessageType messageType = 1;
+  int32 id = 2; // Needed?
+}
+
+// Version is available in Handshake only to be able to break backward compatibility.
+// Then, and only then, update current by 1, and add reserved <old version>
+enum Version {
+  UNDEFINED = 0;
+  CURRENT_VERSION=1;
+}
+
+// Each message below has messageType set to the corresponding MessageType enum value
+// This makes it possible to implement messages as a flat class hierarchy with Message as parent
+
+
+message HandshakeInitMessage {
+  MessageType messageType = 1;
+  Version version = 2;
+}
+
+/* HandshakeMessage example
+- Version: 1
+- Objects:
+  - panda_2
+    - Joints
+      - controlType: angles/velocities/torques          // one only - defined in brick
+      - controlsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
+      - jointSensorsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
+      - jointSensors: Angle, Velocity, Torque
+      - controlEvents:
+        - gripper -> Activated
+      - Sensors: 
+        - external --> 
+          - Sensors: Force, AngularAcceleration
+  - panda_tool
+    ...
+  - box
+    - objectSensors
+      - Sensors: RPY, Position
+*/
+
+message HandshakeMessage {
+  MessageType messageType = 1;
+  Version version = 2;
+
+  message Sensors {
+    repeated ValueType types = 1;
+  }
+    
+  message Object {
+    repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
+    repeated string jointSensorsInOrder = 7;   // The sensors in the order they are expected in every SensorMessage
+    repeated ValueType jointSensors = 2;       // sensor types per control (joints), indicates which vectors in SensorMessage are sent
+    // TODO: How solve optional with respect to inital value? Suggestion: Use default scalar values, ie "0"/False/...
+    map<string, ValueType> controlEvents = 3;  // Which controls are optional, ie not present in every ControlMessage, must be in first though!
+    map<string, Sensors> sensors = 4;          // Sensors per joint or other part
+    repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
+  };
+  
+  ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques
+  map<string, Object> objects = 4;            // Key is name of object/robot
+}
+
+
+/*
+- ControlMessage example:
+  - panda_2
+      - angles
+    - gripper:
+      - true
+  - panda_tool
+    ...
+*/
+
+message ControlMessage {
+  MessageType messageType = 1;  
+
+  message Object { 
+    // - not clear by spec that is mutually exclusive
+    // - needs controlEvent type anyway probably(?)
+    // + can copy vectors more effectively, ie together with extend instead of individually
+    // + fewer bytes in message
+    repeated double angles = 1;            // Present in every ControlMessage
+    repeated double angleVelocities = 2;   // Present in every ControlMessage
+    repeated double torques = 3;           // Present in every ControlMessage
+    map<string, bool> controlEvents = 4;   // Optionals, if missing, keep same value as before
+  };
+
+  map<string, Object> objects = 2;
+}
+
+/*
+SensorMessage example:
+
+- panda_2
+  - angleSensors [1,2,3,4] size = #joints
+  - angleVelocitySensors ...
+  - torqueSensors ...
+  ...
+
+  - Map: name_of_sensor --> List[Force, Torque] in order defined by handshake
+    - external_1 --> Sensors: List[force-vec3, torque-vec3]
+    - external_imu --> Sensors
+    - external_imu --> Sensors
+    # not in urdf file, not officically supported
+    # controller (mc-rtc) typically has additional file
+    # --> add in Brick, send it in handshake
+  ...
+- box
+  - objectSensors
+    - position
+    - rpy
+*/
+
+
+message SensorMessage {
+  MessageType messageType = 1;
+
+  message Vec3 {
+    repeated double arr = 1;
+  }
+  
+  // This is 1 byte longer than Vec3
+  // message XYZ {
+  //   double x = 1;
+  //   double y = 2;
+  //   double z = 3;
+  // }
+
+  message Sensor {
+    oneof value {
+      double angle = 1;
+      double angleVelocity = 2;
+      double torque = 3;
+      Vec3 position = 4;
+      Vec3 rpy = 5;
+      bool activated = 6;
+      Vec3 acceleration = 7;
+      Vec3 force = 8;
+      Vec3 directionalTorque = 9;
+      Vec3 angularAcceleration = 10;    
+    }
+  };
+
+  message Sensors {
+    repeated Sensor sensor = 1;  // 
+  }
+  
+  message Object {
+    // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
+    repeated double angleSensors = 1;
+    repeated double angleVelocitySensors = 2;
+    repeated double torqueSensors = 3;
+    repeated Vec3 forceSensors = 5;
+    // Sensors on the object, order of ValueType defined in handshake.
+    repeated Sensor objectSensors = 4;
+    // Sensors identified by name, ie not per joint or object, names and order of ValueType defined in handshake.
+    // TODO: Discuss with Pierre et al if these can be less generic, ie can we define a vector in handshake instead of using map?
+    map<string, Sensors> sensors = 6;
+  }
+
+  // TODO: Suggest System instead of Object, ok for Pierre?
+  // If so, perhaps one map for objects, one for systems?
+  map<string, Object> objects = 3;
+}
+
+message ResetMessage {
+  MessageType messageType = 1;
+}
+
+
+enum ErrorType {
+  VersionNotSupported = 0;
+}
+
+message ErrorMessage {
+  MessageType messageType = 1;
+  ErrorType error = 2;
+  string errormessage = 3;
+}
