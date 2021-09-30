@@ -1,0 +1,132 @@
+stages:
+  - prebuild
+  - build
+  - build2
+  - test
+
+.run-in-docker:
+  tags:
+    - linux
+    - docker
+#  services:
+    # configure a registry mirror https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
+#    - docker:dind
+
+.build-docker:
+  tags:
+    - linux
+    - docker-host
+  before_script:
+    - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
+    # TODO: Discuss why differs with Emanuel
+#    - export
+#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+
+.build_and_push: &build-and-push
+  - export DOCKER_IMAGE=$CI_REGISTRY_IMAGE/$IMAGE_NAME:$DOCKER_IMAGE_TAG
+  - echo Building $DOCKER_IMAGE from $DOCKER_FILE
+  - docker build --pull -t $DOCKER_IMAGE --build-arg DOCKER_IMAGE_TAG -f $DOCKER_FILE .
+  - docker push $DOCKER_IMAGE
+
+
+build-docker-ci:
+  extends: .build-docker
+  image: docker:latest
+  stage: prebuild
+  script:
+    - cd docker
+    - export DOCKER_FILE=Dockerfile.CI
+    - export IMAGE_NAME=docker-ci
+    - export DOCKER_IMAGE_TAG=latest
+    - *build-and-push
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - docker/Dockerfile.CI
+
+
+build-cpp-lib-linux:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  script:
+    - mkdir build
+    - cd build
+    # TODO: Add cmake flag for adding d to debuglibs
+    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja ../cpp-src
+    - ninja
+    - ninja install
+    - cmake -DCMAKE_BUILD_TYPE=Debug .
+    - ninja
+    - ninja install
+  artifacts:
+    paths:
+      - build/install
+      - build/bin
+
+
+test-cpp-lib-linux:
+  extends: .run-in-docker
+  stage: test
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  needs:
+    - job: build-cpp-lib-linux
+      artifacts: true
+  script:
+    - build/bin/click-tests --reporter junit --out catch2-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: catch2-junit.xml
+
+
+test-python-lib:
+  extends: .run-in-docker
+  stage: test
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  script:
+    # TODO: Test pip installed python lib instead
+#     - pip install --editable python
+    - pip3 install -r python-src/requirements-test.txt
+    - pytest --junitxml=pytest-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: pytest-junit.xml
+
+
+build-cpp-lib-windows:
+  stage: build
+  tags:
+    - windows
+    - vs2019
+  script:
+    - mkdir build
+    - cd build
+    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A x64 ../cpp-src
+#    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A Win32 ../cpp-src
+    - cmake --build . --target INSTALL --config Debug
+    - cmake -D CMAKE_BUILD_TYPE=Release .
+    - cmake --build . --target INSTALL --config Release
+  artifacts:
+    paths:
+      - build/install
+      - build/bin
+
+
+test-cpp-lib-windows:
+  stage: test
+  tags:
+    - windows
+    - vs2019
+  needs:
+    - job: build-cpp-lib-windows
+      artifacts: true
+  script:
+    - build/bin/click-tests --reporter junit --out win-catch2-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: win-catch2-junit.xml

@@ -1,7 +1,7 @@
 # From https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#cmake-targets
 Include(FetchContent)
 
-set(TEST_EXECUTABLE_TARGET click-test)
+set(TEST_EXECUTABLE_TARGET click-tests)
 
 FetchContent_Declare(
     Catch2
@@ -11,21 +11,21 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-set(TEST_SOURCES
-    test_srcdir.cpp
-    test_control_message.cpp
-    test_inithandshake_message.cpp
-    test_protobuf_messages.cpp
-    integrationtest_sensor_message.cpp
-    integrationtest_handshake_message.cpp
-    test_protobuf_message_integration.cpp
-)
-
-add_executable(${TEST_EXECUTABLE_TARGET} ${TEST_SOURCES})
+add_executable(${TEST_EXECUTABLE_TARGET})
+target_sources(${TEST_EXECUTABLE_TARGET}
+    PRIVATE
+        test_srcdir.cpp
+        test_control_message.cpp
+        test_inithandshake_message.cpp
+        test_protobuf_messages.cpp
+        integrationtest_sensor_message.cpp
+        integrationtest_handshake_message.cpp
+        test_protobuf_message_integration.cpp
+    )
 target_link_libraries(${TEST_EXECUTABLE_TARGET}
     PRIVATE
-    clicklib
-    Catch2::Catch2WithMain
+        clicklib
+        Catch2::Catch2WithMain
 )
 
 # Test execution target

@@ -1,0 +1,32 @@
+FROM ubuntu:20.04
+
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -qy \
+  wget apt-transport-https gpg \
+  gcc python3-pip python3-venv ninja-build tzdata git && \
+  rm -rf /var/lib/apt/lists/*
+
+# https://apt.kitware.com/ is to enable using newer cmake versions (20.04 version is too old for latest protobuf)
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null && \
+  echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -qy \
+  cmake && \
+  rm -rf /var/lib/apt/lists/*
+RUN pip3 install -U conan
+
+# Not needed yet, but might when using c#
+# RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
+#   DEBIAN_FRONTEND=noninteractive apt-get install -qy -f ./packages-microsoft-prod.deb && \
+#   rm packages-microsoft-prod.deb
+
+# RUN apt-get update && \
+#   DEBIAN_FRONTEND=noninteractive apt-get install -qy dotnet-sdk-5.0 && \
+#   rm -rf /var/lib/apt/lists/*
+
+# Enable conan library cache
+VOLUME [ "/root/.conan/data" ]
+
+#WORKDIR /build/cpp_api/oos3/
+

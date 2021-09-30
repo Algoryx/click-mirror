@@ -60,7 +60,8 @@ rm -rf * .github.conan.cmake
 
 ## Build and test python
 
-Note: Updating Messaging.proto requires running protoc as below, and preferably committing it to repo.
+The generated protobuf python code is committed in git repo.
+It is created as part of c++ build, but can be created by running protoc as below.
 
 ```bash
 protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
