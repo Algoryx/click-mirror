@@ -1,5 +1,4 @@
 #include <catch2/catch.hpp>
-
 #include <Messaging.pb.h>
 #include <click/MessageFactory.h>
 

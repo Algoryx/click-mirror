@@ -25,7 +25,7 @@ SCENARIO("Protobuf sensormessage serialization from file", "[clicklib]" ) {
                 REQUIRE(sensorMessage.objects().at("robot1").anglesensors().at(0) == 1.0);
                 REQUIRE(sensorMessage.objects().at("robot1").anglevelocitysensors().at(0) == 2.0);
                 REQUIRE(sensorMessage.objects().at("robot1").torquesensors().at(0) == 3.0);
-                REQUIRE_THAT(sensorMessage.DebugString(), Catch::Matchers::StartsWith("messageType: SensorMessageType"));
+                REQUIRE_THAT(sensorMessage.DebugString(), Contains("messageType: SensorMessageType"));
 //                REQUIRE_THAT(sensorMessage.DebugString(), Equals("SensorMessageType"));
             }
 

@@ -1,13 +1,11 @@
 #include <fstream>
 #include <catch2/catch.hpp>
-
 #include <click/MessageSerializer.h>
 #include <click/HandshakeMessage.h>
 #include "testpaths.h"
 
 using namespace std;
 using namespace click;
-// https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 using Catch::Matchers::StartsWith;
 

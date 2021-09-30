@@ -52,7 +52,7 @@ ninja
 ninja test
 ```
 
-`ninja test` will compile test dependencies and run tests in one step.
+`ninja click-tests && ninja test` will compile test dependencies and run tests in one step.
 
 ## Reset c++ builds
 
