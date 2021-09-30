@@ -49,7 +49,10 @@ mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja ../cpp-src
 ninja
+ninja test
 ```
+
+`ninja test` will compile test dependencies and run tests in one step.
 
 ## Reset c++ builds
 
