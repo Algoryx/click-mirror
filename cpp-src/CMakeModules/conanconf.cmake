@@ -43,7 +43,7 @@ conan_cmake_configure(
     zmqpp/4.2.0
   BUILD_REQUIRES
     protobuf/3.17.1
-    catch2/2.11.1
+    catch2/2.13.7
   GENERATORS
     cmake
     cmake_find_package
