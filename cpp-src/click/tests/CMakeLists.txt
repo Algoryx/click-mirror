@@ -19,3 +19,4 @@ target_link_libraries(click-tests
 
 include(Catch)
 catch_discover_tests(click-tests)
+

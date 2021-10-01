@@ -1,15 +1,15 @@
-# Add Library target with the generated protobuf sources
 add_library(clickprotobuf)
 target_sources(clickprotobuf PRIVATE Messaging.proto)
+
 find_package(Protobuf REQUIRED)
 target_link_libraries(clickprotobuf
     PUBLIC
-        CONAN_PKG::protobuf
+        protobuf::libprotobuf
     )
 target_include_directories(clickprotobuf 
     PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>  
-    $<INSTALL_INTERFACE:include/click>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>  
+        $<INSTALL_INTERFACE:include/click>
     )
 
 protobuf_generate(TARGET clickprotobuf LANGUAGE cpp)
