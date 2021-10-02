@@ -1,8 +1,10 @@
 #include <memory>
 #include <click/ControlMessageBuilder.h>
+#include <Messaging.pb.h>
 
 using namespace click;
 using namespace std;
+
 
 ControlMessageBuilderImpl::ControlMessageBuilderImpl(unique_ptr<protobuf::ControlMessage> control_m)
 {
@@ -48,3 +50,8 @@ unique_ptr<ControlMessageBuilder> ControlMessageBuilderImpl::builder()
     control_m->set_messagetype(protobuf::ControlMessageType);
     return unique_ptr<ControlMessageBuilder>(new ControlMessageBuilderImpl(move(control_m)));
 }
+
+ControlMessageBuilder::~ControlMessageBuilder() = default;
+AddControlBuilder::~AddControlBuilder() = default;
+AddControlEventBuilder::~AddControlEventBuilder() = default;
+ControlMessageBuilderImpl::~ControlMessageBuilderImpl() = default;

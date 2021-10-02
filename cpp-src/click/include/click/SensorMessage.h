@@ -1,5 +1,4 @@
 #pragma once
-#include <Messaging.pb.h>
 #include <click/DllExport.h>
 #include <click/Message.h>
 
@@ -7,6 +6,10 @@
 #include <array>
 
 namespace click {
+
+  namespace protobuf {
+    class SensorMessage;
+  }
 
   typedef std::array<double, 3> Vec3;
 

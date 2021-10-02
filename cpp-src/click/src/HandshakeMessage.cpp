@@ -1,4 +1,5 @@
 #include <click/HandshakeMessage.h>
+#include <Messaging.pb.h>
 
 using namespace click;
 using namespace std;

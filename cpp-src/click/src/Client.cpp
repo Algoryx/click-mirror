@@ -3,6 +3,7 @@
 #include <click/ControlMessage.h>
 #include <click/SensorMessage.h>
 #include <click/MessageSerializer.h>
+#include <Messaging.pb.h>
 
 #pragma warning(push)
 #pragma warning(disable : 4005) // Macro redefinition in zmqpp

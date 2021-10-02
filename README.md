@@ -44,13 +44,13 @@ build/bin/democlient
 
 ## Build, test, and install click c++ library
 
+NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install. 
+
 ```bash
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install ../cpp-src
-ninja
-ninja test
-ninja install
+ninja && ninja test install
 ```
 
 `ninja click-tests && ninja test` will compile test dependencies and run tests in one step.

@@ -2,31 +2,29 @@
 
 #include <string>
 #include<click/DllExport.h>
-// NOTE: Include used to keep types consistent with protobuf only
-#include<Messaging.pb.h>
 
 namespace click {
 
   enum MessageType {
-    HandshakeInitMessageType = protobuf::HandshakeInitMessageType,
-    HandshakeMessageType = protobuf::HandshakeMessageType,
-    ControlMessageType = protobuf::ControlMessageType,
-    SensorMessageType = protobuf::SensorMessageType,
-    ResetMessageType = protobuf::ResetMessageType,
-    ErrorMessageType = protobuf::ErrorMessageType
+    HandshakeInitMessageType = 0,
+    HandshakeMessageType = 1,
+    ControlMessageType = 2,
+    SensorMessageType = 3,
+    ResetMessageType = 4,
+    ErrorMessageType = 5
   };
 
   enum ValueType {
-    Angle = protobuf::Angle,                            // radians
-    AngleVelocity = protobuf::AngleVelocity,            // radians/sec
-    Torque = protobuf::Torque,                          // Nm
-    Position = protobuf::Position,                      // meters vec3
-    RPY = protobuf::RPY,                                // radians
-    Activated = protobuf::Activated,                    // True/False
-    Acceleration = protobuf::Acceleration,              // m/s2   vec3
-    Force = protobuf::Force,                            // Newton vec3
-    DirectionalTorque = protobuf::DirectionalTorque,    // Nm     vec3
-    AngularAcceleration = protobuf::AngularAcceleration // rad/s2 vec3
+    Angle = 0,                     // radians
+    AngleVelocity = 1,             // radians/sec
+    Torque = 2,                    // Nm
+    Position = 3,                  // meters vec3
+    RPY = 4,                       // radians
+    Activated = 5,                 // True/False
+    Acceleration = 6,              // m/s2   vec3
+    Force = 7,                     // Newton vec3
+    DirectionalTorque = 8,         // Nm     vec3
+    AngularAcceleration = 9        // rad/s2 vec3
   };
 
   class MessageSerializer;

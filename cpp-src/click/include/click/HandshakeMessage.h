@@ -1,5 +1,4 @@
 #pragma once
-#include <Messaging.pb.h>
 #include <click/DllExport.h>
 #include <click/Message.h>
 
@@ -7,6 +6,10 @@
 #include <string>
 
 namespace click {
+  namespace protobuf {
+    class HandshakeMessage;
+  }
+  
   class HandshakeMessage : public Message
   {
   public:
