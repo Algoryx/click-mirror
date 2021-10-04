@@ -1,0 +1,15 @@
+version: "3"
+services:
+  click:
+    build:
+      context: .
+      dockerfile: Dockerfile.CI
+    image: registry.algoryx.se/algoryx/external/click/docker-ci
+    working_dir: "/click"
+    command: ${CMD:-"bash"}
+    volumes:
+      - ../:/click
+    ports:
+      - "5555:5555"
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"

@@ -5,7 +5,7 @@
 #
 
 import zmq
-from message_proto_helpers import MessageFactory, MessageSerializer
+from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
 
 context = zmq.Context()
 

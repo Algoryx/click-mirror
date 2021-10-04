@@ -1,2 +1,2 @@
-pyzmq
-protobuf
+pyzmq==22.0.2
+protobuf==3.17.1

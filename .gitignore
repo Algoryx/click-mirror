@@ -1,3 +1,5 @@
 /build*
 __pycache__
 oos
+python-src/src/*.egg-info
+python-src/dist

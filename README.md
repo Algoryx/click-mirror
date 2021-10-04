@@ -64,12 +64,22 @@ rm -rf * .github.conan.cmake
 
 ## Build and test python
 
+```bash
+# Install locally, fetch updates
+pip3 install -e python-src
+# Run tests
+pytest
+# Build pip archive
+python3 -m build
+# Run demo server
+python3 -m pyClick.demo.server
+```
+
 The generated protobuf python code is committed in git repo.
 It is created as part of c++ build, but can be created by running protoc as below.
 
 ```bash
 protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
-pytest
 ```
 
 ## Test frameworks
@@ -83,3 +93,7 @@ We are using [Catch2](https://github.com/catchorg/Catch2/) testing framework wit
 ### Python pytest
 
 Python tests are using pytest
+
+### Python remarks
+
+To surcomvent clashes with python library click, the python library is called pyClick.

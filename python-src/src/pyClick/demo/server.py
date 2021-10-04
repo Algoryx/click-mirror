@@ -5,8 +5,8 @@
 #
 
 import zmq
-from message_proto_helpers import MessageFactory, MessageSerializer
-from Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
+from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
+from pyClick.Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
 
 
 def main():
