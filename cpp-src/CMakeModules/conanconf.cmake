@@ -48,7 +48,7 @@ conan_cmake_configure(
     cmake
     cmake_find_package
   OPTIONS
-    # Needed for 32 bit builds
+    # Needed for 32 bit builds on windows
     zeromq:encryption=None
   )
 

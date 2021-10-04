@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
 //    const string endpoint = "tcp://host.docker.internal:5555";
 
     // Verify protobuf version
-    GOOGLE_PROTOBUF_VERIFY_VERSION;
     Client client;
     unique_ptr<Message> message;
     unique_ptr<Message> reply;

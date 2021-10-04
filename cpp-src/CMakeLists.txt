@@ -10,7 +10,6 @@ project(click VERSION 0.1
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
     LANGUAGES CXX)
 
-# TODO: Change this into target_compile_features
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_DEBUG_POSTFIX "-d")
 
