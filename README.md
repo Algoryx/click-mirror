@@ -96,4 +96,4 @@ Python tests are using pytest
 
 ### Python remarks
 
-To surcomvent clashes with python library click, the python library is called pyClick.
+To circumvent clashes with python library click, the python library is called pyClick.
