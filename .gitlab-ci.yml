@@ -100,7 +100,7 @@ test-python-lib:
   stage: test
   image: $CI_REGISTRY_IMAGE/docker-ci
   needs:
-    - job: build-python-linux
+    - job: build-python-lib
       artifacts: true
   script:
     - pip3 install -r python-src/requirements-test.txt
