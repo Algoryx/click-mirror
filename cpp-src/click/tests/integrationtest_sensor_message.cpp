@@ -1,14 +1,10 @@
 #include <fstream>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_string.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
+#include <catch2/catch.hpp>
 #include <click/MessageSerializer.h>
 #include <click/SensorMessage.h>
 #include "testpaths.h"
-
 using namespace std;
 using namespace click;
-// https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Contains;
 using Catch::Matchers::Equals;
 
@@ -29,7 +25,7 @@ SCENARIO("sensormessage serialization from file", "[clicklib]")
 
             THEN("it should have debugstring")
             {
-                REQUIRE_THAT(sensorMessage->debugString(), Catch::Matchers::StartsWith("messageType: SensorMessageType"));
+                REQUIRE_THAT(sensorMessage->debugString(), Contains("messageType: SensorMessageType"));
                 //     REQUIRE_THAT(sensorMessage->debugString(), Equals("SensorMessageType"));
             }
 

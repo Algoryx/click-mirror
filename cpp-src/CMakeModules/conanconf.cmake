@@ -43,12 +43,12 @@ conan_cmake_configure(
     zmqpp/4.2.0
   BUILD_REQUIRES
     protobuf/3.17.1
-    catch2/2.11.1
+    catch2/2.13.7
   GENERATORS
     cmake
     cmake_find_package
   OPTIONS
-    # Needed for 32 bit builds
+    # Needed for 32 bit builds on windows
     zeromq:encryption=None
   )
 
@@ -61,3 +61,5 @@ conan_cmake_configure(
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake) 
 conan_basic_setup(TARGETS) 
+
+set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")

@@ -54,7 +54,6 @@ build-cpp-lib-linux:
   script:
     - mkdir build
     - cd build
-    # TODO: Add cmake flag for adding d to debuglibs
     - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja ../cpp-src
     - ninja
     - ninja install

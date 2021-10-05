@@ -16,6 +16,8 @@ using namespace std;
 
 Client::Client()
 {
+  // Verify protobuf version
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
   m_context = std::make_unique<zmqpp::context>();
 
   zmqpp::socket_type type = zmqpp::socket_type::request;

@@ -1,12 +1,10 @@
 #include <fstream>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
+#include <catch2/catch.hpp>
 #include <Messaging.pb.h>
 #include "testpaths.h"
 
 using namespace std;
 using namespace click::protobuf;
-// https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Contains;
 using Catch::Matchers::Equals;
 using google::protobuf::Map;
@@ -27,7 +25,7 @@ SCENARIO("Protobuf sensormessage serialization from file", "[clicklib]" ) {
                 REQUIRE(sensorMessage.objects().at("robot1").anglesensors().at(0) == 1.0);
                 REQUIRE(sensorMessage.objects().at("robot1").anglevelocitysensors().at(0) == 2.0);
                 REQUIRE(sensorMessage.objects().at("robot1").torquesensors().at(0) == 3.0);
-                REQUIRE_THAT(sensorMessage.DebugString(), Catch::Matchers::StartsWith("messageType: SensorMessageType"));
+                REQUIRE_THAT(sensorMessage.DebugString(), Contains("messageType: SensorMessageType"));
 //                REQUIRE_THAT(sensorMessage.DebugString(), Equals("SensorMessageType"));
             }
 

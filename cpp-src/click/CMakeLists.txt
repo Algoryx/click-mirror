@@ -1,3 +1,5 @@
+find_package(zmqpp REQUIRED)
+
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
     include/click/ControlMessage.h
@@ -11,7 +13,8 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/SensorMessage.h
     )
 
-add_library(clicklib)
+#add_library(clicklib SHARED)
+add_library(clicklib STATIC)
 target_sources(clicklib
     PRIVATE
         src/MessageFactory.cpp
@@ -28,8 +31,9 @@ target_sources(clicklib
         include/click/MessageFactory.h
     )
 target_link_libraries(clicklib
+    PRIVATE
+        zmqpp::zmqpp
     PUBLIC
-        CONAN_PKG::zmqpp
         clickprotobuf
 )
 target_include_directories(clicklib 

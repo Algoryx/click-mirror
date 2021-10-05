@@ -10,7 +10,6 @@ project(click VERSION 0.1
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
     LANGUAGES CXX)
 
-# TODO: Change this into target_compile_features
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_DEBUG_POSTFIX "-d")
 
@@ -20,7 +19,10 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 # Conan - deps
 include(conanconf)
 
+include(CTest)
+
 # Project directives
 add_subdirectory(../protobuf-src ./protobuf-gen)
 add_subdirectory(click)
 add_subdirectory(democlient)
+

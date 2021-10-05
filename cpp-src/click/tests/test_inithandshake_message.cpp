@@ -1,5 +1,4 @@
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/matchers/catch_matchers_all.hpp>
+#include <catch2/catch.hpp>
 #include <click/HandshakeInitMessage.h>
 #include <click/HandshakeInitMessageBuilder.h>
 #include <click/MessageSerializer.h>
@@ -7,7 +6,6 @@
 
 using namespace std;
 using namespace click;
-// https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top
 using Catch::Matchers::Equals;
 using Catch::Matchers::StartsWith;
 

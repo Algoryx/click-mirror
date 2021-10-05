@@ -42,17 +42,18 @@ python python-src/src/python
 build/bin/democlient
 ```
 
-## Build and test c++
+## Build, test, and install click c++ library
 
 ```bash
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja ../cpp-src
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install ../cpp-src
 ninja
 ninja test
+ninja install
 ```
 
-`ninja test` will compile test dependencies and run tests in one step.
+`ninja click-tests && ninja test` will compile test dependencies and run tests in one step.
 
 ## Reset c++ builds
 
