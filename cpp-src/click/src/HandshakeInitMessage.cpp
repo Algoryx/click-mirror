@@ -4,17 +4,17 @@
 namespace click
 {
 
-  CLICK_EXPORT HandshakeInitMessage::HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage> control_m)
+  HandshakeInitMessage::HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage> control_m)
   {
     this->pm = std::move(control_m);
   };
 
-  CLICK_EXPORT std::string HandshakeInitMessage::debugString() const
+  std::string HandshakeInitMessage::debugString() const
   {
     return this->pm->DebugString();
   }
 
-  CLICK_EXPORT MessageType HandshakeInitMessage::messageType() const
+  MessageType HandshakeInitMessage::messageType() const
   {
     return static_cast<MessageType>(pm->messagetype());
   }
@@ -24,5 +24,5 @@ namespace click
     return this->pm->SerializeAsString();
   }
 
-  CLICK_EXPORT HandshakeInitMessage::~HandshakeInitMessage() = default;
+  HandshakeInitMessage::~HandshakeInitMessage() = default;
 }

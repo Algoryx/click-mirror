@@ -10,12 +10,12 @@ HandshakeInitMessageBuilder::HandshakeInitMessageBuilder(unique_ptr<protobuf::Ha
     this->message = move(pm);
 }
 
-CLICK_EXPORT unique_ptr<HandshakeInitMessage> HandshakeInitMessageBuilder::build()
+unique_ptr<HandshakeInitMessage> HandshakeInitMessageBuilder::build()
 {
     return unique_ptr<HandshakeInitMessage>(new HandshakeInitMessage(move(message)));
 }
 
-CLICK_EXPORT unique_ptr<HandshakeInitMessageBuilder> HandshakeInitMessageBuilder::builder()
+unique_ptr<HandshakeInitMessageBuilder> HandshakeInitMessageBuilder::builder()
 {
     unique_ptr<protobuf::HandshakeInitMessage> pm = make_unique<protobuf::HandshakeInitMessage>();
     pm->set_messagetype(protobuf::HandshakeInitMessageType);
@@ -23,4 +23,4 @@ CLICK_EXPORT unique_ptr<HandshakeInitMessageBuilder> HandshakeInitMessageBuilder
     return unique_ptr<HandshakeInitMessageBuilder>(new HandshakeInitMessageBuilder(move(pm)));
 }
 
-CLICK_EXPORT HandshakeInitMessageBuilder::~HandshakeInitMessageBuilder() = default;
+HandshakeInitMessageBuilder::~HandshakeInitMessageBuilder() = default;

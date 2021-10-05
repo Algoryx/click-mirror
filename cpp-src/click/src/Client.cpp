@@ -15,7 +15,7 @@
 using namespace click;
 using namespace std;
 
-CLICK_EXPORT Client::Client()
+Client::Client()
 {
   // Verify protobuf version
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -25,26 +25,26 @@ CLICK_EXPORT Client::Client()
   m_socket = std::make_unique<zmqpp::socket>(*m_context, type);
 }
 
-CLICK_EXPORT void Client::connect(const std::string& endpoint) {
+void Client::connect(const std::string& endpoint) {
   m_socket->connect(endpoint);
 }
 
-CLICK_EXPORT bool Client::send(const std::string& bytes) const {
+bool Client::send(const std::string& bytes) const {
   return m_socket->send(bytes);
 }
 
-CLICK_EXPORT bool Client::receive(std::string& responseBytes) const{
+bool Client::receive(std::string& responseBytes) const{
   return m_socket->receive(responseBytes);
 }
 
-CLICK_EXPORT bool Client::send(const Message& message) const
+bool Client::send(const Message& message) const
 {
   MessageSerializer serializer;
   string bytes = serializer.serializeToString(message);
   return m_socket->send(bytes);
 }
 
-CLICK_EXPORT unique_ptr<Message> Client::blockingReceive()
+unique_ptr<Message> Client::blockingReceive()
 {
   MessageSerializer serializer;
   string bytes;
@@ -52,7 +52,7 @@ CLICK_EXPORT unique_ptr<Message> Client::blockingReceive()
   return serializer.fromBytes(bytes);
 }
 
-CLICK_EXPORT Client::~Client()
+Client::~Client()
 {
   m_socket->close();
   m_socket.reset();

@@ -8,32 +8,32 @@ ControlMessage::ControlMessage(std::unique_ptr<protobuf::ControlMessage> control
   this->control_m = std::move(control_m);
 };
 
-CLICK_EXPORT std::string ControlMessage::debugString() const
+std::string ControlMessage::debugString() const
 {
   return this->control_m->DebugString();
 }
 
-CLICK_EXPORT std::vector<double> ControlMessage::angles(const std::string &objectname) const {
+std::vector<double> ControlMessage::angles(const std::string &objectname) const {
   google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).angles();
   return std::vector<double>(arr.begin(), arr.end());
 }
 
-CLICK_EXPORT std::vector<double> ControlMessage::angleVelocities(const std::string &objectname) const {
+std::vector<double> ControlMessage::angleVelocities(const std::string &objectname) const {
   google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).anglevelocities();
   return std::vector<double>(arr.begin(), arr.end());
 }
 
-CLICK_EXPORT std::vector<double> ControlMessage::torques(const std::string &objectname) const {
+std::vector<double> ControlMessage::torques(const std::string &objectname) const {
   google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).torques();
   return std::vector<double>(arr.begin(), arr.end());
 }
 
-CLICK_EXPORT bool ControlMessage::controlEvent(const std::string &objectname, std::string controlname) const {
+bool ControlMessage::controlEvent(const std::string &objectname, std::string controlname) const {
   return this->control_m->objects().at(objectname).controlevents().at(controlname);
 }
 
 
-CLICK_EXPORT MessageType ControlMessage::messageType() const {
+MessageType ControlMessage::messageType() const {
   return static_cast<MessageType>(control_m->messagetype());
 }
 
@@ -41,5 +41,5 @@ std::string ControlMessage::serializeToBytes() const {
   return this->control_m->SerializeAsString();
 }
 
-CLICK_EXPORT ControlMessage::~ControlMessage() = default;
+ControlMessage::~ControlMessage() = default;
 }

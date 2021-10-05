@@ -8,12 +8,12 @@
 using namespace click;
 using namespace std;
 
-CLICK_EXPORT string MessageSerializer::serializeToString(const Message &message)
+string MessageSerializer::serializeToString(const Message &message)
 {
   return message.serializeToBytes();
 }
 
-CLICK_EXPORT unique_ptr<Message> MessageSerializer::sensorMessageFromIStream(istream *input)
+unique_ptr<Message> MessageSerializer::sensorMessageFromIStream(istream *input)
 {
   unique_ptr<protobuf::SensorMessage> pm = make_unique<protobuf::SensorMessage>();
   pm->ParseFromIstream(input);
@@ -21,7 +21,7 @@ CLICK_EXPORT unique_ptr<Message> MessageSerializer::sensorMessageFromIStream(ist
   return unique_ptr<SensorMessage>(new SensorMessage(move(pm)));
 }
 
-CLICK_EXPORT unique_ptr<Message> MessageSerializer::handshakeMessageFromIStream(istream *input)
+unique_ptr<Message> MessageSerializer::handshakeMessageFromIStream(istream *input)
 {
   unique_ptr<protobuf::HandshakeMessage> pm = make_unique<protobuf::HandshakeMessage>();
   pm->ParseFromIstream(input);
@@ -29,7 +29,7 @@ CLICK_EXPORT unique_ptr<Message> MessageSerializer::handshakeMessageFromIStream(
   return unique_ptr<HandshakeMessage>(new HandshakeMessage(move(pm)));
 }
 
-CLICK_EXPORT unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
+unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
 {
   protobuf::Message pm;
   pm.ParseFromString(bytes);

@@ -10,31 +10,31 @@ SensorMessage::SensorMessage(unique_ptr<protobuf::SensorMessage> sensorMessage)
   this->sensorMess = move(sensorMessage);
 };
 
-CLICK_EXPORT string SensorMessage::debugString() const
+string SensorMessage::debugString() const
 {
   return this->sensorMess->DebugString();
 }
 
-CLICK_EXPORT vector<double> SensorMessage::angles(const string &objectname) const
+vector<double> SensorMessage::angles(const string &objectname) const
 {
 
   auto vec = this->sensorMess->objects().at(objectname).anglesensors();
   return vector<double>(vec.begin(), vec.end());
 }
 
-CLICK_EXPORT vector<double> SensorMessage::angleVelocities(const string &objectname) const
+vector<double> SensorMessage::angleVelocities(const string &objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
   return vector<double>(vec.begin(), vec.end());
 }
 
-CLICK_EXPORT vector<double> SensorMessage::torques(const string &objectname) const
+vector<double> SensorMessage::torques(const string &objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).torquesensors();
   return vector<double>(vec.begin(), vec.end());
 }
 
-CLICK_EXPORT Vec3 SensorMessage::objectRPY(const string &objectname) const
+Vec3 SensorMessage::objectRPY(const string &objectname) const
 {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_rpy())
@@ -46,7 +46,7 @@ CLICK_EXPORT Vec3 SensorMessage::objectRPY(const string &objectname) const
 }
 
 // Vec3 will RVO:d according to https://stackoverflow.com/questions/27368236/return-value-or-rvalue-reference
-CLICK_EXPORT Vec3 SensorMessage::objectPosition(const string &objectname) const
+Vec3 SensorMessage::objectPosition(const string &objectname) const
 {
   for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position())
@@ -67,7 +67,7 @@ inline Vec3 createFrom(const protobuf::SensorMessage_Vec3 &src)
   return Vec3{src.arr().at(0), src.arr().at(1), src.arr().at(2)};
 }
 
-CLICK_EXPORT Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const
+Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const
 {
   auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_acceleration())
@@ -86,7 +86,7 @@ CLICK_EXPORT Vec3 SensorMessage::sensorVec3(const std::string &objectname, const
     throw runtime_error("Not a Vec3: " + sensor.DebugString());
 }
 
-CLICK_EXPORT double SensorMessage::sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const
+double SensorMessage::sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const
 {
   auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_angle())
@@ -99,7 +99,7 @@ CLICK_EXPORT double SensorMessage::sensorDouble(const std::string &objectname, c
     throw runtime_error("Not a double: " + sensor.DebugString());
 }
 
-CLICK_EXPORT bool SensorMessage::sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const
+bool SensorMessage::sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const
 {
   auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_activated())
@@ -108,7 +108,7 @@ CLICK_EXPORT bool SensorMessage::sensorBool(const std::string &objectname, const
     throw runtime_error("Not a bool: " + sensor.DebugString());
 }
 
-CLICK_EXPORT vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
+vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
 {
   vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
   auto target = res.begin();
@@ -141,7 +141,7 @@ CLICK_EXPORT vector<Sensor> SensorMessage::sensor(const string &objectname, cons
   return res;
 }
 
-CLICK_EXPORT MessageType SensorMessage::messageType() const
+MessageType SensorMessage::messageType() const
 {
   return static_cast<MessageType>(sensorMess->messagetype());
 }
@@ -151,9 +151,9 @@ string SensorMessage::serializeToBytes() const
   return this->sensorMess->SerializeAsString();
 }
 
-CLICK_EXPORT SensorMessage::~SensorMessage() = default;
+SensorMessage::~SensorMessage() = default;
 
-CLICK_EXPORT unique_ptr<SensorMessage> click::toSensorMessage(unique_ptr<Message> message)
+unique_ptr<SensorMessage> click::toSensorMessage(unique_ptr<Message> message)
 {
   return unique_ptr<SensorMessage>(static_cast<SensorMessage *>(message.release()));
 }
