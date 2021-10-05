@@ -54,9 +54,10 @@ build-cpp-lib-linux:
   script:
     - mkdir build
     - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja ../cpp-src
+    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB ../cpp-src
     - ninja
     - ninja install
+    - ninja package
     - cmake -DCMAKE_BUILD_TYPE=Debug .
     - ninja
     - ninja install
@@ -64,6 +65,7 @@ build-cpp-lib-linux:
     paths:
       - build/install
       - build/bin
+      - build/click*Linux.deb
 
 
 test-cpp-lib-linux:
@@ -81,14 +83,28 @@ test-cpp-lib-linux:
       junit: catch2-junit.xml
 
 
+build-python-lib:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  script:
+    - pip3 install -r python-src/requirements-publish.txt
+    - cd python-src
+    - python3 -m build
+  artifacts:
+    paths:
+      - python-src/dist/
+
 test-python-lib:
   extends: .run-in-docker
   stage: test
   image: $CI_REGISTRY_IMAGE/docker-ci
+  needs:
+    - job: build-python-lib
+      artifacts: true
   script:
-    # TODO: Test pip installed python lib instead
-#     - pip install --editable python
     - pip3 install -r python-src/requirements-test.txt
+    - pip3 install python-src/dist/pyClick*whl
     - pytest --junitxml=pytest-junit.xml
   artifacts:
     when: always

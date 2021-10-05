@@ -1,6 +1,6 @@
 from typing import List
-from Messaging_pb2 import ValueType
-from message_proto_helpers import MessageFactory, MessageSerializer
+from pyClick.Messaging_pb2 import ValueType
+from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
 
 
 class ControllableRobot():
