@@ -16,7 +16,6 @@ set(CMAKE_DEBUG_POSTFIX "-d")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 #message("modpath: ${CMAKE_MODULE_PATH}")
 
-# Conan - deps
 include(conanconf)
 include(configure_cpack)
 include(CTest)

@@ -35,7 +35,7 @@ A typical flow is
 After building as specified below, run these commands in separate prompts:
 
 ```bash
-python python-src/src/python 
+python3 -m pyClick.demo.server
 ```
 
 ```bash

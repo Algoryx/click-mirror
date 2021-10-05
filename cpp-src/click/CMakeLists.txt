@@ -13,8 +13,7 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/SensorMessage.h
     )
 
-#add_library(clicklib SHARED)
-add_library(clicklib STATIC)
+add_library(clicklib)
 target_sources(clicklib
     PRIVATE
         src/MessageFactory.cpp
