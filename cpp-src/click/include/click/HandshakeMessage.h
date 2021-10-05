@@ -35,5 +35,5 @@ namespace click
     friend class MessageSerializer;
   };
 
-  std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);
+  CLICK_EXPORT std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);
 }

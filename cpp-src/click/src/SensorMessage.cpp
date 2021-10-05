@@ -143,4 +143,4 @@ string SensorMessage::serializeToBytes() const {
   return this->sensorMess->SerializeAsString();
 }
 
-SensorMessage::~SensorMessage() {}
+SensorMessage::~SensorMessage() = default;

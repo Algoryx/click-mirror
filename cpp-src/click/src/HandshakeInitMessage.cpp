@@ -21,5 +21,5 @@ std::string HandshakeInitMessage::serializeToBytes() const {
   return this->pm->SerializeAsString();
 }
 
-HandshakeInitMessage::~HandshakeInitMessage() {}
+HandshakeInitMessage::~HandshakeInitMessage() = default;
 }
