@@ -4,10 +4,6 @@
 using namespace click;
 using namespace std;
 
-CLICK_EXPORT unique_ptr<HandshakeMessage> click::toHandshakeMessage(unique_ptr<Message> message) {
-    return unique_ptr<HandshakeMessage>(static_cast<HandshakeMessage *>(message.release()));
-}
-
 
 CLICK_EXPORT vector<string> HandshakeMessage::objects() const {
   vector<string> objects;
@@ -84,3 +80,8 @@ string HandshakeMessage::serializeToBytes() const {
 }
 
 CLICK_EXPORT HandshakeMessage::~HandshakeMessage() = default;
+
+CLICK_EXPORT unique_ptr<HandshakeMessage> click::toHandshakeMessage(unique_ptr<Message> message) {
+    return unique_ptr<HandshakeMessage>(static_cast<HandshakeMessage *>(message.release()));
+}
+

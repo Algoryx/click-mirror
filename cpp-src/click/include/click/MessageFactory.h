@@ -1,4 +1,5 @@
 #pragma once
+#include <click/DllExport.h>
 #include "Messaging.pb.h"
 
 namespace click { namespace protobuf {
