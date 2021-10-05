@@ -1,3 +1,3 @@
 #include<click/Message.h>
 
-click::Message::~Message() = default;
+CLICK_EXPORT click::Message::~Message() = default;
