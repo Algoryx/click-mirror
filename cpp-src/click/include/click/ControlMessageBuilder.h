@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <click/DllExport.h>
 #include <click/ControlMessage.h>
 
 namespace click
@@ -16,40 +17,40 @@ namespace click
     class ControlMessageBuilder
     {
     public:
-        virtual AddControlBuilder *object(std::string name) = 0;
-        virtual ~ControlMessageBuilder();
+        CLICK_EXPORT virtual AddControlBuilder *object(std::string name) = 0;
+        CLICK_EXPORT virtual ~ControlMessageBuilder();
     };
 
     class AddControlBuilder
     {
     public:
-        virtual AddControlEventBuilder *withAngles(std::vector<double> angles) = 0;
-        virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles) = 0;
-        virtual AddControlEventBuilder *withTorques(std::vector<double> torques) = 0;
-        virtual std::unique_ptr<ControlMessage> build() = 0;
-        virtual ~AddControlBuilder();
+        CLICK_EXPORT virtual AddControlEventBuilder *withAngles(std::vector<double> angles) = 0;
+        CLICK_EXPORT virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles) = 0;
+        CLICK_EXPORT virtual AddControlEventBuilder *withTorques(std::vector<double> torques) = 0;
+        CLICK_EXPORT virtual std::unique_ptr<ControlMessage> build() = 0;
+        CLICK_EXPORT virtual ~AddControlBuilder();
     };
 
     class AddControlEventBuilder
     {
     public:
-        virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated) = 0;
-        virtual AddControlBuilder *object(std::string name) = 0;
-        virtual std::unique_ptr<ControlMessage> build() = 0;
-        virtual ~AddControlEventBuilder();
+        CLICK_EXPORT virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated) = 0;
+        CLICK_EXPORT virtual AddControlBuilder *object(std::string name) = 0;
+        CLICK_EXPORT virtual std::unique_ptr<ControlMessage> build() = 0;
+        CLICK_EXPORT virtual ~AddControlEventBuilder();
     };
 
     class ControlMessageBuilderImpl : ControlMessageBuilder, AddControlBuilder, AddControlEventBuilder
     {
     public:
-        virtual AddControlBuilder *object(std::string name);
-        virtual AddControlEventBuilder *withAngles(std::vector<double> angles);
-        virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles);
-        virtual AddControlEventBuilder *withTorques(std::vector<double> torques);
-        virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated);
-        virtual std::unique_ptr<ControlMessage> build();
-        virtual ~ControlMessageBuilderImpl();
-        static std::unique_ptr<ControlMessageBuilder> builder();
+        CLICK_EXPORT virtual AddControlBuilder *object(std::string name);
+        CLICK_EXPORT virtual AddControlEventBuilder *withAngles(std::vector<double> angles);
+        CLICK_EXPORT virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles);
+        CLICK_EXPORT virtual AddControlEventBuilder *withTorques(std::vector<double> torques);
+        CLICK_EXPORT virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated);
+        CLICK_EXPORT virtual std::unique_ptr<ControlMessage> build();
+        CLICK_EXPORT virtual ~ControlMessageBuilderImpl();
+        CLICK_EXPORT static std::unique_ptr<ControlMessageBuilder> builder();
 
     private:
         ControlMessageBuilderImpl(std::unique_ptr<protobuf::ControlMessage> control_m);

@@ -27,8 +27,8 @@ namespace click
     CLICK_EXPORT ~ControlMessage();
 
   private:
-    CLICK_EXPORT ControlMessage(std::unique_ptr<protobuf::ControlMessage> control_m);
-    CLICK_EXPORT virtual std::string serializeToBytes() const;
+    ControlMessage(std::unique_ptr<protobuf::ControlMessage> control_m);
+    virtual std::string serializeToBytes() const;
 
     std::unique_ptr<protobuf::ControlMessage> control_m;
 

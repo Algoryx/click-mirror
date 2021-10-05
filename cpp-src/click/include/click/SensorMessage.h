@@ -49,8 +49,8 @@ namespace click
     CLICK_EXPORT ~SensorMessage();
 
   private:
-    CLICK_EXPORT SensorMessage(std::unique_ptr<protobuf::SensorMessage>);
-    CLICK_EXPORT virtual std::string serializeToBytes() const;
+    SensorMessage(std::unique_ptr<protobuf::SensorMessage>);
+    virtual std::string serializeToBytes() const;
 
     // TODO: AGX dev guidelines says use m_ for privates, think about it.
     std::unique_ptr<protobuf::SensorMessage> sensorMess;

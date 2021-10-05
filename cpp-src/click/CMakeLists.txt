@@ -29,6 +29,10 @@ target_sources(clicklib
         ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h
     )
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(clicklib PRIVATE BUILD_SHARED_LIBS)
+endif()
+  
 target_link_libraries(clicklib
     PRIVATE
         zmqpp::zmqpp

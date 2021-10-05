@@ -28,8 +28,8 @@ namespace click
     CLICK_EXPORT ~HandshakeInitMessage();
 
   private:
-    CLICK_EXPORT HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage>);
-    CLICK_EXPORT virtual std::string serializeToBytes() const;
+    HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage>);
+    virtual std::string serializeToBytes() const;
 
     std::unique_ptr<protobuf::HandshakeInitMessage> pm;
 
