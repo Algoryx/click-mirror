@@ -6,15 +6,25 @@
 
 import zmq
 from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
+from argparse import ArgumentParser
 
-context = zmq.Context()
+
+def parse_args():
+    parser = ArgumentParser(description='Demo client connecting to click server')
+    parser.add_argument('--host', metavar='<host>', type=str, default="localhost",
+                        help=f'server to connect to, default is localhost')
+    parser.add_argument('--port', metavar='<port>', type=str, default="5555",
+                        help=f'port to connect to, default is 5555')
+    return parser.parse_args()
+
+
+args = parse_args()
+addr = f"tcp://{args.host}:{args.port}"
 
 #  Socket to talk to server
-print("Connecting to click server…")
-print(f"Current libzmq version is {zmq.zmq_version()}")
-print(f"Current  pyzmq version is {zmq.__version__}")
-socket = context.socket(zmq.REQ)
-socket.connect("tcp://localhost:5555")
+socket = zmq.Context().socket(zmq.REQ)
+print(f"Connecting to click server {addr}")
+socket.connect(addr)
 
 handshake_init = MessageFactory.create_handshake_init()
 socket.send(handshake_init.SerializeToString())
