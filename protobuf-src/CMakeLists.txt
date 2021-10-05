@@ -1,4 +1,4 @@
-add_library(clickprotobuf)
+add_library(clickprotobuf STATIC)
 target_sources(clickprotobuf PRIVATE Messaging.proto)
 
 find_package(Protobuf REQUIRED)

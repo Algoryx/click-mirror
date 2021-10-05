@@ -53,6 +53,12 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=
 ninja && ninja test install
 ```
 
+or for shared library, add BUILD_SHARED_LIBS:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=ON ../cpp-src
+```
+
 `ninja click-tests && ninja test` will compile test dependencies and run tests in one step.
 
 ## Reset c++ builds

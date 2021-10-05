@@ -32,7 +32,6 @@ target_sources(clicklib
 target_link_libraries(clicklib
     PRIVATE
         zmqpp::zmqpp
-    PUBLIC
         clickprotobuf
 )
 target_include_directories(clicklib 
@@ -43,10 +42,14 @@ target_include_directories(clicklib
 
 add_subdirectory(tests)
 
+if(NOT BUILD_SHARED_LIBS)
+    set(CLICKPROTOBUF clickprotobuf)
+endif()
+
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
 install(TARGETS 
         clicklib
-        clickprotobuf
+        ${CLICKPROTOBUF}
     EXPORT ClickTargets    
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
@@ -70,6 +73,7 @@ write_basic_package_version_file("ClickConfigVersion.cmake"
     VERSION ${CLICK_VERSION}
     COMPATIBILITY SameMajorVersion
     )
+# TODO: Use ClickConfig.cmake without dependencies when BUILD_SHARED_LIBS
 install(FILES "ClickConfig.cmake" "${CMAKE_BINARY_DIR}/click/ClickConfigVersion.cmake"
     DESTINATION lib/cmake/click
     )
