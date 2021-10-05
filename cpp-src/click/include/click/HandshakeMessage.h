@@ -5,11 +5,12 @@
 #include <vector>
 #include <string>
 
-namespace click {
-  namespace protobuf {
+namespace click
+{
+  namespace protobuf
+  {
     class HandshakeMessage;
   }
-  
   class HandshakeMessage : public Message
   {
   public:
@@ -26,8 +27,8 @@ namespace click {
     CLICK_EXPORT ~HandshakeMessage();
 
   private:
-    HandshakeMessage(std::unique_ptr<protobuf::HandshakeMessage> HandshakeMessage);
-    virtual std::string serializeToBytes() const;
+    CLICK_EXPORT HandshakeMessage(std::unique_ptr<protobuf::HandshakeMessage> HandshakeMessage);
+    CLICK_EXPORT virtual std::string serializeToBytes() const;
 
     std::unique_ptr<protobuf::HandshakeMessage> pm;
 

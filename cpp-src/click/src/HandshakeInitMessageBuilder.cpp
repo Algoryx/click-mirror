@@ -1,6 +1,6 @@
 #include <memory>
-#include <click/HandshakeInitMessageBuilder.h>
 #include <Messaging.pb.h>
+#include <click/HandshakeInitMessageBuilder.h>
 
 using namespace click;
 using namespace std;

@@ -3,20 +3,21 @@
 #include <memory>
 #include <click/ControlMessage.h>
 
-namespace click { namespace protobuf {
-  class ControlMessage_Object;
-}}
-
-namespace click {
+namespace click
+{
+    namespace protobuf
+    {
+        class ControlMessage_Object;
+    }
 
     class AddControlBuilder;
     class AddControlEventBuilder;
 
     class ControlMessageBuilder
     {
-        public:
-            virtual AddControlBuilder *object(std::string name) = 0;
-            virtual ~ControlMessageBuilder();
+    public:
+        virtual AddControlBuilder *object(std::string name) = 0;
+        virtual ~ControlMessageBuilder();
     };
 
     class AddControlBuilder
@@ -38,7 +39,7 @@ namespace click {
         virtual ~AddControlEventBuilder();
     };
 
-    class ControlMessageBuilderImpl: ControlMessageBuilder, AddControlBuilder, AddControlEventBuilder
+    class ControlMessageBuilderImpl : ControlMessageBuilder, AddControlBuilder, AddControlEventBuilder
     {
     public:
         virtual AddControlBuilder *object(std::string name);

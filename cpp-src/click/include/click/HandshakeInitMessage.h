@@ -6,14 +6,18 @@
 #include <vector>
 #include <memory>
 
-namespace click { namespace protobuf {
-  class HandshakeInitMessage;
-}}
+namespace click
+{
+  namespace protobuf
+  {
+    class HandshakeInitMessage;
+  }
+}
 
-namespace click {
+namespace click
+{
 
   class HandshakeInitMessageBuilder;
-
 
   class HandshakeInitMessage : public Message
   {

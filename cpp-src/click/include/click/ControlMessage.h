@@ -6,14 +6,13 @@
 #include <vector>
 #include <memory>
 
-namespace click { namespace protobuf {
-  class ControlMessage;
-}}
-
-namespace click {
-
+namespace click
+{
+  namespace protobuf
+  {
+    class ControlMessage;
+  }
   class ControlMessageBuilder;
-
 
   class ControlMessage : public Message
   {

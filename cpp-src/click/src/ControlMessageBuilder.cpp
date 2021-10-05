@@ -1,6 +1,6 @@
 #include <memory>
-#include <click/ControlMessageBuilder.h>
 #include <Messaging.pb.h>
+#include <click/ControlMessageBuilder.h>
 
 using namespace click;
 using namespace std;
