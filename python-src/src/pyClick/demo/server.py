@@ -7,24 +7,45 @@
 import zmq
 from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
 from pyClick.Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
+from argparse import ArgumentParser
+
+
+def parse_args():
+    parser = ArgumentParser(description='Demo client connecting to click server')
+    parser.add_argument('--host', metavar='<host>', type=str, default="*",
+                        help=f'server to connect to, default is *')
+    parser.add_argument('--port', metavar='<port>', type=str, default="5555",
+                        help=f'port to connect to, default is 5555')
+    parser.add_argument('--addr', metavar='<addr>', type=str, default="",
+                        help=f'set addr. Ie ipc:///tmp/click.ipc. host and port will be ignored')
+    parser.add_argument('--trace', action='store_true',
+                        help=f'print what is sent/received')
+    return parser.parse_args()
 
 
 def main():
+    args = parse_args()
+    addr = f"tcp://{args.host}:{args.port}"
+    if args.addr:
+        addr = args.addr
     context = zmq.Context()
     socket = context.socket(zmq.REP)
-    socket.bind("tcp://*:5555")
+    socket.bind(addr)
 
     while True:
         request = MessageSerializer.from_bytes(socket.recv())
-        print(f"Received request: {request}")
+        if args.trace:
+            print(f"Received request: {request}")
 
         if request.messageType == HandshakeInitMessageType:
             response = handshake_message()
-            print(f"Sending handshake: {response}")
+            if args.trace:
+                print(f"Sending handshake: {response}")
             socket.send(response.SerializeToString())
         if request.messageType == ControlMessageType:
             response = sensor_message()
-            print(f"Sending sensormessage: {response}")
+            if args.trace:
+                print(f"Sending sensormessage: {response}")
             socket.send(response.SerializeToString())
 
 
