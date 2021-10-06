@@ -1,5 +1,5 @@
 set(CPACK_PACKAGE_VENDOR "Algoryx")
-# TODO: Do we have a generic address for this? Also see setup.py
+# TODO: Do we have a generic address for this?
 set(CPACK_PACKAGE_CONTACT "jonas.andersson@algoryx.se")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Connect Controller to Brick-enabled Simulation")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
