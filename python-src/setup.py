@@ -3,12 +3,11 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-# TODO: author* - do we have generic addresses and names?
 setuptools.setup(
     name="pyClick",
     version="0.1",
-    author="Jonas Andersson",
-    author_email="jonas.andersson@algoryx.se",
+    author="Algoryx",
+    author_email="contact@algoryx.se",
     description="Controller to AGX messaging",
     long_description=long_description,
     long_description_content_type="text/markdown",
