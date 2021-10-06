@@ -18,9 +18,6 @@ stages:
     - docker-host
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
-    # TODO: Discuss why differs with Emanuel
-#    - export
-#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 
