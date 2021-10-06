@@ -11,7 +11,7 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/Message.h
     include/click/MessageSerializer.h
     include/click/SensorMessage.h
-    )
+)
 
 add_library(click)
 target_sources(click
@@ -28,7 +28,7 @@ target_sources(click
         src/SensorMessage.cpp
         ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h
-    )
+ )
 if (BUILD_SHARED_LIBS)
     target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
 endif()
@@ -42,7 +42,7 @@ target_include_directories(click
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
         $<INSTALL_INTERFACE:include/click>
-    )
+)
 
 add_subdirectory(tests)
 
@@ -59,12 +59,13 @@ install(TARGETS
     ARCHIVE DESTINATION lib
     RUNTIME DESTINATION bin
     INCLUDES DESTINATION include
-    )
+)
+
 install(EXPORT ClickTargets
     FILE ClickTargets.cmake
     NAMESPACE Click::
     DESTINATION lib/cmake/click
-    )
+)
 
 install(FILES 
     ${PUBLIC_INCLUDE_SOURCES}
@@ -76,8 +77,10 @@ include(CMakePackageConfigHelpers)
 write_basic_package_version_file("ClickConfigVersion.cmake"
     VERSION ${CLICK_VERSION}
     COMPATIBILITY SameMajorVersion
-    )
-# TODO: Use ClickConfig.cmake without dependencies when BUILD_SHARED_LIBS
-install(FILES "ClickConfig.cmake" "${CMAKE_BINARY_DIR}/click/ClickConfigVersion.cmake"
+)
+if(BUILD_SHARED_LIBS)
+    set(CLICKCONFIGPATH "shared_conf/")
+endif()
+install(FILES "${CLICKCONFIGPATH}ClickConfig.cmake" "${CMAKE_BINARY_DIR}/click/ClickConfigVersion.cmake"
     DESTINATION lib/cmake/click
-    )
+)
