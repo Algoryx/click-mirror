@@ -1,5 +1,7 @@
+#include <Messaging.pb.h>
 #include <click/SensorMessage.h>
 #include<iostream>
+
 
 using namespace click;
 using namespace std;
@@ -141,4 +143,4 @@ string SensorMessage::serializeToBytes() const {
   return this->sensorMess->SerializeAsString();
 }
 
-SensorMessage::~SensorMessage() = default;
+SensorMessage::~SensorMessage() {}

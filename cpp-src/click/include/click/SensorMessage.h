@@ -1,28 +1,33 @@
 #pragma once
-#include <Messaging.pb.h>
 #include <click/DllExport.h>
 #include <click/Message.h>
 
 #include <vector>
 #include <array>
 
-namespace click {
+namespace click
+{
+  namespace protobuf
+  {
+    class SensorMessage;
+  }
 
   typedef std::array<double, 3> Vec3;
 
   // Sensor field/type is defined in handshake
   // TODO: But we should allow asking which anyway.
-  union Sensor {
-      double angle;
-      double angleVelocity;
-      double torque;
-      Vec3 position;
-      Vec3 rpy;
-      bool activated;
-      Vec3 acceleration;
-      Vec3 force;
-      Vec3 directionalTorque;
-      Vec3 angularAcceleration;
+  union Sensor
+  {
+    double angle;
+    double angleVelocity;
+    double torque;
+    Vec3 position;
+    Vec3 rpy;
+    bool activated;
+    Vec3 acceleration;
+    Vec3 force;
+    Vec3 directionalTorque;
+    Vec3 angularAcceleration;
   };
 
   class SensorMessage : public Message
@@ -44,8 +49,8 @@ namespace click {
     CLICK_EXPORT ~SensorMessage();
 
   private:
-    SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMessage);
-    virtual std::string serializeToBytes() const;
+    CLICK_EXPORT SensorMessage(std::unique_ptr<protobuf::SensorMessage>);
+    CLICK_EXPORT virtual std::string serializeToBytes() const;
 
     // TODO: AGX dev guidelines says use m_ for privates, think about it.
     std::unique_ptr<protobuf::SensorMessage> sensorMess;

@@ -3,16 +3,21 @@
 #include <memory>
 #include <click/ControlMessage.h>
 
-namespace click {
+namespace click
+{
+    namespace protobuf
+    {
+        class ControlMessage_Object;
+    }
 
     class AddControlBuilder;
     class AddControlEventBuilder;
 
     class ControlMessageBuilder
     {
-        public:
-            virtual AddControlBuilder *object(std::string name) = 0;
-            virtual ~ControlMessageBuilder() = default;
+    public:
+        virtual AddControlBuilder *object(std::string name) = 0;
+        virtual ~ControlMessageBuilder();
     };
 
     class AddControlBuilder
@@ -22,7 +27,7 @@ namespace click {
         virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles) = 0;
         virtual AddControlEventBuilder *withTorques(std::vector<double> torques) = 0;
         virtual std::unique_ptr<ControlMessage> build() = 0;
-        virtual ~AddControlBuilder() = default;
+        virtual ~AddControlBuilder();
     };
 
     class AddControlEventBuilder
@@ -31,10 +36,10 @@ namespace click {
         virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated) = 0;
         virtual AddControlBuilder *object(std::string name) = 0;
         virtual std::unique_ptr<ControlMessage> build() = 0;
-        virtual ~AddControlEventBuilder() = default;
+        virtual ~AddControlEventBuilder();
     };
 
-    class ControlMessageBuilderImpl: ControlMessageBuilder, AddControlBuilder, AddControlEventBuilder
+    class ControlMessageBuilderImpl : ControlMessageBuilder, AddControlBuilder, AddControlEventBuilder
     {
     public:
         virtual AddControlBuilder *object(std::string name);
@@ -43,7 +48,7 @@ namespace click {
         virtual AddControlEventBuilder *withTorques(std::vector<double> torques);
         virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated);
         virtual std::unique_ptr<ControlMessage> build();
-        virtual ~ControlMessageBuilderImpl() = default;
+        virtual ~ControlMessageBuilderImpl();
         static std::unique_ptr<ControlMessageBuilder> builder();
 
     private:

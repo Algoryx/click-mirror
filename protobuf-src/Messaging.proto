@@ -165,7 +165,7 @@ message SensorMessage {
       Vec3 acceleration = 7;
       Vec3 force = 8;
       Vec3 directionalTorque = 9;
-      Vec3 angularAcceleration = 10;    
+      Vec3 angularAcceleration = 10;
     }
   };
 

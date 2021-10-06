@@ -1,3 +1,4 @@
+#include <Messaging.pb.h>
 #include <click/MessageSerializer.h>
 #include <click/ControlMessage.h>
 #include <click/HandshakeMessage.h>

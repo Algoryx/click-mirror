@@ -1,4 +1,5 @@
 #include <click/Client.h>
+#include <Messaging.pb.h>
 #include <click/Message.h>
 #include <click/ControlMessage.h>
 #include <click/SensorMessage.h>

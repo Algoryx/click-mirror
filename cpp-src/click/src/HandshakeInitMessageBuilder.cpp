@@ -1,4 +1,5 @@
 #include <memory>
+#include <Messaging.pb.h>
 #include <click/HandshakeInitMessageBuilder.h>
 
 using namespace click;
@@ -21,3 +22,5 @@ unique_ptr<HandshakeInitMessageBuilder> HandshakeInitMessageBuilder::builder()
     pm->set_version(protobuf::CURRENT_VERSION);
     return unique_ptr<HandshakeInitMessageBuilder>(new HandshakeInitMessageBuilder(move(pm)));
 }
+
+HandshakeInitMessageBuilder::~HandshakeInitMessageBuilder() = default;

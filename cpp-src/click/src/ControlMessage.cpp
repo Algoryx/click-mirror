@@ -1,3 +1,4 @@
+#include <Messaging.pb.h>
 #include <click/ControlMessage.h>
 
 namespace click {

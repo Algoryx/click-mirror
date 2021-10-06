@@ -61,7 +61,6 @@ install(EXPORT ClickTargets
     )
 
 install(FILES 
-    ../../build/protobuf-gen/Messaging.pb.h
     ${PUBLIC_INCLUDE_SOURCES}
     DESTINATION include/click
 )

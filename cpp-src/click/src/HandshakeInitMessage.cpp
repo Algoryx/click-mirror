@@ -1,3 +1,4 @@
+#include <Messaging.pb.h>
 #include <click/HandshakeInitMessage.h>
 
 namespace click {
@@ -20,5 +21,5 @@ std::string HandshakeInitMessage::serializeToBytes() const {
   return this->pm->SerializeAsString();
 }
 
-HandshakeInitMessage::~HandshakeInitMessage() = default;
+HandshakeInitMessage::~HandshakeInitMessage() {}
 }

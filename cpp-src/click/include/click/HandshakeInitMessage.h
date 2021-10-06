@@ -2,16 +2,22 @@
 
 #include <click/DllExport.h>
 #include <click/Message.h>
-#include <Messaging.pb.h>
 
 #include <vector>
 #include <memory>
 
+namespace click
+{
+  namespace protobuf
+  {
+    class HandshakeInitMessage;
+  }
+}
 
-namespace click {
+namespace click
+{
 
   class HandshakeInitMessageBuilder;
-
 
   class HandshakeInitMessage : public Message
   {
