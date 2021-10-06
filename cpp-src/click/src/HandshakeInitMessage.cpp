@@ -1,25 +1,28 @@
 #include <Messaging.pb.h>
 #include <click/HandshakeInitMessage.h>
 
-namespace click {
-
-HandshakeInitMessage::HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage> control_m)
+namespace click
 {
-  this->pm = std::move(control_m);
-};
 
-std::string HandshakeInitMessage::debugString() const
-{
-  return this->pm->DebugString();
-}
+  HandshakeInitMessage::HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage> control_m)
+  {
+    this->pm = std::move(control_m);
+  };
 
-MessageType HandshakeInitMessage::messageType() const {
-  return static_cast<MessageType>(pm->messagetype());
-}
+  std::string HandshakeInitMessage::debugString() const
+  {
+    return this->pm->DebugString();
+  }
 
-std::string HandshakeInitMessage::serializeToBytes() const {
-  return this->pm->SerializeAsString();
-}
+  MessageType HandshakeInitMessage::messageType() const
+  {
+    return static_cast<MessageType>(pm->messagetype());
+  }
 
-HandshakeInitMessage::~HandshakeInitMessage() {}
+  std::string HandshakeInitMessage::serializeToBytes() const
+  {
+    return this->pm->SerializeAsString();
+  }
+
+  HandshakeInitMessage::~HandshakeInitMessage() = default;
 }

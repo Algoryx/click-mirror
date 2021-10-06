@@ -11,11 +11,10 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/Message.h
     include/click/MessageSerializer.h
     include/click/SensorMessage.h
-    )
+)
 
-#add_library(clicklib SHARED)
-add_library(clicklib STATIC)
-target_sources(clicklib
+add_library(click)
+target_sources(click
     PRIVATE
         src/MessageFactory.cpp
         src/MessageSerializer.cpp
@@ -29,36 +28,44 @@ target_sources(clicklib
         src/SensorMessage.cpp
         ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h
-    )
-target_link_libraries(clicklib
+ )
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
+endif()
+  
+target_link_libraries(click
     PRIVATE
         zmqpp::zmqpp
-    PUBLIC
         clickprotobuf
 )
-target_include_directories(clicklib 
+target_include_directories(click 
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
         $<INSTALL_INTERFACE:include/click>
-    )
+)
 
 add_subdirectory(tests)
 
+if(NOT BUILD_SHARED_LIBS)
+    set(CLICKPROTOBUF clickprotobuf)
+endif()
+
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
 install(TARGETS 
-        clicklib
-        clickprotobuf
+        click
+        ${CLICKPROTOBUF}
     EXPORT ClickTargets    
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
     RUNTIME DESTINATION bin
     INCLUDES DESTINATION include
-    )
+)
+
 install(EXPORT ClickTargets
     FILE ClickTargets.cmake
     NAMESPACE Click::
     DESTINATION lib/cmake/click
-    )
+)
 
 install(FILES 
     ${PUBLIC_INCLUDE_SOURCES}
@@ -70,7 +77,10 @@ include(CMakePackageConfigHelpers)
 write_basic_package_version_file("ClickConfigVersion.cmake"
     VERSION ${CLICK_VERSION}
     COMPATIBILITY SameMajorVersion
-    )
-install(FILES "ClickConfig.cmake" "${CMAKE_BINARY_DIR}/click/ClickConfigVersion.cmake"
+)
+if(BUILD_SHARED_LIBS)
+    set(CLICKCONFIGPATH "shared_conf/")
+endif()
+install(FILES "${CLICKCONFIGPATH}ClickConfig.cmake" "${CMAKE_BINARY_DIR}/click/ClickConfigVersion.cmake"
     DESTINATION lib/cmake/click
-    )
+)

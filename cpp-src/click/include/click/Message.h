@@ -34,7 +34,7 @@ namespace click {
   public:
     CLICK_EXPORT virtual std::string debugString() const = 0;
     CLICK_EXPORT virtual MessageType messageType() const = 0;
-    CLICK_EXPORT virtual ~Message() = 0;
+    CLICK_EXPORT virtual ~Message();
 
   private:
     virtual std::string serializeToBytes() const = 0;

@@ -18,9 +18,6 @@ stages:
     - docker-host
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
-    # TODO: Discuss why differs with Emanuel
-#    - export
-#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 
@@ -112,7 +109,7 @@ test-python-lib:
       junit: pytest-junit.xml
 
 
-build-cpp-lib-windows:
+.build-cpp-lib-windows:
   stage: build
   tags:
     - windows
@@ -120,8 +117,7 @@ build-cpp-lib-windows:
   script:
     - mkdir build
     - cd build
-    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A x64 ../cpp-src
-#    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A Win32 ../cpp-src
+    - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A $TARGET_ARCH $EXTRA_PARAMS ../cpp-src
     - cmake --build . --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release .
     - cmake --build . --target INSTALL --config Release
@@ -130,14 +126,30 @@ build-cpp-lib-windows:
       - build/install
       - build/bin
 
+build-x64-cpp-lib-windows:
+  extends: .build-cpp-lib-windows
+  variables:
+    TARGET_ARCH: "x64"
 
-test-cpp-lib-windows:
+build-static-Win32-cpp-lib-windows:
+  extends: .build-cpp-lib-windows
+  variables:
+    TARGET_ARCH: "Win32"
+
+build-dynamic-Win32-cpp-lib-windows:
+  extends: .build-cpp-lib-windows
+  variables:
+    TARGET_ARCH: "Win32"
+    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
+
+
+.test-cpp-lib-windows:
   stage: test
   tags:
     - windows
     - vs2019
   needs:
-    - job: build-cpp-lib-windows
+    - job: build-x64-cpp-lib-windows
       artifacts: true
   script:
     - build/bin/click-tests --reporter junit --out win-catch2-junit.xml
@@ -145,3 +157,21 @@ test-cpp-lib-windows:
     when: always
     reports:
       junit: win-catch2-junit.xml
+
+test-x64-cpp-lib-windows:
+  extends: .test-cpp-lib-windows
+  needs:
+    - job: build-x64-cpp-lib-windows
+      artifacts: true
+
+test-static-Win32-cpp-lib-windows:
+  extends: .test-cpp-lib-windows
+  needs:
+    - job: build-static-Win32-cpp-lib-windows
+      artifacts: true
+
+test-dynamic-Win32-cpp-lib-windows:
+  extends: .test-cpp-lib-windows
+  needs:
+    - job: build-dynamic-Win32-cpp-lib-windows
+      artifacts: true

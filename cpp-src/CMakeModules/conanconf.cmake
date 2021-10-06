@@ -1,4 +1,6 @@
-# Optionally use CMAKE_SOURCE_DIR as conan.cmake location and version control the file to get better 
+# Optionally use CMAKE_SOURCE_DIR as conan.cmake location and version control the file to get
+# - feedback when it changes
+# - build not depending on file to be online.
 set(CONAN_CMAKE_LOCAL_FILE ${CMAKE_BINARY_DIR}/conan.cmake)
 set(CONAN_CMAKE_MASTER_FILE ${CMAKE_BINARY_DIR}/.github.conan.cmake)
 
@@ -23,19 +25,6 @@ endif()
 
 include(${CONAN_CMAKE_LOCAL_FILE})
 
-# TODO: Discuss and possibly remove below!
-# We want to update packages in the Conan cache that have been changed on the
-# server. However, for performance reasons we only want to do that on the
-# first CMake run. We detect first run by checking for CMakeCache.txt.
-# if (EXISTS "${CMAKE_BINARY_DIR}/CMakeCache.txt")
-#   set(GENERIC_UPDATE_CONAN_PACKAGES "")
-# else()
-#   set(GENERIC_UPDATE_CONAN_PACKAGES "UPDATE")
-# endif()
-
-# set(GENERIC_CONAN_BUILD_RULE "never")
-
-# Using recommendation at https://github.com/conan-io/cmake-conan to not use conan_cmake_run which is deprecated.
 
 conan_cmake_configure(
   REQUIRES 

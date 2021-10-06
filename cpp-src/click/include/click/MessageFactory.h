@@ -1,4 +1,5 @@
 #pragma once
+#include <click/DllExport.h>
 #include "Messaging.pb.h"
 
 namespace click { namespace protobuf {
@@ -6,8 +7,8 @@ namespace click { namespace protobuf {
     class MessageFactory {
 
         public:
-            static ControlMessage * create_controlMessage();
-            static HandshakeInitMessage * create_handshakeInitMessage();
+            CLICK_EXPORT static ControlMessage * create_controlMessage();
+            CLICK_EXPORT static HandshakeInitMessage * create_handshakeInitMessage();
     };
 
 }}

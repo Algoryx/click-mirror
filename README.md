@@ -35,7 +35,7 @@ A typical flow is
 After building as specified below, run these commands in separate prompts:
 
 ```bash
-python python-src/src/python 
+python3 -m pyClick.demo.server
 ```
 
 ```bash
@@ -51,6 +51,12 @@ mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install ../cpp-src
 ninja && ninja test install
+```
+
+or for shared library, add BUILD_SHARED_LIBS:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=ON ../cpp-src
 ```
 
 `ninja click-tests && ninja test` will compile test dependencies and run tests in one step.

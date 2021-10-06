@@ -27,13 +27,13 @@ namespace click
     CLICK_EXPORT ~HandshakeMessage();
 
   private:
-    CLICK_EXPORT HandshakeMessage(std::unique_ptr<protobuf::HandshakeMessage> HandshakeMessage);
-    CLICK_EXPORT virtual std::string serializeToBytes() const;
+    HandshakeMessage(std::unique_ptr<protobuf::HandshakeMessage> HandshakeMessage);
+    virtual std::string serializeToBytes() const;
 
     std::unique_ptr<protobuf::HandshakeMessage> pm;
 
     friend class MessageSerializer;
   };
 
-  std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);
+  CLICK_EXPORT std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);
 }

@@ -6,9 +6,9 @@
 class click::HandshakeInitMessageBuilder {
 
 public:
-    std::unique_ptr<HandshakeInitMessage> build();
-    static std::unique_ptr<HandshakeInitMessageBuilder> builder();
-    virtual ~HandshakeInitMessageBuilder();
+    CLICK_EXPORT std::unique_ptr<HandshakeInitMessage> build();
+    CLICK_EXPORT static std::unique_ptr<HandshakeInitMessageBuilder> builder();
+    CLICK_EXPORT virtual ~HandshakeInitMessageBuilder();
 
 private:
     HandshakeInitMessageBuilder(std::unique_ptr<protobuf::HandshakeInitMessage> control_m);
