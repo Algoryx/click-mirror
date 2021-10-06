@@ -13,8 +13,8 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/SensorMessage.h
     )
 
-add_library(clicklib)
-target_sources(clicklib
+add_library(click)
+target_sources(click
     PRIVATE
         src/MessageFactory.cpp
         src/MessageSerializer.cpp
@@ -30,15 +30,15 @@ target_sources(clicklib
         include/click/MessageFactory.h
     )
 if (BUILD_SHARED_LIBS)
-    target_compile_definitions(clicklib PRIVATE BUILD_SHARED_LIBS)
+    target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
 endif()
   
-target_link_libraries(clicklib
+target_link_libraries(click
     PRIVATE
         zmqpp::zmqpp
         clickprotobuf
 )
-target_include_directories(clicklib 
+target_include_directories(click 
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
         $<INSTALL_INTERFACE:include/click>
@@ -52,7 +52,7 @@ endif()
 
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
 install(TARGETS 
-        clicklib
+        click
         ${CLICKPROTOBUF}
     EXPORT ClickTargets    
     LIBRARY DESTINATION lib

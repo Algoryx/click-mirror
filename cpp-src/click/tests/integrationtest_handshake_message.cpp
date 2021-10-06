@@ -9,7 +9,7 @@ using namespace click;
 using Catch::Matchers::Equals;
 using Catch::Matchers::StartsWith;
 
-SCENARIO("HandshakeMessage deserialization from file", "[clicklib]")
+SCENARIO("HandshakeMessage deserialization from file", "[click]")
 {
 
     GIVEN("A serialized HandshakeMessage")

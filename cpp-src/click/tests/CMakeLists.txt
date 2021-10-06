@@ -14,7 +14,7 @@ target_sources(click-tests
     )
 target_link_libraries(click-tests
     PRIVATE
-        clicklib
+        click
         clickprotobuf # Only needed for test_protobuf_*.cpp
         CONAN_PKG::catch2
 )

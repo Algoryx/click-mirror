@@ -13,7 +13,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-SCENARIO("controlmessage serialization", "[clicklib]")
+SCENARIO("controlmessage serialization", "[click]")
 {
     GIVEN("A controlmessage")
     {

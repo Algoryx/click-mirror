@@ -8,7 +8,7 @@ using namespace click::protobuf;
 using Catch::Matchers::Equals;
 
 
-SCENARIO("protobuf controlmessage serialization", "[clicklib]" ) {
+SCENARIO("protobuf controlmessage serialization", "[click]" ) {
 
     GIVEN("A controlmessage with a robot with angle controls and a gripper") {
 

@@ -8,7 +8,7 @@ using namespace click;
 using Catch::Matchers::Contains;
 using Catch::Matchers::Equals;
 
-SCENARIO("sensormessage serialization from file", "[clicklib]")
+SCENARIO("sensormessage serialization from file", "[click]")
 {
     GIVEN("A serialized sensormessage")
     {

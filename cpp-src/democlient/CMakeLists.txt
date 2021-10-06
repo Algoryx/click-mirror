@@ -8,5 +8,5 @@ target_sources(democlient
     )
 target_link_libraries(democlient
     PRIVATE
-    clicklib
+    click
 )

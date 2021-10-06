@@ -14,7 +14,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-SCENARIO("handshakeInit serialization", "[clicklib]")
+SCENARIO("handshakeInit serialization", "[click]")
 {
     GIVEN("A handshake init message")
     {

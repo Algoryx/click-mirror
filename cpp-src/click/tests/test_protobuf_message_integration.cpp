@@ -9,7 +9,7 @@ using Catch::Matchers::Contains;
 using Catch::Matchers::Equals;
 using google::protobuf::Map;
 
-SCENARIO("Protobuf sensormessage serialization from file", "[clicklib]" ) {
+SCENARIO("Protobuf sensormessage serialization from file", "[click]" ) {
 
     GIVEN("A serialized sensormessage") {
 
