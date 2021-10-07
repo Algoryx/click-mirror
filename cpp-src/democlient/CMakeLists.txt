@@ -6,6 +6,7 @@ target_sources(democlient
     PRIVATE
         src/democlient.cpp
     )
+target_compile_features(democlient PRIVATE cxx_std_17)
 target_link_libraries(democlient
     PRIVATE
     click
