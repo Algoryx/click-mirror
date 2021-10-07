@@ -12,6 +12,7 @@ target_sources(click-tests
         test_message.cpp
         catch_main.cpp
     )
+target_compile_features(click-tests PRIVATE cxx_std_17)
 target_link_libraries(click-tests
     PRIVATE
         click

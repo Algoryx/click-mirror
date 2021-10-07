@@ -71,12 +71,12 @@ rm -rf * .github.conan.cmake
 ## Build and test python
 
 ```bash
-# Install locally, fetch updates
+# Install requirements
+pip3 install -r python-src/requirements-test.txt
+# Install click locally
 pip3 install -e python-src
 # Run tests
 pytest
-# Build pip archive
-python3 -m build
 # Run demo server
 python3 -m pyClick.demo.server
 ```
@@ -87,6 +87,14 @@ It is created as part of c++ build, but can be created by running protoc as belo
 ```bash
 protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 ```
+
+## Build pip archive
+
+```bash
+pip3 install -r python-src/requirements-publish.txt
+python3 -m build
+```
+
 
 ## Test frameworks
 

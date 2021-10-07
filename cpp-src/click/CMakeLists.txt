@@ -32,6 +32,7 @@ target_sources(click
 if (BUILD_SHARED_LIBS)
     target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
 endif()
+target_compile_features(click PRIVATE cxx_std_17)
   
 target_link_libraries(click
     PRIVATE

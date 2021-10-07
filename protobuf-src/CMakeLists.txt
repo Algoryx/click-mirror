@@ -1,5 +1,6 @@
 add_library(clickprotobuf STATIC)
 target_sources(clickprotobuf PRIVATE Messaging.proto)
+target_compile_features(clickprotobuf PRIVATE cxx_std_17)
 
 find_package(Protobuf REQUIRED)
 target_link_libraries(clickprotobuf
