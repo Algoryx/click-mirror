@@ -3,6 +3,7 @@ stages:
   - build
   - build2
   - test
+  - publish
 
 .run-in-docker:
   tags:
@@ -108,6 +109,17 @@ test-python-lib:
     reports:
       junit: pytest-junit.xml
 
+publish-python-lib:
+  extends: .run-in-docker
+  stage: publish
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  needs:
+    - job: build-python-lib
+      artifacts: true
+  script:
+    - pip install twine
+    - python3 python-src/setup.py sdist bdist_wheel
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
 
 .build-cpp-lib-windows:
   stage: build
