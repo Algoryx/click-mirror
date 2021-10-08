@@ -88,7 +88,7 @@ build-python-lib:
   script:
     - pip3 install -r python-src/requirements-publish.txt
     - cd python-src
-    - python3 -m build
+    - python3 setup.py sdist bdist_wheel
   artifacts:
     paths:
       - python-src/dist/
@@ -117,9 +117,8 @@ publish-python-lib:
     - job: build-python-lib
       artifacts: true
   script:
-    - pip install twine
+    - pip3 install -r python-src/requirements-publish.txt
     - cd python-src
-    - python3 setup.py sdist bdist_wheel
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
 
 .build-cpp-lib-windows:

@@ -92,7 +92,7 @@ protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 
 ```bash
 pip3 install -r python-src/requirements-publish.txt
-python3 -m build
+python3 setup.py sdist bdist_wheel
 ```
 
 
