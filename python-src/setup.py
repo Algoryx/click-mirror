@@ -22,5 +22,9 @@ setuptools.setup(
     ],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
+    install_requires=[
+        'protobuf==3.17.1',
+        'pyzmq==22.3.0'
+    ],
     python_requires=">=3.8",
 )
