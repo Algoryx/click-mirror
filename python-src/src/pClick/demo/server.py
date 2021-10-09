@@ -5,8 +5,8 @@
 #
 
 import zmq
-from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
-from pyClick.Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
+from pClick.message_proto_helpers import MessageFactory, MessageSerializer
+from pClick.Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
 from argparse import ArgumentParser
 
 

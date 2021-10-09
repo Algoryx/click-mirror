@@ -23,11 +23,11 @@ A typical flow is
 ## Run demo server
 
 ```bash
-python3 -m pyClick.demo.server
+python3 -m pClick.demo.server
 ```
 
 ## Use
 
 ```python
-import pyClick
+import pClick
 ```

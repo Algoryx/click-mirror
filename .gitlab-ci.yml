@@ -102,7 +102,7 @@ test-python-lib:
       artifacts: true
   script:
     - pip3 install -r python-src/requirements-test.txt
-    - pip3 install python-src/dist/pyClick*whl
+    - pip3 install python-src/dist/pClick*whl
     - pytest --junitxml=pytest-junit.xml
   artifacts:
     when: always

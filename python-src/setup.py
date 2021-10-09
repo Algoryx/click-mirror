@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pyClick",
+    name="pClick",
     version="0.1",
     author="Algoryx",
     author_email="contact@algoryx.se",

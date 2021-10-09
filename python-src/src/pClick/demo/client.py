@@ -5,7 +5,7 @@
 #
 
 import zmq
-from pyClick.message_proto_helpers import MessageFactory, MessageSerializer
+from pClick.message_proto_helpers import MessageFactory, MessageSerializer
 from argparse import ArgumentParser
 
 
