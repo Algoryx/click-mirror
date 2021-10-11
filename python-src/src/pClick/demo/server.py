@@ -4,9 +4,9 @@
 #   Expects Message from client, replies with Message
 #
 
-from pClick.server import Server
-from pClick.message_proto_helpers import MessageFactory
-from pClick.Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
+from pClick import Server
+from pClick import MessageFactory
+from pClick import ControlMessageType, HandshakeInitMessageType, ValueType
 from argparse import ArgumentParser
 
 
