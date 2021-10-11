@@ -1,6 +1,7 @@
-from pClick.Messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
-from pClick.Messaging_pb2 import ValueType
-from pClick.message_proto_helpers import MessageFactory, MessageSerializer
+from pClick import Message, HandshakeMessage, SensorMessage, ResetMessage, HandshakeInitMessage
+from pClick.Messaging_pb2 import CURRENT_VERSION
+from pClick import ValueType
+from pClick import MessageFactory, MessageSerializer
 from pathlib import Path
 import pytest
 

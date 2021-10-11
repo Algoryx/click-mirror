@@ -4,8 +4,8 @@
 #   Sends "HandshakeInit" to server, expects "Handshake" back
 #
 
-from pClick.client import Client
-from pClick.message_proto_helpers import MessageFactory, MessageSerializer
+from pClick import Client
+from pClick import MessageFactory
 from argparse import ArgumentParser
 
 
