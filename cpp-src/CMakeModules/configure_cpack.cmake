@@ -1,4 +1,4 @@
-set(CPACK_PACKAGE_VENDOR "Algoryx")
+set(CPACK_PACKAGE_VENDOR "Algoryx Simulation")
 set(CPACK_PACKAGE_CONTACT "contact@algoryx.se")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Connect Controller to Brick-enabled Simulation")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
