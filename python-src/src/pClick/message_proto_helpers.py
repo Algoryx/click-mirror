@@ -1,5 +1,5 @@
-from pyClick.Messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
-from pyClick.Messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType
+from pClick.Messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
+from pClick.Messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType
 
 
 class MessageFactory:

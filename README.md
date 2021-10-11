@@ -35,7 +35,7 @@ A typical flow is
 After building as specified below, run these commands in separate prompts:
 
 ```bash
-python3 -m pyClick.demo.server
+python3 -m pClick.demo.server
 ```
 
 ```bash
@@ -78,7 +78,7 @@ pip3 install -e python-src
 # Run tests
 pytest
 # Run demo server
-python3 -m pyClick.demo.server
+python3 -m pClick.demo.server
 ```
 
 The generated protobuf python code is committed in git repo.
@@ -92,7 +92,7 @@ protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 
 ```bash
 pip3 install -r python-src/requirements-publish.txt
-python3 -m build
+python3 setup.py sdist bdist_wheel
 ```
 
 
@@ -110,4 +110,4 @@ Python tests are using pytest
 
 ### Python remarks
 
-To circumvent clashes with python library click, the python library is called pyClick.
+To circumvent clashes with python library click and pyClick, the python library is called pClick.

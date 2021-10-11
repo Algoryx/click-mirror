@@ -3,6 +3,7 @@ stages:
   - build
   - build2
   - test
+  - publish
 
 .run-in-docker:
   tags:
@@ -87,7 +88,7 @@ build-python-lib:
   script:
     - pip3 install -r python-src/requirements-publish.txt
     - cd python-src
-    - python3 -m build
+    - python3 setup.py sdist bdist_wheel
   artifacts:
     paths:
       - python-src/dist/
@@ -101,13 +102,24 @@ test-python-lib:
       artifacts: true
   script:
     - pip3 install -r python-src/requirements-test.txt
-    - pip3 install python-src/dist/pyClick*whl
+    - pip3 install python-src/dist/pClick*whl
     - pytest --junitxml=pytest-junit.xml
   artifacts:
     when: always
     reports:
       junit: pytest-junit.xml
 
+publish-python-lib:
+  extends: .run-in-docker
+  stage: publish
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  needs:
+    - job: build-python-lib
+      artifacts: true
+  script:
+    - pip3 install -r python-src/requirements-publish.txt
+    - cd python-src
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --skip-existing --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
 
 .build-cpp-lib-windows:
   stage: build
