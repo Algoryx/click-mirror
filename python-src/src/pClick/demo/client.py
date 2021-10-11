@@ -4,7 +4,7 @@
 #   Sends "HandshakeInit" to server, expects "Handshake" back
 #
 
-import zmq
+from pClick.client import Client
 from pClick.message_proto_helpers import MessageFactory, MessageSerializer
 from argparse import ArgumentParser
 
@@ -28,19 +28,17 @@ if args.addr:
     addr = args.addr
 
 #  Socket to talk to server
-socket = zmq.Context().socket(zmq.REQ)
+socket = Client()
 print(f"Connecting to click server {addr}")
 socket.connect(addr)
 
 handshake_init = MessageFactory.create_handshake_init()
-socket.send(handshake_init.SerializeToString())
-responsebytes = socket.recv()
-response = MessageSerializer.from_bytes(responsebytes)
+socket.send(handshake_init)
+response = socket.recv()
 print(f"Received response {response}")
 
 for i in range(0, args.range):
     handshake_init = MessageFactory.create_handshake_init()
-    socket.send(handshake_init.SerializeToString())
-    responsebytes = socket.recv()
-    response = MessageSerializer.from_bytes(responsebytes)
+    socket.send(handshake_init)
+    response = socket.recv()
 print(f"Sent {args.range + 1} messages")

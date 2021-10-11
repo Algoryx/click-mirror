@@ -4,8 +4,8 @@
 #   Expects Message from client, replies with Message
 #
 
-import zmq
-from pClick.message_proto_helpers import MessageFactory, MessageSerializer
+from pClick.server import Server
+from pClick.message_proto_helpers import MessageFactory
 from pClick.Messaging_pb2 import ControlMessageType, HandshakeInitMessageType, ValueType
 from argparse import ArgumentParser
 
@@ -28,12 +28,10 @@ def main():
     addr = f"tcp://{args.host}:{args.port}"
     if args.addr:
         addr = args.addr
-    context = zmq.Context()
-    socket = context.socket(zmq.REP)
-    socket.bind(addr)
+    server = Server(addr)
 
     while True:
-        request = MessageSerializer.from_bytes(socket.recv())
+        request = server.recv()
         if args.trace:
             print(f"Received request: {request}")
 
@@ -41,12 +39,12 @@ def main():
             response = handshake_message()
             if args.trace:
                 print(f"Sending handshake: {response}")
-            socket.send(response.SerializeToString())
+            server.send(response)
         if request.messageType == ControlMessageType:
             response = sensor_message()
             if args.trace:
                 print(f"Sending sensormessage: {response}")
-            socket.send(response.SerializeToString())
+            server.send(response)
 
 
 def handshake_message():
