@@ -4,9 +4,7 @@
 #   Expects Message from client, replies with Message
 #
 
-from pClick import Server
-from pClick import MessageFactory
-from pClick import ControlMessageType, HandshakeInitMessageType, ValueType
+from pClick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
 from argparse import ArgumentParser
 
 
@@ -31,7 +29,7 @@ def main():
     server = Server(addr)
 
     while True:
-        request = server.recv()
+        request = server.recv_blocking()
         if args.trace:
             print(f"Received request: {request}")
 
