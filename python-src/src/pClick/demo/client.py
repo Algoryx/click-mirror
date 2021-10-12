@@ -19,6 +19,10 @@ def parse_args():
                         help=f'set addr. Ie ipc:///tmp/click.ipc. host and port will be ignored')
     parser.add_argument('--range', metavar='<range>', type=int, default=0,
                         help=f'How many extra messages to send/recv, default is 0')
+    parser.add_argument('--handshake-init', dest='send_handshake_init', action="store_true",
+                        help=f'Send handshake init. This is the default')
+    parser.add_argument('--controlmessage', metavar='<value>', type=str, default=None,
+                        help=f'send controlmessage with control values set to <value>. Overrides --handshake-init. Examples --controlmessage robot1:0,0;panda2:1,1')
     return parser.parse_args()
 
 
@@ -32,13 +36,26 @@ socket = Client()
 print(f"Connecting to click server {addr}")
 socket.connect(addr)
 
-handshake_init = MessageFactory.create_handshake_init()
-socket.send(handshake_init)
-response = socket.recv()
+if not args.controlmessage:
+    message = MessageFactory.create_handshake_init()
+    print(f"Sending initiate handshake")
+    socket.send(message)
+    response = socket.recv()
+else:
+    message = MessageFactory.create_controlmessage()
+    robotargs = args.controlmessage.split(";")
+    for arg in robotargs:
+        robotname, *values = arg.split(":")
+        robot = message.objects[robotname]
+        arr = list(map(float, values[0].split(",")))
+        robot.angles.extend(arr)
+    print(f"Sending {str(message)}")
+    socket.send(message)
+    response = socket.recv()
+
 print(f"Received response {response}")
 
 for i in range(0, args.range):
-    handshake_init = MessageFactory.create_handshake_init()
-    socket.send(handshake_init)
+    socket.send(message)
     response = socket.recv()
 print(f"Sent {args.range + 1} messages")
