@@ -16,7 +16,7 @@ enum ValueType {
   AngleVelocity = 1;       // radians/sec
   Torque = 2;              // Nm
   Position = 3;            // meters vec3
-  RPY = 4;                 // radians
+  RPY = 4;                 // radians vec3
   Activated = 5;           // True/False
   Acceleration = 6;        // m/s2   vec3
   Force = 7;               // Newton vec3
