@@ -120,8 +120,8 @@ publish-python-lib:
     - pip3 install -r python-src/requirements-publish.txt
     - cd python-src
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
-  # only:
-  #   - main
+  only:
+    - main
 
 .build-cpp-lib-windows:
   stage: build
