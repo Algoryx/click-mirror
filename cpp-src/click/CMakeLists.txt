@@ -12,6 +12,8 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/HandshakeInitMessageBuilder.h
     include/click/Message.h
     include/click/MessageSerializer.h
+    include/click/ResetMessage.h
+    include/click/ResetMessageBuilder.h
     include/click/SensorMessage.h
     include/click/SensorRequestMessage.h
     include/click/SensorRequestMessageBuilder.h
@@ -31,6 +33,8 @@ target_sources(click
         src/Message.cpp
         src/MessageFactory.cpp
         src/MessageSerializer.cpp
+        src/ResetMessage.cpp
+        src/ResetMessageBuilder.cpp
         src/SensorRequestMessage.cpp
         src/SensorRequestMessageBuilder.cpp
         src/SensorMessage.cpp

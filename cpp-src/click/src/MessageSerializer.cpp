@@ -4,6 +4,7 @@
 #include <click/HandshakeInitMessage.h>
 #include <click/ErrorMessage.h>
 #include <click/MessageSerializer.h>
+#include <click/ResetMessage.h>
 #include <click/SensorMessage.h>
 #include <click/SensorRequestMessage.h>
 
@@ -50,6 +51,13 @@ unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
       return unique_ptr<ErrorMessage>(new ErrorMessage(move(pm)));
+    }
+    case protobuf::ResetMessageType:
+    {
+      unique_ptr<protobuf::ResetMessage> pm = make_unique<protobuf::ResetMessage>();
+      pm->ParseFromString(bytes);
+      // Need to explicitly call private constructor
+      return unique_ptr<ResetMessage>(new ResetMessage(move(pm)));
     }
     case protobuf::SensorRequestMessageType:
     {
