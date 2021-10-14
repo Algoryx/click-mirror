@@ -35,18 +35,18 @@ SCENARIO("protobuf controlmessage serialization", "[click]" ) {
 
     GIVEN("A controlmessage with a robot with angle controls and a gripper") {
 
-        ControlMessage * control_m = MessageFactory::create_controlMessage();
+        ControlMessage control_m = MessageFactory::createControlMessage();
 
         WHEN("adding robot controls") {
-            google::protobuf::Map<string, ControlMessage_Object> * map = control_m->mutable_objects();
+            google::protobuf::Map<string, ControlMessage_Object> * map = control_m.mutable_objects();
             (*map)["robot1"] = ControlMessage_Object();
             vector<double> angles = vector<double>({ 1, 2, 3, 4, 5 });
             (*map)["robot1"].mutable_angles()->Assign(angles.begin(), angles.end());
             (*(*map)["robot1"].mutable_controlevents())["gripper"] = true;
 
             THEN("it should return correct angle") {
-                REQUIRE(control_m->objects().at("robot1").angles()[1] == 2.0);
-                REQUIRE(control_m->objects().at("robot1").controlevents().at("gripper"));
+                REQUIRE(control_m.objects().at("robot1").angles()[1] == 2.0);
+                REQUIRE(control_m.objects().at("robot1").controlevents().at("gripper"));
             }
 
             THEN("it should contain the control values") {
@@ -69,11 +69,11 @@ SCENARIO("protobuf controlmessage serialization", "[click]" ) {
                     "  }\n"
                     "}\n";
 
-                REQUIRE_THAT(control_m->DebugString(), Equals(control_facit));
+                REQUIRE_THAT(control_m.DebugString(), Equals(control_facit));
             }
 
             THEN("it should be serializable") {
-                REQUIRE(control_m->SerializeAsString().length() == 69);
+                REQUIRE(control_m.SerializeAsString().length() == 69);
             }
         }
     }

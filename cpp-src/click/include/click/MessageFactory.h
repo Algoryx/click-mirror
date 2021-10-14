@@ -8,8 +8,8 @@ namespace click { namespace protobuf {
     class MessageFactory {
 
         public:
-            CLICK_EXPORT static ControlMessage * create_controlMessage();
-            CLICK_EXPORT static HandshakeInitMessage * create_handshakeInitMessage();
+            CLICK_EXPORT static ControlMessage createControlMessage();
+            CLICK_EXPORT static HandshakeInitMessage createHandshakeInitMessage();
             CLICK_EXPORT static SensorRequestMessage createSensorRequestMessage();
     };
 
