@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
-#include <click/SensorRequestMessage.h>
-#include <click/SensorRequestMessageBuilder.h>
+#include <click/ErrorMessage.h>
+#include <click/ErrorMessageBuilder.h>
 #include <click/MessageSerializer.h>
 #include <Messaging.pb.h>
 
@@ -14,22 +14,29 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-SCENARIO("SensorRequestMessage serialization", "[click]")
+SCENARIO("ErrorMessage serialization", "[click]")
 {
     GIVEN("A handshake init message")
     {
        WHEN("it has been constructed")
         {
-            unique_ptr<SensorRequestMessage> message = SensorRequestMessageBuilder::builder()->build();
+            unique_ptr<ErrorMessage> message = ErrorMessageBuilder::builder()
+                ->withMessage("a very bad thing happened")
+                ->build();
 
             THEN("it should contain type")
             {
-                REQUIRE(message->messageType() == SensorRequestMessageType);
+                REQUIRE(message->messageType() == ErrorMessageType);
             }
 
             THEN("it should have debugstring without type since it is the default")
             {
-                REQUIRE_THAT(message->debugString(), StartsWith("messageType: SensorRequestMessageType"));
+                REQUIRE_THAT(message->debugString(), StartsWith("messageType: ErrorMessageType"));
+            }
+
+            THEN("it should have message")
+            {
+                REQUIRE_THAT(message->message(), Equals("a very bad thing happened"));
             }
 
             THEN("it should serialize to at least 1 byte")
@@ -42,8 +49,9 @@ SCENARIO("SensorRequestMessage serialization", "[click]")
             {
                 MessageSerializer serializer;
                 string bytes = serializer.serializeToString(*message);
+
                 unique_ptr<Message> smessage = serializer.fromBytes(bytes);
-                REQUIRE(smessage->messageType() == SensorRequestMessageType);
+                REQUIRE(smessage->messageType() == ErrorMessageType);
                 REQUIRE_THAT(smessage->debugString(), Equals(message->debugString()));
             }
         }

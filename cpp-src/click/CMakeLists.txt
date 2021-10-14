@@ -5,28 +5,32 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/ControlMessage.h
     include/click/ControlMessageBuilder.h
     include/click/DllExport.h
+    include/click/ErrorMessage.h
+    include/click/ErrorMessageBuilder.h
+    include/click/HandshakeMessage.h
     include/click/HandshakeInitMessage.h
     include/click/HandshakeInitMessageBuilder.h
-    include/click/SensorRequestMessage.h
-    include/click/SensorRequestMessageBuilder.h
-    include/click/HandshakeMessage.h
     include/click/Message.h
     include/click/MessageSerializer.h
     include/click/SensorMessage.h
+    include/click/SensorRequestMessage.h
+    include/click/SensorRequestMessageBuilder.h
 )
 
 add_library(click)
 target_sources(click
     PRIVATE
-        src/MessageFactory.cpp
-        src/MessageSerializer.cpp
+        src/ErrorMessage.cpp
+        src/ErrorMessageBuilder.cpp
         src/Client.cpp
-        src/Message.cpp
         src/ControlMessage.cpp
         src/ControlMessageBuilder.cpp
         src/HandshakeMessage.cpp
         src/HandshakeInitMessage.cpp
         src/HandshakeInitMessageBuilder.cpp
+        src/Message.cpp
+        src/MessageFactory.cpp
+        src/MessageSerializer.cpp
         src/SensorRequestMessage.cpp
         src/SensorRequestMessageBuilder.cpp
         src/SensorMessage.cpp
