@@ -10,7 +10,7 @@ target_sources(click-tests
         TestProtobufMessages.cpp
         TestResetMessage.cpp
         TestSensorRequestMessage.cpp
-        TestSrcdir.cpp
+        TestSrcDir.cpp
         IntegrationtestSensorMessage.cpp
         IntegrationtestHandshakeMessage.cpp
         IntegrationTestProtobufMessage.cpp
