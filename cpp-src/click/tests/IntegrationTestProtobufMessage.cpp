@@ -1,7 +1,7 @@
 #include <fstream>
 #include <catch2/catch.hpp>
 #include <Messaging.pb.h>
-#include "testpaths.h"
+#include "TestPaths.h"
 
 using namespace std;
 using namespace click::protobuf;

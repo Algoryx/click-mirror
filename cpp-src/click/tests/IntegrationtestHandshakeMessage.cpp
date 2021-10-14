@@ -2,7 +2,7 @@
 #include <catch2/catch.hpp>
 #include <click/MessageSerializer.h>
 #include <click/HandshakeMessage.h>
-#include "testpaths.h"
+#include "TestPaths.h"
 
 using namespace std;
 using namespace click;
