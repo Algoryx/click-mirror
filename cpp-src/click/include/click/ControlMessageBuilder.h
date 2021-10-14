@@ -34,7 +34,7 @@ namespace click
     class AddControlEventBuilder
     {
     public:
-        CLICK_EXPORT virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated) = 0;
+        CLICK_EXPORT virtual AddControlEventBuilder *withControlEvent(std::string name, bool activated) = 0;
         CLICK_EXPORT virtual AddControlBuilder *object(std::string name) = 0;
         CLICK_EXPORT virtual std::unique_ptr<ControlMessage> build() = 0;
         CLICK_EXPORT virtual ~AddControlEventBuilder();
@@ -47,7 +47,7 @@ namespace click
         CLICK_EXPORT virtual AddControlEventBuilder *withAngles(std::vector<double> angles);
         CLICK_EXPORT virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles);
         CLICK_EXPORT virtual AddControlEventBuilder *withTorques(std::vector<double> torques);
-        CLICK_EXPORT virtual ControlMessageBuilder *withControlEvent(std::string name, bool activated);
+        CLICK_EXPORT virtual AddControlEventBuilder *withControlEvent(std::string name, bool activated);
         CLICK_EXPORT virtual std::unique_ptr<ControlMessage> build();
         CLICK_EXPORT virtual ~ControlMessageBuilderImpl();
         CLICK_EXPORT static std::unique_ptr<ControlMessageBuilder> builder();

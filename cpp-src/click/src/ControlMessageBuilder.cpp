@@ -34,9 +34,9 @@ AddControlEventBuilder *ControlMessageBuilderImpl::withTorques(vector<double> to
     currObject->mutable_torques()->Assign(torques.begin(), torques.end());
     return this;
 }
-ControlMessageBuilder *ControlMessageBuilderImpl::withControlEvent(string name, bool activated)
+AddControlEventBuilder *ControlMessageBuilderImpl::withControlEvent(string name, bool activated)
 {
-    (*currObject->mutable_controlevents())["gripper"] = true;
+    (*currObject->mutable_controlevents())[name] = activated;
     return this;
 }
 unique_ptr<ControlMessage> ControlMessageBuilderImpl::build()
