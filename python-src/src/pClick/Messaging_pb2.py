@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0fMessaging.proto\x12\x0e\x63lick.protobuf\"G\n\x07Message\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12\n\n\x02id\x18\x02 \x01(\x05\"r\n\x14HandshakeInitMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12(\n\x07version\x18\x02 \x01(\x0e\x32\x17.click.protobuf.Version\"H\n\x14SensorRequestMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\"\xd5\x06\n\x10HandshakeMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12(\n\x07version\x18\x02 \x01(\x0e\x32\x17.click.protobuf.Version\x12.\n\x0b\x63ontrolType\x18\x03 \x01(\x0e\x32\x19.click.protobuf.ValueType\x12>\n\x07objects\x18\x04 \x03(\x0b\x32-.click.protobuf.HandshakeMessage.ObjectsEntry\x1a\x33\n\x07Sensors\x12(\n\x05types\x18\x01 \x03(\x0e\x32\x19.click.protobuf.ValueType\x1a\xe6\x03\n\x06Object\x12\x17\n\x0f\x63ontrolsInOrder\x18\x01 \x03(\t\x12\x1b\n\x13jointSensorsInOrder\x18\x07 \x03(\t\x12/\n\x0cjointSensors\x18\x02 \x03(\x0e\x32\x19.click.protobuf.ValueType\x12Q\n\rcontrolEvents\x18\x03 \x03(\x0b\x32:.click.protobuf.HandshakeMessage.Object.ControlEventsEntry\x12\x45\n\x07sensors\x18\x04 \x03(\x0b\x32\x34.click.protobuf.HandshakeMessage.Object.SensorsEntry\x12\x30\n\robjectSensors\x18\x06 \x03(\x0e\x32\x19.click.protobuf.ValueType\x1aO\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0e\x32\x19.click.protobuf.ValueType:\x02\x38\x01\x1aX\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.click.protobuf.HandshakeMessage.Sensors:\x02\x38\x01\x1aW\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x36\n\x05value\x18\x02 \x01(\x0b\x32\'.click.protobuf.HandshakeMessage.Object:\x02\x38\x01\"\xa3\x03\n\x0e\x43ontrolMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12<\n\x07objects\x18\x02 \x03(\x0b\x32+.click.protobuf.ControlMessage.ObjectsEntry\x1a\xc9\x01\n\x06Object\x12\x0e\n\x06\x61ngles\x18\x01 \x03(\x01\x12\x17\n\x0f\x61ngleVelocities\x18\x02 \x03(\x01\x12\x0f\n\x07torques\x18\x03 \x03(\x01\x12O\n\rcontrolEvents\x18\x04 \x03(\x0b\x32\x38.click.protobuf.ControlMessage.Object.ControlEventsEntry\x1a\x34\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1aU\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.click.protobuf.ControlMessage.Object:\x02\x38\x01\"\xd7\x08\n\rSensorMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12;\n\x07objects\x18\x03 \x03(\x0b\x32*.click.protobuf.SensorMessage.ObjectsEntry\x1a\x13\n\x04Vec3\x12\x0b\n\x03\x61rr\x18\x01 \x03(\x01\x1a\xc2\x03\n\x06Sensor\x12\x0f\n\x05\x61ngle\x18\x01 \x01(\x01H\x00\x12\x17\n\rangleVelocity\x18\x02 \x01(\x01H\x00\x12\x10\n\x06torque\x18\x03 \x01(\x01H\x00\x12\x36\n\x08position\x18\x04 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x31\n\x03rpy\x18\x05 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x13\n\tactivated\x18\x06 \x01(\x08H\x00\x12:\n\x0c\x61\x63\x63\x65leration\x18\x07 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x33\n\x05\x66orce\x18\x08 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12?\n\x11\x64irectionalTorque\x18\t \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x41\n\x13\x61ngularAcceleration\x18\n \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x42\x07\n\x05value\x1a?\n\x07Sensors\x12\x34\n\x06sensor\x18\x01 \x03(\x0b\x32$.click.protobuf.SensorMessage.Sensor\x1a\xe5\x02\n\x06Object\x12\x14\n\x0c\x61ngleSensors\x18\x01 \x03(\x01\x12\x1c\n\x14\x61ngleVelocitySensors\x18\x02 \x03(\x01\x12\x15\n\rtorqueSensors\x18\x03 \x03(\x01\x12\x38\n\x0c\x66orceSensors\x18\x05 \x03(\x0b\x32\".click.protobuf.SensorMessage.Vec3\x12;\n\robjectSensors\x18\x04 \x03(\x0b\x32$.click.protobuf.SensorMessage.Sensor\x12\x42\n\x07sensors\x18\x06 \x03(\x0b\x32\x31.click.protobuf.SensorMessage.Object.SensorsEntry\x1aU\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.click.protobuf.SensorMessage.Sensors:\x02\x38\x01\x1aT\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32$.click.protobuf.SensorMessage.Object:\x02\x38\x01\"@\n\x0cResetMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\"\x80\x01\n\x0c\x45rrorMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12(\n\x05\x65rror\x18\x02 \x01(\x0e\x32\x19.click.protobuf.ErrorType\x12\x14\n\x0c\x65rrormessage\x18\x03 \x01(\t*\xbe\x01\n\x0bMessageType\x12\x1c\n\x18HandshakeInitMessageType\x10\x00\x12\x18\n\x14HandshakeMessageType\x10\x01\x12\x1c\n\x18SensorRequestMessageType\x10\x06\x12\x16\n\x12\x43ontrolMessageType\x10\x02\x12\x15\n\x11SensorMessageType\x10\x03\x12\x14\n\x10ResetMessageType\x10\x04\x12\x14\n\x10\x45rrorMessageType\x10\x05*\xa8\x01\n\tValueType\x12\t\n\x05\x41ngle\x10\x00\x12\x11\n\rAngleVelocity\x10\x01\x12\n\n\x06Torque\x10\x02\x12\x0c\n\x08Position\x10\x03\x12\x07\n\x03RPY\x10\x04\x12\r\n\tActivated\x10\x05\x12\x10\n\x0c\x41\x63\x63\x65leration\x10\x06\x12\t\n\x05\x46orce\x10\x07\x12\x15\n\x11\x44irectionalTorque\x10\x08\x12\x17\n\x13\x41ngularAcceleration\x10\t*-\n\x07Version\x12\r\n\tUNDEFINED\x10\x00\x12\x13\n\x0f\x43URRENT_VERSION\x10\x01*$\n\tErrorType\x12\x17\n\x13VersionNotSupported\x10\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0fMessaging.proto\x12\x0e\x63lick.protobuf\"G\n\x07Message\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12\n\n\x02id\x18\x02 \x01(\x05\"r\n\x14HandshakeInitMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12(\n\x07version\x18\x02 \x01(\x0e\x32\x17.click.protobuf.Version\"H\n\x14SensorRequestMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\"\xc7\x07\n\x10HandshakeMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12(\n\x07version\x18\x02 \x01(\x0e\x32\x17.click.protobuf.Version\x12.\n\x0b\x63ontrolType\x18\x03 \x01(\x0e\x32\x19.click.protobuf.ValueType\x12>\n\x07objects\x18\x04 \x03(\x0b\x32-.click.protobuf.HandshakeMessage.ObjectsEntry\x12H\n\x0bsimSettings\x18\x05 \x01(\x0b\x32\x33.click.protobuf.HandshakeMessage.SimulationSettings\x1a\x33\n\x07Sensors\x12(\n\x05types\x18\x01 \x03(\x0e\x32\x19.click.protobuf.ValueType\x1a\xe6\x03\n\x06Object\x12\x17\n\x0f\x63ontrolsInOrder\x18\x01 \x03(\t\x12\x1b\n\x13jointSensorsInOrder\x18\x07 \x03(\t\x12/\n\x0cjointSensors\x18\x02 \x03(\x0e\x32\x19.click.protobuf.ValueType\x12Q\n\rcontrolEvents\x18\x03 \x03(\x0b\x32:.click.protobuf.HandshakeMessage.Object.ControlEventsEntry\x12\x45\n\x07sensors\x18\x04 \x03(\x0b\x32\x34.click.protobuf.HandshakeMessage.Object.SensorsEntry\x12\x30\n\robjectSensors\x18\x06 \x03(\x0e\x32\x19.click.protobuf.ValueType\x1aO\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0e\x32\x19.click.protobuf.ValueType:\x02\x38\x01\x1aX\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.click.protobuf.HandshakeMessage.Sensors:\x02\x38\x01\x1a&\n\x12SimulationSettings\x12\x10\n\x08timeStep\x18\x01 \x01(\x01\x1aW\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x36\n\x05value\x18\x02 \x01(\x0b\x32\'.click.protobuf.HandshakeMessage.Object:\x02\x38\x01\"\xa3\x03\n\x0e\x43ontrolMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12<\n\x07objects\x18\x02 \x03(\x0b\x32+.click.protobuf.ControlMessage.ObjectsEntry\x1a\xc9\x01\n\x06Object\x12\x0e\n\x06\x61ngles\x18\x01 \x03(\x01\x12\x17\n\x0f\x61ngleVelocities\x18\x02 \x03(\x01\x12\x0f\n\x07torques\x18\x03 \x03(\x01\x12O\n\rcontrolEvents\x18\x04 \x03(\x0b\x32\x38.click.protobuf.ControlMessage.Object.ControlEventsEntry\x1a\x34\n\x12\x43ontrolEventsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1aU\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.click.protobuf.ControlMessage.Object:\x02\x38\x01\"\xc9\t\n\rSensorMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12;\n\x07objects\x18\x03 \x03(\x0b\x32*.click.protobuf.SensorMessage.ObjectsEntry\x12\x42\n\x07simVars\x18\x04 \x01(\x0b\x32\x31.click.protobuf.SensorMessage.SimulationVariables\x1a\x13\n\x04Vec3\x12\x0b\n\x03\x61rr\x18\x01 \x03(\x01\x1a\xc2\x03\n\x06Sensor\x12\x0f\n\x05\x61ngle\x18\x01 \x01(\x01H\x00\x12\x17\n\rangleVelocity\x18\x02 \x01(\x01H\x00\x12\x10\n\x06torque\x18\x03 \x01(\x01H\x00\x12\x36\n\x08position\x18\x04 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x31\n\x03rpy\x18\x05 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x13\n\tactivated\x18\x06 \x01(\x08H\x00\x12:\n\x0c\x61\x63\x63\x65leration\x18\x07 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x33\n\x05\x66orce\x18\x08 \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12?\n\x11\x64irectionalTorque\x18\t \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x12\x41\n\x13\x61ngularAcceleration\x18\n \x01(\x0b\x32\".click.protobuf.SensorMessage.Vec3H\x00\x42\x07\n\x05value\x1a?\n\x07Sensors\x12\x34\n\x06sensor\x18\x01 \x03(\x0b\x32$.click.protobuf.SensorMessage.Sensor\x1a\xe5\x02\n\x06Object\x12\x14\n\x0c\x61ngleSensors\x18\x01 \x03(\x01\x12\x1c\n\x14\x61ngleVelocitySensors\x18\x02 \x03(\x01\x12\x15\n\rtorqueSensors\x18\x03 \x03(\x01\x12\x38\n\x0c\x66orceSensors\x18\x05 \x03(\x0b\x32\".click.protobuf.SensorMessage.Vec3\x12;\n\robjectSensors\x18\x04 \x03(\x0b\x32$.click.protobuf.SensorMessage.Sensor\x12\x42\n\x07sensors\x18\x06 \x03(\x0b\x32\x31.click.protobuf.SensorMessage.Object.SensorsEntry\x1aU\n\x0cSensorsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x34\n\x05value\x18\x02 \x01(\x0b\x32%.click.protobuf.SensorMessage.Sensors:\x02\x38\x01\x1a,\n\x13SimulationVariables\x12\x15\n\rsimulatedTime\x18\x01 \x01(\x01\x1aT\n\x0cObjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x33\n\x05value\x18\x02 \x01(\x0b\x32$.click.protobuf.SensorMessage.Object:\x02\x38\x01\"@\n\x0cResetMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\"\x80\x01\n\x0c\x45rrorMessage\x12\x30\n\x0bmessageType\x18\x01 \x01(\x0e\x32\x1b.click.protobuf.MessageType\x12(\n\x05\x65rror\x18\x02 \x01(\x0e\x32\x19.click.protobuf.ErrorType\x12\x14\n\x0c\x65rrormessage\x18\x03 \x01(\t*\xbe\x01\n\x0bMessageType\x12\x1c\n\x18HandshakeInitMessageType\x10\x00\x12\x18\n\x14HandshakeMessageType\x10\x01\x12\x1c\n\x18SensorRequestMessageType\x10\x06\x12\x16\n\x12\x43ontrolMessageType\x10\x02\x12\x15\n\x11SensorMessageType\x10\x03\x12\x14\n\x10ResetMessageType\x10\x04\x12\x14\n\x10\x45rrorMessageType\x10\x05*\xa8\x01\n\tValueType\x12\t\n\x05\x41ngle\x10\x00\x12\x11\n\rAngleVelocity\x10\x01\x12\n\n\x06Torque\x10\x02\x12\x0c\n\x08Position\x10\x03\x12\x07\n\x03RPY\x10\x04\x12\r\n\tActivated\x10\x05\x12\x10\n\x0c\x41\x63\x63\x65leration\x10\x06\x12\t\n\x05\x46orce\x10\x07\x12\x15\n\x11\x44irectionalTorque\x10\x08\x12\x17\n\x13\x41ngularAcceleration\x10\t*-\n\x07Version\x12\r\n\tUNDEFINED\x10\x00\x12\x13\n\x0f\x43URRENT_VERSION\x10\x01*$\n\tErrorType\x12\x17\n\x13VersionNotSupported\x10\x00\x62\x06proto3'
 )
 
 _MESSAGETYPE = _descriptor.EnumDescriptor(
@@ -68,8 +68,8 @@ _MESSAGETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2888,
-  serialized_end=3078,
+  serialized_start=3116,
+  serialized_end=3306,
 )
 _sym_db.RegisterEnumDescriptor(_MESSAGETYPE)
 
@@ -134,8 +134,8 @@ _VALUETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3081,
-  serialized_end=3249,
+  serialized_start=3309,
+  serialized_end=3477,
 )
 _sym_db.RegisterEnumDescriptor(_VALUETYPE)
 
@@ -160,8 +160,8 @@ _VERSION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3251,
-  serialized_end=3296,
+  serialized_start=3479,
+  serialized_end=3524,
 )
 _sym_db.RegisterEnumDescriptor(_VERSION)
 
@@ -181,8 +181,8 @@ _ERRORTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3298,
-  serialized_end=3334,
+  serialized_start=3526,
+  serialized_end=3562,
 )
 _sym_db.RegisterEnumDescriptor(_ERRORTYPE)
 
@@ -347,8 +347,8 @@ _HANDSHAKEMESSAGE_SENSORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=523,
-  serialized_end=574,
+  serialized_start=597,
+  serialized_end=648,
 )
 
 _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
@@ -385,8 +385,8 @@ _HANDSHAKEMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=894,
-  serialized_end=973,
+  serialized_start=968,
+  serialized_end=1047,
 )
 
 _HANDSHAKEMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
@@ -423,8 +423,8 @@ _HANDSHAKEMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=975,
-  serialized_end=1063,
+  serialized_start=1049,
+  serialized_end=1137,
 )
 
 _HANDSHAKEMESSAGE_OBJECT = _descriptor.Descriptor(
@@ -489,8 +489,39 @@ _HANDSHAKEMESSAGE_OBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=577,
-  serialized_end=1063,
+  serialized_start=651,
+  serialized_end=1137,
+)
+
+_HANDSHAKEMESSAGE_SIMULATIONSETTINGS = _descriptor.Descriptor(
+  name='SimulationSettings',
+  full_name='click.protobuf.HandshakeMessage.SimulationSettings',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='timeStep', full_name='click.protobuf.HandshakeMessage.SimulationSettings.timeStep', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1139,
+  serialized_end=1177,
 )
 
 _HANDSHAKEMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
@@ -527,8 +558,8 @@ _HANDSHAKEMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1065,
-  serialized_end=1152,
+  serialized_start=1179,
+  serialized_end=1266,
 )
 
 _HANDSHAKEMESSAGE = _descriptor.Descriptor(
@@ -567,10 +598,17 @@ _HANDSHAKEMESSAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='simSettings', full_name='click.protobuf.HandshakeMessage.simSettings', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
-  nested_types=[_HANDSHAKEMESSAGE_SENSORS, _HANDSHAKEMESSAGE_OBJECT, _HANDSHAKEMESSAGE_OBJECTSENTRY, ],
+  nested_types=[_HANDSHAKEMESSAGE_SENSORS, _HANDSHAKEMESSAGE_OBJECT, _HANDSHAKEMESSAGE_SIMULATIONSETTINGS, _HANDSHAKEMESSAGE_OBJECTSENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -580,7 +618,7 @@ _HANDSHAKEMESSAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=299,
-  serialized_end=1152,
+  serialized_end=1266,
 )
 
 
@@ -618,8 +656,8 @@ _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1435,
-  serialized_end=1487,
+  serialized_start=1549,
+  serialized_end=1601,
 )
 
 _CONTROLMESSAGE_OBJECT = _descriptor.Descriptor(
@@ -670,8 +708,8 @@ _CONTROLMESSAGE_OBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1286,
-  serialized_end=1487,
+  serialized_start=1400,
+  serialized_end=1601,
 )
 
 _CONTROLMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
@@ -708,8 +746,8 @@ _CONTROLMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1489,
-  serialized_end=1574,
+  serialized_start=1603,
+  serialized_end=1688,
 )
 
 _CONTROLMESSAGE = _descriptor.Descriptor(
@@ -746,8 +784,8 @@ _CONTROLMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1155,
-  serialized_end=1574,
+  serialized_start=1269,
+  serialized_end=1688,
 )
 
 
@@ -778,8 +816,8 @@ _SENSORMESSAGE_VEC3 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1705,
-  serialized_end=1724,
+  serialized_start=1887,
+  serialized_end=1906,
 )
 
 _SENSORMESSAGE_SENSOR = _descriptor.Descriptor(
@@ -877,8 +915,8 @@ _SENSORMESSAGE_SENSOR = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1727,
-  serialized_end=2177,
+  serialized_start=1909,
+  serialized_end=2359,
 )
 
 _SENSORMESSAGE_SENSORS = _descriptor.Descriptor(
@@ -908,8 +946,8 @@ _SENSORMESSAGE_SENSORS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2179,
-  serialized_end=2242,
+  serialized_start=2361,
+  serialized_end=2424,
 )
 
 _SENSORMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
@@ -946,8 +984,8 @@ _SENSORMESSAGE_OBJECT_SENSORSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2517,
-  serialized_end=2602,
+  serialized_start=2699,
+  serialized_end=2784,
 )
 
 _SENSORMESSAGE_OBJECT = _descriptor.Descriptor(
@@ -1012,8 +1050,39 @@ _SENSORMESSAGE_OBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2245,
-  serialized_end=2602,
+  serialized_start=2427,
+  serialized_end=2784,
+)
+
+_SENSORMESSAGE_SIMULATIONVARIABLES = _descriptor.Descriptor(
+  name='SimulationVariables',
+  full_name='click.protobuf.SensorMessage.SimulationVariables',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='simulatedTime', full_name='click.protobuf.SensorMessage.SimulationVariables.simulatedTime', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2786,
+  serialized_end=2830,
 )
 
 _SENSORMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
@@ -1050,8 +1119,8 @@ _SENSORMESSAGE_OBJECTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2604,
-  serialized_end=2688,
+  serialized_start=2832,
+  serialized_end=2916,
 )
 
 _SENSORMESSAGE = _descriptor.Descriptor(
@@ -1076,10 +1145,17 @@ _SENSORMESSAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='simVars', full_name='click.protobuf.SensorMessage.simVars', index=2,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
-  nested_types=[_SENSORMESSAGE_VEC3, _SENSORMESSAGE_SENSOR, _SENSORMESSAGE_SENSORS, _SENSORMESSAGE_OBJECT, _SENSORMESSAGE_OBJECTSENTRY, ],
+  nested_types=[_SENSORMESSAGE_VEC3, _SENSORMESSAGE_SENSOR, _SENSORMESSAGE_SENSORS, _SENSORMESSAGE_OBJECT, _SENSORMESSAGE_SIMULATIONVARIABLES, _SENSORMESSAGE_OBJECTSENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -1088,8 +1164,8 @@ _SENSORMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1577,
-  serialized_end=2688,
+  serialized_start=1691,
+  serialized_end=2916,
 )
 
 
@@ -1120,8 +1196,8 @@ _RESETMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2690,
-  serialized_end=2754,
+  serialized_start=2918,
+  serialized_end=2982,
 )
 
 
@@ -1166,8 +1242,8 @@ _ERRORMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2757,
-  serialized_end=2885,
+  serialized_start=2985,
+  serialized_end=3113,
 )
 
 _MESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
@@ -1185,12 +1261,14 @@ _HANDSHAKEMESSAGE_OBJECT.fields_by_name['controlEvents'].message_type = _HANDSHA
 _HANDSHAKEMESSAGE_OBJECT.fields_by_name['sensors'].message_type = _HANDSHAKEMESSAGE_OBJECT_SENSORSENTRY
 _HANDSHAKEMESSAGE_OBJECT.fields_by_name['objectSensors'].enum_type = _VALUETYPE
 _HANDSHAKEMESSAGE_OBJECT.containing_type = _HANDSHAKEMESSAGE
+_HANDSHAKEMESSAGE_SIMULATIONSETTINGS.containing_type = _HANDSHAKEMESSAGE
 _HANDSHAKEMESSAGE_OBJECTSENTRY.fields_by_name['value'].message_type = _HANDSHAKEMESSAGE_OBJECT
 _HANDSHAKEMESSAGE_OBJECTSENTRY.containing_type = _HANDSHAKEMESSAGE
 _HANDSHAKEMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
 _HANDSHAKEMESSAGE.fields_by_name['version'].enum_type = _VERSION
 _HANDSHAKEMESSAGE.fields_by_name['controlType'].enum_type = _VALUETYPE
 _HANDSHAKEMESSAGE.fields_by_name['objects'].message_type = _HANDSHAKEMESSAGE_OBJECTSENTRY
+_HANDSHAKEMESSAGE.fields_by_name['simSettings'].message_type = _HANDSHAKEMESSAGE_SIMULATIONSETTINGS
 _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY.containing_type = _CONTROLMESSAGE_OBJECT
 _CONTROLMESSAGE_OBJECT.fields_by_name['controlEvents'].message_type = _CONTROLMESSAGE_OBJECT_CONTROLEVENTSENTRY
 _CONTROLMESSAGE_OBJECT.containing_type = _CONTROLMESSAGE
@@ -1244,10 +1322,12 @@ _SENSORMESSAGE_OBJECT.fields_by_name['forceSensors'].message_type = _SENSORMESSA
 _SENSORMESSAGE_OBJECT.fields_by_name['objectSensors'].message_type = _SENSORMESSAGE_SENSOR
 _SENSORMESSAGE_OBJECT.fields_by_name['sensors'].message_type = _SENSORMESSAGE_OBJECT_SENSORSENTRY
 _SENSORMESSAGE_OBJECT.containing_type = _SENSORMESSAGE
+_SENSORMESSAGE_SIMULATIONVARIABLES.containing_type = _SENSORMESSAGE
 _SENSORMESSAGE_OBJECTSENTRY.fields_by_name['value'].message_type = _SENSORMESSAGE_OBJECT
 _SENSORMESSAGE_OBJECTSENTRY.containing_type = _SENSORMESSAGE
 _SENSORMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
 _SENSORMESSAGE.fields_by_name['objects'].message_type = _SENSORMESSAGE_OBJECTSENTRY
+_SENSORMESSAGE.fields_by_name['simVars'].message_type = _SENSORMESSAGE_SIMULATIONVARIABLES
 _RESETMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
 _ERRORMESSAGE.fields_by_name['messageType'].enum_type = _MESSAGETYPE
 _ERRORMESSAGE.fields_by_name['error'].enum_type = _ERRORTYPE
@@ -1316,6 +1396,13 @@ HandshakeMessage = _reflection.GeneratedProtocolMessageType('HandshakeMessage', 
     })
   ,
 
+  'SimulationSettings' : _reflection.GeneratedProtocolMessageType('SimulationSettings', (_message.Message,), {
+    'DESCRIPTOR' : _HANDSHAKEMESSAGE_SIMULATIONSETTINGS,
+    '__module__' : 'Messaging_pb2'
+    # @@protoc_insertion_point(class_scope:click.protobuf.HandshakeMessage.SimulationSettings)
+    })
+  ,
+
   'ObjectsEntry' : _reflection.GeneratedProtocolMessageType('ObjectsEntry', (_message.Message,), {
     'DESCRIPTOR' : _HANDSHAKEMESSAGE_OBJECTSENTRY,
     '__module__' : 'Messaging_pb2'
@@ -1331,6 +1418,7 @@ _sym_db.RegisterMessage(HandshakeMessage.Sensors)
 _sym_db.RegisterMessage(HandshakeMessage.Object)
 _sym_db.RegisterMessage(HandshakeMessage.Object.ControlEventsEntry)
 _sym_db.RegisterMessage(HandshakeMessage.Object.SensorsEntry)
+_sym_db.RegisterMessage(HandshakeMessage.SimulationSettings)
 _sym_db.RegisterMessage(HandshakeMessage.ObjectsEntry)
 
 ControlMessage = _reflection.GeneratedProtocolMessageType('ControlMessage', (_message.Message,), {
@@ -1401,6 +1489,13 @@ SensorMessage = _reflection.GeneratedProtocolMessageType('SensorMessage', (_mess
     })
   ,
 
+  'SimulationVariables' : _reflection.GeneratedProtocolMessageType('SimulationVariables', (_message.Message,), {
+    'DESCRIPTOR' : _SENSORMESSAGE_SIMULATIONVARIABLES,
+    '__module__' : 'Messaging_pb2'
+    # @@protoc_insertion_point(class_scope:click.protobuf.SensorMessage.SimulationVariables)
+    })
+  ,
+
   'ObjectsEntry' : _reflection.GeneratedProtocolMessageType('ObjectsEntry', (_message.Message,), {
     'DESCRIPTOR' : _SENSORMESSAGE_OBJECTSENTRY,
     '__module__' : 'Messaging_pb2'
@@ -1417,6 +1512,7 @@ _sym_db.RegisterMessage(SensorMessage.Sensor)
 _sym_db.RegisterMessage(SensorMessage.Sensors)
 _sym_db.RegisterMessage(SensorMessage.Object)
 _sym_db.RegisterMessage(SensorMessage.Object.SensorsEntry)
+_sym_db.RegisterMessage(SensorMessage.SimulationVariables)
 _sym_db.RegisterMessage(SensorMessage.ObjectsEntry)
 
 ResetMessage = _reflection.GeneratedProtocolMessageType('ResetMessage', (_message.Message,), {
