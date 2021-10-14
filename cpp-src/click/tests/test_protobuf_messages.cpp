@@ -8,6 +8,29 @@ using namespace click::protobuf;
 using Catch::Matchers::Equals;
 
 
+SCENARIO("protobuf handshake sensorrequest message", "[click]") {
+    GIVEN("A handshake sensorrequest message ") {
+        SensorRequestMessage message = MessageFactory::createSensorRequestMessage();
+
+        WHEN("serializing to bytes") {
+            auto buf = message.SerializeAsString();
+            THEN("it should be deserialized to origin") {
+                SensorRequestMessage newmessage;
+                newmessage.ParseFromString(buf);
+                REQUIRE(newmessage.DebugString() == message.DebugString());
+                REQUIRE(newmessage.messagetype() == message.messagetype());
+            }
+            THEN("it should have messagetype SensorRequest") {
+                Message newmessage;
+                newmessage.ParseFromString(buf);
+                REQUIRE(newmessage.DebugString() == message.DebugString());
+                REQUIRE(newmessage.messagetype() == message.messagetype());
+            }
+        }
+    }
+
+}
+
 SCENARIO("protobuf controlmessage serialization", "[click]" ) {
 
     GIVEN("A controlmessage with a robot with angle controls and a gripper") {

@@ -7,6 +7,8 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/DllExport.h
     include/click/HandshakeInitMessage.h
     include/click/HandshakeInitMessageBuilder.h
+    include/click/SensorRequestMessage.h
+    include/click/SensorRequestMessageBuilder.h
     include/click/HandshakeMessage.h
     include/click/Message.h
     include/click/MessageSerializer.h
@@ -25,6 +27,8 @@ target_sources(click
         src/HandshakeMessage.cpp
         src/HandshakeInitMessage.cpp
         src/HandshakeInitMessageBuilder.cpp
+        src/SensorRequestMessage.cpp
+        src/SensorRequestMessageBuilder.cpp
         src/SensorMessage.cpp
         ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h

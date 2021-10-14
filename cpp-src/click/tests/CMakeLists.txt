@@ -9,6 +9,7 @@ target_sources(click-tests
         integrationtest_sensor_message.cpp
         integrationtest_handshake_message.cpp
         test_protobuf_message_integration.cpp
+        test_HandshakeSensorRequest_message.cpp
         test_message.cpp
         catch_main.cpp
     )

@@ -1,4 +1,5 @@
 #include <click/MessageFactory.h>
+#include <memory>
 
 using namespace click::protobuf;
 
@@ -12,6 +13,12 @@ HandshakeInitMessage * MessageFactory::create_handshakeInitMessage() {
     HandshakeInitMessage * message = new HandshakeInitMessage();
     message->set_messagetype(HandshakeInitMessageType);
     message->set_version(CURRENT_VERSION);
+    return message;
+}
+
+SensorRequestMessage MessageFactory::createSensorRequestMessage() {
+    SensorRequestMessage message;
+    message.set_messagetype(SensorRequestMessageType);
     return message;
 }
 

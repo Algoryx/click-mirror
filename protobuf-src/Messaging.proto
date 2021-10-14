@@ -5,6 +5,7 @@ package click.protobuf;
 enum MessageType {
   HandshakeInitMessageType = 0;
   HandshakeMessageType = 1;
+  SensorRequestMessageType = 6;
   ControlMessageType = 2;
   SensorMessageType = 3;
   ResetMessageType = 4;
@@ -43,6 +44,12 @@ enum Version {
 message HandshakeInitMessage {
   MessageType messageType = 1;
   Version version = 2;
+}
+
+// A SensorRequestMessage will not cause the simulation to step, which a ControlMessage will.
+// It can be used to get initial values before first simulation step.
+message SensorRequestMessage {
+  MessageType messageType = 1;
 }
 
 /* HandshakeMessage example
