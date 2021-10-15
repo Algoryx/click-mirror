@@ -1,5 +1,5 @@
 from pClick.Messaging_pb2 import CURRENT_VERSION, Message, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage
-from pClick.Messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType
+from pClick.Messaging_pb2 import HandshakeInitMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType
 
 
 class MessageFactory:
@@ -7,7 +7,8 @@ class MessageFactory:
               HandshakeMessageType: HandshakeMessage,
               ControlMessageType: ControlMessage,
               SensorMessageType: SensorMessage,
-              ResetMessageType: ResetMessage}
+              ResetMessageType: ResetMessage,
+              SensorRequestMessageType: SensorMessage}
 
     @classmethod
     def _create_message(cls, mtype):
