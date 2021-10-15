@@ -236,3 +236,30 @@ objects {
   }
 }
 """
+
+
+def test_that_ErrorMessage_serializes():
+    origin = MessageFactory.create_errormessage()
+
+    message = MessageSerializer.from_bytes(origin.SerializeToString())
+
+    assert str(message) == """messageType: ErrorMessageType
+"""
+
+
+def test_that_ResetMessage_serializes():
+    origin = MessageFactory.create_resetmessage()
+
+    message = MessageSerializer.from_bytes(origin.SerializeToString())
+
+    assert str(message) == """messageType: ResetMessageType
+"""
+
+
+def test_that_SensorRequestMessage_serializes():
+    origin = MessageFactory.create_sensorrequestmessage()
+
+    message = MessageSerializer.from_bytes(origin.SerializeToString())
+
+    assert str(message) == """messageType: SensorRequestMessageType
+"""
