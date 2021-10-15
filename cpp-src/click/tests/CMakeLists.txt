@@ -2,15 +2,18 @@
 add_executable(click-tests)
 target_sources(click-tests
     PRIVATE
-        test_srcdir.cpp
-        test_control_message.cpp
-        test_inithandshake_message.cpp
-        test_protobuf_messages.cpp
-        integrationtest_sensor_message.cpp
-        integrationtest_handshake_message.cpp
-        test_protobuf_message_integration.cpp
-        test_message.cpp
-        catch_main.cpp
+        CatchMain.cpp
+        TestControlMessage.cpp
+        TestErrorMessage.cpp
+        TestInithandshakeMessage.cpp
+        TestMessage.cpp
+        TestProtobufMessages.cpp
+        TestResetMessage.cpp
+        TestSensorRequestMessage.cpp
+        TestSrcDir.cpp
+        IntegrationtestSensorMessage.cpp
+        IntegrationtestHandshakeMessage.cpp
+        IntegrationTestProtobufMessage.cpp
     )
 target_compile_features(click-tests PRIVATE cxx_std_17)
 target_link_libraries(click-tests

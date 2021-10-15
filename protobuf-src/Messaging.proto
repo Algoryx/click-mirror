@@ -5,6 +5,7 @@ package click.protobuf;
 enum MessageType {
   HandshakeInitMessageType = 0;
   HandshakeMessageType = 1;
+  SensorRequestMessageType = 6;
   ControlMessageType = 2;
   SensorMessageType = 3;
   ResetMessageType = 4;
@@ -43,6 +44,12 @@ enum Version {
 message HandshakeInitMessage {
   MessageType messageType = 1;
   Version version = 2;
+}
+
+// A SensorRequestMessage will not cause the simulation to step, which a ControlMessage will.
+// It can be used to get initial values before first simulation step.
+message SensorRequestMessage {
+  MessageType messageType = 1;
 }
 
 /* HandshakeMessage example
@@ -84,9 +91,14 @@ message HandshakeMessage {
     map<string, Sensors> sensors = 4;          // Sensors per joint or other part
     repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
   };
+
+  message SimulationSettings {
+    double timeStep = 1;                       // Timestep of the simulation
+  };
   
   ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques
   map<string, Object> objects = 4;            // Key is name of object/robot
+  SimulationSettings simSettings = 5;
 }
 
 
@@ -183,13 +195,15 @@ message SensorMessage {
     // Sensors on the object, order of ValueType defined in handshake.
     repeated Sensor objectSensors = 4;
     // Sensors identified by name, ie not per joint or object, names and order of ValueType defined in handshake.
-    // TODO: Discuss with Pierre et al if these can be less generic, ie can we define a vector in handshake instead of using map?
     map<string, Sensors> sensors = 6;
   }
 
-  // TODO: Suggest System instead of Object, ok for Pierre?
-  // If so, perhaps one map for objects, one for systems?
+  message SimulationVariables {
+    double simulatedTime = 1;            // Will be a factor of timeStep from Handshake
+  }
+
   map<string, Object> objects = 3;
+  SimulationVariables simVars = 4;
 }
 
 message ResetMessage {

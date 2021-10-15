@@ -8,6 +8,7 @@ namespace click {
   enum MessageType {
     HandshakeInitMessageType = 0,
     HandshakeMessageType = 1,
+    SensorRequestMessageType = 6,
     ControlMessageType = 2,
     SensorMessageType = 3,
     ResetMessageType = 4,

@@ -21,6 +21,22 @@ SCENARIO("controlmessage serialization", "[click]")
         vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
         vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
+        WHEN("adding a robots with controls")
+        {
+            unique_ptr<ControlMessage> controlMessage = ControlMessageBuilderImpl::builder()
+                ->object("robot1")
+                    ->withAngles(angles)
+                    ->withControlEvent("gripper", true)
+                    ->withControlEvent("gripper2", false)
+                ->build();
+
+            THEN("it should have two grippers one activated and one not activated")
+            {
+                REQUIRE(controlMessage->messageType() == ControlMessageType);
+                REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
+                REQUIRE(controlMessage->controlEvent("robot1", "gripper2") == false);
+            }
+        }
         WHEN("adding three robots with controls")
         {
             unique_ptr<ControlMessage> controlMessage = ControlMessageBuilderImpl::builder()
@@ -29,6 +45,8 @@ SCENARIO("controlmessage serialization", "[click]")
                     ->withControlEvent("gripper", true)
                 ->object("robot2")
                     ->withAngleVelocities(angleVelocities)
+                    ->withControlEvent("gripper", false)
+                    ->withControlEvent("grupper", true)
                 ->object("robot3")
                     ->withTorques(torques)
                 ->build();
@@ -65,6 +83,14 @@ SCENARIO("controlmessage serialization", "[click]")
                     "    angleVelocities: 4\n"
                     "    angleVelocities: 5\n"
                     "    angleVelocities: 6\n"
+                    "    controlEvents {\n"
+                    "      key: \"gripper\"\n"
+                    "      value: false\n"
+                    "    }\n"
+                    "    controlEvents {\n"
+                    "      key: \"grupper\"\n"
+                    "      value: true\n"
+                    "    }\n"
                     "  }\n"
                     "}\n"
                     "objects {\n"
