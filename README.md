@@ -57,7 +57,6 @@ A typical flow is
 |     └──pClick
 └──testdata
 
-
 ## Running democlient and demoserver
 
 After building as specified below, run these commands in separate prompts:
