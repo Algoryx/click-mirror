@@ -43,7 +43,6 @@ A typical flow is
 |  ├──CMakeModules
 |  ├──democlient
 |  |  ├──src
-|  |  ├──src
 |  |  └──CMakeLists.txt
 |  └──CMakeLists.txt
 ├──doc
@@ -121,7 +120,6 @@ protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 pip3 install -r python-src/requirements-publish.txt
 python3 setup.py sdist bdist_wheel
 ```
-
 
 ## Test frameworks
 
