@@ -30,6 +30,32 @@ A typical flow is
 - [Current protobuf schema](protobuf-src/Messaging.proto)
 - [Technology choices etc](doc/messaging.md)
 
+## Directory Structure with CMake relevant files expanded
+
+├──cpp-src
+|  ├──click
+|  |  ├──include/click
+|  |  ├──shared_conf
+|  |  ├──src
+|  |  ├──tests
+|  |  |  └──CMakeLists.txt
+|  |  └──CMakeLists.txt
+|  ├──CMakeModules
+|  ├──democlient
+|  |  ├──src
+|  |  └──CMakeLists.txt
+|  └──CMakeLists.txt
+├──doc
+├──docker
+├──protobuf-src
+|  └──CMakeLists.txt
+├──python-src
+|  ├──src
+|  |  └──pClick
+|  └──tests
+|     └──pClick
+└──testdata
+
 ## Running democlient and demoserver
 
 After building as specified below, run these commands in separate prompts:
@@ -94,7 +120,6 @@ protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 pip3 install -r python-src/requirements-publish.txt
 python3 setup.py sdist bdist_wheel
 ```
-
 
 ## Test frameworks
 
