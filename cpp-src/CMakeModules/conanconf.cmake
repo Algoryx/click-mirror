@@ -39,11 +39,11 @@ conan_cmake_configure(
   OPTIONS
     # Needed for 32 bit builds on windows
     zeromq:encryption=None
-  )
+)
 
-  conan_cmake_autodetect(settings)
+conan_cmake_autodetect(settings)
 
-  conan_cmake_install(PATH_OR_REFERENCE .
+conan_cmake_install(PATH_OR_REFERENCE .
                       BUILD missing
 #                      REMOTE conancenter
                       SETTINGS ${settings})
