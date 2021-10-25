@@ -15,7 +15,7 @@ The current solution is to introduce a Handshake, which enables the simulation t
 
 ## Messaging Flow
 
-Messaging is peer to peer, where client and server takes turn. Ie
+Messaging is peer to peer, where client and server take turn. Ie
 
 - Client loops over send/recv
 - Server loops over recv/send.
@@ -50,9 +50,9 @@ When the Client sends a ResetMessage, the Server
 - will respond with ResetMessage
 - will reset the simulation to the intial state
 - will pause the simulation
-- will start the simulation on the first received ControlMessage, ie it is possible for the client to send SensorRequest
+- will not start the simulation until the first received ControlMessage, the client can send a SensorRequestMessage without starting simulation at this point.
 
-The typical flow therefor is
+The typical flow therefore is
 
 1. Client sends ResetMessage
 2. Server responds with ResetMessage
@@ -71,8 +71,8 @@ The same will happen when the Simulation is reset from simulation side, eg a use
 
 ### Stepping the simulation
 
-The simulation is not started until after the first handshake is complete, ie when the first ControMessage is received.
-After that, the simulation is stepped once per message, except after a ResetMessage; see below.
+The simulation is not started until after the first handshake is complete, ie when the first ControlMessage is received.
+After that, the simulation is stepped once per message, except after a ResetMessage; see above.
 
 ## Links
 
