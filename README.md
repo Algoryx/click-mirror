@@ -13,14 +13,66 @@ The current solution is to introduce a Handshake, which enables the simulation t
 
 ![Messaging overview diagram](doc/messaging.drawio.svg)
 
+## Messaging Flow
+
+Messaging is peer to peer, where client and server take turn. Ie
+
+- Client loops over send/recv
+- Server loops over recv/send.
+
+The messages are
+
+Request              | Response         | Comment
+---------------------|------------------|--------
+HandshakeInitMessage | HandshakeMessage |
+SensorRequestMessage | SensorMessage    |
+ControlMessage       | SensorMessage    | Client must also be prepared for ErrorMessage and ResetMessage
+ResetMessage         | ResetMessage     | Sending a ResetMessage will pause the simulation
+ErrorMessage         | -                | Sending an ErrorMessage will end the simulation
+
+### Typical flow
+
 A typical flow is
 
 1. Client controller connects and sends HandshakeInit
 2. Server responds with Handshake
 3. Client receives Handshake and validates the setup.
-4. Client sends Controls
-5. Server responds with Sensors
-6. The loop 4-5 is repeated.
+4. [Optional step] Client sends SensorRequestMessage to get initial values
+5. [Optional step] Server responds with SensorMessage without starting simulation
+6. Client sends ControlMessage, **this message will start the simulation**
+7. Server responds with SensorMessage
+8. The loop 6-8 is repeated.
+
+### ResetMessage
+
+When the Client sends a ResetMessage, the Server
+
+- will respond with ResetMessage
+- will reset the simulation to the intial state
+- will pause the simulation
+- will not start the simulation until the first received ControlMessage, the client can send a SensorRequestMessage without starting simulation at this point.
+
+The typical flow therefore is
+
+1. Client sends ResetMessage
+2. Server responds with ResetMessage
+3. [Optional] Client sends SensorRequestMessage
+4. [Optional] Server responds with SensorMessage without starting simulation
+5. Client sends ControlMessage
+6. Server sends SensorMessage
+
+The same will happen when the Simulation is reset from simulation side, eg a user reset the simulation:
+
+1. Server responds with ResetMessage on any incoming Message (except ErrorMessage)
+2. [Optional] Client sends SensorRequestMessage
+3. [Optional] Server responds with SensorMessage without starting simulation
+4. Client sends ControlMessage
+5. Server sends SensorMessage
+
+### Stepping the simulation
+
+The simulation is not started until after the first handshake is complete, ie when the first ControlMessage is received.
+After that, the simulation is stepped once per message, except after a ResetMessage; see above.
 
 ## Links
 
@@ -32,6 +84,7 @@ A typical flow is
 
 ## Directory Structure with CMake relevant files expanded
 
+```text
 ├──cpp-src
 |  ├──click
 |  |  ├──include/click
@@ -55,6 +108,7 @@ A typical flow is
 |  └──tests
 |     └──pClick
 └──testdata
+```
 
 ## Running democlient and demoserver
 
