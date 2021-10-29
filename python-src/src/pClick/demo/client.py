@@ -19,11 +19,23 @@ def parse_args():
                         help=f'set addr. Ie ipc:///tmp/click.ipc. host and port will be ignored')
     parser.add_argument('--range', metavar='<range>', type=int, default=0,
                         help=f'How many extra messages to send/recv, default is 0')
-    parser.add_argument('--handshake-init', dest='send_handshake_init', action="store_true",
+    parser.add_argument('--handshake-init', dest='handshake_init', action="store_true", default=True,
                         help=f'Send handshake init. This is the default')
     parser.add_argument('--controlmessage', metavar='<value>', type=str, default=None,
                         help=f'send controlmessage with control values set to <value>. Overrides --handshake-init. Examples --controlmessage robot1:0,0;panda2:1,1')
+    parser.add_argument('--errormessage', dest='errormessage', action="store_true",
+                        help=f'Send error message')
+    parser.add_argument('--resetmessage', dest='resetmessage', action="store_true",
+                        help=f'Send reset message')
+    parser.add_argument('--end-with-errormessage', dest='end_with_errormessage', action="store_true",
+                        help=f'Send an extra error message before quitting')
     return parser.parse_args()
+
+
+def send_errormessage(socket):
+    message = MessageFactory.create_errormessage()
+    print(f"Sending errormessage")
+    socket.send(message)
 
 
 args = parse_args()
@@ -36,12 +48,7 @@ socket = Client()
 print(f"Connecting to click server {addr}")
 socket.connect(addr)
 
-if not args.controlmessage:
-    message = MessageFactory.create_handshake_init()
-    print(f"Sending initiate handshake")
-    socket.send(message)
-    response = socket.recv()
-else:
+if args.controlmessage:
     message = MessageFactory.create_controlmessage()
     robotargs = args.controlmessage.split(";")
     for arg in robotargs:
@@ -51,11 +58,24 @@ else:
         robot.angles.extend(arr)
     print(f"Sending {str(message)}")
     socket.send(message)
-    response = socket.recv()
+elif args.resetmessage:
+    message = MessageFactory.create_resetmessage()
+    print(f"Sending resetmessage")
+    socket.send(message)
+elif args.errormessage:
+    send_errormessage(socket)
+else:
+    message = MessageFactory.create_handshake_init()
+    print(f"Sending initiate handshake")
+    socket.send(message)
 
+response = socket.recv()
 print(f"Received response {response}")
 
 for i in range(0, args.range):
     socket.send(message)
     response = socket.recv()
 print(f"Sent {args.range + 1} messages")
+
+if args.end_with_errormessage:
+    send_errormessage(socket)
