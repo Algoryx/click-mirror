@@ -31,4 +31,5 @@ class Server:
         return self.socket.send(message.SerializeToString(), flags=zmq.NOBLOCK)
 
     def stop(self):
+        self.socket.close()
         self.context.destroy()
