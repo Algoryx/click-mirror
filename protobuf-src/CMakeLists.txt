@@ -1,6 +1,10 @@
 add_library(clickprotobuf STATIC)
 target_sources(clickprotobuf PRIVATE Messaging.proto)
 target_compile_features(clickprotobuf PRIVATE cxx_std_17)
+# Avoid linking issue with click built as a shared library
+if(BUILD_SHARED_LIBS)
+  set_target_properties(clickprotobuf PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif()
 
 find_package(Protobuf REQUIRED)
 target_link_libraries(clickprotobuf
