@@ -48,12 +48,10 @@ build-cpp-lib-linux:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci
-  variables:
-    BUILD_SHARED_LIBS: "OFF"
   script:
     - mkdir build
     - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} ../cpp-src
+    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS ../cpp-src
     - ninja
     - ninja install
     - ninja package
@@ -69,7 +67,7 @@ build-cpp-lib-linux:
 build-shared-cpp-lib-linux:
   extends: build-cpp-lib-linux
   variables:
-    BUILD_SHARED_LIBS: "ON"
+    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
 .test-cpp-lib-linux:
   extends: .run-in-docker
