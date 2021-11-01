@@ -90,6 +90,8 @@ test-cpp-lib-linux:
 
 test-shared-cpp-lib-linux:
   extends: .test-cpp-lib-linux
+  variables:
+    LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/build/install/lib"
   needs:
     - job: build-shared-cpp-lib-linux
       artifacts: true
