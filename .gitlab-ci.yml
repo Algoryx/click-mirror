@@ -94,15 +94,16 @@ test-shared-cpp-lib-linux:
     - job: build-shared-cpp-lib-linux
       artifacts: true
 
+# TODO: Get PACKAGE_NAME and VERSION from settings, not from ls
 .publish-cpp-lib-linux:
   extends: .run-in-docker
   stage: publish
   image: $CI_REGISTRY_IMAGE/docker-ci
   script:
-    - apt-get -q update && apt-get install -qy curl
     - cd build
     - PACKAGE_NAME=`ls click-*.deb`
     - PACKAGE_VERSION=`echo $PACKAGE_NAME|sed -e's/click-\([.0-9]*\).*/\1/'`
+    - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_UPLOAD_NAME}"'
   only:
