@@ -21,6 +21,8 @@ def parse_args():
                         help=f'How many extra messages to send/recv, default is 0')
     parser.add_argument('--handshake-init', dest='handshake_init', action="store_true", default=True,
                         help=f'Send handshake init. This is the default')
+    parser.add_argument('--sensorrequest', dest='sensorrequest', action="store_true",
+                        help=f'Send sensor request message')
     parser.add_argument('--controlmessage', metavar='<value>', type=str, default=None,
                         help=f'send controlmessage with control values set to <value>. Overrides --handshake-init. Examples --controlmessage robot1:0,0;panda2:1,1')
     parser.add_argument('--errormessage', dest='errormessage', action="store_true",
@@ -61,6 +63,10 @@ if args.controlmessage:
 elif args.resetmessage:
     message = MessageFactory.create_resetmessage()
     print(f"Sending resetmessage")
+    socket.send(message)
+elif args.sensorrequest:
+    message = MessageFactory.create_sensorrequestmessage()
+    print(f"Sending sensor request message")
     socket.send(message)
 elif args.errormessage:
     send_errormessage(socket)
