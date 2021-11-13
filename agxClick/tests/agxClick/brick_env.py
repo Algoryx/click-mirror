@@ -7,13 +7,7 @@ from agxPythonModules.utils.environment import create_or_set_script_context
 # agxBrickHosting corresponds to https://git.algoryx.se/algoryx/agx/-/blob/master/include/agxBrick/BrickInterop.h
 from agxBrickHosting import (
     init as brick_init,
-    isInitialized,
-    loadBrickFile,
-    syncBrickInputs,
-    syncBrickOutputs,
-    parseBrickModelLoadingDeclaration,
     registerAgxSimulation,
-    unregisterAgxSimulation,
     getRegisteredAgxSimulation,
     locateBrickRootFromEnvironment,
 )
@@ -58,5 +52,4 @@ class BrickEnv():
         from Brick.Physics import Component
         component = Component.CreateFromFile(file_path, model_name)
         self.brickSimulation.AddComponent(component)
-#        self.brickSimulation.PositionAgxBodies()
         return component

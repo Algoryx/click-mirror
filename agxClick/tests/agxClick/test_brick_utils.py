@@ -1,4 +1,4 @@
-from utils.brick_utils import BrickUtils
+from agxClick import BrickUtils
 import agx
 
 

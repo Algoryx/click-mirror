@@ -2,10 +2,10 @@ from brick_env import BrickEnv
 import pytest
 
 
-@pytest.mark.linuxcrash
+@pytest.mark.integrationtest
 def test_brick_load_robots(pyroot):
 
-    file_path = pyroot + "/models/Example5.yml"
+    file_path = pyroot + "/testdata/Example5.yml"
     model_name = "Example5"
 
     brickenv = BrickEnv()

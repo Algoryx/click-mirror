@@ -1,5 +1,5 @@
 import pytest
-from clicktools import find_robots_in_scene, get_click_configuration, has_click_configuration
+from agxClick import find_robots_in_scene, get_click_configuration, has_click_configuration
 from os import chdir
 
 
@@ -31,7 +31,7 @@ def clickscene(brickenv, pyroot):
     return brickenv.load_from_file(file_path, model_name)
 
 
-@pytest.mark.linuxcrash
+@pytest.mark.integrationtest
 class Test_click_brick_reader:
 
     @pytest.fixture(scope="class", autouse=True)

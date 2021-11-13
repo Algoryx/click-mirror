@@ -1,6 +1,6 @@
 from pClick.Messaging_pb2 import Force
 import pytest
-from clicktools import MessageFactory, update_robots_from_message, find_robots_in_scene, get_click_configuration, ClickRobot, ClickObject
+from agxClick import MessageFactory, update_robots_from_message, find_robots_in_scene, get_click_configuration, ClickRobot, ClickObject
 from pClick import ValueType, MessageFactory as ProtoMessageFactory
 from typing import List
 from os import chdir
@@ -57,7 +57,6 @@ def create_faked_controllmessage_for(robots: List[ClickRobot], add_control_event
     return control_m
 
 
-@pytest.mark.linuxcrash
 @pytest.mark.integrationtest
 class Test_message_factory_integration:
 

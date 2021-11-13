@@ -24,7 +24,6 @@ def send_receive(client: Client, message):
     raise Exception(f"Nothing to receive, even after {tries} tries")
 
 
-@pytest.mark.brick
 @pytest.mark.integrationtest
 class TestClickIntegration:
 
@@ -88,7 +87,6 @@ class TestClickIntegration:
         return message
 
 
-@pytest.mark.brick
 @pytest.mark.integrationtest
 class TestHappyPath(TestClickIntegration):
     def test_that_simulation_starts_after_handshake(self, pyroot):
@@ -118,7 +116,6 @@ class TestHappyPath(TestClickIntegration):
         assert sensormessage.simVars.simulatedTime > 0.0
 
 
-@pytest.mark.brick
 @pytest.mark.integrationtest
 class TestSensorRequest(TestClickIntegration):
     def test_that_sensorrequest_sends_values_not_zeros(self, pyroot):
@@ -130,7 +127,6 @@ class TestSensorRequest(TestClickIntegration):
         assert sum(sensormessage.objects['panda_tool'].angleSensors) != 0
 
 
-@pytest.mark.brick
 @pytest.mark.integrationtest
 class TestResetMessage(TestClickIntegration):
     def test_that_resetmessage_returns_resetmessage(self, pyroot):
@@ -146,7 +142,6 @@ class TestResetMessage(TestClickIntegration):
         assert sensormessage.messageType == ResetMessageType
 
 
-@pytest.mark.brick
 @pytest.mark.integrationtest
 class TestResetMessageWithRCS(TestResetMessage):
     """
