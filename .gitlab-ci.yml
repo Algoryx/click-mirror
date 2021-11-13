@@ -157,11 +157,11 @@ test-python-lib:
   script:
     - pip3 install -r python-src/requirements-test.txt
     - pip3 install python-src/dist/pClick*whl
-    - pytest --junitxml=pytest-junit.xml
+    - pytest python-src --junitxml=pClick-junit.xml -k "not integrationtest"
   artifacts:
     when: always
     reports:
-      junit: pytest-junit.xml
+      junit: pClick-junit.xml
 
 publish-python-lib:
   extends: .run-in-docker
