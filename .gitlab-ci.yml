@@ -125,17 +125,27 @@ publish-shared-cpp-lib-linux:
     - job: build-shared-cpp-lib-linux
       artifacts: true
 
-build-python-lib:
+.build-python:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci
   script:
-    - pip3 install -r python-src/requirements-publish.txt
-    - cd python-src
+    - cd $PYTHONDIR
+    - pip3 install -r requirements-publish.txt
     - python3 setup.py sdist bdist_wheel
   artifacts:
     paths:
-      - python-src/dist/
+      - $PYTHONDIR/dist/
+
+build-python-lib:
+  extends: .build-python
+  variables:
+    PYTHONDIR: python-src
+  
+build-agxClick:
+  extends: .build-python
+  variables:
+    PYTHONDIR: agxClick
 
 test-python-lib:
   extends: .run-in-docker
@@ -161,11 +171,25 @@ publish-python-lib:
     - job: build-python-lib
       artifacts: true
   script:
-    - pip3 install -r python-src/requirements-publish.txt
     - cd python-src
+    - pip3 install -r requirements-publish.txt
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   only:
     - main
+
+publish-agxClick:
+  extends: .run-in-docker
+  stage: publish
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  needs:
+    - job: build-agxClick
+      artifacts: true
+  script:
+    - cd agxClick
+    - pip3 install -r requirements-publish.txt
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  # only:
+  #   - main
 
 .build-cpp-lib-windows:
   stage: build
