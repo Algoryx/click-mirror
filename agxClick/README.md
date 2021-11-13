@@ -20,14 +20,15 @@ A typical flow is
 5. Server responds with Sensors
 6. The loop 4-5 is repeated.
 
-## Run demo server
+
+## Install
+
+Prerequisites: agx and agxBrick
 
 ```bash
-python3 -m agxClick.demo.server
+pip install agxClick==${CLICK_VERSION} --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 ```
 
-## Use
+## Usage Examples
 
-```python
-import agxClick
-```
+See [examples](examples)
