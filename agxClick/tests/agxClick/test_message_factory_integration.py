@@ -7,34 +7,6 @@ from os import chdir
 from pytest import approx
 
 
-@pytest.fixture()
-def scene(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/Example5.yml"
-    model_name = "Example5"
-    return brickenv.load_from_file(file_path, model_name)
-
-
-@pytest.fixture(scope="function")
-def scene_velocityinput(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/Example5.yml"
-    model_name = "Example5Velocity"
-    return brickenv.load_from_file(file_path, model_name)
-
-
-@pytest.fixture(scope="function")
-def scene_forceinput(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/Example5.yml"
-    model_name = "Example5Force"
-    return brickenv.load_from_file(file_path, model_name)
-
-
-@pytest.fixture(scope="function")
-def clickscene(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/ClickScene.yml"
-    model_name = "ExampleClickScene"
-    return brickenv.load_from_file(file_path, model_name)
-
-
 def create_faked_controllmessage_for(robots: List[ClickRobot], add_control_event=True):
     """
     add_control_event, if True an event will be added with False for first robot, True for rest

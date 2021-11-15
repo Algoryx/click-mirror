@@ -3,34 +3,6 @@ from agxClick import find_robots_in_scene, get_click_configuration, has_click_co
 from os import chdir
 
 
-@pytest.fixture(scope="class")
-def scene(brickenv, pyroot):
-    file_path = f"{pyroot}/testdata/MyScene.yml"
-    model_name = "MyScenePosition"
-    return brickenv.load_from_file(file_path, model_name)
-
-
-@pytest.fixture(scope="class")
-def scene_velocityinput(brickenv, pyroot):
-    file_path = f"{pyroot}/testdata/MyScene.yml"
-    model_name = "MySceneVelocity"
-    return brickenv.load_from_file(file_path, model_name)
-
-
-@pytest.fixture(scope="class")
-def scene_forceinput(brickenv, pyroot):
-    file_path = f"{pyroot}/testdata/MyScene.yml"
-    model_name = "MySceneForce"
-    return brickenv.load_from_file(file_path, model_name)
-
-
-@pytest.fixture(scope="function")
-def clickscene(brickenv, pyroot):
-    file_path = f"{pyroot}/testdata/ClickScene.yml"
-    model_name = "ExampleClickScene"
-    return brickenv.load_from_file(file_path, model_name)
-
-
 @pytest.mark.integrationtest
 class Test_click_brick_reader:
 
