@@ -157,11 +157,27 @@ test-python-lib:
   script:
     - pip3 install -r python-src/requirements-test.txt
     - pip3 install python-src/dist/pClick*whl
-    - pytest python-src --junitxml=pClick-junit.xml -k "not integrationtest"
+    - pytest python-src --junitxml=pClick-junit.xml
   artifacts:
     when: always
     reports:
       junit: pClick-junit.xml
+
+test-agxClick:
+  extends: .run-in-docker
+  stage: test
+  image: $CI_REGISTRY_IMAGE/multi-service-app:0.0.19-feature-remove-clicktools
+  needs:
+    - job: build-python-lib
+      artifacts: true
+  script:
+    - pip3 install -r python-src/requirements-test.txt
+    - pip3 install python-src/dist/pClick*whl
+    - pytest agxClick --junitxml=agxClick-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: agxClick-junit.xml
 
 publish-python-lib:
   extends: .run-in-docker
