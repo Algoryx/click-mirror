@@ -12,8 +12,7 @@ import logging
 
 def createArgumentParser(args):
     parser = argparse.ArgumentParser(args)
-    parser.add_argument('--brickfile', type=str, default="", help="The path to the brick .yml file")
-    parser.add_argument('--model', type=str, default="", help="The name of the Physics.Component to be loaded from brickfile")
+    parser.add_argument('--model', type=str, default="", help="<file.yml>[:component] The path to the brick .yml file and the name of the Physics.Component to be loaded from it")
     args, _ = parser.parse_known_args(args)
     return args
 
@@ -27,7 +26,9 @@ def buildScene():
 
     from Brick.Physics import Component
     from Brick.AGXBrick import BrickSimulation
-    logging.getLogger(__file__).info(f"Loading {args.brickfile}:{args.model}")
-    scene = Component.CreateFromFile(args.brickfile, args.model)
+    file, model = args.model.split(":")
+    logging.getLogger(__file__).info(f"Loading {file}:{model}")
+    scene = Component.CreateFromFile(file, model)
     BrickSimulation.Default.AddComponent(scene)
     agxOSG.createVisual(sim, app.getSceneRoot())
+    return scene

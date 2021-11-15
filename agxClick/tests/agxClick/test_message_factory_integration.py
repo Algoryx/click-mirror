@@ -41,7 +41,7 @@ class Test_message_factory_integration:
 
     def test_joints(self, scene):
         robots = find_robots_in_scene(scene)
-        assert [x * 1.0 for x in range(1, robots[0].num_joints + 1)] == [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+        assert [x * 1.0 for x in range(1, robots[0].num_joints + 1)] == [1.0, 2.0]
 
     def test_that_generating_handshake_creates_correct_handshake(self, scene):
         robots = find_robots_in_scene(scene)
@@ -93,13 +93,13 @@ class Test_message_factory_integration:
         update_robots_from_message(robots, controlmessage)
         # TODO: When agxBrick 0.4.58 is released, use data_to_float, ie will implement GetData correctly
         # Ref: https://git.algoryx.se/algoryx/agx/-/issues/1101
-        assert self.data_to_float_motorforce(robots[0].input_signals) == [3, 6, 9, 12, 15, 18, 21]
+        assert self.data_to_float_motorforce(robots[0].input_signals) == [3, 6]
 
     def test_that_reading_velocity_controlmessage_updates_robots(self, scene_velocityinput):
         robots = find_robots_in_scene(scene_velocityinput)
         controlmessage = create_faked_controllmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
-        assert self.data_to_float(robots[0].input_signals) == [2, 4, 6, 8, 10, 12, 14]
+        assert self.data_to_float(robots[0].input_signals) == [2, 4]
 
     def test_that_reading_controlmessage_without_controlevent_skips_controlevent(self, scene):
         robots = find_robots_in_scene(scene)
@@ -131,15 +131,10 @@ class Test_message_factory_integration:
 _handshake_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION
 objects {
-  key: "panda_2"
+  key: "robot1"
   value {
-    controlsInOrder: "panda_joint1"
-    controlsInOrder: "panda_joint2"
-    controlsInOrder: "panda_joint3"
-    controlsInOrder: "panda_joint4"
-    controlsInOrder: "panda_joint5"
-    controlsInOrder: "panda_joint6"
-    controlsInOrder: "panda_joint7"
+    controlsInOrder: "robot1_joint0"
+    controlsInOrder: "robot1_joint1"
     jointSensors: Angle
     jointSensors: AngleVelocity
     jointSensors: Force
@@ -149,25 +144,15 @@ objects {
     }
     objectSensors: Position
     objectSensors: RPY
-    jointSensorsInOrder: "panda_joint1"
-    jointSensorsInOrder: "panda_joint2"
-    jointSensorsInOrder: "panda_joint3"
-    jointSensorsInOrder: "panda_joint4"
-    jointSensorsInOrder: "panda_joint5"
-    jointSensorsInOrder: "panda_joint6"
-    jointSensorsInOrder: "panda_joint7"
+    jointSensorsInOrder: "robot1_joint0"
+    jointSensorsInOrder: "robot1_joint1"
   }
 }
 objects {
-  key: "panda_tool"
+  key: "robot2"
   value {
-    controlsInOrder: "panda_joint1"
-    controlsInOrder: "panda_joint2"
-    controlsInOrder: "panda_joint3"
-    controlsInOrder: "panda_joint4"
-    controlsInOrder: "panda_joint5"
-    controlsInOrder: "panda_joint6"
-    controlsInOrder: "panda_joint7"
+    controlsInOrder: "robot2_joint0"
+    controlsInOrder: "robot2_joint1"
     jointSensors: Angle
     jointSensors: AngleVelocity
     jointSensors: Force
@@ -177,13 +162,8 @@ objects {
     }
     objectSensors: Position
     objectSensors: RPY
-    jointSensorsInOrder: "panda_joint1"
-    jointSensorsInOrder: "panda_joint2"
-    jointSensorsInOrder: "panda_joint3"
-    jointSensorsInOrder: "panda_joint4"
-    jointSensorsInOrder: "panda_joint5"
-    jointSensorsInOrder: "panda_joint6"
-    jointSensorsInOrder: "panda_joint7"
+    jointSensorsInOrder: "robot2_joint0"
+    jointSensorsInOrder: "robot2_joint1"
   }
 }
 simSettings {
@@ -193,67 +173,12 @@ simSettings {
 
 _sensor_facit = """messageType: SensorMessageType
 objects {
-  key: "panda_2"
+  key: "robot1"
   value {
     angleSensors: 0.0
     angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
     angleVelocitySensors: 0.0
     angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    objectSensors {
-      position {
-        arr: 0.0
-        arr: -0.45
-        arr: 0.45
-      }
-    }
-    objectSensors {
-      rpy {
-        arr: 0.0
-        arr: 0.0
-        arr: -0.75
-      }
-    }
-  }
-}
-objects {
-  key: "panda_tool"
-  value {
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
     torqueSensors: 0.0
     torqueSensors: 0.0
     objectSensors {
@@ -272,27 +197,52 @@ objects {
     }
   }
 }
+objects {
+  key: "robot2"
+  value {
+    angleSensors: 0.0
+    angleSensors: 0.0
+    angleVelocitySensors: 0.0
+    angleVelocitySensors: 0.0
+    torqueSensors: 0.0
+    torqueSensors: 0.0
+    objectSensors {
+      position {
+        arr: 0.0
+        arr: -0.45
+        arr: 0.45
+      }
+    }
+    objectSensors {
+      rpy {
+        arr: 0.0
+        arr: 0.0
+        arr: -0.75
+      }
+    }
+  }
+}
 simVars {
   simulatedTime: 1.0
 }
 """
 
-_updated_robots_str = """name: panda_tool
-    num_joints: 7
-    jointnames: ['panda_joint1', 'panda_joint2', 'panda_joint3', 'panda_joint4', 'panda_joint5', 'panda_joint6', 'panda_joint7']
+_updated_robots_str = """name: robot1
+    num_joints: 2
+    jointnames: ['robot1_joint0', 'robot1_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
-    7 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465, 171.88733853924697, 229.1831180523293, 286.4788975654116, 343.77467707849394, 401.07045659157626]
-    7 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    7 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    7 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    2 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465]
+    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
+    2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
+    2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
     control events: ['adhesiveForceInput: 0.0']
-name: panda_2
-    num_joints: 7
-    jointnames: ['panda_joint1', 'panda_joint2', 'panda_joint3', 'panda_joint4', 'panda_joint5', 'panda_joint6', 'panda_joint7']
+name: robot2
+    num_joints: 2
+    jointnames: ['robot2_joint0', 'robot2_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
-    7 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465, 171.88733853924697, 229.1831180523293, 286.4788975654116, 343.77467707849394, 401.07045659157626]
-    7 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    7 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    7 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    2 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465]
+    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
+    2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
+    2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
     control events: ['adhesiveForceInput: 100.0']
 """

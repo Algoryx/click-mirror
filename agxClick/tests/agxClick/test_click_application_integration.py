@@ -5,6 +5,7 @@ from subprocess import Popen, PIPE
 from pClick import Client, MessageFactory, HandshakeMessageType, SensorMessageType, MessageSerializer
 import zmq
 from time import sleep
+import platform
 
 
 def send(client: Client, message):
@@ -66,7 +67,9 @@ class TestClickIntegration:
         return handshake
 
     def start_simulation(self, simulation_seconds, app_path, time_step, extra_flags="") -> Popen:
-        cmd = f'agxpython click_application.py --model models/Example5.yml:Example5 --use-click --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
+        python_executable = "agxpython" if platform.system() == "Linux" else "python3"
+        cmd = f'{python_executable} examples/click_application.py --model testdata/ClickScene.yml:ExampleClickScene --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
+        cmd = f'env'
         print(f"Executing {cmd}")
         process = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=app_path)
         return process

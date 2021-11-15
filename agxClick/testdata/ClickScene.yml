@@ -29,12 +29,23 @@ ExampleClickScene:
     localTransform:
       position: Math.Vec3(-0.25, 3.45, 0.55)
       rotation: Math.EulerAngles(0, 0, 2.35)
+    arm1:
+      joint0:
+        protocolReference: robot1_joint0
+      joint1:
+        protocolReference: robot1_joint1
+
 
   robot2:
     .type: ToolRobot
     localTransform:
       position: Math.Vec3(0, -0.45, 0.45)
       rotation: Math.EulerAngles(0, -0, -0.75)
+    arm1:
+      joint0:
+        protocolReference: robot2_joint0
+      joint1:
+        protocolReference: robot2_joint1
   
   box: 
     .type: RigidBody

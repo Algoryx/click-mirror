@@ -13,7 +13,7 @@ def pyroot():
     return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def scene(brickenv, pyroot):
     file_path = f"{pyroot}/testdata/MyScene.yml"
     model_name = "MyScenePosition"
