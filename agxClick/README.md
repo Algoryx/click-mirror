@@ -34,4 +34,11 @@ pip install agxClick==0.1.8 --extra-index-url https://click-access:F2q7LauW_d-HJ
 ## Usage Examples
 
 See [examples](examples)
-https://drive.google.com/file/d/1XDeorG3baJtmQLnnL0SkIrj0IUZJAZ6P/view?usp=sharing
+
+```bash
+python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleClickScene
+# From different terminal, to get handshake
+python3 -m pClick.demo.client
+# Step simulation 200 steps and get first simulation step SensorMessage
+python3 -m pClick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 199 --end-with-errormessage
+```
