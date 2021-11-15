@@ -20,7 +20,6 @@ A typical flow is
 5. Server responds with Sensors
 6. The loop 4-5 is repeated.
 
-
 ## Install
 
 Prerequisites: agx and agxBrick
@@ -32,3 +31,4 @@ pip install agxClick==${CLICK_VERSION} --extra-index-url https://click-access:F2
 ## Usage Examples
 
 See [examples](examples)
+https://drive.google.com/file/d/1XDeorG3baJtmQLnnL0SkIrj0IUZJAZ6P/view?usp=sharing

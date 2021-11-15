@@ -14,7 +14,8 @@
         "--max-line-length=180"
     ],
     "python.testing.pytestArgs": [
-        "python-src/tests"
+        "python-src/tests",
+        "agxClick/tests"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,

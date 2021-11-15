@@ -5,28 +5,28 @@ from os import chdir
 
 @pytest.fixture(scope="class")
 def scene(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/Example5.yml"
-    model_name = "Example5"
+    file_path = f"{pyroot}/testdata/MyScene.yml"
+    model_name = "MyScenePosition"
     return brickenv.load_from_file(file_path, model_name)
 
 
 @pytest.fixture(scope="class")
 def scene_velocityinput(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/Example5.yml"
-    model_name = "Example5Velocity"
+    file_path = f"{pyroot}/testdata/MyScene.yml"
+    model_name = "MySceneVelocity"
     return brickenv.load_from_file(file_path, model_name)
 
 
 @pytest.fixture(scope="class")
 def scene_forceinput(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/Example5.yml"
-    model_name = "Example5Force"
+    file_path = f"{pyroot}/testdata/MyScene.yml"
+    model_name = "MySceneForce"
     return brickenv.load_from_file(file_path, model_name)
 
 
 @pytest.fixture(scope="function")
 def clickscene(brickenv, pyroot):
-    file_path = f"{pyroot}/tests/testdata/ClickScene.yml"
+    file_path = f"{pyroot}/testdata/ClickScene.yml"
     model_name = "ExampleClickScene"
     return brickenv.load_from_file(file_path, model_name)
 
@@ -42,10 +42,14 @@ class Test_click_brick_reader:
         chdir(request.config.invocation_dir)
 
     def test_that_model_has_robots_with_arms(self, scene):
-        assert len(scene['InternalComponents']) == 2
-        assert "Robot" in str(scene['InternalComponents'][1]._ModelType.Origin)
-        assert len(scene['InternalComponents'][1].Arms) == 1
-        assert len(scene['InternalComponents'][1].Arms[0].Joints) == 7
+        import Brick.Robotics
+        # TODO: Why is it 10 components?
+        for comp in scene['InternalComponents']:
+            print(comp['Name'])
+        assert len(scene['InternalComponents']) == 10
+        assert scene['InternalComponents'][0].__class__ is Brick.Robotics.Robot
+        assert len(scene['InternalComponents'][1].Arms) == 2
+        assert len(scene['InternalComponents'][1].Arms[0].Joints) == 1
 
     def test_that_robot_has_jointnames(self, scene):
         robots = find_robots_in_scene(scene)

@@ -3,15 +3,14 @@ import pytest
 
 
 @pytest.mark.integrationtest
-def test_brick_load_robots(pyroot):
+def test_that_brick_env_enables_loading_robots(pyroot):
 
-    file_path = pyroot + "/testdata/Example5.yml"
-    model_name = "Example5"
+    file_path = pyroot + "/testdata/MyRobot.yml"
+    model_name = "MyRobotPosition"
 
     brickenv = BrickEnv()
     scene = brickenv.load_from_file(file_path, model_name)
 
-    assert len(scene['InternalComponents']) == 3
-    assert "Robot" in str(scene['InternalComponents'][1]._ModelType.Origin)
-    print(type(scene['InternalComponents'][1]))
-    assert len(scene['InternalComponents'][1].Arms) == 1
+    import Brick.Robotics
+    assert scene.__class__ is Brick.Robotics.Robot
+    assert len(scene['InternalComponents']) == 4
