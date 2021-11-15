@@ -6,7 +6,8 @@
 
 # Use imports to avoid having two write the whole name of the component
 .import:
-  MyRobot: [MyRobotPosition]
+  MyRobot: [ToolRobot]
+  Physics.Mechanics: [RigidBody]
 
 ClickScene:
   .extends: Physics.Component
@@ -24,24 +25,24 @@ ExampleClickScene:
   wantInternalPositioning: true
 
   robot1:
-    .type: MyRobotPosition
+    .type: ToolRobot
     localTransform:
       position: Math.Vec3(-0.25, 3.45, 0.55)
       rotation: Math.EulerAngles(0, 0, 2.35)
 
   robot2:
-    .type: MyRobotPosition
+    .type: ToolRobot
     localTransform:
       position: Math.Vec3(0, -0.45, 0.45)
       rotation: Math.EulerAngles(0, -0, -0.75)
   
-  # box: 
-  #   .type: PythonApplicationModels.BoxPile.ExampleBox
-  #   localTransform:
-  #     position: Math.Vec3(1, 2, 3)
-  #     rotation: Math.EulerAngles(2, 1, 1)
+  box: 
+    .type: RigidBody
+    localTransform:
+      position: Math.Vec3(1, 2, 3)
+      rotation: Math.EulerAngles(2, 1, 1)
 
   clickobjects:
     - robot1
     - robot2
-    # - box
+    - box

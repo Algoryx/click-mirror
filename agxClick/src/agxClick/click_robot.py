@@ -76,12 +76,12 @@ class ClickRobot(ClickObject):
         if (self.velocity_sensors):
             assert self.num_joints == len(self.velocity_sensors), f"Number of input_signals {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
 
-    def joint_externalrefs(self) -> List[str]:
+    def joint_protocolrefs(self) -> List[str]:
         """
-        Returns externalref name of all joints in a sorted list
+        Returns protocolReference name of all joints in a sorted list
         """
         assert len(self.brickrobot.Arms) == 1, "Can only handle one-armed robots for now"
-        return list(map(lambda joint: joint.ExternalReference, self.brickrobot.Arms[0].Joints))
+        return list(map(lambda joint: joint.ProtocolReference, self.brickrobot.Arms[0].Joints))
 
     def control_event_names(self) -> List[str]:
         return self.control_event_dict.keys()
@@ -94,9 +94,9 @@ class ClickRobot(ClickObject):
 
     def joint_sensors(self) -> List[Tuple[str, Any]]:
         """
-            returns list with tuples (externalref, OutputSignal: Brick.Signal.*Output)
+            returns list with tuples (protocolReference, OutputSignal: Brick.Signal.*Output)
         """
-        return list(map(lambda sensor: (sensor.Joint.ExternalReference, sensor.GetOrCreateSignal()), self.brickrobot.Sensors))
+        return list(map(lambda sensor: (sensor.Joint.ProtocolReference, sensor.GetOrCreateSignal()), self.brickrobot.Sensors))
 
     def controlType(self):
         """
@@ -117,6 +117,8 @@ class ClickRobot(ClickObject):
             return list(map(lambda signal: signal.GetData(), signals))
 
         def signalstr(signals):
+            if len(signals) == 0:
+                return "[]"
             return f"{classname(signals[0])}: {values(signals)}"
 
         def eventstr(tuple: Tuple[str, Any]):
@@ -125,7 +127,7 @@ class ClickRobot(ClickObject):
 
         return f"""name: {self.name}
     num_joints: {self.num_joints}
-    jointnames: {self.joint_externalrefs()}
+    jointnames: {self.joint_protocolrefs()}
     control input type: {self.controlType()}
     {len(self.input_signals)} input_signals: {signalstr(self.input_signals)}
     {len(self.torque_sensors)} torque_sensors: {signalstr(self.torque_sensors)}

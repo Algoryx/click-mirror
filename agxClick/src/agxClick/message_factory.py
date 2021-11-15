@@ -94,8 +94,8 @@ class MessageFactory:
         for robot in robots:
             object = handshake.objects[robot.name]
             if robot.is_robot():
-                object.controlsInOrder.extend(robot.joint_externalrefs())
-                object.jointSensorsInOrder.extend(robot.joint_externalrefs())
+                object.controlsInOrder.extend(robot.joint_protocolrefs())
+                object.jointSensorsInOrder.extend(robot.joint_protocolrefs())
                 jointsensors = list()
                 if len(robot.angle_sensors) > 0:
                     jointsensors.append(ValueType.Angle)

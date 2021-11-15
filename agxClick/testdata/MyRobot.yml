@@ -10,7 +10,7 @@
 # Use imports to avoid having two write the whole name of the component
 .import:
   Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType]
-  Physics.Mechanics: [RigidBodyAttachment, HingeConnector]
+  Physics.Mechanics: [RigidBodyAttachment, HingeConnector, LockJointConnector]
 
 # Robot Arm definitions
 MySegmentGeometry:
@@ -45,20 +45,41 @@ HingeWithInitialAngle:
   .extends: HingeConnector
   angle: 0
 
+RobotJoint:
+  .extends: HingeJoint
+
+  angleSensor:
+    .type: Robotics.Sensor.JointSensor
+    joint: this
+    outputSignalType: Robotics.SignalType.OutputPositionSignal
+
+  forceSensor:
+    .type: Robotics.Sensor.JointSensor
+    joint: this
+    outputSignalType: Robotics.SignalType.OutputForceSignal
+
+  velocitySensor:
+    .type: Robotics.Sensor.JointSensor
+    joint: this
+    outputSignalType: Robotics.SignalType.OutputVelocitySignal
 
 
 MyRobotArm:
   .extends: RobotArm
-  wantInternalPositioning: false
+  wantInternalPositioning: true
+
+  joint0:
+    .type: RobotJoint
+
   joint1:
-    .type: HingeJoint
+    .type: RobotJoint
     hingeConnector: 
       .type: HingeWithInitialAngle
       mainInteraction:
         name: segment_connection
       motor:
         speed: 0
-        constrainDof: false
+        constrainDof: true
     segment1: this.segment1
     segment2: this.segment2
     inputSignalType: SignalType.InputVelocitySignal
@@ -86,7 +107,7 @@ MyBaseBody:
     .value: MyBaseGeometry()
   mass: 2
 
-MyBase:
+MyRobotBase:
   .extends: RobotBase
 
   body: MyBaseBody()
@@ -106,33 +127,28 @@ MyBase:
 
 
 # Put the two boxes together and add a lock connector to world
-MyRobotPosition:
+MyRobot:
   .extends: Robot
   wantInternalPositioning: true
 
   base:
-    .value: MyBase
+    .value: MyRobotBase
 
   arm1:
     .type: MyRobotArm
     .value: MyRobotArm
 
-  # Connect arm with robot base
-  armJoint:
-    .type: HingeJoint
-    hingeConnector:
-      .type: HingeWithInitialAngle
-      mainInteraction:
-        name: base_connection
-    segment1: this.base
-    segment2: this.arm1.segment1
-    inputSignalType: SignalType.InputPositionSignal
-  
-  jointAngleSensor:
-    .type: Robotics.Sensor.JointSensor
-    joint: this.armJoint
-    protocolReference: /joint_angle_output
-    outputSignalType: Robotics.SignalType.OutputPositionSignal
+    joint0:
+      hingeConnector: 
+        .type: HingeWithInitialAngle
+        mainInteraction:
+          name: segment_connection
+        motor:
+          speed: 0
+          constrainDof: true
+      segment1: this.base
+      segment2: this.arm1.segment1
+      inputSignalType: SignalType.InputPositionSignal
 
   worldAttachment:
     .type: Physics.Mechanics.LockJointAttachment
@@ -147,3 +163,15 @@ MyRobotPosition:
     motor:
       speed: 0
       constrainDof: true
+
+
+ToolRobot:
+  .extends: MyRobot
+  tool:
+    .type: SuctionCup
+    .value: SuctionCup
+
+  toolConnector:
+    .type: LockJointConnector
+    attachment1: this.arm1.segment2.outputAttachment
+    attachment2: this.tool.stiff.attachment
