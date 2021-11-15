@@ -12,6 +12,4 @@ ModuleConfig:
     Simulation: {}
     Robotics: {}
     AGXBrick: {}
-    PythonApplicationModels:
-      filepath: /Users/jonas/projects/urdf-application/PythonApplication/models
 

@@ -69,7 +69,6 @@ class TestClickIntegration:
     def start_simulation(self, simulation_seconds, app_path, time_step, extra_flags="") -> Popen:
         python_executable = "agxpython" if platform.system() == "Linux" else "python3"
         cmd = f'{python_executable} examples/click_application.py --model testdata/ClickScene.yml:ExampleClickScene --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
-        cmd = f'env'
         print(f"Executing {cmd}")
         process = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=app_path)
         return process
@@ -83,10 +82,10 @@ class TestClickIntegration:
 
     def create_controlmessage(self):
         message = MessageFactory.create_controlmessage()
-        robot = message.objects["panda_tool"]
-        robot.angles.extend([0, 0, 0, 0, 0, 0, 0])
-        robot = message.objects["panda_2"]
-        robot.angles.extend([0, 0, 0, 0, 0, 0, 0])
+        robot = message.objects["robot1"]
+        robot.angles.extend([0, 0])
+        robot = message.objects["robot2"]
+        robot.angles.extend([0, 0])
         return message
 
 
@@ -127,7 +126,7 @@ class TestSensorRequest(TestClickIntegration):
 
         sensormessage = self.send_sensor_request(client)
         assert sensormessage.simVars.simulatedTime == 0.0
-        assert sum(sensormessage.objects['panda_tool'].angleSensors) != 0
+        assert sum(sensormessage.objects['robot1'].angleSensors) != 0
 
 
 @pytest.mark.integrationtest

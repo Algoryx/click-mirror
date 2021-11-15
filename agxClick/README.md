@@ -36,9 +36,12 @@ pip install agxClick==0.1.8 --extra-index-url https://click-access:F2q7LauW_d-HJ
 See [examples](examples)
 
 ```bash
+# Start Click application with a Brick model containing Robots
 python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleClickScene
 # From different terminal, to get handshake
 python3 -m pClick.demo.client
 # Step simulation 200 steps and get first simulation step SensorMessage
 python3 -m pClick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 199 --end-with-errormessage
+# It is also possible to run the C++ democlient, but the current version does only support 5 joints so there will be an error message
+bin/democlient
 ```
