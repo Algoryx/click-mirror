@@ -1,0 +1,177 @@
+# This example demonstrates how to add Attachments and Connectors to a model. When this have
+# been added, Brick will automatically try to position and align the bodies to make the joint
+# equations be satisfied at the start of the simulation.
+
+# OBSERVE
+# The MyRobot model is used in a unit test
+# python/test/test_position_and_rotation_sign.py
+.format: 4
+
+# Use imports to avoid having two write the whole name of the component
+.import:
+  Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType]
+  Physics.Mechanics: [RigidBodyAttachment, HingeConnector, LockJointConnector]
+
+# Robot Arm definitions
+MySegmentGeometry:
+  .extends: Physics.Geometry.Cylinder
+  radius: 0.1
+  length: 0.8
+  localTransform:
+    position: Vec3(0,0,0.6)
+    rotation: Quat.AngleAxis(90, Vec3(1,0,0))
+
+MySegmentBody:
+  .extends: Physics.Mechanics.RigidBody
+  collisionGeometry: 
+    .type: Physics.Geometry
+    .value: MySegmentGeometry()
+  mass: 2
+
+MySegment:
+  .extends: Segment
+  body: MySegmentBody()
+  inputAttachment:
+    localTransform:
+      position: Vec3(0,0,0)
+      rotation: Quat.AngleAxis(90, Vec3(1,0,0))
+  outputAttachment:
+    localTransform:
+      position: Vec3(0,0,1)
+      rotation: Quat.AngleAxis(90, Vec3(1,0,0))
+  
+
+HingeWithInitialAngle:
+  .extends: HingeConnector
+  angle: 0
+
+RobotJoint:
+  .extends: HingeJoint
+
+  angleSensor:
+    .type: Robotics.Sensor.JointSensor
+    joint: this
+    outputSignalType: Robotics.SignalType.OutputPositionSignal
+
+  forceSensor:
+    .type: Robotics.Sensor.JointSensor
+    joint: this
+    outputSignalType: Robotics.SignalType.OutputForceSignal
+
+  velocitySensor:
+    .type: Robotics.Sensor.JointSensor
+    joint: this
+    outputSignalType: Robotics.SignalType.OutputVelocitySignal
+
+
+MyRobotArm:
+  .extends: RobotArm
+  wantInternalPositioning: true
+
+  joint0:
+    .type: RobotJoint
+
+  joint1:
+    .type: RobotJoint
+    hingeConnector: 
+      .type: HingeWithInitialAngle
+      mainInteraction:
+        name: segment_connection
+      motor:
+        speed: 0
+        constrainDof: true
+    segment1: this.segment1
+    segment2: this.segment2
+    inputSignalType: SignalType.InputVelocitySignal
+
+  segment1:
+    .type: MySegment
+    body:
+      name: segment1
+
+  segment2:
+    .type: MySegment
+    body:
+      name: segment2
+
+
+
+MyBaseGeometry:
+  .extends: Physics.Geometry.Box
+  lengths: Vec3(0.5,0.5,0.5)
+
+MyBaseBody:
+  .extends: Physics.Mechanics.RigidBody
+  collisionGeometry: 
+    .type: Physics.Geometry
+    .value: MyBaseGeometry()
+  mass: 2
+
+MyRobotBase:
+  .extends: RobotBase
+
+  body: MyBaseBody()
+
+  attachment:
+    .type: RigidBodyAttachment
+    localPosition: Vec3(0.5,0,0)
+
+  inputAttachment:
+    localTransform:
+      position: Vec3(0,0,0)
+      rotation: Quat.TryFromToZXPair(Vec3(0,1,0),Vec3(0,0,1))
+  outputAttachment:
+    localTransform:
+      position: Vec3(0,0,0.5)
+      rotation: Quat.AngleAxis(90, Vec3(1,0,0))
+
+
+# Put the two boxes together and add a lock connector to world
+MyRobot:
+  .extends: Robot
+  wantInternalPositioning: true
+
+  base:
+    .value: MyRobotBase
+
+  arm1:
+    .type: MyRobotArm
+    .value: MyRobotArm
+
+    joint0:
+      hingeConnector: 
+        .type: HingeWithInitialAngle
+        mainInteraction:
+          name: segment_connection
+        motor:
+          speed: 0
+          constrainDof: true
+      segment1: this.base
+      segment2: this.arm1.segment1
+      inputSignalType: SignalType.InputPositionSignal
+
+  worldAttachment:
+    .type: Physics.Mechanics.LockJointAttachment
+    .value: Physics.Mechanics.LockJointAttachment
+    localTransform:
+      rotation: Quat.TryFromToZXPair(Vec3(0,1,0),Vec3(0,0,1))
+
+  worldConnector:
+    .type: Physics.Mechanics.PrismaticConnector
+    attachment1: this.base.inputAttachment
+    attachment2: this.worldAttachment
+    motor:
+      speed: 0
+      constrainDof: true
+
+
+ToolRobot:
+  .extends: MyRobot
+  tool:
+    .type: SuctionCup
+    .value: SuctionCup
+
+  toolConnector:
+    .type: LockJointConnector
+    attachment1: this.arm1.segment2.outputAttachment
+    attachment2: this.tool.stiff.attachment

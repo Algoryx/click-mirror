@@ -125,17 +125,27 @@ publish-shared-cpp-lib-linux:
     - job: build-shared-cpp-lib-linux
       artifacts: true
 
-build-python-lib:
+.build-python:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci
   script:
-    - pip3 install -r python-src/requirements-publish.txt
-    - cd python-src
+    - cd $PYTHONDIR
+    - pip3 install -r requirements-publish.txt
     - python3 setup.py sdist bdist_wheel
   artifacts:
     paths:
-      - python-src/dist/
+      - $PYTHONDIR/dist/
+
+build-python-lib:
+  extends: .build-python
+  variables:
+    PYTHONDIR: python-src
+  
+build-agxClick:
+  extends: .build-python
+  variables:
+    PYTHONDIR: agxClick
 
 test-python-lib:
   extends: .run-in-docker
@@ -147,25 +157,59 @@ test-python-lib:
   script:
     - pip3 install -r python-src/requirements-test.txt
     - pip3 install python-src/dist/pClick*whl
-    - pytest --junitxml=pytest-junit.xml
+    - pytest python-src --junitxml=pClick-junit.xml
   artifacts:
     when: always
     reports:
-      junit: pytest-junit.xml
+      junit: pClick-junit.xml
 
-publish-python-lib:
+test-agxClick:
   extends: .run-in-docker
-  stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  stage: test
+  image: $CI_REGISTRY_IMAGE/agxbrick:0.0.19-SNAPSHOT
   needs:
     - job: build-python-lib
       artifacts: true
+    - job: build-agxClick
+      artifacts: true
   script:
-    - pip3 install -r python-src/requirements-publish.txt
-    - cd python-src
+    - pip3 install -r python-src/requirements-test.txt
+    - pip3 install python-src/dist/pClick*whl
+    - pip3 install agxClick/dist/agxClick*whl
+    - agxpython agxClick/tests/agxpytest.py agxClick --junitxml=agxClick-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: agxClick-junit.xml
+
+.publish-python-lib:
+  extends: .run-in-docker
+  stage: publish
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  script:
+    - cd $PYTHONDIR
+    - pip3 install -r requirements-publish.txt
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   only:
     - main
+
+publish-pClick:
+  extends: .publish-python-lib
+  variables:
+    PYTHONDIR: python-src
+  needs:
+    - job: build-python-lib
+      artifacts: true
+    - job: test-python-lib
+
+publish-agxClick:
+  extends: .publish-python-lib
+  variables:
+    PYTHONDIR: agxClick
+  needs:
+    - job: build-agxClick
+      artifacts: true
+    - job: test-agxClick
 
 .build-cpp-lib-windows:
   stage: build

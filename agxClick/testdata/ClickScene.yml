@@ -1,0 +1,59 @@
+# This example demonstrates how to add Attachments and Connectors to a model. When this have
+# been added, Brick will automatically try to position and align the bodies to make the joint
+# equations be satisfied at the start of the simulation.
+
+.format: 4
+
+# Use imports to avoid having two write the whole name of the component
+.import:
+  MyRobot: [ToolRobot]
+  Physics.Mechanics: [RigidBody]
+
+ClickScene:
+  .extends: Physics.Component
+  clickobjects:
+    .type: List<Scene.Node>
+    .doc: >
+      List of Brick.Scene.Node's which we like click to collect and send/receive to/from controller.
+      The Nodes MUST be a child of this scene (NOT grand child).
+      Therefore declared on same level as this list.
+    .value: []
+
+
+ExampleClickScene:
+  .extends: ClickScene
+  wantInternalPositioning: true
+
+  robot1:
+    .type: ToolRobot
+    localTransform:
+      position: Math.Vec3(-0.25, 3.45, 0.55)
+      rotation: Math.EulerAngles(0, 0, 2.35)
+    arm1:
+      joint0:
+        protocolReference: robot1_joint0
+      joint1:
+        protocolReference: robot1_joint1
+
+
+  robot2:
+    .type: ToolRobot
+    localTransform:
+      position: Math.Vec3(0, -0.45, 0.45)
+      rotation: Math.EulerAngles(0, -0, -0.75)
+    arm1:
+      joint0:
+        protocolReference: robot2_joint0
+      joint1:
+        protocolReference: robot2_joint1
+  
+  box: 
+    .type: RigidBody
+    localTransform:
+      position: Math.Vec3(1, 2, 3)
+      rotation: Math.EulerAngles(2, 1, 1)
+
+  clickobjects:
+    - robot1
+    - robot2
+    - box

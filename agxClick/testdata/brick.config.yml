@@ -1,0 +1,15 @@
+ModuleConfig:
+  name: TestModels
+
+  import:
+
+    Math:
+      autoImport: true
+
+    Scene: {}
+    Physics: {}
+    Visual: {}
+    Simulation: {}
+    Robotics: {}
+    AGXBrick: {}
+

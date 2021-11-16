@@ -1,9 +1,8 @@
 from typing import List
-from pClick import ValueType
-from pClick import MessageFactory
+from pClick import MessageFactory, ValueType
 
 
-class ControllableRobot():
+class ClickRobot():
     # Brick input signals
     input_signals = []
     suction_cup_signal = None
@@ -15,20 +14,20 @@ class ControllableRobot():
     # Number of input signals == number of output signals
     num_motors = 0
     name = None
-    # TODO: Brick: control should be accessible in same object?
     control = ValueType.AngleVelocity
-    # TODO: Brick: Where does jointnames and suction cup name come from?
-    jointnames = ["joint1", "joint2", "joint3", "joint4", "joint5", "joint6", "joint7"]
-    grippername = "gripper"
+    jointnames: List[str] = []
+    grippername: str = ""
 
 
-robots = [ControllableRobot()]
+robots = [ClickRobot()]
 robots[0].name = "robot1"
 robots[0].input_signals = [0, 1, 2, 3, 4, 5, 6]
 robots[0].torque_sensors = [0, 1, 2, 3, 4, 5, 6]
 robots[0].angle_sensors = [0, 1, 2, 3, 4, 5, 6]
 robots[0].velocity_sensors = [0, 1, 2, 3, 4, 5, 6]
 robots[0].suction_cup_body = "dummy"
+robots[0].jointnames = ["joint1", "joint2", "joint3", "joint4", "joint5", "joint6", "joint7"]
+robots[0].grippername = "gripper"
 
 
 def test_create_handshake_from_robot():
@@ -48,14 +47,11 @@ def test_create_handshake_from_robot():
             jointsensors.append(ValueType.Force)
         object.jointSensors.extend(jointsensors)
         object.controlEvents[robot.grippername] = ValueType.Activated
-
-        if robot.suction_cup_body is not None:
-            object.objectSensors.append(ValueType.Position)
-    assert len(handshake.SerializeToString()) == 153
+    assert len(handshake.SerializeToString()) == 150
     assert str(handshake) == handshake_facit
 
 
-def create_control_fake_for(robots: List[ControllableRobot]):
+def create_control_fake_for(robots: List[ClickRobot]):
     control_m = MessageFactory.create_controlmessage()
     for robot in robots:
         control = control_m.objects[robot.name]
@@ -100,7 +96,6 @@ def test_create_SensorMessage_from_robots():
         sensors.angleVelocitySensors.extend(robot.velocity_sensors)
         sensors.torqueSensors.extend(robot.torque_sensors)
 
-    # TODO: Brick: Where get the box?
     box = {
         "name": "box",
         "position": [1, 2, 3],
@@ -139,7 +134,6 @@ objects {
       key: "gripper"
       value: Activated
     }
-    objectSensors: Position
     jointSensorsInOrder: "joint1"
     jointSensorsInOrder: "joint2"
     jointSensorsInOrder: "joint3"
