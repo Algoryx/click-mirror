@@ -170,9 +170,12 @@ test-agxClick:
   needs:
     - job: build-python-lib
       artifacts: true
+    - job: build-agxClick
+      artifacts: true
   script:
     - pip3 install -r python-src/requirements-test.txt
     - pip3 install python-src/dist/pClick*whl
+    - pip3 install agxClick/dist/pClick*whl
     - agxpython agxClick/tests/agxpytest.py agxClick --junitxml=agxClick-junit.xml
   artifacts:
     when: always
