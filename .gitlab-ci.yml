@@ -173,7 +173,7 @@ test-agxClick:
   script:
     - pip3 install -r python-src/requirements-test.txt
     - pip3 install python-src/dist/pClick*whl
-    - pytest agxClick --junitxml=agxClick-junit.xml
+    - agxpython agxClick/tests/agxpytest.py agxClick --junitxml=agxClick-junit.xml
   artifacts:
     when: always
     reports:
