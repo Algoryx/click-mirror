@@ -166,7 +166,7 @@ test-python-lib:
 test-agxClick:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/multi-service-app:0.0.19-feature-remove-clicktools
+  image: $CI_REGISTRY_IMAGE/agxbrick:0.0.19-SNAPSHOT
   needs:
     - job: build-python-lib
       artifacts: true

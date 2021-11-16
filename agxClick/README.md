@@ -45,3 +45,12 @@ python3 -m pClick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 1
 # It is also possible to run the C++ democlient, but the current version does only support 5 joints so there will be an error message
 bin/democlient
 ```
+
+## Brick Model Requirements
+
+The click application currently supports
+
+- Finding any Robot in the Brick scene
+- Sending and receiving robot signals over click messages
+
+In addition, if you want to transfer object pose data, you can declare a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
