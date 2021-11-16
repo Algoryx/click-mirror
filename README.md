@@ -1,5 +1,13 @@
 # Click
 
+There are currently three main parts of click
+
+- C++ click library with a democlient
+- Python pClick library with a demo client and demo server
+- [agxClick](agxClick/README.md), a Simulation application using pClick, AGX and agxBrick that implements Click out of the box for a provided Brick model.
+
+## Introduction
+
 The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
 The name comes from the sound two Bricks makes when connected.
 

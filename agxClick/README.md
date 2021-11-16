@@ -1,17 +1,12 @@
 # AgxClick
 
-The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
-The name comes from the sound two Bricks makes when connected.
+AgxClick uses pClick, AGX and agxBrick to a implement a simulation application that implements Click out of the box for a provided Brick model.
 
-There are three main considerations
+- You can use click_application.py (see below) to load any Brick model and it will find the robots and connect their signals to Click. See Brick Model Requirements below for more info.
+- You can Inherit AgxClick.ClickApplication and override it's methods to customize your own application.
+- You can connect with any Click client to the simulation.
 
-1. How the controller can send controls and receive sensor values in a similar fashion regardless of environment, ie real or sim.
-2. How Brick adds sensors or topology on top of urdf, and how this is communicated to the controller.
-3. How to communicate controls and sensors in an effective way.
-
-The current solution is to introduce a Handshake, which enables the simulation to tell the controller what to expect in terms of how to control and what sensor data is being sent.
-
-A typical flow is
+The flow is the same as for Click
 
 1. Client controller connects and sends HandshakeInit
 2. Server responds with Handshake
@@ -22,7 +17,9 @@ A typical flow is
 
 ## Install
 
-Prerequisites: agx and agxBrick
+Prerequisites: AGX and agxBrick (You need to install prior to below commands)
+
+Run below command(s) after the usual AGX `setup_env` command:
 
 ```bash
 # Latest version
@@ -34,6 +31,8 @@ pip install agxClick==0.1.9 --extra-index-url https://click-access:F2q7LauW_d-HJ
 ## Usage Examples
 
 See [examples](examples)
+
+Run below command(s) after the usual AGX `setup_env` command:
 
 ```bash
 # Start Click application with a Brick model containing Robots
@@ -53,4 +52,8 @@ The click application currently supports
 - Finding any Robot in the Brick scene
 - Sending and receiving robot signals over click messages
 
-In addition, if you want to transfer object pose data, you can declare a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+In addition, if you want to transfer object pose data for non-robots, you can declare robots and extra components in a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+
+## Implementation details
+
+ClickApplication has three major parts
