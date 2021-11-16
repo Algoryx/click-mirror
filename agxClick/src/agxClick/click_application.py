@@ -1,4 +1,5 @@
 from agxClick import KeyboardListener, AgxApplication, ClickFrameListener
+from agxClick.click_event_listener import _REGISTER_FRAME_LISTENER
 from typing import Any, Callable, List
 import logging
 import time
@@ -58,6 +59,8 @@ class ClickApplication(AgxApplication):
             if self._click_frame_listener.step_simulation():
                 self.app.step()
             self.stepApplication()
+            if not _REGISTER_FRAME_LISTENER:
+                self._click_frame_listener.preFrame(self.sim.getClock().getTime())
             self.enforce_step_realtime_settings()
             if self.args.stopAfterFrame and self.sim.getClock().getFrame() >= self.args.stopAfterFrame:
                 self._stop_application = True
@@ -112,7 +115,8 @@ class ClickApplication(AgxApplication):
                                                         on_stop=self.on_stop,
                                                         on_exception=self.on_exception,
                                                         on_reset=self.on_reset_message)
-        self.app.addListener(self._click_frame_listener)
+        if _REGISTER_FRAME_LISTENER:
+            self.app.addListener(self._click_frame_listener)
 
         self._keyboardListener = KeyboardListener(on_stop=self.on_stop,
                                                   on_reset=self.on_keyboard_reset)

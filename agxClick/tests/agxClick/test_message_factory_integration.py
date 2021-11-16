@@ -91,7 +91,7 @@ class Test_message_factory_integration:
         robots = find_robots_in_scene(scene_forceinput)
         controlmessage = create_faked_controllmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
-        # TODO: When agxBrick 0.4.58 is released, use data_to_float, ie will implement GetData correctly
+        # TODO: When agxBrick with issue 1101 fixed is released, use data_to_float, it will implement GetData correctly
         # Ref: https://git.algoryx.se/algoryx/agx/-/issues/1101
         assert self.data_to_float_motorforce(robots[0].input_signals) == [3, 6]
 

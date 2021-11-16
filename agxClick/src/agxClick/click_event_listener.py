@@ -14,7 +14,16 @@ def noop(*args, **kwargs: None):
     pass
 
 
-class ClickFrameListener(agxOSG.ExampleApplicationListener):
+# Remove when https://git.algoryx.se/algoryx/agx/-/merge_requests/2401 is released
+_REGISTER_FRAME_LISTENER = False
+if _REGISTER_FRAME_LISTENER:
+    _parent = agxOSG.ExampleApplicationListener
+else:
+    _parent = object
+
+
+# class ClickFrameListener(agxOSG.ExampleApplicationListener):
+class ClickFrameListener(_parent):
     def __init__(self, scene, app,
                  on_stop: Callable[[], None] = noop, 
                  on_exception: Callable[[Exception], None] = noop,
