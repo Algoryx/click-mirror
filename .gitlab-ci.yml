@@ -182,33 +182,34 @@ test-agxClick:
     reports:
       junit: agxClick-junit.xml
 
-publish-python-lib:
+.publish-python-lib:
   extends: .run-in-docker
   stage: publish
   image: $CI_REGISTRY_IMAGE/docker-ci
-  needs:
-    - job: build-python-lib
-      artifacts: true
   script:
-    - cd python-src
+    - cd $PYTHONDIR
     - pip3 install -r requirements-publish.txt
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   only:
     - main
 
+publish-pClick:
+  extends: .publish-python-lib
+  variables:
+    PYTHONDIR: python-src
+  needs:
+    - job: build-python-lib
+      artifacts: true
+    - job: test-python-lib
+
 publish-agxClick:
-  extends: .run-in-docker
-  stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  extends: .publish-python-lib
+  variables:
+    PYTHONDIR: agxClick
   needs:
     - job: build-agxClick
       artifacts: true
-  script:
-    - cd agxClick
-    - pip3 install -r requirements-publish.txt
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
-  # only:
-  #   - main
+    - job: test-agxClick
 
 .build-cpp-lib-windows:
   stage: build
