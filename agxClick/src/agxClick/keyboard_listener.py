@@ -5,6 +5,8 @@ from agxPythonModules.utils.environment import application
 
 class KEYS:
     n = 110
+    e = 101
+    r = 114
 
 
 def noop(*args, **kwargs: None):
@@ -35,6 +37,14 @@ class KeyboardListener(agxSDK.GuiEventListener):
 
         if key == KEYS.n:
             self._on_reset()
+            return True
+
+        if key == KEYS.e:
+            print("Enabling autostep is disabled for Click! Use controller!")
+            return True
+
+        if key == KEYS.r:
+            print("Stepping simulation is disabled for Click! Use controller!")
             return True
 
         return False

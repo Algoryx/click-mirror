@@ -58,9 +58,9 @@ class ClickApplication(AgxApplication):
 
             if self._click_frame_listener.step_simulation():
                 self.app.step()
-            self.stepApplication()
             if not _REGISTER_FRAME_LISTENER:
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
+            self.stepApplication()
             self.enforce_step_realtime_settings()
             if self.args.stopAfterFrame and self.sim.getClock().getFrame() >= self.args.stopAfterFrame:
                 self._stop_application = True
@@ -79,7 +79,6 @@ class ClickApplication(AgxApplication):
 
     def parse_arguments(self, args):
         from argparse import ArgumentParser
-        from distutils.util import strtobool
         parser = ArgumentParser(args)
         parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation are executed")
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
