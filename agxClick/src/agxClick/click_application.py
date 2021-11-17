@@ -29,6 +29,7 @@ class ClickApplication(AgxApplication):
         self._logger = logging.getLogger(__file__)
         self._stop_application = False
         self.args = self.parse_arguments(args)
+        self.simulation_stepping_enabled = self.args.start_paused is False
 
     def run(self, buildScene: Callable[[], Any]):
         """
@@ -56,7 +57,7 @@ class ClickApplication(AgxApplication):
             if not self._click_frame_listener.handshake_completed:
                 wall_clock = WallClock()
 
-            if self._click_frame_listener.step_simulation():
+            if self._click_frame_listener.step_simulation() and self.simulation_stepping_enabled:
                 self.app.step()
             if not _REGISTER_FRAME_LISTENER:
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
@@ -82,6 +83,7 @@ class ClickApplication(AgxApplication):
         parser = ArgumentParser(args)
         parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation are executed")
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
+        parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
         args, _ = parser.parse_known_args(args)
         return args
 
@@ -102,6 +104,11 @@ class ClickApplication(AgxApplication):
         assert self._scene
         self.reset_scene(self._scene)
 
+    def on_toggle_simulation_stepping(self):
+        self.simulation_stepping_enabled = not self.simulation_stepping_enabled
+        state_text = "running" if self.simulation_stepping_enabled else "paused"
+        self._logger.info(f"Simulation is {state_text}")
+
     def update_listeners(self, scene):
         """
         We need to add listeners before possible listeners added by buildScene, which is why these updates are needed
@@ -113,12 +120,15 @@ class ClickApplication(AgxApplication):
         self._click_frame_listener = ClickFrameListener(scene=None, app=self.app,
                                                         on_stop=self.on_stop,
                                                         on_exception=self.on_exception,
-                                                        on_reset=self.on_reset_message)
+                                                        on_reset=self.on_reset_message
+                                                        )
         if _REGISTER_FRAME_LISTENER:
             self.app.addListener(self._click_frame_listener)
 
         self._keyboardListener = KeyboardListener(on_stop=self.on_stop,
-                                                  on_reset=self.on_keyboard_reset)
+                                                  on_reset=self.on_keyboard_reset,
+                                                  on_toggle_stepping=self.on_toggle_simulation_stepping
+                                                  )
         self.sim.add(self._keyboardListener)
 
     def enforce_step_realtime_settings(self):

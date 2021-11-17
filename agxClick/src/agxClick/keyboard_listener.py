@@ -17,7 +17,8 @@ class KeyboardListener(agxSDK.GuiEventListener):
 
     def __init__(self,
                  on_stop: Callable[[], None] = noop,
-                 on_reset: Callable[[], None] = noop):
+                 on_reset: Callable[[], None] = noop,
+                 on_toggle_stepping: Callable[[], None] = noop):
         """
         on_stop: callback for when Esc is pressed
         on_reset: callback for when n is pressed
@@ -25,6 +26,7 @@ class KeyboardListener(agxSDK.GuiEventListener):
         super().__init__(agxSDK.GuiEventListener.KEYBOARD)
         self._on_stop = on_stop
         self._on_reset = on_reset
+        self._on_toggle_stepping = on_toggle_stepping
 
     def keyboard(self, key, modKey, x, y, keyDown: bool):
 
@@ -40,11 +42,11 @@ class KeyboardListener(agxSDK.GuiEventListener):
             return True
 
         if key == KEYS.e:
-            print("Enabling autostep is disabled for Click! Use controller!")
+            self._on_toggle_stepping()
             return True
 
         if key == KEYS.r:
-            print("Stepping simulation is disabled for Click! Use controller!")
-            return True
+            print("NOTE: Stepping simulation will fail if there is not a ControlMessage in queue from controller")
+            return False
 
         return False
