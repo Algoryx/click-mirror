@@ -1,3 +1,4 @@
+import queue
 import agxSDK
 import agxOSG
 from typing import List, Callable
@@ -140,8 +141,13 @@ class ClickEventListener(agxSDK.StepEventListener):
             request = self._control_queue.get(block=False)
             assert self._control_queue.empty()
             update_robots_from_message(self._click_objects, request)
+        except queue.Empty as ex:
+            self._logger.fatal(f"No ControlMessage in queue")
+            self.valid = False
+            self._on_exception(ex)
+            raise ex
         except Exception as ex:
-            self._logger.info(f"{'Exception encountered - Stopping click messaging'}")
+            self._logger.fatal(f"Exception {str(ex)} encountered - Stopping click messaging")
             self.valid = False
             self._on_exception(ex)
             raise ex
