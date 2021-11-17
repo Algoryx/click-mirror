@@ -280,3 +280,34 @@ test-dynamic-Win32-cpp-lib-windows:
   needs:
     - job: build-dynamic-Win32-cpp-lib-windows
       artifacts: true
+
+.publish-cpp-lib-windows:
+  extends: .run-in-docker
+  stage: publish
+  image: $CI_REGISTRY_IMAGE/docker-ci
+  script:
+    - find build
+    - PACKAGE_VERSION=$CI_COMMIT_TAG
+    - PACKAGE_NAME=$PACKAGE_UPLOAD_NAME-$PACKAGE_VERSION.zip
+    - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
+    - zip -r $PACKAGE_NAME build doc agxClick/examples agxClick/testdata LICENSE agxClick/README.md README.md
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_NAME}"'
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_NAME}"'
+  only:
+    - tags
+
+publish-dynamic-Win32-cpp-lib-windows:
+  extends: .publish-cpp-lib-windows
+  variables:
+    PACKAGE_UPLOAD_NAME: click-win32
+  needs:
+    - job: build-dynamic-Win32-cpp-lib-windows
+      artifacts: true
+
+publish-x64-cpp-lib-windows:
+  extends: .publish-cpp-lib-windows
+  variables:
+    PACKAGE_UPLOAD_NAME: click-x64
+  needs:
+    - job: build-x64-cpp-lib-windows
+      artifacts: true
