@@ -88,7 +88,7 @@ After that, the simulation is stepped once per message, except after a ResetMess
 - Linux Ubuntu 20.04 C++ libraries and binaries:
 
 ```bash
-wget --header "DEPLOY-TOKEN: F2q7LauW_d-HJ7bH37sV" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.10/click-shared-focal-amd64.deb"
+wget --header "DEPLOY-TOKEN: F2q7LauW_d-HJ7bH37sV" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.11/click-shared-focal-amd64.deb"
 apt-get install -yf /tmp/click-shared-focal-amd64.deb
 ```
 
