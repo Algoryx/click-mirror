@@ -94,7 +94,6 @@ test-shared-cpp-lib-linux:
     - job: build-shared-cpp-lib-linux
       artifacts: true
 
-# TODO: Get PACKAGE_NAME and VERSION from settings, not from ls
 .publish-cpp-lib-linux:
   extends: .run-in-docker
   stage: publish
@@ -102,12 +101,12 @@ test-shared-cpp-lib-linux:
   script:
     - cd build
     - PACKAGE_NAME=`ls click-*.deb`
-    - PACKAGE_VERSION=`echo $PACKAGE_NAME|sed -e's/click-\([.0-9]*\).*/\1/'`
+    - PACKAGE_VERSION=$CI_COMMIT_TAG
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_UPLOAD_NAME}"'
   only:
-    - main
+    - tags
 
 publish-cpp-lib-linux:
   extends: .publish-cpp-lib-linux
@@ -189,9 +188,12 @@ test-agxClick:
   script:
     - cd $PYTHONDIR
     - pip3 install -r requirements-publish.txt
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+    - PACKAGE_VERSION=$CI_COMMIT_TAG
+    # Fail on mismatching versions
+    - grep $PACKAGE_VERSION $PYTHONDIR/setup.py
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*${PACKAGE_VERSION}*
   only:
-    - main
+    - tags
 
 publish-pClick:
   extends: .publish-python-lib
@@ -232,6 +234,7 @@ build-x64-cpp-lib-windows:
   extends: .build-cpp-lib-windows
   variables:
     TARGET_ARCH: "x64"
+    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
 build-static-Win32-cpp-lib-windows:
   extends: .build-cpp-lib-windows

@@ -1,5 +1,13 @@
 # Click
 
+There are currently three main parts of click
+
+- [agxClick](agxClick/README.md), a Simulation application using pClick, AGX and agxBrick that implements Click out of the box for a provided Brick model.
+- C++ click library with a democlient
+- Python pClick library with a demo client and demo server
+
+## Introduction
+
 The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
 The name comes from the sound two Bricks makes when connected.
 
@@ -74,7 +82,33 @@ The same will happen when the Simulation is reset from simulation side, eg a use
 The simulation is not started until after the first handshake is complete, ie when the first ControlMessage is received.
 After that, the simulation is stepped once per message, except after a ResetMessage; see above.
 
-## Links
+## Installing
+
+- Python, all platforms: Go to [agxClick](agxClick/README.md#install) for python install instructions.
+- Linux Ubuntu 20.04 C++ libraries and binaries:
+
+```bash
+wget --header "DEPLOY-TOKEN: F2q7LauW_d-HJ7bH37sV" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.10/click-shared-focal-amd64.deb"
+apt-get install -yf /tmp/click-shared-focal-amd64.deb
+```
+
+- Windows C++ libraries and binaries
+  - Download zip from provided link and unzip
+
+## Running democlient and demoserver
+
+**Go to [agxClick](agxClick/README.md#Usage%20Examples) for brick model examples.**  
+After installing (or building from source as specified below), run these commands in separate prompts:
+
+```bash
+python3 -m pClick.demo.server
+```
+
+```bash
+build/bin/democlient
+```
+
+## Development Links
 
 - [C++ ControlMessage example](cpp-src/click/tests/test_control_message.cpp)
 - [C++ democlient](cpp-src/democlient/src/democlient.cpp)
@@ -110,21 +144,9 @@ After that, the simulation is stepped once per message, except after a ResetMess
 └──testdata
 ```
 
-## Running democlient and demoserver
+## Build, test, and install click c++ library from source
 
-After building as specified below, run these commands in separate prompts:
-
-```bash
-python3 -m pClick.demo.server
-```
-
-```bash
-build/bin/democlient
-```
-
-## Build, test, and install click c++ library
-
-NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install. 
+NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install.
 
 ```bash
 mkdir build

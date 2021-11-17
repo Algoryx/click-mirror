@@ -1,28 +1,25 @@
 # AgxClick
 
-The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
-The name comes from the sound two Bricks makes when connected.
+AgxClick uses pClick, AGX and agxBrick to a implement a simulation application that implements Click out of the box for a provided Brick model.
 
-There are three main considerations
+- You can use click_application.py (see below) to load any Brick model and it will find the robots and connect their signals to Click. See Brick Model Requirements below for more info.
+- You can Inherit AgxClick.ClickApplication and override it's methods to customize your own application.
+- You can connect with any Click client to the simulation.
 
-1. How the controller can send controls and receive sensor values in a similar fashion regardless of environment, ie real or sim.
-2. How Brick adds sensors or topology on top of urdf, and how this is communicated to the controller.
-3. How to communicate controls and sensors in an effective way.
-
-The current solution is to introduce a Handshake, which enables the simulation to tell the controller what to expect in terms of how to control and what sensor data is being sent.
-
-A typical flow is
+The flow is the same as for Click
 
 1. Client controller connects and sends HandshakeInit
 2. Server responds with Handshake
 3. Client receives Handshake and validates the setup.
-4. Client sends Controls
-5. Server responds with Sensors
+4. Client sends ControlMessage
+5. Server steps Simulation, and responds with SensorMessage
 6. The loop 4-5 is repeated.
+
+NOTE: The Controller step and the simulation step is in full sync, meaning that the simulation will only progress on ControlMessages.
 
 ## Install
 
-Prerequisites: agx and agxBrick
+Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below commands)
 
 ```bash
 # Latest version
@@ -34,6 +31,8 @@ pip install agxClick==0.1.10 --extra-index-url https://click-access:F2q7LauW_d-H
 ## Usage Examples
 
 See [examples](examples)
+
+Run below command(s) after the usual AGX `setup_env` command:
 
 ```bash
 # Start Click application with a Brick model containing Robots
@@ -53,4 +52,16 @@ The click application currently supports
 - Finding any Robot in the Brick scene
 - Sending and receiving robot signals over click messages
 
-In addition, if you want to transfer object pose data, you can declare a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+In addition, if you want to transfer object pose data for non-robots, you can declare robots and extra components in a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+
+## Implementation details
+
+ClickApplication has four major parts
+
+- The ClickApplication class itself, which steps the application and simulation in a loop.
+- A ClickFrameListener that is envoked each main loop iteration
+  - Receives all Click messages, and replies to all immediately except for ControlMessage which is queued for the ClickEventListener
+- A ClickEventListener that is envoked each simulation step
+  - Updates Robots from the queued ControlMessage before the simulation step.
+  - Sends SensorMessage updated from Robots after the simulation step.
+- A KeyboardListener that overrides ExampleApplication keys in order to take control of Simulation flow.
