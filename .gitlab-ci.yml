@@ -192,6 +192,8 @@ test-agxClick:
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   only:
     - main
+    - changes:
+      - $PYTHONDIR/setup.py
 
 publish-pClick:
   extends: .publish-python-lib
@@ -232,6 +234,7 @@ build-x64-cpp-lib-windows:
   extends: .build-cpp-lib-windows
   variables:
     TARGET_ARCH: "x64"
+    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
 build-static-Win32-cpp-lib-windows:
   extends: .build-cpp-lib-windows
