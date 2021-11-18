@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pClick",
-    version="0.1.12",
+    version="0.1.13",
     author="Algoryx Simulation",
     author_email="contact@algoryx.se",
     description="Controller to AGX messaging",
