@@ -44,3 +44,4 @@ class AgxApplication:
         BrickSimulation.Default.ResetAgx()
         if self.app.getController():
             self.app.pushFrameToRemoteViewer()
+        BrickSimulation.Default.SyncOutputParameters()
