@@ -34,6 +34,13 @@ def scene_forceinput(brickenv, pyroot):
     return brickenv.load_from_file(file_path, model_name)
 
 
+@pytest.fixture(scope="class")
+def scene_missing_protref(brickenv, pyroot):
+    file_path = f"{pyroot}/testdata/MissingProtRefScene.yml"
+    model_name = "MyScene"
+    return brickenv.load_from_file(file_path, model_name)
+
+
 @pytest.fixture(scope="function")
 def clickscene(brickenv, pyroot):
     file_path = f"{pyroot}/testdata/ClickScene.yml"
