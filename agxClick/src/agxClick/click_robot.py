@@ -75,6 +75,7 @@ class ClickRobot(ClickObject):
             assert self.num_joints == len(self.angle_sensors), f"Number of input_signals {len(self.angle_sensors)} did not match number of joints {self.num_joints}"
         if (self.velocity_sensors):
             assert self.num_joints == len(self.velocity_sensors), f"Number of input_signals {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
+
         assert None not in self.joint_protocolrefs(), f"Missing protocolReference in robot {self.name}, refs are: {self.joint_protocolrefs()}"
 
     def joint_protocolrefs(self) -> List[str]:
@@ -93,6 +94,11 @@ class ClickRobot(ClickObject):
     def has_control_events(self):
         return bool(self.control_event_dict)
 
+    def joint_sensors(self) -> List[Tuple[str, Any]]:
+        """
+            returns list with tuples (protocolReference, OutputSignal: Brick.Signal.*Output)
+        """
+        return list(map(lambda sensor: (sensor.Joint.ProtocolReference, sensor.GetOrCreateSignal()), self.brickrobot.Sensors))
 
     def controlType(self):
         """
