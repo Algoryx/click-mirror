@@ -102,7 +102,7 @@ apt-get install -yf /tmp/click-shared-focal-amd64.deb
 - Windows C++ libraries and binaries
   - [Download win32 zip](https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.13/click-win32-0.1.13.zip)
 
-## Running democlient and demoserver
+## Running Click democlient and demoserver
 
 **Go to [agxClick](agxClick/README.md#Usage%20Examples) for brick model examples.**  
 After installing (or building from source as specified below), run these commands in separate prompts:
