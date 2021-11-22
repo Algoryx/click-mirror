@@ -2,9 +2,11 @@
 
 There are currently three main parts of click
 
-- [agxClick](agxClick/README.md), a Simulation application using pClick, AGX and agxBrick that implements Click out of the box for a provided Brick model.
-- C++ click library with a democlient
-- Python pClick library with a demo client and demo server
+- [agxClick](agxClick/README.md) - a Simulation application using pClick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
+- click - C++ click library with a democlient.
+- pClick - Python click library with a demo client and demo server
+
+The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without agxClick, but the real benefit of Brick integration comes with agxClick.
 
 ## Introduction
 
@@ -84,7 +86,12 @@ After that, the simulation is stepped once per message, except after a ResetMess
 
 ## Installing
 
-- Python, all platforms: Go to [agxClick](agxClick/README.md#install) for python install instructions.
+- Python, all platforms: Go to [agxClick](agxClick/README.md#install) for python install instructions. If you only want click and not agxClick, then do:
+
+```bash
+pip install pClick --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+```
+
 - Linux Ubuntu 20.04 C++ libraries and binaries:
 
 ```bash
