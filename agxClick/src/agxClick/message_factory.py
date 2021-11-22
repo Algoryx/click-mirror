@@ -24,15 +24,22 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
         control = controlmessage.objects[robot.name]
         control_type = MessageFactory.to_click_control_type(robot.controlType())
         if control_type == ValueType.Angle:
+            validate_message(controlmessage, robot, control.angles)
             _signals2float(robot.input_signals, control.angles, math.degrees)
         elif control_type == ValueType.AngleVelocity:
+            validate_message(controlmessage, robot, control.angleVelocities)
             _signals2float(robot.input_signals, control.angleVelocities)
         elif control_type == ValueType.Torque:
+            validate_message(controlmessage, robot, control.torques)
             _signals2float(robot.input_signals, control.torques)
         else:
             raise Exception(f"Updating robot from controltype {robot.controlType()} has not been implemented")
         for key, enabled in control.controlEvents.items():
             robot.control_events()[key].SetData(100.0 if enabled else 0.0)
+
+
+def validate_message(controlmessage, robot, values):
+    assert len(robot.input_signals) == len(values), f"Missing values for {robot.name} in controlmessage, got {len(values)}/{len(robot.input_signals)} - {controlmessage}"
 
 
 class MessageFactory:

@@ -7,7 +7,7 @@ from os import chdir
 from pytest import approx
 
 
-def create_faked_controllmessage_for(robots: List[ClickRobot], add_control_event=True):
+def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=True):
     """
     add_control_event, if True an event will be added with False for first robot, True for rest
     """
@@ -71,7 +71,7 @@ class Test_message_factory_integration:
 
     def test_that_reading_position_controlmessage_updates_robots(self, scene):
         robots = find_robots_in_scene(scene)
-        controlmessage = create_faked_controllmessage_for(robots)
+        controlmessage = create_faked_controlmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
         assert "".join(str(robot) for robot in robots) == _updated_robots_str
 
@@ -89,7 +89,7 @@ class Test_message_factory_integration:
 
     def test_that_reading_force_controlmessage_updates_robots(self, scene_forceinput):
         robots = find_robots_in_scene(scene_forceinput)
-        controlmessage = create_faked_controllmessage_for(robots)
+        controlmessage = create_faked_controlmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
         # TODO: When agxBrick with issue 1101 fixed is released, use data_to_float, it will implement GetData correctly
         # Ref: https://git.algoryx.se/algoryx/agx/-/issues/1101
@@ -97,7 +97,7 @@ class Test_message_factory_integration:
 
     def test_that_reading_velocity_controlmessage_updates_robots(self, scene_velocityinput):
         robots = find_robots_in_scene(scene_velocityinput)
-        controlmessage = create_faked_controllmessage_for(robots)
+        controlmessage = create_faked_controlmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
         assert self.data_to_float(robots[0].input_signals) == [2, 4]
 
@@ -105,10 +105,19 @@ class Test_message_factory_integration:
         robots = find_robots_in_scene(scene)
         assert robots[0].control_events()['adhesiveForceInput'].GetData() == 200.0
         assert robots[1].control_events()['adhesiveForceInput'].GetData() == 200.0
-        controlmessage = create_faked_controllmessage_for(robots, add_control_event=False)
+        controlmessage = create_faked_controlmessage_for(robots, add_control_event=False)
         update_robots_from_message(robots, controlmessage)
         assert robots[0].control_events()['adhesiveForceInput'].GetData() == 200.0
         assert robots[1].control_events()['adhesiveForceInput'].GetData() == 200.0
+
+    def test_that_missing_values_in_controlmessage_gives_informative_exception(self, scene, scene_velocityinput, scene_forceinput):
+        for s in [scene, scene_velocityinput, scene_forceinput]:
+            robots = find_robots_in_scene(s)
+            missing_robot = [robots[0]]
+            bad_controlmessage = create_faked_controlmessage_for(missing_robot)
+            with pytest.raises(AssertionError) as excinfo:
+                update_robots_from_message(robots, bad_controlmessage)
+            assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
 
     def test_that_click_box_is_included_in_handshake(self, clickscene):
         objects = get_click_configuration(clickscene)
