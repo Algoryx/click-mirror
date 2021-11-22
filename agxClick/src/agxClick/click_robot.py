@@ -76,6 +76,8 @@ class ClickRobot(ClickObject):
         if (self.velocity_sensors):
             assert self.num_joints == len(self.velocity_sensors), f"Number of input_signals {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
 
+        assert None not in self.joint_protocolrefs(), f"Missing protocolReference in robot {self.name}, refs are: {self.joint_protocolrefs()}"
+
     def joint_protocolrefs(self) -> List[str]:
         """
         Returns protocolReference name of all joints in a sorted list

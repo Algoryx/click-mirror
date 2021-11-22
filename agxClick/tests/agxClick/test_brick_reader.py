@@ -87,3 +87,8 @@ class Test_click_brick_reader:
 
     def test_that_scene_does_not_have_click_configuration(self, scene):
         assert not has_click_configuration(scene)
+
+    def test_that_exception_raised_for_missing_protocolreference(self, scene_missing_protref):
+        with pytest.raises(AssertionError) as excinfo:
+            find_robots_in_scene(scene_missing_protref)
+        assert "Missing protocolReference in robot robot1" in str(excinfo)
