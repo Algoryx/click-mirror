@@ -110,14 +110,14 @@ class Test_message_factory_integration:
         assert robots[0].control_events()['adhesiveForceInput'].GetData() == 200.0
         assert robots[1].control_events()['adhesiveForceInput'].GetData() == 200.0
 
-    def test_that_missing_values_in_controlmessage_gives_informative_exception(self, scene, scene_velocityinput, scene_forceinput):
-        for s in [scene, scene_velocityinput, scene_forceinput]:
-            robots = find_robots_in_scene(s)
-            missing_robot = [robots[0]]
-            bad_controlmessage = create_faked_controlmessage_for(missing_robot)
-            with pytest.raises(AssertionError) as excinfo:
-                update_robots_from_message(robots, bad_controlmessage)
-            assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
+    @pytest.mark.parametrize("the_scene", ["scene", "scene_velocityinput", "scene_forceinput"])
+    def test_that_missing_values_in_controlmessage_gives_informative_exception(self, the_scene, request):
+        robots = find_robots_in_scene(request.getfixturevalue(the_scene))
+        missing_robot = [robots[0]]
+        bad_controlmessage = create_faked_controlmessage_for(missing_robot)
+        with pytest.raises(AssertionError) as excinfo:
+            update_robots_from_message(robots, bad_controlmessage)
+        assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
 
     def test_that_click_box_is_included_in_handshake(self, clickscene):
         objects = get_click_configuration(clickscene)
