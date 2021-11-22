@@ -84,12 +84,6 @@ class ClickRobot(ClickObject):
         assert len(self.brickrobot.Arms) == 1, "Can only handle one-armed robots for now"
         return list(map(lambda joint: joint.ProtocolReference, self.brickrobot.Arms[0].Joints))
 
-    def _joint_name_to_protocolref(self) -> List[Tuple[str, Any]]:
-        """
-            returns list with tuples (name, protocolReference)
-        """
-        return list(map(lambda joint: (joint, joint.ProtocolReference), self.brickrobot.Arms[0].Joints))
-
     def control_event_names(self) -> List[str]:
         return self.control_event_dict.keys()
 
