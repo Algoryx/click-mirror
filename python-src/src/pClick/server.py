@@ -11,7 +11,7 @@ class Server:
 
     def recv(self) -> Message:
         """
-        Non-blocking recv. Returns False if no Message is waiting
+        Non-blocking receive. Returns Message or None if no Message is waiting.
         """
         try:
             return MessageSerializer.from_bytes(self.socket.recv(flags=zmq.NOBLOCK))
@@ -20,11 +20,11 @@ class Server:
 
     def recv_blocking(self) -> Message:
         """
-        Blocking recv
+        Blocking receive
         """
         return MessageSerializer.from_bytes(self.socket.recv())
 
-    def send(self, message):
+    def send(self, message: Message):
         """
         Non-blocking send. Throws Exception if buffer is full
         """
