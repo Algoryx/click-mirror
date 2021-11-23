@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
     // Handshake
     message = HandshakeInitMessageBuilder::builder()->build();
-    reply = sendReceive(client, move(message));
+    reply = sendReceiveBlocking(client, move(message));
 
     // Controlmessage
     message = ControlMessageBuilderImpl::builder()
