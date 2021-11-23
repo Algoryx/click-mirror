@@ -34,7 +34,7 @@ bool Client::send(const std::string& bytes) const {
 }
 
 bool Client::receive(std::string& responseBytes) const{
-  return m_socket->receive(responseBytes);
+  return m_socket->receive(responseBytes, true);
 }
 
 bool Client::send(const Message& message) const
@@ -44,12 +44,20 @@ bool Client::send(const Message& message) const
   return m_socket->send(bytes);
 }
 
-unique_ptr<Message> Client::blockingReceive()
+unique_ptr<Message> Client::receive(bool block)
 {
   MessageSerializer serializer;
   string bytes;
-  bool status = m_socket->receive(bytes);
-  return serializer.fromBytes(bytes);
+  bool status = m_socket->receive(bytes, !block);
+  if (status)
+    return serializer.fromBytes(bytes);
+  else
+    return unique_ptr<Message>();
+}
+
+unique_ptr<Message> Client::blockingReceive()
+{
+  return this->receive();
 }
 
 Client::~Client()

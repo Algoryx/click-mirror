@@ -1,3 +1,5 @@
+#include <chrono>
+#include <thread>
 #include <iostream>
 #include <click/Client.h>
 #include <click/ControlMessageBuilder.h>
@@ -16,13 +18,35 @@ inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
 
-unique_ptr<Message> sendReceive(Client &client, unique_ptr<Message> message)
+unique_ptr<Message> sendReceiveBlocking(Client &client, unique_ptr<Message> message)
 {
     cout << "Sending " << message->debugString() << endl;
     client.send(*message);
     unique_ptr<Message> response = client.blockingReceive();
     cout << "Received " << response->debugString() << endl;
     return response;
+}
+
+unique_ptr<Message> sendReceive(Client &client, unique_ptr<Message> message)
+{
+    cout << "Sending " << message->debugString() << endl;
+    client.send(*message);
+    while(true)
+    {
+        unique_ptr<Message> response = client.receive(false);
+        if (response)
+        {
+            cout << "Received " << response->debugString() << endl;
+            return response;
+        }
+        else
+        {
+            cout << "Would have blocked, trying again" << endl;
+            using namespace std::this_thread;
+            using namespace std::chrono;
+            sleep_for(microseconds(100));
+        }
+    }
 }
 
 int main(int argc, char *argv[])
