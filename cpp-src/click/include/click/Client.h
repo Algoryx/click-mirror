@@ -53,7 +53,7 @@ namespace click {
      *
      * If the socket send times out this function will return false.
      *
-     * \param bytes bytes to send.
+     * \param message the message to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
     CLICK_EXPORT bool send(const Message& message) const;
