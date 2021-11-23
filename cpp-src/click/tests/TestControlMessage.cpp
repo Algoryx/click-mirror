@@ -32,7 +32,7 @@ SCENARIO("controlmessage serialization", "[click]")
 
             THEN("it should have two grippers one activated and one not activated")
             {
-                REQUIRE(controlMessage->messageType() == ControlMessageType);
+                REQUIRE(controlMessage->messageType() == MessageType::ControlMessageType);
                 REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
                 REQUIRE(controlMessage->controlEvent("robot1", "gripper2") == false);
             }
@@ -53,7 +53,7 @@ SCENARIO("controlmessage serialization", "[click]")
 
             THEN("it should contain the control values")
             {
-                REQUIRE(controlMessage->messageType() == ControlMessageType);
+                REQUIRE(controlMessage->messageType() == MessageType::ControlMessageType);
                 REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
                 REQUIRE_THAT(controlMessage->angles("robot1"), Equals(angles));
                 REQUIRE_THAT(controlMessage->angleVelocities("robot2"), Equals(angleVelocities));
@@ -119,7 +119,7 @@ SCENARIO("controlmessage serialization", "[click]")
                 string bytes = serializer.serializeToString(*controlMessage);
 
                 unique_ptr<Message> message = serializer.fromBytes(bytes);
-                REQUIRE(message->messageType() == ControlMessageType);
+                REQUIRE(message->messageType() == MessageType::ControlMessageType);
                 REQUIRE_THAT(message->debugString(), Equals(controlMessage->debugString()));
             }
         }
