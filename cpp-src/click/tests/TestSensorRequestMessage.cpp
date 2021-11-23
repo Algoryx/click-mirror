@@ -24,7 +24,7 @@ SCENARIO("SensorRequestMessage serialization", "[click]")
 
             THEN("it should contain type")
             {
-                REQUIRE(message->messageType() == SensorRequestMessageType);
+                REQUIRE(message->messageType() == MessageType::SensorRequestMessageType);
             }
 
             THEN("it should have debugstring without type since it is the default")
@@ -43,7 +43,7 @@ SCENARIO("SensorRequestMessage serialization", "[click]")
                 MessageSerializer serializer;
                 string bytes = serializer.serializeToString(*message);
                 unique_ptr<Message> smessage = serializer.fromBytes(bytes);
-                REQUIRE(smessage->messageType() == SensorRequestMessageType);
+                REQUIRE(smessage->messageType() == MessageType::SensorRequestMessageType);
                 REQUIRE_THAT(smessage->debugString(), Equals(message->debugString()));
             }
         }

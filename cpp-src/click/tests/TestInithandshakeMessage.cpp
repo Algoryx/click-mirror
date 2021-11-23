@@ -24,7 +24,7 @@ SCENARIO("handshakeInit serialization", "[click]")
 
             THEN("it should contain type")
             {
-                REQUIRE(HandshakeInitMessage->messageType() == HandshakeInitMessageType);
+                REQUIRE(HandshakeInitMessage->messageType() == MessageType::HandshakeInitMessageType);
             }
 
             THEN("it should have debugstring without type since it is the default")
@@ -44,7 +44,7 @@ SCENARIO("handshakeInit serialization", "[click]")
                 string bytes = serializer.serializeToString(*HandshakeInitMessage);
 
                 unique_ptr<Message> message = serializer.fromBytes(bytes);
-                REQUIRE(message->messageType() == HandshakeInitMessageType);
+                REQUIRE(message->messageType() == MessageType::HandshakeInitMessageType);
                 REQUIRE_THAT(message->debugString(), Equals(HandshakeInitMessage->debugString()));
             }
         }

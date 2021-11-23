@@ -24,7 +24,7 @@ SCENARIO("ResetMessage serialization", "[click]")
 
             THEN("it should contain type")
             {
-                REQUIRE(message->messageType() == ResetMessageType);
+                REQUIRE(message->messageType() == MessageType::ResetMessageType);
             }
 
             THEN("it should have debugstring without type since it is the default")
@@ -43,7 +43,7 @@ SCENARIO("ResetMessage serialization", "[click]")
                 MessageSerializer serializer;
                 string bytes = serializer.serializeToString(*message);
                 unique_ptr<Message> smessage = serializer.fromBytes(bytes);
-                REQUIRE(smessage->messageType() == ResetMessageType);
+                REQUIRE(smessage->messageType() == MessageType::ResetMessageType);
                 REQUIRE_THAT(smessage->debugString(), Equals(message->debugString()));
             }
         }

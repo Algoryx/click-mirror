@@ -5,9 +5,14 @@
 using namespace std;
 using namespace click;
 
-inline void assertEqual(int lhs, int rhs)
+inline void assertEqual(MessageType lhs, protobuf::MessageType rhs)
 {
-    REQUIRE(lhs == rhs);
+    REQUIRE(static_cast<int>(lhs) == rhs);
+}
+
+inline void assertEqual(ValueType lhs, protobuf::ValueType rhs)
+{
+    REQUIRE(static_cast<int>(lhs) == rhs);
 }
 
 SCENARIO("message declarations")
@@ -18,27 +23,27 @@ SCENARIO("message declarations")
         {
             THEN("HandshakeInitMessageType")
             {
-                assertEqual(HandshakeInitMessageType, protobuf::HandshakeInitMessageType);
+                assertEqual(MessageType::HandshakeInitMessageType, protobuf::HandshakeInitMessageType);
             }
             THEN("HandshakeMessageType")
             {
-                assertEqual(HandshakeMessageType, protobuf::HandshakeMessageType);
+                assertEqual(MessageType::HandshakeMessageType, protobuf::HandshakeMessageType);
             }
             THEN("ControlMessageType")
             {
-                assertEqual(ControlMessageType, protobuf::ControlMessageType);
+                assertEqual(MessageType::ControlMessageType, protobuf::ControlMessageType);
             }
             THEN("SensorMessageType")
             {
-                assertEqual(SensorMessageType, protobuf::SensorMessageType);
+                assertEqual(MessageType::SensorMessageType, protobuf::SensorMessageType);
             }
             THEN("ResetMessageType")
             {
-                assertEqual(ResetMessageType, protobuf::ResetMessageType);
+                assertEqual(MessageType::ResetMessageType, protobuf::ResetMessageType);
             }
             THEN("ErrorMessageType")
             {
-                assertEqual(ErrorMessageType, protobuf::ErrorMessageType);
+                assertEqual(MessageType::ErrorMessageType, protobuf::ErrorMessageType);
             }
         }
     }

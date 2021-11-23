@@ -26,7 +26,7 @@ SCENARIO("ErrorMessage serialization", "[click]")
 
             THEN("it should contain type")
             {
-                REQUIRE(message->messageType() == ErrorMessageType);
+                REQUIRE(message->messageType() == MessageType::ErrorMessageType);
             }
 
             THEN("it should have debugstring without type since it is the default")
@@ -51,7 +51,7 @@ SCENARIO("ErrorMessage serialization", "[click]")
                 string bytes = serializer.serializeToString(*message);
 
                 unique_ptr<Message> smessage = serializer.fromBytes(bytes);
-                REQUIRE(smessage->messageType() == ErrorMessageType);
+                REQUIRE(smessage->messageType() == MessageType::ErrorMessageType);
                 REQUIRE_THAT(smessage->debugString(), Equals(message->debugString()));
             }
         }

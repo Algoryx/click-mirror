@@ -5,7 +5,7 @@
 
 namespace click {
 
-  enum MessageType {
+  enum class MessageType {
     HandshakeInitMessageType = 0,
     HandshakeMessageType = 1,
     SensorRequestMessageType = 6,

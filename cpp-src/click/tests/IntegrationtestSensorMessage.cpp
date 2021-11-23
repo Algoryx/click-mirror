@@ -20,7 +20,7 @@ SCENARIO("sensormessage serialization from file", "[click]")
         {
             MessageSerializer serializer;
             unique_ptr<Message> message = serializer.sensorMessageFromIStream(&input);
-            REQUIRE(message->messageType() == SensorMessageType);
+            REQUIRE(message->messageType() == MessageType::SensorMessageType);
             unique_ptr<SensorMessage> sensorMessage = toSensorMessage(move(message));
 
             THEN("it should have debugstring")
