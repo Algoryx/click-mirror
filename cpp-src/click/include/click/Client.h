@@ -25,7 +25,7 @@ namespace click {
      * Inproc sockets must have a valid target already bound before connection
      * will work.
      * 
-     * \param endpoint the zmq endpoint to connect to
+     * \param endpoint The zmq endpoint to connect to
      */
     CLICK_EXPORT void connect(const std::string& endpoint);
 
@@ -34,7 +34,7 @@ namespace click {
      *
      * If the socket send times out this function will return false.
      *
-     * \param bytes bytes to send.
+     * \param bytes Bytes to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
     CLICK_EXPORT bool send(const std::string& bytes) const;
@@ -53,7 +53,7 @@ namespace click {
      *
      * If the socket send times out this function will return false.
      *
-     * \param message the message to send.
+     * \param message The message to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
     CLICK_EXPORT bool send(const Message& message) const;
@@ -61,7 +61,7 @@ namespace click {
     /**
      * Wait for the next message
      *
-     * \param block whether to block while receiving or not
+     * \param block Whether to block while receiving or not
      * \return the received message or empty ptr if it would have blocked.
      */
     CLICK_EXPORT std::unique_ptr<Message> receive(bool block=true);
