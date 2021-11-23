@@ -6,7 +6,17 @@
 class click::HandshakeInitMessageBuilder {
 
 public:
+    /**
+     * Build the message
+     *
+     * \return a HandshakeInitMessage
+     */
     CLICK_EXPORT std::unique_ptr<HandshakeInitMessage> build();
+    /**
+     * Create a builder that creates a Message
+     *
+     * \return a Builder
+     */
     CLICK_EXPORT static std::unique_ptr<HandshakeInitMessageBuilder> builder();
     CLICK_EXPORT virtual ~HandshakeInitMessageBuilder();
 

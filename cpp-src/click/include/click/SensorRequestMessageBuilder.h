@@ -6,7 +6,17 @@
 class click::SensorRequestMessageBuilder {
 
 public:
+    /**
+     * Build the message
+     *
+     * \return a SensorRequestMessage
+     */
     CLICK_EXPORT std::unique_ptr<SensorRequestMessage> build();
+    /**
+     * Create a builder that creates a Message
+     *
+     * \return a Builder
+     */
     CLICK_EXPORT static std::unique_ptr<SensorRequestMessageBuilder> builder();
     CLICK_EXPORT virtual ~SensorRequestMessageBuilder();
 

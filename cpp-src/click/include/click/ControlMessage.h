@@ -17,9 +17,30 @@ namespace click
   class ControlMessage : public Message
   {
   public:
+    /**
+     * Get angles, if any, for the object with name objectname
+     *
+     * \return a Vector of angles
+     */
     CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
+    /**
+     * Get anglevelocities, if any, for the object with name objectname
+     *
+     * \return a Vector of angle velocitities
+     */
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
+    /**
+     * Get torques, if any, for the object with name objectname
+     *
+     * \return a Vector of torques
+     */
     CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
+    // TODO: Must implement hasControlEvent, will throw exception if missing!
+    /**
+     * Get controlEvent, if any, for the control controlname in object objectname
+     *
+     * \return value of controlEvent
+     */
     CLICK_EXPORT bool controlEvent(const std::string &objectname, std::string controlname) const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;

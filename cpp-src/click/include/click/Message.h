@@ -34,6 +34,11 @@ namespace click {
   {
   public:
     CLICK_EXPORT virtual std::string debugString() const = 0;
+    /**
+     * Get the type of this message
+     *
+     * \return MessageType
+     */
     CLICK_EXPORT virtual MessageType messageType() const = 0;
     CLICK_EXPORT virtual ~Message();
 
