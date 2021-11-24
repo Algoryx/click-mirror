@@ -54,43 +54,43 @@ SCENARIO("message declarations")
         {
             THEN("Angle")
             {
-                assertEqual(Angle, protobuf::Angle);
+                assertEqual(ValueType::Angle, protobuf::Angle);
             }
             THEN("AngleVelocity")
             {
-                assertEqual(AngleVelocity, protobuf::AngleVelocity);
+                assertEqual(ValueType::AngleVelocity, protobuf::AngleVelocity);
             }
             THEN("Torque")
             {
-                assertEqual(Torque, protobuf::Torque);
+                assertEqual(ValueType::Torque, protobuf::Torque);
             }
             THEN("Position")
             {
-                assertEqual(Position, protobuf::Position);
+                assertEqual(ValueType::Position, protobuf::Position);
             }
             THEN("RPY")
             {
-                assertEqual(RPY, protobuf::RPY);
+                assertEqual(ValueType::RPY, protobuf::RPY);
             }
             THEN("Activated")
             {
-                assertEqual(Activated, protobuf::Activated);
+                assertEqual(ValueType::Activated, protobuf::Activated);
             }
             THEN("Acceleration")
             {
-                assertEqual(Acceleration, protobuf::Acceleration);
+                assertEqual(ValueType::Acceleration, protobuf::Acceleration);
             }
             THEN("Force")
             {
-                assertEqual(Force, protobuf::Force);
+                assertEqual(ValueType::Force, protobuf::Force);
             }
             THEN("Angle")
             {
-                assertEqual(DirectionalTorque, protobuf::DirectionalTorque);
+                assertEqual(ValueType::DirectionalTorque, protobuf::DirectionalTorque);
             }
             THEN("AngularAcceleration")
             {
-                assertEqual(AngularAcceleration, protobuf::AngularAcceleration);
+                assertEqual(ValueType::AngularAcceleration, protobuf::AngularAcceleration);
             }
         }
     }
