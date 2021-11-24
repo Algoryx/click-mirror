@@ -15,7 +15,7 @@ namespace click {
     ErrorMessageType = 5
   };
 
-  enum ValueType {
+  enum class ValueType {
     Angle = 0,                     // radians
     AngleVelocity = 1,             // radians/sec
     Torque = 2,                    // Nm
