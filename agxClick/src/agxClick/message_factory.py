@@ -141,6 +141,7 @@ class MessageFactory:
         """
         Create a SensorMessage from a list of robots
         """
+        import Brick.Signal
 
         sensor_m = ProtoMessageFactory.create_sensormessage()
         sensor_m.simVars.simulatedTime = simulated_time
@@ -154,11 +155,29 @@ class MessageFactory:
                     sensors.angleVelocitySensors.extend(cls._signals_to_floats(robot.velocity_sensors))
                 if len(robot.torque_sensors) > 0:
                     sensors.torqueSensors.extend(cls._signals_to_floats(robot.torque_sensors))
-                for name, signals in robot.sensors.items():
-                    sensors.sensors[name].sensor.extend(cls._signals_to_floats(signals))
+                cls.add_named_sensors(robot, sensors)
             objectSensor = sensors.objectSensors.add()
             objectSensor.position.arr.extend([*robot.position()])
             objectSensor = sensors.objectSensors.add()
             objectSensor.rpy.arr.extend([*robot.rpy()])
 
         return sensor_m
+
+    @classmethod
+    def add_named_sensors(cls, robot: ClickRobot, sensors):
+        for name, signals in robot.sensors.items():
+            for signal in signals:
+                sensor = sensors.sensors[name].sensor.add()
+                arr = cls.array_to_populate(signal, sensor, robot.name)
+                arr.extend(cls._signal_to_floats(signal))
+
+    @classmethod
+    def array_to_populate(cls, signal, sensor, robotname):
+        value_type = cls.to_click_control_type(signal.__class__)
+        if value_type == ValueType.Force:
+            return sensor.force.arr
+        elif value_type == ValueType.DirectionalTorque:
+            return sensor.directionalTorque.arr
+        else:
+            # TODO: Add tests for rest of valuetypes, missing 8 so far.
+            raise Exception(f"Unrecognized (=Not Implemented) signal in {robotname}: {signal._ModelType}")

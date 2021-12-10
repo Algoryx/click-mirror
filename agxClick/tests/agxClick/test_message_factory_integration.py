@@ -147,8 +147,8 @@ class Test_message_factory_integration:
 
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
 
-        assert message.objects["robot"].sensors["external_sensor"].sensor[0].force == [1, 2, 3]
-        assert message.objects["robot"].sensors["external_sensor"].sensor[1].directionalTorque == approx([2, 1, 1], 1e-3)
+        assert message.objects["robot"].sensors["external_sensor"].sensor[0].force.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["external_sensor"].sensor[1].directionalTorque.arr == [0, 0, 0]
 
 
 _handshake_facit = """messageType: HandshakeMessageType
