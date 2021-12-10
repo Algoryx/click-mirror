@@ -69,3 +69,6 @@ ExampleSensorClickScene:
         protocolReference: robot_joint0
       joint1:
         protocolReference: robot_joint1
+
+  clickobjects:
+    - robot
