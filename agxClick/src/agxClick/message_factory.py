@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 from agxClick import ClickRobot
 from pClick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 import math
@@ -56,9 +56,15 @@ class MessageFactory:
             Brick.Signal.MotorVelocityInput: ValueType.AngleVelocity,
             Brick.Signal.MotorForceInput: ValueType.Torque,
             # NOTE: This is implemented like this to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
-            Brick.Signal.AdhesiveForceInput: ValueType.Activated
+            Brick.Signal.AdhesiveForceInput: ValueType.Activated,
+            Brick.Signal.ForceVectorOutput: ValueType.Force,
+            Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque
         }
         return typemap[type]
+
+    @classmethod
+    def to_click_control_types(cls, signals: List) -> List:
+        return list(map(lambda signal: cls.to_click_control_type(signal.__class__), signals))
 
     @classmethod
     def to_brick_control_type(cls, type: ValueType):
@@ -91,6 +97,14 @@ class MessageFactory:
         return list(map(lambda signal: signal.GetData(), signals))
 
     @classmethod
+    def _vec3_to_floats(cls, signal) -> List[float]:
+        """
+        Convert data of Brick.Signal.ConnectorVectorOutput Brick.Math.Vec3 to
+        """
+        vector = signal.GetData()
+        return [vector.X, vector.Y, vector.Z]
+
+    @classmethod
     def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
         """
         Creates a HandshakeMessage from a list of robots
@@ -113,6 +127,8 @@ class MessageFactory:
                 object.jointSensors.extend(jointsensors)
                 for name, event in robot.control_events().items():
                     object.controlEvents[name] = cls.to_click_control_type(event.__class__)
+                for name, sensor in robot.sensors.items():
+                    object.sensors[name].types.extend(cls.to_click_control_types(sensor))
             object.objectSensors.append(ValueType.Position)
             object.objectSensors.append(ValueType.RPY)
         return handshake
@@ -135,6 +151,8 @@ class MessageFactory:
                     sensors.angleVelocitySensors.extend(cls._signals_to_floats(robot.velocity_sensors))
                 if len(robot.torque_sensors) > 0:
                     sensors.torqueSensors.extend(cls._signals_to_floats(robot.torque_sensors))
+                # for name, sensor in robot.sensors.items():
+                #     sensors.sensors[name] = cls._signals_to_floats(sensor.
             objectSensor = sensors.objectSensors.add()
             objectSensor.position.arr.extend([*robot.position()])
             objectSensor = sensors.objectSensors.add()

@@ -64,6 +64,12 @@ class Test_message_factory_integration:
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
 
+    def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
+        robots = find_robots_in_scene(sensor_scene)
+        message = MessageFactory.handshake_message_from_objects(robots, 0.03)
+        assert ValueType.Force in message.objects["robot"].sensors["external_sensor"].types
+        assert ValueType.DirectionalTorque in message.objects["robot"].sensors["external_sensor"].types
+
     def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
         robots = find_robots_in_scene(scene)
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)

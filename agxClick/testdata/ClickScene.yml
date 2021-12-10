@@ -62,10 +62,10 @@ ExampleSensorClickScene:
   .extends: ClickScene
   wantInternalPositioning: true
 
-  robot1:
+  robot:
     .type: RobotWith3DSensor
     arm1:
       joint0:
-        protocolReference: robot1_joint0
+        protocolReference: robot_joint0
       joint1:
-        protocolReference: robot1_joint1
+        protocolReference: robot_joint1
