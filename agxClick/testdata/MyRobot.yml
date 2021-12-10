@@ -9,7 +9,7 @@
 
 # Use imports to avoid having two write the whole name of the component
 .import:
-  Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType]
+  Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType, Sensor]
   Physics.Mechanics: [RigidBodyAttachment, HingeConnector, LockJointConnector]
 
 # Robot Arm definitions
@@ -139,6 +139,7 @@ MyRobot:
     .value: MyRobotArm
 
     joint0:
+      protocolReference: Robot_joint0
       hingeConnector: 
         .type: HingeWithInitialAngle
         mainInteraction:
@@ -175,3 +176,15 @@ ToolRobot:
     .type: LockJointConnector
     attachment1: this.arm1.segment2.outputAttachment
     attachment2: this.tool.stiff.attachment
+
+RobotWith3DSensor:
+  .extends: MyRobot
+
+  force3DSensor:
+    .type: Sensor.JointForce3DSensor
+    joint: arm1.joint0
+
+  torque3DSensor:
+    .type: Sensor.JointTorque3DSensor
+    joint: arm1.joint0
+

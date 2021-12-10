@@ -92,3 +92,12 @@ class Test_click_brick_reader:
         with pytest.raises(AssertionError) as excinfo:
             find_robots_in_scene(scene_missing_protref)
         assert "Missing protocolReference in robot robot1" in str(excinfo)
+
+    def test_that_robot_has_force_and_torque_sensor(self, sensor_scene):
+        import Brick.Signal
+        robots = find_robots_in_scene(sensor_scene)
+        external_sensor = robots[0].sensors["external_sensor"]
+        types = list(map(lambda s: s.__class__, external_sensor))
+        assert Brick.Signal.TorqueVectorOutput in types
+        assert Brick.Signal.ForceVectorOutput in types
+        

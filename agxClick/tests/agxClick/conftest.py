@@ -46,3 +46,10 @@ def clickscene(brickenv, pyroot):
     file_path = f"{pyroot}/testdata/ClickScene.yml"
     model_name = "ExampleClickScene"
     return brickenv.load_from_file(file_path, model_name)
+
+
+@pytest.fixture(scope="function")
+def sensor_scene(brickenv, pyroot):
+    file_path = f"{pyroot}/testdata/ClickScene.yml"
+    model_name = "ExampleSensorClickScene"
+    return brickenv.load_from_file(file_path, model_name)

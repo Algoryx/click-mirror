@@ -6,7 +6,7 @@
 
 # Use imports to avoid having two write the whole name of the component
 .import:
-  MyRobot: [ToolRobot]
+  MyRobot: [ToolRobot, RobotWith3DSensor]
   Physics.Mechanics: [RigidBody]
 
 ClickScene:
@@ -57,3 +57,15 @@ ExampleClickScene:
     - robot1
     - robot2
     - box
+
+ExampleSensorClickScene:
+  .extends: ClickScene
+  wantInternalPositioning: true
+
+  robot1:
+    .type: RobotWith3DSensor
+    arm1:
+      joint0:
+        protocolReference: robot1_joint0
+      joint1:
+        protocolReference: robot1_joint1

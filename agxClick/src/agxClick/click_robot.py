@@ -53,10 +53,11 @@ class ClickRobot(ClickObject):
         self.brickrobot = brick_robot
         self.input_signals = []
         self.torque_sensors = []    # Nm
-        self.angle_sensors = []     # DEG in Brick
+        self.angle_sensors: List[Brick.Signal.MotorAngleOutput] = []     # DEG in Brick
         self.velocity_sensors = []  # RAD/s in Brick
         self.num_joints = len(self.brickrobot.Arms[0].Joints)
         self.control_event_dict = {}
+        self.sensors: Dict[str, List[Brick.Signal.Output]] = {}
         self._populate_signals()
         self.validate()
 
@@ -156,5 +157,10 @@ class ClickRobot(ClickObject):
             shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
+        elif isinstance(signal, Brick.Signal.ConnectorVectorOutput):
+            self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name external_sensor in {self.name}")
+            if "external_sensor" not in self.sensors:
+                self.sensors["external_sensor"] = []
+            self.sensors["external_sensor"].append(signal)
         else:
             raise Exception(f"Unrecognized signal in {self.name}: {signal._ModelType}")
