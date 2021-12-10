@@ -94,15 +94,18 @@ class MessageFactory:
         Convert a list of Brick signals to List of floats
         return a Brick.Signal.*Input type
         """
-        return list(map(lambda signal: signal.GetData(), signals))
+        return list(map(lambda signal: cls._signal_to_floats(signal), signals))
 
     @classmethod
-    def _vec3_to_floats(cls, signal) -> List[float]:
+    def _signal_to_floats(cls, signal):
         """
         Convert data of Brick.Signal.ConnectorVectorOutput Brick.Math.Vec3 to
         """
-        vector = signal.GetData()
-        return [vector.X, vector.Y, vector.Z]
+        import Brick.Math
+        data = signal.GetData()
+        if data.__class__ is Brick.Math.Vec3:
+            return [data.X, data.Y, data.Z]
+        return data
 
     @classmethod
     def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
@@ -151,8 +154,8 @@ class MessageFactory:
                     sensors.angleVelocitySensors.extend(cls._signals_to_floats(robot.velocity_sensors))
                 if len(robot.torque_sensors) > 0:
                     sensors.torqueSensors.extend(cls._signals_to_floats(robot.torque_sensors))
-                # for name, sensor in robot.sensors.items():
-                #     sensors.sensors[name] = cls._signals_to_floats(sensor.
+                for name, signals in robot.sensors.items():
+                    sensors.sensors[name].sensor.extend(cls._signals_to_floats(signals))
             objectSensor = sensors.objectSensors.add()
             objectSensor.position.arr.extend([*robot.position()])
             objectSensor = sensors.objectSensors.add()

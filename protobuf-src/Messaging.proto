@@ -183,7 +183,7 @@ message SensorMessage {
   };
 
   message Sensors {
-    repeated Sensor sensor = 1;  // 
+    repeated Sensor sensor = 1;
   }
   
   message Object {

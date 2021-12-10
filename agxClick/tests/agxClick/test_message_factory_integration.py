@@ -142,6 +142,14 @@ class Test_message_factory_integration:
         assert message.objects["box"].objectSensors[0].position.arr == [1, 2, 3]
         assert message.objects["box"].objectSensors[1].rpy.arr == approx([2, 1, 1], 1e-3)
 
+    def test_that_sensors_are_included_in_sensormessage(self, sensor_scene):
+        robots = find_robots_in_scene(sensor_scene)
+
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+
+        assert message.objects["robot"].sensors["external_sensor"].sensor[0].force == [1, 2, 3]
+        assert message.objects["robot"].sensors["external_sensor"].sensor[1].directionalTorque == approx([2, 1, 1], 1e-3)
+
 
 _handshake_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION
