@@ -42,7 +42,7 @@ def scene_missing_protref(brickenv, pyroot):
 
 
 @pytest.fixture(scope="function")
-def clickscene(brickenv, pyroot):
+def click_scene(brickenv, pyroot):
     file_path = f"{pyroot}/testdata/ClickScene.yml"
     model_name = "ExampleClickScene"
     return brickenv.load_from_file(file_path, model_name)
