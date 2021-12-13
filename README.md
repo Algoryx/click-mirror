@@ -225,3 +225,10 @@ To circumvent clashes with python library click and pyClick, the python library 
 
 Releases are made by pushing the tag to be released, GitLab will build, test and publish the version.
 Release tags are semver only, eg 0.1.2.
+
+Steps:
+
+1. Update version in agxClick/setup.py, python-src/setup.py, README.md. Suggestion: Search and Replace old version for new.
+2. Update releaselog.txt
+3. Push to branch and do MR
+4. When MR merged, tag from master and push, eg `git tag 0.1.16; git push origin 0.1.16`.
