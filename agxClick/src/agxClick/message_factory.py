@@ -99,7 +99,7 @@ class MessageFactory:
     @classmethod
     def _signal_to_floats(cls, signal):
         """
-        Convert data of Brick.Signal.ConnectorVectorOutput Brick.Math.Vec3 to
+        Convert data of Brick.Signal.ConnectorVectorOutput Brick.Math.Vec3 to list of 3 floats
         """
         import Brick.Math
         data = signal.GetData()
