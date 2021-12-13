@@ -51,10 +51,10 @@ class ClickRobot(ClickObject):
         import Brick.Robotics
         assert isinstance(brick_robot, Brick.Robotics.Robot)
         self.brickrobot = brick_robot
-        self.input_signals = []
-        self.torque_sensors = []    # Nm
+        self.input_signals: List[Brick.Signal.LockPositionInput | Brick.Signal.MotorForceInput | Brick.Signal.MotorVelocityInput] = []
+        self.torque_sensors: List[Brick.Signal.LockForceOutput | Brick.Signal.MotorForceOutput] = []    # Nm
         self.angle_sensors: List[Brick.Signal.MotorAngleOutput] = []     # DEG in Brick
-        self.velocity_sensors = []  # RAD/s in Brick
+        self.velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
         self.num_joints = len(self.brickrobot.Arms[0].Joints)
         self.control_event_dict = {}
         self.sensors: Dict[str, List[Brick.Signal.Output]] = {}
