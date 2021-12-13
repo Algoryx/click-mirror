@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 from agxClick import ClickRobot
 from pClick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 import math
@@ -56,9 +56,15 @@ class MessageFactory:
             Brick.Signal.MotorVelocityInput: ValueType.AngleVelocity,
             Brick.Signal.MotorForceInput: ValueType.Torque,
             # NOTE: This is implemented like this to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
-            Brick.Signal.AdhesiveForceInput: ValueType.Activated
+            Brick.Signal.AdhesiveForceInput: ValueType.Activated,
+            Brick.Signal.ForceVectorOutput: ValueType.Force,
+            Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque
         }
         return typemap[type]
+
+    @classmethod
+    def to_click_control_types(cls, signals: List) -> List:
+        return list(map(lambda signal: cls.to_click_control_type(signal.__class__), signals))
 
     @classmethod
     def to_brick_control_type(cls, type: ValueType):
@@ -88,7 +94,18 @@ class MessageFactory:
         Convert a list of Brick signals to List of floats
         return a Brick.Signal.*Input type
         """
-        return list(map(lambda signal: signal.GetData(), signals))
+        return list(map(lambda signal: cls._signal_to_floats(signal), signals))
+
+    @classmethod
+    def _signal_to_floats(cls, signal):
+        """
+        Convert data of Brick.Signal.ConnectorVectorOutput Brick.Math.Vec3 to list of 3 floats
+        """
+        import Brick.Math
+        data = signal.GetData()
+        if data.__class__ is Brick.Math.Vec3:
+            return [data.X, data.Y, data.Z]
+        return data
 
     @classmethod
     def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
@@ -113,6 +130,8 @@ class MessageFactory:
                 object.jointSensors.extend(jointsensors)
                 for name, event in robot.control_events().items():
                     object.controlEvents[name] = cls.to_click_control_type(event.__class__)
+                for name, sensor in robot.sensors.items():
+                    object.sensors[name].types.extend(cls.to_click_control_types(sensor))
             object.objectSensors.append(ValueType.Position)
             object.objectSensors.append(ValueType.RPY)
         return handshake
@@ -122,6 +141,7 @@ class MessageFactory:
         """
         Create a SensorMessage from a list of robots
         """
+        import Brick.Signal
 
         sensor_m = ProtoMessageFactory.create_sensormessage()
         sensor_m.simVars.simulatedTime = simulated_time
@@ -135,9 +155,29 @@ class MessageFactory:
                     sensors.angleVelocitySensors.extend(cls._signals_to_floats(robot.velocity_sensors))
                 if len(robot.torque_sensors) > 0:
                     sensors.torqueSensors.extend(cls._signals_to_floats(robot.torque_sensors))
+                cls.add_named_sensors(robot, sensors)
             objectSensor = sensors.objectSensors.add()
             objectSensor.position.arr.extend([*robot.position()])
             objectSensor = sensors.objectSensors.add()
             objectSensor.rpy.arr.extend([*robot.rpy()])
 
         return sensor_m
+
+    @classmethod
+    def add_named_sensors(cls, robot: ClickRobot, sensors):
+        for name, signals in robot.sensors.items():
+            for signal in signals:
+                sensor = sensors.sensors[name].sensor.add()
+                arr = cls.array_to_populate(signal, sensor, robot.name)
+                arr.extend(cls._signal_to_floats(signal))
+
+    @classmethod
+    def array_to_populate(cls, signal, sensor, robotname):
+        value_type = cls.to_click_control_type(signal.__class__)
+        if value_type == ValueType.Force:
+            return sensor.force.arr
+        elif value_type == ValueType.DirectionalTorque:
+            return sensor.directionalTorque.arr
+        else:
+            # TODO: Add tests for rest of valuetypes, missing 8 so far.
+            raise Exception(f"Unrecognized (=Not Implemented) signal in {robotname}: {signal._ModelType}")

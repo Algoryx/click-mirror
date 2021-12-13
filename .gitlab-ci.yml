@@ -166,7 +166,7 @@ test-python-lib:
 test-agxClick:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/agxbrick:0.0.19-SNAPSHOT
+  image: $CI_REGISTRY_IMAGE/agxbrick:0.0.21-SNAPSHOT-fix-agxbrick0-4-67
   needs:
     - job: build-python-lib
       artifacts: true

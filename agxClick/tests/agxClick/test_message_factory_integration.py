@@ -64,6 +64,12 @@ class Test_message_factory_integration:
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
 
+    def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
+        robots = find_robots_in_scene(sensor_scene)
+        message = MessageFactory.handshake_message_from_objects(robots, 0.03)
+        assert ValueType.Force in message.objects["robot"].sensors["external_sensor"].types
+        assert ValueType.DirectionalTorque in message.objects["robot"].sensors["external_sensor"].types
+
     def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
         robots = find_robots_in_scene(scene)
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
@@ -135,6 +141,14 @@ class Test_message_factory_integration:
 
         assert message.objects["box"].objectSensors[0].position.arr == [1, 2, 3]
         assert message.objects["box"].objectSensors[1].rpy.arr == approx([2, 1, 1], 1e-3)
+
+    def test_that_sensors_are_included_in_sensormessage(self, sensor_scene):
+        robots = find_robots_in_scene(sensor_scene)
+
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+
+        assert message.objects["robot"].sensors["external_sensor"].sensor[0].force.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["external_sensor"].sensor[1].directionalTorque.arr == [0, 0, 0]
 
 
 _handshake_facit = """messageType: HandshakeMessageType
