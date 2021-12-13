@@ -30,7 +30,18 @@ pip install agxClick==0.1.15 --extra-index-url https://click-access:F2q7LauW_d-H
 
 ## Usage Examples
 
-See [examples](examples)
+The [examples directory](examples) contain a simple example application, which can be used to run the example scenes in the [testdata directory](testdata).
+
+### Brick Model Requirements
+
+The click application currently supports
+
+- Finding any Robot in the Brick scene
+- Sending and receiving robot signals over click messages
+
+In addition, if you want to transfer object pose data for non-robots, you can declare robots and extra components in a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+
+### ExampleClickScene - Two Robots with Joint sensor and a Box with pose
 
 Run below command(s) after the usual AGX `setup_env` command:
 
@@ -45,14 +56,153 @@ python3 -m pClick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 1
 bin/democlient
 ```
 
-## Brick Model Requirements
+The handshake will include the box and robot debug output as shown below:
 
-The click application currently supports
+```text
+objects {
+  key: "box"
+  value {
+    objectSensors: Position
+    objectSensors: RPY
+  }
+}
+objects {
+  key: "robot1"
+  value {
+    controlsInOrder: "robot1_joint0"
+    controlsInOrder: "robot1_joint1"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Force
+    controlEvents {
+      key: "adhesiveForceInput"
+      value: Activated
+    }
+    objectSensors: Position
+    objectSensors: RPY
+    jointSensorsInOrder: "robot1_joint0"
+    jointSensorsInOrder: "robot1_joint1"
+  }
+}
+```
 
-- Finding any Robot in the Brick scene
-- Sending and receiving robot signals over click messages
+### ExampleSensorClickScene - One Robot with external 3DSensor
 
-In addition, if you want to transfer object pose data for non-robots, you can declare robots and extra components in a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+This scene shows how to use the 3D Force and Torque Sensors.
+
+```bash
+# Start simulation
+python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleSensorClickScene
+# Get handshake
+python3 -m pClick.demo.client
+# Get sensor message
+python3 -m pClick.demo.client --sensormessage
+# Step and get sensor message
+python3 -m pClick.demo.client --controlmessage "robot:1,1"
+```
+
+The handshake contains a sensor with the name "external_sensor" which was not present in the previous scene.
+
+```bash
+python3 -m pClick.demo.client
+--- text removed for brevity ---
+objects {
+  key: "robot"
+  value {
+    controlsInOrder: "robot_joint0"
+    controlsInOrder: "robot_joint1"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Force
+    sensors {
+      key: "external_sensor"
+      value {
+        types: Force
+        types: DirectionalTorque
+      }
+    }
+    objectSensors: Position
+    objectSensors: RPY
+    jointSensorsInOrder: "robot_joint0"
+    jointSensorsInOrder: "robot_joint1"
+  }
+}
+```
+
+The SensorMessage contains gives us the values, all zeroes since no simulation step has been done yet.
+
+```text
+python3 -m pClick.demo.client --sensormessage
+--- text removed for brevity ---
+objects {
+  key: "robot"
+  value {
+    angleSensors: -0.0
+    angleSensors: -0.0
+    angleVelocitySensors: 0.0
+    angleVelocitySensors: 0.0
+    torqueSensors: 0.0
+    torqueSensors: 0.0
+    objectSensors {
+      position {
+        arr: 0.0
+        arr: 0.0
+        arr: 0.0
+      }
+    }
+    objectSensors {
+      rpy {
+        arr: 0.0
+        arr: 0.0
+        arr: 0.0
+      }
+    }
+    sensors {
+      key: "external_sensor"
+      value {
+        sensor {
+          force {
+            arr: 0.0
+            arr: 0.0
+            arr: 0.0
+          }
+        }
+        sensor {
+          directionalTorque {
+            arr: 0.0
+            arr: 0.0
+            arr: 0.0
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+When stepping with the controlmessage we get sensor values back:
+
+```bash
+python3 -m pClick.demo.client --controlmessage "robot:1,1"
+--- text removed for brevity ---
+    sensors {
+      key: "external_sensor"
+      value {
+        sensor {
+          force {
+            arr: 0.0
+            arr: 2.7375450446481165e-20
+            arr: 39.22636102083025
+          }
+        }
+        sensor {
+          directionalTorque {
+            arr: -3.0112845563683974e-20
+            arr: 0.0
+            arr: 0.0
+          }
+        }
+```
 
 ## Implementation details
 
