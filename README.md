@@ -220,3 +220,8 @@ Python tests are using pytest
 ### Python remarks
 
 To circumvent clashes with python library click and pyClick, the python library is called pClick.
+
+## Release:s
+
+Releases are made by pushing the tag to be released, GitLab will build, test and publish the version.
+Release tags are semver only, eg 0.1.2.
