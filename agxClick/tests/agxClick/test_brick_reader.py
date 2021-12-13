@@ -80,9 +80,9 @@ class Test_click_brick_reader:
     control events: ['adhesiveForceInput: 200.0']
 """
 
-    def test_that_brick_config_is_read(self, clickscene):
-        assert has_click_configuration(clickscene)
-        objects = get_click_configuration(clickscene)
+    def test_that_brick_config_is_read(self, click_scene):
+        assert has_click_configuration(click_scene)
+        objects = get_click_configuration(click_scene)
         assert len(objects) == 3
 
     def test_that_scene_does_not_have_click_configuration(self, scene):
@@ -97,7 +97,6 @@ class Test_click_brick_reader:
         import Brick.Signal
         robots = find_robots_in_scene(sensor_scene)
         external_sensor = robots[0].sensors["external_sensor"]
-        types = list(map(lambda s: s.__class__, external_sensor))
+        types = set(map(lambda s: s.__class__, external_sensor))
         assert Brick.Signal.TorqueVectorOutput in types
         assert Brick.Signal.ForceVectorOutput in types
-        

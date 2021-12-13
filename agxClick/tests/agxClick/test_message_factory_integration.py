@@ -67,8 +67,9 @@ class Test_message_factory_integration:
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        assert ValueType.Force in message.objects["robot"].sensors["external_sensor"].types
-        assert ValueType.DirectionalTorque in message.objects["robot"].sensors["external_sensor"].types
+        external_sensor_types = message.objects["robot"].sensors["external_sensor"].types
+        assert ValueType.Force in external_sensor_types
+        assert ValueType.DirectionalTorque in external_sensor_types
 
     def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
         robots = find_robots_in_scene(scene)
@@ -125,8 +126,8 @@ class Test_message_factory_integration:
             update_robots_from_message(robots, bad_controlmessage)
         assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
 
-    def test_that_click_box_is_included_in_handshake(self, clickscene):
-        objects = get_click_configuration(clickscene)
+    def test_that_click_box_is_included_in_handshake(self, click_scene):
+        objects = get_click_configuration(click_scene)
 
         message = MessageFactory.handshake_message_from_objects(objects, 0.03)
 
@@ -134,8 +135,8 @@ class Test_message_factory_integration:
         assert ValueType.RPY in message.objects["box"].objectSensors
         assert message.objects["box"].objectSensors == [ValueType.Position, ValueType.RPY]
 
-    def test_that_click_box_is_included_in_sensormessage(self, clickscene):
-        objects = get_click_configuration(clickscene)
+    def test_that_click_box_is_included_in_sensormessage(self, click_scene):
+        objects = get_click_configuration(click_scene)
 
         message = MessageFactory.sensor_message_from_objects(objects, 1.0)
 

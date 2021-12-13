@@ -6,14 +6,14 @@ def has_click_configuration(scene) -> bool:
     return BrickUtils.get_component_attribute(scene, "clickobjects") is not None
 
 
-def get_click_configuration(clickscene) -> List[ClickRobot]:
+def get_click_configuration(click_scene) -> List[ClickRobot]:
     """
-    clickscene must be a Brick ClickScene root
+    click_scene must be a Brick ClickScene root
     Will only return objects defined in clickobjects entry of ClickScene
     """
     objects = []
     import Brick.Robotics
-    for object in clickscene["clickobjects"]:
+    for object in click_scene["clickobjects"]:
         if isinstance(object, Brick.Robotics.Robot):
             objects.append(ClickRobot(object))
         else:
