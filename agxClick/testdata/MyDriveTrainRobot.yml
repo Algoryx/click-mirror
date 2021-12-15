@@ -1,0 +1,139 @@
+# This example demonstrates how to add Attachments and Connectors to a model. When this have
+# been added, Brick will automatically try to position and align the bodies to make the joint
+# equations be satisfied at the start of the simulation.
+
+# OBSERVE
+# The MyRobot model is used in a unit test
+# python/test/test_position_and_rotation_sign.py
+.format: 4
+
+# Use imports to avoid having two write the whole name of the component
+.import:
+  Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType, Sensor]
+  Physics.Mechanics: [RigidBodyAttachment, HingeConnector, LockJointConnector]
+  Physics.Mechanics.HingeConnector: [RotationalActuatorHingeConnector]
+  Physics.DriveTrain: [RotatingBody1D,RotatingShaft, GearAttachment, FixedVelocityEngine, TorqueDrivenEngine, GearConnector, HolonomicGearConnector]
+  MyRobot: [MySegment, MyRobotBase, RobotJoint]
+
+
+HingePreparedForDriveTrain:
+  .extends: RotationalActuatorHingeConnector
+  angle: 0
+  rotationalFrictionCoefficient: 0.0
+  staticFrictionRotational:
+    minForce: -0.1
+    maxForce: 0.1
+  lock:
+    minForce: 0
+    maxForce: 0
+  motor:
+    minForce: 0
+    maxForce: 0
+
+DriveTrainJointTemplate:
+  .extends: RobotJoint
+  inputSignalType: Robotics.SignalType.InputForceSignal
+  attachmentStiffness:
+    defaultValue: 100000000
+  attachmentDamping:
+    defaultValue: 3300000
+  hingeConnector: 
+    .value: HingePreparedForDriveTrain
+    shaft: this.inputShaft
+  inputShaft:
+    .type: RotatingShaft
+    massProperties:
+      inertia: 0.1
+  engine:
+    .type: RotatingBody1D 
+  inputSignal:
+    .type: Signal.SignalBase
+  gear:
+    .type: HolonomicGearConnector
+    
+
+DriveTrainJointTorque:
+  .extends: DriveTrainJointTemplate
+  engine:
+    .value: TorqueDrivenEngine
+    initialTorque: 1
+  inputSignal:
+    .value: Signal.EngineTorqueInput
+    engine: this.engine
+  gear:
+    attachment1: this.engine.outputAttachment
+    attachment2: this.inputShaft.inputAttachment
+    interaction:
+      gearRatio: 10
+
+DriveTrainJointVelocity:
+  .extends: DriveTrainJointTemplate
+  engine:
+    .value: FixedVelocityEngine
+    targetRPM: 1
+  inputSignal:
+    .value: Signal.FixedVelocityEngineInput
+    engine: this.engine
+  gear:
+    attachment1: this.engine.outputAttachment
+    attachment2: this.inputShaft.inputAttachment
+    interaction:
+      stiffness: 1000
+      damping: 10
+      gearRatio: 10
+
+MyArm:
+  .extends: RobotArm
+  wantInternalPositioning: true
+
+  joint0:
+    .type: DriveTrainJointVelocity
+
+  joint1:
+    .type: DriveTrainJointTorque
+    segment1: this.segment1
+    segment2: this.segment2
+
+  segment1:
+    .type: MySegment
+    body:
+      name: segment1
+
+  segment2:
+    .type: MySegment
+    body:
+      name: segment2
+
+
+
+
+# Put the two boxes together and add a lock connector to world
+MyDriveTrainRobot:
+  .extends: Robot
+  wantInternalPositioning: true
+
+  base:
+    .value: MyRobotBase
+
+  arm:
+    .type: MyArm
+    .value: MyArm
+
+    joint0:
+      segment1: this.base
+      segment2: this.arm.segment1
+
+  worldAttachment:
+    .type: Physics.Mechanics.LockJointAttachment
+    .value: Physics.Mechanics.LockJointAttachment
+    localTransform:
+      rotation: Quat.TryFromToZXPair(Vec3(0,1,0),Vec3(0,0,1))
+
+  worldConnector:
+    .type: Physics.Mechanics.PrismaticConnector
+    attachment1: this.base.inputAttachment
+    attachment2: this.worldAttachment
+    motor:
+      speed: 0
+      constrainDof: true
+

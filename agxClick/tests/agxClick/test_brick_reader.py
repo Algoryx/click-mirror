@@ -74,7 +74,7 @@ class Test_click_brick_reader:
     jointnames: ['robot1_joint0', 'robot1_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
     2 input_signals: Brick.Signal.LockPositionInput: [0.0, 0.0]
-    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
+    2 torque_sensors: Brick.Signal.LockForceScalarOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
     control events: ['adhesiveForceInput: 200.0']
@@ -100,3 +100,10 @@ class Test_click_brick_reader:
         types = set(map(lambda s: s.__class__, external_sensor))
         assert Brick.Signal.TorqueVectorOutput in types
         assert Brick.Signal.ForceVectorOutput in types
+
+    def test_that_robot_has_drive_train_input_signals(self, drive_train_scene):
+        robots = find_robots_in_scene(drive_train_scene)
+        robots[0].validate()
+        import Brick.Signal
+        assert robots[0].input_signals[0] is Brick.Signal.EngineTorqueInput
+        assert robots[0].input_signals[1] is Brick.Signal.FixedVelocityEngineInput
