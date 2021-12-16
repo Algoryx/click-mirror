@@ -1,2 +1,5 @@
-0.1.16
+0.1.17
+- agxClick uses Sensor name as Click identifier, see agxClick/README.md
+
+0.1.17
 - agxClick finds one JointForce3DSensor and one JointTorque3DSensor per robot, and adds them to HandshakeMessage and SensorMessage
