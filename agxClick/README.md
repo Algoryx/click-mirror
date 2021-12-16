@@ -86,6 +86,21 @@ objects {
 }
 ```
 
+Note that the scene specifies unique names for every joint in the joint protocolReference, see [ClickScene.yml](testdata/ClickScene.yml):
+
+```yaml
+  robot1:
+    .type: ToolRobot
+    localTransform:
+      position: Math.Vec3(-0.25, 3.45, 0.55)
+      rotation: Math.EulerAngles(0, 0, 2.35)
+    arm1:
+      joint0:
+        protocolReference: robot1_joint0
+      joint1:
+        protocolReference: robot1_joint1
+```
+
 ### ExampleSensorClickScene - One Robot with external 3DSensor
 
 This scene shows how to use the 3D Force and Torque Sensors.
@@ -99,6 +114,20 @@ python3 -m pClick.demo.client
 python3 -m pClick.demo.client --sensorrequest
 # Step and get sensor message
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
+```
+
+Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the names force-sensor and torque-sensor which needs to be unique per robot:
+
+```yaml
+  force3DSensor:
+    .type: Sensor.JointForce3DSensor
+    name: force-sensor
+    joint: arm1.joint0
+
+  torque3DSensor:
+    .type: Sensor.JointTorque3DSensor
+    name: torque-sensor
+    joint: arm1.joint0
 ```
 
 The handshake contains sensors which was not present in the previous scene.
