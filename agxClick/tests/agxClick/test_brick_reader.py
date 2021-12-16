@@ -50,14 +50,14 @@ class Test_click_brick_reader:
         robots = find_robots_in_scene(scene)
         assert robots[0].has_control_events()
         import Brick.Signal
-        assert robots[0].control_events()["adhesiveForceInput"].__class__ == Brick.Signal.AdhesiveForceInput
-        assert robots[0].control_events()["adhesiveForceInput"].GetData() == 200.0
-        assert robots[1].control_events()["adhesiveForceInput"].GetData() == 200.0
+        assert robots[0].control_events()["gripper"].__class__ == Brick.Signal.AdhesiveForceInput
+        assert robots[0].control_events()["gripper"].GetData() == 200.0
+        assert robots[1].control_events()["gripper"].GetData() == 200.0
 
     def test_that_robot_grippers_are_enabled(self, scene):
         robots = find_robots_in_scene(scene)
-        assert robots[0].control_events()["adhesiveForceInput"].GetData() == 200.0
-        assert robots[1].control_events()["adhesiveForceInput"].GetData() == 200.0
+        assert robots[0].control_events()["gripper"].GetData() == 200.0
+        assert robots[1].control_events()["gripper"].GetData() == 200.0
 
     def test_that_robot_has_pose(self, scene):
         import Brick.Math
@@ -77,7 +77,7 @@ class Test_click_brick_reader:
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
-    control events: ['adhesiveForceInput: 200.0']
+    control events: ['gripper: 200.0']
 """
 
     def test_that_brick_config_is_read(self, click_scene):
@@ -96,11 +96,8 @@ class Test_click_brick_reader:
     def test_that_robot_has_force_and_torque_sensor(self, sensor_scene):
         import Brick.Signal
         robots = find_robots_in_scene(sensor_scene)
-        external_sensor = robots[0].sensors["external_sensor"]
-        types = set(map(lambda s: s.__class__, external_sensor))
-        assert Brick.Signal.TorqueVectorOutput in types
-        assert Brick.Signal.ForceVectorOutput in types
-
+        assert Brick.Signal.ForceVectorOutput == robots[0].sensors["force-sensor"].__class__
+        assert Brick.Signal.TorqueVectorOutput == robots[0].sensors["torque-sensor"].__class__
     def test_that_robot_has_drive_train_input_signals(self, drive_train_scene):
         robots = find_robots_in_scene(drive_train_scene)
         robots[0].validate()

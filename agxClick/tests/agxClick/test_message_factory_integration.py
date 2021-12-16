@@ -67,9 +67,8 @@ class Test_message_factory_integration:
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        external_sensor_types = message.objects["robot"].sensors["external_sensor"].types
-        assert ValueType.Force in external_sensor_types
-        assert ValueType.DirectionalTorque in external_sensor_types
+        assert ValueType.Force in message.objects["robot"].sensors["force-sensor"].types
+        assert ValueType.DirectionalTorque in message.objects["robot"].sensors["torque-sensor"].types
 
     def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
         robots = find_robots_in_scene(scene)
@@ -110,12 +109,12 @@ class Test_message_factory_integration:
 
     def test_that_reading_controlmessage_without_controlevent_skips_controlevent(self, scene):
         robots = find_robots_in_scene(scene)
-        assert robots[0].control_events()['adhesiveForceInput'].GetData() == 200.0
-        assert robots[1].control_events()['adhesiveForceInput'].GetData() == 200.0
+        assert robots[0].control_events()['gripper'].GetData() == 200.0
+        assert robots[1].control_events()['gripper'].GetData() == 200.0
         controlmessage = create_faked_controlmessage_for(robots, add_control_event=False)
         update_robots_from_message(robots, controlmessage)
-        assert robots[0].control_events()['adhesiveForceInput'].GetData() == 200.0
-        assert robots[1].control_events()['adhesiveForceInput'].GetData() == 200.0
+        assert robots[0].control_events()['gripper'].GetData() == 200.0
+        assert robots[1].control_events()['gripper'].GetData() == 200.0
 
     @pytest.mark.parametrize("the_scene", ["scene", "scene_velocityinput", "scene_forceinput"])
     def test_that_missing_values_in_controlmessage_gives_informative_exception(self, the_scene, request):
@@ -148,8 +147,8 @@ class Test_message_factory_integration:
 
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
 
-        assert message.objects["robot"].sensors["external_sensor"].sensor[0].force.arr == [0, 0, 0]
-        assert message.objects["robot"].sensors["external_sensor"].sensor[1].directionalTorque.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["force-sensor"].sensor[0].force.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["torque-sensor"].sensor[0].directionalTorque.arr == [0, 0, 0]
 
 
 _handshake_facit = """messageType: HandshakeMessageType
@@ -163,7 +162,7 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     controlEvents {
-      key: "adhesiveForceInput"
+      key: "gripper"
       value: Activated
     }
     objectSensors: Position
@@ -181,7 +180,7 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     controlEvents {
-      key: "adhesiveForceInput"
+      key: "gripper"
       value: Activated
     }
     objectSensors: Position
@@ -259,7 +258,7 @@ _updated_robots_str = """name: robot1
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
-    control events: ['adhesiveForceInput: 0.0']
+    control events: ['gripper: 0.0']
 name: robot2
     num_joints: 2
     jointnames: ['robot2_joint0', 'robot2_joint1']
@@ -268,5 +267,5 @@ name: robot2
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
-    control events: ['adhesiveForceInput: 100.0']
+    control events: ['gripper: 100.0']
 """

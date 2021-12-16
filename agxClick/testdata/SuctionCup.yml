@@ -67,5 +67,6 @@ SuctionCup:
 
   adhesiveForceInput:
     .type: Signal.AdhesiveForceInput
+#    name: gripper
     contactMaterial: this.contactMaterial
 

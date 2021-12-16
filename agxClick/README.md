@@ -25,7 +25,7 @@ Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below com
 # Latest version
 pip install agxClick -U --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 # Specific version
-pip install agxClick==0.1.16 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install agxClick==0.1.17 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 ```
 
 ## Usage Examples
@@ -40,6 +40,11 @@ The click application currently supports
 - Sending and receiving robot signals over click messages
 
 In addition, if you want to transfer object pose data for non-robots, you can declare robots and extra components in a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
+
+The requirement put on Robots to accomplish the above is
+
+- that each joint has a unique (per robot) protocolReference
+- that each sensor not in a joint has a unique (per robot) protocolReference
 
 ### ExampleClickScene - Two Robots with Joint sensor and a Box with pose
 
@@ -75,7 +80,7 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     controlEvents {
-      key: "adhesiveForceInput"
+      key: "gripper"
       value: Activated
     }
     objectSensors: Position
@@ -84,6 +89,21 @@ objects {
     jointSensorsInOrder: "robot1_joint1"
   }
 }
+```
+
+Note that the scene specifies unique names for every joint in the joint protocolReference, see [ClickScene.yml](testdata/ClickScene.yml):
+
+```yaml
+  robot1:
+    .type: ToolRobot
+    localTransform:
+      position: Math.Vec3(-0.25, 3.45, 0.55)
+      rotation: Math.EulerAngles(0, 0, 2.35)
+    arm1:
+      joint0:
+        protocolReference: robot1_joint0
+      joint1:
+        protocolReference: robot1_joint1
 ```
 
 ### ExampleSensorClickScene - One Robot with external 3DSensor
@@ -96,12 +116,26 @@ python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleSen
 # Get handshake
 python3 -m pClick.demo.client
 # Get sensor message
-python3 -m pClick.demo.client --sensormessage
+python3 -m pClick.demo.client --sensorrequest
 # Step and get sensor message
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
 ```
 
-The handshake contains a sensor with the name "external_sensor" which was not present in the previous scene.
+Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the protocolReference:s force-sensor and torque-sensor which needs to be unique per robot:
+
+```yaml
+  force3DSensor:
+    .type: Sensor.JointForce3DSensor
+    protocolReference: force-sensor
+    joint: arm1.joint0
+
+  torque3DSensor:
+    .type: Sensor.JointTorque3DSensor
+    protocolReference: torque-sensor
+    joint: arm1.joint0
+```
+
+The handshake contains sensors which was not present in the previous scene.
 
 ```bash
 python3 -m pClick.demo.client
@@ -115,13 +149,17 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     sensors {
-      key: "external_sensor"
+      key: "force-sensor"
       value {
         types: Force
-        types: DirectionalTorque
       }
     }
-    objectSensors: Position
+    sensors {
+      key: "torque-sensor"
+      value {
+        types: DirectionalTorque
+      }
+    }    objectSensors: Position
     objectSensors: RPY
     jointSensorsInOrder: "robot_joint0"
     jointSensorsInOrder: "robot_joint1"
@@ -132,7 +170,7 @@ objects {
 The SensorMessage contains gives us the values, all zeroes since no simulation step has been done yet.
 
 ```text
-python3 -m pClick.demo.client --sensormessage
+python3 -m pClick.demo.client --sensorrequest
 --- text removed for brevity ---
 objects {
   key: "robot"
@@ -158,7 +196,7 @@ objects {
       }
     }
     sensors {
-      key: "external_sensor"
+      key: "force-sensor"
       value {
         sensor {
           force {
@@ -167,6 +205,11 @@ objects {
             arr: 0.0
           }
         }
+      }
+    }
+    sensors {
+      key: "torque-sensor"
+      value {
         sensor {
           directionalTorque {
             arr: 0.0
@@ -186,7 +229,7 @@ When stepping with the controlmessage we get sensor values back:
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
 --- text removed for brevity ---
     sensors {
-      key: "external_sensor"
+      key: "force-sensor"
       value {
         sensor {
           force {
@@ -195,6 +238,11 @@ python3 -m pClick.demo.client --controlmessage "robot:1,1"
             arr: 39.22636102083025
           }
         }
+      }
+    }
+    sensors {
+      key: "torque-sensor"
+      value {
         sensor {
           directionalTorque {
             arr: -3.0112845563683974e-20
@@ -202,6 +250,8 @@ python3 -m pClick.demo.client --controlmessage "robot:1,1"
             arr: 0.0
           }
         }
+      }
+    }
 ```
 
 ## Implementation details

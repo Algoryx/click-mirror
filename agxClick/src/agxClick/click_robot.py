@@ -57,7 +57,7 @@ class ClickRobot(ClickObject):
         self.velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
         self.num_joints = len(self.brickrobot.Arms[0].Joints)
         self.control_event_dict = {}
-        self.sensors: Dict[str, List[Brick.Signal.Output]] = {}
+        self.sensors: Dict[str, Brick.Signal.Output] = {}
         self._populate_signals()
         self.validate()
 
@@ -143,6 +143,12 @@ class ClickRobot(ClickObject):
         for signal in self.brickrobot.GetSignals():
             self._populate_signal(signal)
 
+    def _sensor_of(self, signal):
+        for sensor in self.brickrobot.Sensors:
+            if signal == sensor.GetOrCreateSignal():
+                return sensor
+        raise Exception("Signal {signal} was not part of any sensor in {self.name}")
+
     def _populate_signal(self, signal):
         import Brick.Signal
         if signal.__class__ is Brick.Signal.MotorAngleOutput:
@@ -156,13 +162,15 @@ class ClickRobot(ClickObject):
                  isinstance(signal, Brick.Signal.VelocityInput):
             self.input_signals.append(signal)
         elif signal.__class__ is Brick.Signal.AdhesiveForceInput:
-            shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
+            shortname = signal['name']
+            if shortname == "":
+                shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
         elif isinstance(signal, Brick.Signal.ConnectorVectorOutput):
-            self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name external_sensor in {self.name}")
-            if "external_sensor" not in self.sensors:
-                self.sensors["external_sensor"] = []
-            self.sensors["external_sensor"].append(signal)
+            id = self._sensor_of(signal)['protocolReference']
+            assert id, f"Missing protocolReference in robot {self.name} sensor {self._sensor_of(signal)['name']}"
+            self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name {id} in {self.name}")
+            self.sensors[id] = signal
         else:
             raise Exception(f"Unrecognized signal in {self.name}: {signal._ModelType}, class: {signal.__class__}")
