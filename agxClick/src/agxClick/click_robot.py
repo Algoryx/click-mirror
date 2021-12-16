@@ -143,6 +143,12 @@ class ClickRobot(ClickObject):
         for signal in self.brickrobot.GetSignals():
             self._populate_signal(signal)
 
+    def _sensor_of(self, signal):
+        for sensor in self.brickrobot.Sensors:
+            if signal == sensor.GetOrCreateSignal():
+                return sensor
+        raise Exception("Signal {signal} was not part of any sensor in {self.name}")
+
     def _populate_signal(self, signal):
         import Brick.Signal
         if signal.__class__ is Brick.Signal.MotorAngleOutput:
@@ -158,9 +164,11 @@ class ClickRobot(ClickObject):
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
         elif isinstance(signal, Brick.Signal.ConnectorVectorOutput):
-            self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name external_sensor in {self.name}")
-            if "external_sensor" not in self.sensors:
-                self.sensors["external_sensor"] = []
-            self.sensors["external_sensor"].append(signal)
+            id = self._sensor_of(signal)['name']
+            self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name {id} in {self.name}")
+            if id in self.sensors:
+                self.sensors[id].append(signal)
+            else:
+                self.sensors[id] = [signal]
         else:
             raise Exception(f"Unrecognized signal in {self.name}: {signal._ModelType}")
