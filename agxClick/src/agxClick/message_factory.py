@@ -71,20 +71,6 @@ class MessageFactory:
         return list(map(lambda signal: cls.to_click_control_type(signal.__class__), signals))
 
     @classmethod
-    def to_brick_control_type(cls, type: ValueType):
-        """
-        Convert a click ValueType to the corresponding Brick type
-        return a Brick.Signal.*Input type
-        """
-        import Brick.Signal
-        typemap = {
-            ValueType.Angle: Brick.Signal.LockPositionInput,
-            ValueType.Torque: Brick.Signal.MotorForceInput,
-            ValueType.AngleVelocity: Brick.Signal.MotorVelocityInput
-        }
-        return typemap[type]
-
-    @classmethod
     def _degs_to_radians(cls, signals) -> List[float]:
         """
         Convert a list of Brick signals in degrees to radians

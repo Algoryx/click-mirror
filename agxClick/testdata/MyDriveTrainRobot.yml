@@ -50,7 +50,6 @@ DriveTrainJointTemplate:
     .type: Signal.SignalBase
   gear:
     .type: HolonomicGearConnector
-    
 
 DriveTrainJointTorque:
   .extends: DriveTrainJointTemplate

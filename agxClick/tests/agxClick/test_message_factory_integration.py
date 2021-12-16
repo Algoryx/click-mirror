@@ -256,7 +256,7 @@ _updated_robots_str = """name: robot1
     jointnames: ['robot1_joint0', 'robot1_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
     2 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465]
-    2 torque_sensors: Brick.Signal.LockForceScalarOutput: [0.0, 0.0]
+    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
     control events: ['adhesiveForceInput: 0.0']
@@ -265,7 +265,7 @@ name: robot2
     jointnames: ['robot2_joint0', 'robot2_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
     2 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465]
-    2 torque_sensors: Brick.Signal.LockForceScalarOutput: [0.0, 0.0]
+    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
     control events: ['adhesiveForceInput: 100.0']
