@@ -25,7 +25,7 @@ Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below com
 # Latest version
 pip install agxClick -U --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 # Specific version
-pip install agxClick==0.1.16 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install agxClick==0.1.17 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 ```
 
 ## Usage Examples
@@ -96,12 +96,12 @@ python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleSen
 # Get handshake
 python3 -m pClick.demo.client
 # Get sensor message
-python3 -m pClick.demo.client --sensormessage
+python3 -m pClick.demo.client --sensorrequest
 # Step and get sensor message
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
 ```
 
-The handshake contains a sensor with the name "external_sensor" which was not present in the previous scene.
+The handshake contains sensors which was not present in the previous scene.
 
 ```bash
 python3 -m pClick.demo.client
@@ -115,13 +115,17 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     sensors {
-      key: "external_sensor"
+      key: "force-sensor"
       value {
         types: Force
-        types: DirectionalTorque
       }
     }
-    objectSensors: Position
+    sensors {
+      key: "torque-sensor"
+      value {
+        types: DirectionalTorque
+      }
+    }    objectSensors: Position
     objectSensors: RPY
     jointSensorsInOrder: "robot_joint0"
     jointSensorsInOrder: "robot_joint1"
@@ -132,7 +136,7 @@ objects {
 The SensorMessage contains gives us the values, all zeroes since no simulation step has been done yet.
 
 ```text
-python3 -m pClick.demo.client --sensormessage
+python3 -m pClick.demo.client --sensorrequest
 --- text removed for brevity ---
 objects {
   key: "robot"
@@ -158,7 +162,7 @@ objects {
       }
     }
     sensors {
-      key: "external_sensor"
+      key: "force-sensor"
       value {
         sensor {
           force {
@@ -167,6 +171,11 @@ objects {
             arr: 0.0
           }
         }
+      }
+    }
+    sensors {
+      key: "torque-sensor"
+      value {
         sensor {
           directionalTorque {
             arr: 0.0
@@ -186,7 +195,7 @@ When stepping with the controlmessage we get sensor values back:
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
 --- text removed for brevity ---
     sensors {
-      key: "external_sensor"
+      key: "force-sensor"
       value {
         sensor {
           force {
@@ -195,6 +204,11 @@ python3 -m pClick.demo.client --controlmessage "robot:1,1"
             arr: 39.22636102083025
           }
         }
+      }
+    }
+    sensors {
+      key: "torque-sensor"
+      value {
         sensor {
           directionalTorque {
             arr: -3.0112845563683974e-20
@@ -202,6 +216,8 @@ python3 -m pClick.demo.client --controlmessage "robot:1,1"
             arr: 0.0
           }
         }
+      }
+    }
 ```
 
 ## Implementation details
