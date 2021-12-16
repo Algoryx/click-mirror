@@ -172,21 +172,24 @@ ToolRobot:
     .type: SuctionCup
     .value: SuctionCup
 
+    adhesiveForceInput:
+      name: gripper
+
   toolConnector:
     .type: LockJointConnector
     attachment1: this.arm1.segment2.outputAttachment
     attachment2: this.tool.stiff.attachment
+
 
 RobotWith3DSensor:
   .extends: MyRobot
 
   force3DSensor:
     .type: Sensor.JointForce3DSensor
-    name: force-sensor
     joint: arm1.joint0
 
   torque3DSensor:
     .type: Sensor.JointTorque3DSensor
-    name: torque-sensor
+    protocolReference: torque-sensor
     joint: arm1.joint0
 

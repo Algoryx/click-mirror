@@ -160,11 +160,14 @@ class ClickRobot(ClickObject):
         elif signal.__class__ in [Brick.Signal.LockPositionInput, Brick.Signal.MotorForceInput, Brick.Signal.MotorVelocityInput]:
             self.input_signals.append(signal)
         elif signal.__class__ is Brick.Signal.AdhesiveForceInput:
-            shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
+            shortname = signal['name']
+            if shortname == "":
+                shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
         elif isinstance(signal, Brick.Signal.ConnectorVectorOutput):
-            id = self._sensor_of(signal)['name']
+            id = self._sensor_of(signal)['protocolReference']
+            assert id, f"Missing protocolReference in robot {self.name} sensor {self._sensor_of(signal)['name']}"
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name {id} in {self.name}")
             self.sensors[id] = signal
         else:

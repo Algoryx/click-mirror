@@ -41,6 +41,11 @@ The click application currently supports
 
 In addition, if you want to transfer object pose data for non-robots, you can declare robots and extra components in a clickobjects list, see [ClickScene.yml](testdata/ClickScene.yml] for an example.
 
+The requirement put on Robots to accomplish the above is
+
+- that each joint has a unique (per robot) protocolReference
+- that each sensor not in a joint has a unique (per robot) protocolReference
+
 ### ExampleClickScene - Two Robots with Joint sensor and a Box with pose
 
 Run below command(s) after the usual AGX `setup_env` command:
@@ -75,7 +80,7 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     controlEvents {
-      key: "adhesiveForceInput"
+      key: "gripper"
       value: Activated
     }
     objectSensors: Position
@@ -116,17 +121,17 @@ python3 -m pClick.demo.client --sensorrequest
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
 ```
 
-Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the names force-sensor and torque-sensor which needs to be unique per robot:
+Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the protocolReference:s force-sensor and torque-sensor which needs to be unique per robot:
 
 ```yaml
   force3DSensor:
     .type: Sensor.JointForce3DSensor
-    name: force-sensor
+    protocolReference: force-sensor
     joint: arm1.joint0
 
   torque3DSensor:
     .type: Sensor.JointTorque3DSensor
-    name: torque-sensor
+    protocolReference: torque-sensor
     joint: arm1.joint0
 ```
 
