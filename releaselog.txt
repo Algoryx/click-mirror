@@ -1,5 +1,8 @@
+0.1.18
+- agxClick support Brick.Physics.DriveTrain Signals.
+
 0.1.17
 - agxClick uses Sensor name as Click identifier, see agxClick/README.md
 
-0.1.17
+0.1.16
 - agxClick finds one JointForce3DSensor and one JointTorque3DSensor per robot, and adds them to HandshakeMessage and SensorMessage
