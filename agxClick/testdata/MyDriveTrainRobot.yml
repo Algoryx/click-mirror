@@ -1,10 +1,3 @@
-# This example demonstrates how to add Attachments and Connectors to a model. When this have
-# been added, Brick will automatically try to position and align the bodies to make the joint
-# equations be satisfied at the start of the simulation.
-
-# OBSERVE
-# The MyRobot model is used in a unit test
-# python/test/test_position_and_rotation_sign.py
 .format: 4
 
 # Use imports to avoid having two write the whole name of the component
@@ -15,7 +8,8 @@
   Physics.DriveTrain: [RotatingBody1D,RotatingShaft, GearAttachment, FixedVelocityEngine, TorqueDrivenEngine, GearConnector, HolonomicGearConnector]
   MyRobot: [MySegment, MyRobotBase, RobotJoint]
 
-
+# disable lock and motor of the connector
+# to let the drive train gear drive each joint
 HingePreparedForDriveTrain:
   .extends: RotationalActuatorHingeConnector
   angle: 0
@@ -30,6 +24,10 @@ HingePreparedForDriveTrain:
     minForce: 0
     maxForce: 0
 
+# Declare a template for a drive train joint
+# This need to have both an engine and a gear
+# However, whether we like torque or velocity control,
+# the eninge and input signal types are not defined yet
 DriveTrainJointTemplate:
   .extends: RobotJoint
   inputSignalType: Robotics.SignalType.InputForceSignal
@@ -51,6 +49,10 @@ DriveTrainJointTemplate:
   gear:
     .type: HolonomicGearConnector
 
+# Declare a drive train joint with a TorqueDrivenEngine
+# The input signal is then a EngineTorqueInput signal
+# Which will be found in the joint initialization
+# and replace the default input signal
 DriveTrainJointTorque:
   .extends: DriveTrainJointTemplate
   engine:
@@ -65,6 +67,10 @@ DriveTrainJointTorque:
     interaction:
       gearRatio: 10
 
+# Declare a drive train joint with a FixedVelocityEngine
+# The input signal is then a FixedVelocityEngineInput signal
+# Which will be found in the joint initialization
+# and replace the default input signal
 DriveTrainJointVelocity:
   .extends: DriveTrainJointTemplate
   engine:
@@ -81,6 +87,7 @@ DriveTrainJointVelocity:
       damping: 10
       gearRatio: 10
 
+# Create a robot arm with one velocity driven and one torque driven joint
 MyArm:
   .extends: RobotArm
   wantInternalPositioning: true
@@ -106,7 +113,7 @@ MyArm:
 
 
 
-# Put the two boxes together and add a lock connector to world
+# Build a robot with the robot arm
 MyDriveTrainRobot:
   .extends: Robot
   wantInternalPositioning: true
