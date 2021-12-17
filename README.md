@@ -116,7 +116,11 @@ python3 -m pClick.demo.server
 build/bin/democlient
 ```
 
-## Development Links
+## Developing Click
+
+This section and below are for developers developing Click
+
+### Development Links
 
 - [C++ ControlMessage example](cpp-src/click/tests/test_control_message.cpp)
 - [C++ democlient](cpp-src/democlient/src/democlient.cpp)
@@ -124,7 +128,7 @@ build/bin/democlient
 - [Current protobuf schema](protobuf-src/Messaging.proto)
 - [Technology choices etc](doc/messaging.md)
 
-## Directory Structure with CMake relevant files expanded
+### Directory Structure with CMake relevant files expanded
 
 ```text
 ├──cpp-src
@@ -152,7 +156,7 @@ build/bin/democlient
 └──testdata
 ```
 
-## Build, test, and install click c++ library from source
+### Build, test, and install click c++ library from source
 
 NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install.
 
@@ -171,14 +175,16 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=
 
 `ninja click-tests && ninja test` will compile test dependencies and run tests in one step.
 
-## Reset c++ builds
+### Reset c++ builds
 
 ```bash
 cd build
 rm -rf * .github.conan.cmake
 ```
 
-## Build and test python
+### Build and test python pClick from source
+
+NOTE: Read [agxClick](agxClick/README.md) to build and test agxClick
 
 ```bash
 # Install requirements
@@ -186,7 +192,7 @@ pip3 install -r python-src/requirements-test.txt
 # Install click locally
 pip3 install -e python-src
 # Run tests
-pytest
+pytest python-src
 # Run demo server
 python3 -m pClick.demo.server
 ```
@@ -198,30 +204,30 @@ It is created as part of c++ build, but can be created by running protoc as belo
 protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 ```
 
-## Build pip archive
+### Build pip archive
 
 ```bash
 pip3 install -r python-src/requirements-publish.txt
 python3 setup.py sdist bdist_wheel
 ```
 
-## Test frameworks
+### Test frameworks
 
-### C++ catch2 framework
+#### C++ catch2 framework
 
 We are using [Catch2](https://github.com/catchorg/Catch2/) testing framework with cmake integration
 
 - [catch2 matchers](https://github.com/catchorg/Catch2/blob/devel/docs/matchers.md#top)
 
-### Python pytest
+#### Python pytest
 
 Python tests are using pytest
 
-### Python remarks
+#### Python remarks
 
 To circumvent clashes with python library click and pyClick, the python library is called pClick.
 
-## Release:s
+### Release:s
 
 Releases are made by pushing the tag to be released, GitLab will build, test and publish the version.
 Release tags are semver only, eg 0.1.2.
