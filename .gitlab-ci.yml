@@ -44,6 +44,18 @@ build-docker-ci:
       - .gitlab-ci.yml
       - docker/Dockerfile.CI
 
+
+# The license is copied from https://git.algoryx.se/algoryx/agx/-/blob/master/data/cfg/agx.lic to secret build variable agx_lic
+# If this job fails that means the license must be updated
+test-license:
+  extends: .run-in-docker
+  stage: prebuild
+  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:latest
+  script:
+    - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
+    - agxViewer --agxOnly --stopAfterFrame 1
+
+
 build-cpp-lib-linux:
   extends: .run-in-docker
   stage: build
@@ -166,13 +178,14 @@ test-python-lib:
 test-agxClick:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/agxbrick:0.0.21-SNAPSHOT-fix-agxbrick0-4-67
+  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:latest
   needs:
     - job: build-python-lib
       artifacts: true
     - job: build-agxClick
       artifacts: true
   script:
+    - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
     - pip3 install -r python-src/requirements-test.txt
     - pip3 install python-src/dist/pClick*whl
     - pip3 install agxClick/dist/agxClick*whl
