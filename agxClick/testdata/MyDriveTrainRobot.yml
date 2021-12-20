@@ -1,6 +1,6 @@
 .format: 4
+# Testdata for DriveTrainJoint: A robot with one force and one velocity driven drivetrain joint
 
-# Use imports to avoid having two write the whole name of the component
 .import:
   Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType, Sensor]
   Physics.Mechanics: [RigidBodyAttachment, HingeConnector, LockJointConnector]
@@ -27,7 +27,7 @@ HingePreparedForDriveTrain:
 # Declare a template for a drive train joint
 # This need to have both an engine and a gear
 # However, whether we like torque or velocity control,
-# the eninge and input signal types are not defined yet
+# the engine and input signal types are not defined yet
 DriveTrainJointTemplate:
   .extends: RobotJoint
   inputSignalType: Robotics.SignalType.InputForceSignal
