@@ -1,5 +1,5 @@
 0.1.18
-- agxClick support Brick.Physics.DriveTrain Signals.
+- agxClick support Brick.Physics.DriveTrain Signals. Minimum version of agxBrick required is 0.4.68.
 
 0.1.17
 - agxClick uses Sensor name as Click identifier, see agxClick/README.md
