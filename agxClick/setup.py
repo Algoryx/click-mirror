@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="agxClick",
-    version="0.1.17",
+    version="0.1.18",
     author="Algoryx Simulation",
     author_email="contact@algoryx.se",
     description="Controller to AGX using pClick messaging",
@@ -24,7 +24,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     install_requires=[
         'pClick>=0.1.8',
-        'agxBrick>=0.4.57'
+        'agxBrick>=0.4.68'
     ],
     python_requires=">=3.6.9",
 )

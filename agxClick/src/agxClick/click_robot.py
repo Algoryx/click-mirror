@@ -51,8 +51,8 @@ class ClickRobot(ClickObject):
         import Brick.Robotics
         assert isinstance(brick_robot, Brick.Robotics.Robot)
         self.brickrobot = brick_robot
-        self.input_signals: List[Brick.Signal.LockPositionInput | Brick.Signal.MotorForceInput | Brick.Signal.MotorVelocityInput] = []
-        self.torque_sensors: List[Brick.Signal.LockForceOutput | Brick.Signal.MotorForceOutput] = []    # Nm
+        self.input_signals: List[Brick.Signal.LockPositionInput | Brick.Signal.ForceInput | Brick.Signal.VelocityInput] = []
+        self.torque_sensors: List[Brick.Signal.ForceScalarOutput] = []    # Nm
         self.angle_sensors: List[Brick.Signal.MotorAngleOutput] = []     # DEG in Brick
         self.velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
         self.num_joints = len(self.brickrobot.Arms[0].Joints)
@@ -155,9 +155,11 @@ class ClickRobot(ClickObject):
             self.angle_sensors.append(signal)
         elif signal.__class__ is Brick.Signal.MotorVelocityOutput:
             self.velocity_sensors.append(signal)
-        elif signal.__class__ in [Brick.Signal.LockForceOutput, Brick.Signal.MotorForceOutput]:
+        elif isinstance(signal, Brick.Signal.ForceScalarOutput):
             self.torque_sensors.append(signal)
-        elif signal.__class__ in [Brick.Signal.LockPositionInput, Brick.Signal.MotorForceInput, Brick.Signal.MotorVelocityInput]:
+        elif isinstance(signal, Brick.Signal.LockPositionInput) or \
+                 isinstance(signal, Brick.Signal.ForceInput) or \
+                 isinstance(signal, Brick.Signal.VelocityInput):
             self.input_signals.append(signal)
         elif signal.__class__ is Brick.Signal.AdhesiveForceInput:
             shortname = signal['name']
@@ -174,4 +176,4 @@ class ClickRobot(ClickObject):
             else:
                 self.sensors[id] = [signal]
         else:
-            raise Exception(f"Unrecognized signal in {self.name}: {signal._ModelType}")
+            raise Exception(f"Unrecognized signal in {self.name}: {signal._ModelType}, class: {signal.__class__}")
