@@ -186,11 +186,11 @@ RobotWith3DSensor:
 
   force3DSensor:
     .type: Sensor.JointForce3DSensor
-    protocolReference: force-sensor
+    protocolReference: forceTorqueSensor
     joint: arm1.joint0
 
   torque3DSensor:
     .type: Sensor.JointTorque3DSensor
-    protocolReference: torque-sensor
+    protocolReference: forceTorqueSensor
     joint: arm1.joint0
 
