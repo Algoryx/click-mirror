@@ -232,3 +232,8 @@ Steps:
 2. Update releaselog.txt
 3. Push to branch and do MR
 4. When MR merged, tag from master and push, eg `git tag 0.1.16; git push origin 0.1.16`.
+
+## Build pipeline dependencies - updating agxBrick version
+
+agxClick tests uses the generic Docker Image `registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:latest`.
+Therefore when raising minimum required agxBrick version, [agxBrick needs to be updated in the upstream](https://git.algoryx.se/algoryx/external/agx-docker) as well in order for tests to run.
