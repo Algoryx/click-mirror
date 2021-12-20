@@ -45,6 +45,11 @@ def validate_message(controlmessage, robot, values):
 class MessageFactory:
 
     @classmethod
+    def to_click_control_types(cls, types: List) -> ValueType:
+        return list(map(lambda x: cls.to_click_control_type(x.__class__), types))
+
+
+    @classmethod
     def to_click_control_type(cls, type) -> ValueType:
         """
         Convert a Brick type to the corresponding click ValueType
@@ -117,7 +122,7 @@ class MessageFactory:
                 for name, event in robot.control_events().items():
                     object.controlEvents[name] = cls.to_click_control_type(event.__class__)
                 for name, sensor in robot.sensors.items():
-                    object.sensors[name].types.extend([cls.to_click_control_type(sensor.__class__)])
+                    object.sensors[name].types.extend(cls.to_click_control_types(sensor))
             object.objectSensors.append(ValueType.Position)
             object.objectSensors.append(ValueType.RPY)
         return handshake
@@ -151,10 +156,11 @@ class MessageFactory:
 
     @classmethod
     def add_named_sensors(cls, robot: ClickRobot, sensors):
-        for name, signal in robot.sensors.items():
-            sensor = sensors.sensors[name].sensor.add()
-            arr = cls.array_to_populate(signal, sensor, robot.name)
-            arr.extend(cls._signal_to_floats(signal))
+        for name, signals in robot.sensors.items():
+            for signal in signals:
+                sensor = sensors.sensors[name].sensor.add()
+                arr = cls.array_to_populate(signal, sensor, robot.name)
+                arr.extend(cls._signal_to_floats(signal))
 
     @classmethod
     def array_to_populate(cls, signal, sensor, robotname):

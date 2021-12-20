@@ -57,7 +57,7 @@ class ClickRobot(ClickObject):
         self.velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
         self.num_joints = len(self.brickrobot.Arms[0].Joints)
         self.control_event_dict = {}
-        self.sensors: Dict[str, Brick.Signal.Output] = {}
+        self.sensors: Dict[str, List[Brick.Signal.Output]] = {}
         self._populate_signals()
         self.validate()
 
@@ -171,6 +171,9 @@ class ClickRobot(ClickObject):
             id = self._sensor_of(signal)['protocolReference']
             assert id, f"Missing protocolReference in robot {self.name} sensor {self._sensor_of(signal)['name']}"
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name {id} in {self.name}")
-            self.sensors[id] = signal
+            if id in self.sensors:
+                self.sensors[id].append(signal)
+            else:
+                self.sensors[id] = [signal]
         else:
             raise Exception(f"Unrecognized signal in {self.name}: {signal._ModelType}, class: {signal.__class__}")

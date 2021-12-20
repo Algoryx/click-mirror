@@ -103,8 +103,8 @@ class Test_click_brick_reader:
     def test_that_robot_has_force_and_torque_sensor(self, sensor_scene):
         import Brick.Signal
         robots = find_robots_in_scene(sensor_scene)
-        assert Brick.Signal.ForceVectorOutput == robots[0].sensors["force-sensor"].__class__
-        assert Brick.Signal.TorqueVectorOutput == robots[0].sensors["torque-sensor"].__class__
+        assert Brick.Signal.ForceVectorOutput == robots[0].sensors["forceTorqueSensor"][0].__class__
+        assert Brick.Signal.TorqueVectorOutput == robots[0].sensors["forceTorqueSensor"][1].__class__
 
     def test_that_robot_has_drive_train_input_signals(self, drive_train_scene):
         robots = find_robots_in_scene(drive_train_scene)

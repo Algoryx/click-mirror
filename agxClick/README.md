@@ -25,7 +25,7 @@ Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below com
 # Latest version
 pip install agxClick -U --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 # Specific version
-pip install agxClick==0.1.18 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install agxClick==0.1.19 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 ```
 
 ## Usage Examples
@@ -126,12 +126,12 @@ Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the protocolRe
 ```yaml
   force3DSensor:
     .type: Sensor.JointForce3DSensor
-    protocolReference: force-sensor
+    protocolReference: forceTorqueSensor
     joint: arm1.joint0
 
   torque3DSensor:
     .type: Sensor.JointTorque3DSensor
-    protocolReference: torque-sensor
+    protocolReference: forceTorqueSensor
     joint: arm1.joint0
 ```
 
@@ -149,17 +149,15 @@ objects {
     jointSensors: AngleVelocity
     jointSensors: Force
     sensors {
-      key: "force-sensor"
+      key: "forceTorqueSensor"
       value {
         types: Force
       }
-    }
-    sensors {
-      key: "torque-sensor"
       value {
         types: DirectionalTorque
       }
-    }    objectSensors: Position
+    }
+    objectSensors: Position
     objectSensors: RPY
     jointSensorsInOrder: "robot_joint0"
     jointSensorsInOrder: "robot_joint1"
@@ -196,7 +194,7 @@ objects {
       }
     }
     sensors {
-      key: "force-sensor"
+      key: "forceTorqueSensor"
       value {
         sensor {
           force {
@@ -206,9 +204,6 @@ objects {
           }
         }
       }
-    }
-    sensors {
-      key: "torque-sensor"
       value {
         sensor {
           directionalTorque {
@@ -217,7 +212,6 @@ objects {
             arr: 0.0
           }
         }
-      }
     }
   }
 }
@@ -229,7 +223,7 @@ When stepping with the controlmessage we get sensor values back:
 python3 -m pClick.demo.client --controlmessage "robot:1,1"
 --- text removed for brevity ---
     sensors {
-      key: "force-sensor"
+      key: "forceTorqueSensor"
       value {
         sensor {
           force {
@@ -238,10 +232,6 @@ python3 -m pClick.demo.client --controlmessage "robot:1,1"
             arr: 39.22636102083025
           }
         }
-      }
-    }
-    sensors {
-      key: "torque-sensor"
       value {
         sensor {
           directionalTorque {
