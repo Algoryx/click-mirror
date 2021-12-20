@@ -1,7 +1,6 @@
 import pytest
 from agxClick import find_robots_in_scene, get_click_configuration, has_click_configuration
 from os import chdir
-from agxClick.tests.agxClick.conftest import drive_train_scene
 from conftest import pyroot, brickenv
 
 
