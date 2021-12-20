@@ -131,7 +131,7 @@ Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the protocolRe
 
   torque3DSensor:
     .type: Sensor.JointTorque3DSensor
-    protocolReference: torque3dSensor
+    protocolReference: forceTorqueSensor
     joint: arm1.joint0
 ```
 
