@@ -1,6 +1,8 @@
 import pytest
 from agxClick import find_robots_in_scene, get_click_configuration, has_click_configuration
 from os import chdir
+from agxClick.tests.agxClick.conftest import drive_train_scene
+from conftest import pyroot, brickenv
 
 
 @pytest.mark.integrationtest
@@ -98,7 +100,11 @@ class Test_click_brick_reader:
         robots = find_robots_in_scene(sensor_scene)
         assert Brick.Signal.ForceVectorOutput == robots[0].sensors["force-sensor"].__class__
         assert Brick.Signal.TorqueVectorOutput == robots[0].sensors["torque-sensor"].__class__
-    def test_that_robot_has_drive_train_input_signals(self, drive_train_scene):
+
+    def test_that_robot_has_drive_train_input_signals(self):
+        file_path = f"{pyroot}/testdata/ClickScene.yml"
+        model_name = "ExampleDriveTrainClickScene"
+        drive_train_scene = brickenv.load_from_file(file_path, model_name)
         robots = find_robots_in_scene(drive_train_scene)
         robots[0].validate()
         import Brick.Signal
