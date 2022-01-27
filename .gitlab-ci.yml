@@ -50,7 +50,8 @@ build-docker-ci:
 test-license:
   extends: .run-in-docker
   stage: prebuild
-  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:latest
+  # We depend on 2.31.2.0_0.4.69 which has agxpython, agx-2.31.1.0 does not.
+  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:2.31.2.0_0.4.69
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
     - agxViewer --agxOnly --stopAfterFrame 1
