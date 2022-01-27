@@ -4,7 +4,7 @@
 
 If you are using Brick to express your Robot Physics in Yaml, Click adds the low latency communication you need to let your controller control your robots in the simulation like they were real robots. Click automatically finds your robots in a Brick scene and allows controller environments to send and receive signals without forcing your controller to depend on Brick. If you want receive updates on additional objects, you add a Click configuration to Brick, pointing to which objects should be communicated.
 
-Click implements C++ and Python clients. Additional language support can be added using gRPC code generation tooling.
+Click implements C++ and Python clients. Additional language support can be added using protobuf code generation tooling.
 
 ## Click parts
 
