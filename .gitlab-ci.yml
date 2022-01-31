@@ -178,7 +178,8 @@ test-python-lib:
 test-agxClick:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:latest
+  # We depend on 2.31.2.0_0.4.69 which has agxpython, agx-2.31.1.0 does not.
+  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:2.31.2.0_0.4.69
   needs:
     - job: build-python-lib
       artifacts: true

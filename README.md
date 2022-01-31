@@ -1,5 +1,13 @@
 # Click
 
+## Why Click?
+
+If you are using Brick to express your Robot Physics in Yaml, Click adds the low latency communication you need to let your controller control your robots in the simulation like they were real robots. Click automatically finds your robots in a Brick scene and allows controller environments to send and receive signals without forcing your controller to depend on Brick. If you want receive updates on additional objects, you add a Click configuration to Brick, pointing to which objects should be communicated.
+
+Click implements C++ and Python clients. Additional language support can be added using protobuf code generation tooling.
+
+## Click parts
+
 There are currently three main parts of click
 
 - [agxClick](agxClick/README.md) - a Simulation application using pClick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
