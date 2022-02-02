@@ -3,9 +3,22 @@
 import math
 import agx
 from typing import Tuple
+import sys
 
 
 class BrickUtils:
+
+    @staticmethod
+    def import_Brick():
+        """
+            Use:
+            Brick = BrickUtils.import_Brick()
+            Why:
+            Because Brick can not be imported, and #import Brick actually takes quite some time (yet unknown - could be it's not cached)
+            This convenience method speeds it up by forcing cache use.
+        """
+        assert "Brick" in sys.modules, "Brick was not available for import!"
+        return sys.modules['Brick']
 
     @staticmethod
     def get_component_attribute(brick_component, attribute_name: str, default=None):

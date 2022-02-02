@@ -1,5 +1,5 @@
 from typing import List, Any
-from agxClick import ClickRobot
+from agxClick import ClickRobot, BrickUtils
 from pClick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 import math
 
@@ -48,14 +48,13 @@ class MessageFactory:
     def to_click_control_types(cls, types: List) -> ValueType:
         return list(map(lambda x: cls.to_click_control_type(x.__class__), types))
 
-
     @classmethod
     def to_click_control_type(cls, type) -> ValueType:
         """
         Convert a Brick type to the corresponding click ValueType
         type is a Brick.Signal.*Input
         """
-        import Brick.Signal
+        Brick = BrickUtils.import_Brick()
         typemap = {
             Brick.Signal.LockPositionInput: ValueType.Angle,
             Brick.Signal.VelocityInput: ValueType.AngleVelocity,
@@ -92,11 +91,12 @@ class MessageFactory:
         """
         Convert data of Brick.Signal.ConnectorVectorOutput Brick.Math.Vec3 to list of 3 floats
         """
-        import Brick.Math
+        Brick = BrickUtils.import_Brick()
         data = signal.GetData()
         if data.__class__ is Brick.Math.Vec3:
             return [data.X, data.Y, data.Z]
         return data
+
 
     @classmethod
     def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
@@ -132,8 +132,6 @@ class MessageFactory:
         """
         Create a SensorMessage from a list of robots
         """
-        import Brick.Signal
-
         sensor_m = ProtoMessageFactory.create_sensormessage()
         sensor_m.simVars.simulatedTime = simulated_time
 

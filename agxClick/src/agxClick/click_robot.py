@@ -48,7 +48,7 @@ class ClickRobot(ClickObject):
           - Number of input signals or sensors does not match number of joints
         """
         super().__init__(brick_robot)
-        import Brick.Robotics
+        Brick = BrickUtils.import_Brick()
         assert isinstance(brick_robot, Brick.Robotics.Robot)
         self.brickrobot = brick_robot
         self.input_signals: List[Brick.Signal.LockPositionInput | Brick.Signal.ForceInput | Brick.Signal.VelocityInput] = []
@@ -150,7 +150,7 @@ class ClickRobot(ClickObject):
         raise Exception("Signal {signal} was not part of any sensor in {self.name}")
 
     def _populate_signal(self, signal):
-        import Brick.Signal
+        Brick = BrickUtils.import_Brick()
         if signal.__class__ is Brick.Signal.MotorAngleOutput:
             self.angle_sensors.append(signal)
         elif signal.__class__ is Brick.Signal.MotorVelocityOutput:
@@ -158,8 +158,8 @@ class ClickRobot(ClickObject):
         elif isinstance(signal, Brick.Signal.ForceScalarOutput):
             self.torque_sensors.append(signal)
         elif isinstance(signal, Brick.Signal.LockPositionInput) or \
-                 isinstance(signal, Brick.Signal.ForceInput) or \
-                 isinstance(signal, Brick.Signal.VelocityInput):
+                isinstance(signal, Brick.Signal.ForceInput) or \
+                isinstance(signal, Brick.Signal.VelocityInput):
             self.input_signals.append(signal)
         elif signal.__class__ is Brick.Signal.AdhesiveForceInput:
             shortname = signal['name']
