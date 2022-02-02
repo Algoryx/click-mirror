@@ -6,7 +6,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.1.20
+project(click VERSION 0.1.21
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX using Brick"
     LANGUAGES CXX)
 
