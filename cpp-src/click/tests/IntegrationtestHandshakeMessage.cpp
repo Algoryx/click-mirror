@@ -73,6 +73,11 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
                 REQUIRE(handshakeMessage->controlEvent("robot", "gripper") == ValueType::Activated);
             }
 
+            THEN("it should contain timestep in simulationsettings")
+            {
+                REQUIRE(handshakeMessage->simulationSettings().timeStep == 0.0);
+            }
+
             THEN("it should output debug string")
             {
 
