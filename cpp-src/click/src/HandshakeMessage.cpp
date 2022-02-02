@@ -61,6 +61,11 @@ ValueType HandshakeMessage::controlEvent(const std::string &objectname, const st
   return static_cast<ValueType>(sensor);
 }
 
+HandshakeMessage::SimulationSettings HandshakeMessage::simulationSettings() const
+{
+  return {this->pm->simsettings().timestep()};
+}
+
 HandshakeMessage::HandshakeMessage(unique_ptr<protobuf::HandshakeMessage> HandshakeMessage)
 {
   this->pm = move(HandshakeMessage);
