@@ -9,6 +9,12 @@ def drive_train_scene(brickenv, pyroot):
     model_name = "ExampleDriveTrainClickScene"
     return brickenv.load_from_file(file_path, model_name)
 
+@pytest.fixture(scope="function")
+def two_arm_scene(brickenv, pyroot):
+    file_path = f"{pyroot}/testdata/MyRobot.yml"
+    model_name = "RobotWithTwoArms"
+    return brickenv.load_from_file(file_path, model_name)
+
 
 @pytest.mark.integrationtest
 class Test_click_brick_reader:
@@ -112,3 +118,9 @@ class Test_click_brick_reader:
         import Brick.Signal
         assert robots[0].input_signals[1].__class__ is Brick.Signal.EngineTorqueInput
         assert robots[0].input_signals[0].__class__ is Brick.Signal.FixedVelocityEngineInput
+
+    def test_that_robot_has_drive_train_input_signals(self, two_arm_scene):
+        robots = find_robots_in_scene(two_arm_scene)
+        assert len(robots) == 1
+        robots[0].validate()
+        assert len(robots[0].brickrobot.Arms) == 2
