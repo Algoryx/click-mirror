@@ -60,13 +60,13 @@ class ClickApplication(AgxApplication):
         num_frames, wall_clock = self.mainloop()
 
         if self.args.profile:
-            import io
-            from pstats import SortKey, Stats
             profile.disable()
-            s = io.StringIO()
-            ps = Stats(profile, stream=s).sort_stats(SortKey.CUMULATIVE)
-            ps.print_stats()
-            print(s.getvalue())
+            if self.args.profileFile == "":
+                from pstats import SortKey, Stats
+                ps = Stats(profile).sort_stats(SortKey.CUMULATIVE)
+                ps.print_stats()
+            else:
+                profile.dump_stats(self.args.profileFile)
 
         self.report_timing(num_frames, wall_clock)
 
@@ -112,6 +112,7 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
         parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run withtout waiting for control messages")
         parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
+        parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
         args, _ = parser.parse_known_args(args)
         return args
 
