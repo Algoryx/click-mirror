@@ -52,7 +52,21 @@ class ClickApplication(AgxApplication):
         else:
             self._logger.info("Pausing simulation until handshake is completed, then each controlmessage will step simulation once")
 
+        if self.args.profile:
+            import cProfile
+            profile = cProfile.Profile()
+            profile.enable()
+
         num_frames, wall_clock = self.mainloop()
+
+        if self.args.profile:
+            import io
+            from pstats import SortKey, Stats
+            profile.disable()
+            s = io.StringIO()
+            ps = Stats(profile, stream=s).sort_stats(SortKey.CUMULATIVE)
+            ps.print_stats()
+            print(s.getvalue())
 
         self.report_timing(num_frames, wall_clock)
 
@@ -97,6 +111,7 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
         parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run withtout waiting for control messages")
+        parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
         args, _ = parser.parse_known_args(args)
         return args
 
