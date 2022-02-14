@@ -1,4 +1,4 @@
-0.1.22-SNAPSHOT
+0.1.22
 - Support for multiple arms in one robot.
 - Bugfix example application wrt absolute windows paths to model
 - Add --disableClickSync which disables control message sync
