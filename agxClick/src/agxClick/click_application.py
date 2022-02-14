@@ -50,7 +50,7 @@ class ClickApplication(AgxApplication):
         if self.disable_clicksync:
             self._logger.info("Simulation will not wait for controlmessages")
         else:
-            self._logger.info("Pausing simulation until handshake is completed and first controlmessage received")
+            self._logger.info("Pausing simulation until handshake is completed, then each controlmessage will step simulation once")
 
         num_frames, wall_clock = self.mainloop()
 
@@ -63,14 +63,13 @@ class ClickApplication(AgxApplication):
         while not self._stop_application:
             # Reset wall_clock when handshake completed if syncing simulation step with controlmessage
             if click_sync_enabled and not self._click_frame_listener.handshake_completed:
-                self._logger.info(f"{'Handshake completed, stepping simulation once per controlmessage'}")
                 wall_clock = WallClock()
 
+            if not _REGISTER_FRAME_LISTENER:
+                self._click_frame_listener.preFrame(self.sim.getClock().getTime())
             click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.step_simulation()
             if click_ready_for_simstep and self.simulation_stepping_enabled:
                 self.app.step()
-            if not _REGISTER_FRAME_LISTENER:
-                self._click_frame_listener.preFrame(self.sim.getClock().getTime())
             self.stepApplication()
             self.enforce_step_realtime_settings()
             if self.args.stopAfterFrame and self.sim.getClock().getFrame() >= self.args.stopAfterFrame:
