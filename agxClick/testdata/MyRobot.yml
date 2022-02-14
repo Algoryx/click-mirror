@@ -194,3 +194,25 @@ RobotWith3DSensor:
     protocolReference: forceTorqueSensor
     joint: arm1.joint0
 
+RobotWithTwoArms:
+  .extends: MyRobot
+
+  arm1:
+    joint1:
+      protocolReference: Robot_joint0_0
+  arm2:
+    .type: MyRobotArm
+    joint0:
+      protocolReference: Robot_joint1_0
+      hingeConnector: 
+        .type: HingeWithInitialAngle
+        mainInteraction:
+          name: segment_connection_1
+        motor:
+          speed: 0
+          constrainDof: true
+      segment1: this.arm1.segment2
+      segment2: this.arm2.segment1
+      inputSignalType: SignalType.InputPositionSignal
+    joint1:
+      protocolReference: Robot_joint1_1

@@ -1,6 +1,7 @@
 from typing import Any, List, Tuple, Dict
 from agxClick import BrickUtils
 import logging
+import itertools
 
 
 class ClickObject():
@@ -55,7 +56,7 @@ class ClickRobot(ClickObject):
         self.torque_sensors: List[Brick.Signal.ForceScalarOutput] = []    # Nm
         self.angle_sensors: List[Brick.Signal.MotorAngleOutput] = []     # DEG in Brick
         self.velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
-        self.num_joints = len(self.brickrobot.Arms[0].Joints)
+        self.num_joints = len(self.joints())
         self.control_event_dict = {}
         self.sensors: Dict[str, List[Brick.Signal.Output]] = {}
         self._populate_signals()
@@ -79,12 +80,16 @@ class ClickRobot(ClickObject):
 
         assert None not in self.joint_protocolrefs(), f"Missing protocolReference in robot {self.name}, refs are: {self.joint_protocolrefs()}"
 
+    def joints(self) -> List[Any]:
+        def flatten(lists: List[List]) -> List:
+            return list(itertools.chain.from_iterable(lists))
+        return flatten(map(lambda arm: arm.Joints, self.brickrobot.Arms))
+
     def joint_protocolrefs(self) -> List[str]:
         """
         Returns protocolReference name of all joints in a sorted list
         """
-        assert len(self.brickrobot.Arms) == 1, "Can only handle one-armed robots for now"
-        return list(map(lambda joint: joint.ProtocolReference, self.brickrobot.Arms[0].Joints))
+        return list(map(lambda joint: joint.ProtocolReference, self.joints()))
 
     def control_event_names(self) -> List[str]:
         return self.control_event_dict.keys()
