@@ -27,6 +27,9 @@ def send_receive(client: Client, message):
 
 @pytest.mark.integrationtest
 class TestClickIntegration:
+    """
+    Base class for integration tests, does not contain any actual tests, only DSL-like methods used for testing in subclasses
+    """
 
     @pytest.fixture(autouse=True)
     def cleanup(self):
@@ -117,6 +120,15 @@ class TestHappyPath(TestClickIntegration):
         sensormessage = self.send_sensor_request(client)
         assert sensormessage.simVars.simulatedTime > 0.0
 
+
+@pytest.mark.integrationtest
+class TestHappyPathWithoutClickSync(TestClickIntegration):
+    def test_that_simulation_does_not_wait_for_handshake(self, pyroot):
+        self.process: Popen = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, extra_flags="--disableClickSync")
+
+        # If we send a message, we might wait indefinitely if process already finished, therefore resort to stderr parsing
+        stdout, stderr = self.process.communicate(None, timeout=5)
+        assert "simulated time: 1.0" in stderr.decode("UTF-8")
 
 @pytest.mark.integrationtest
 class TestSensorRequest(TestClickIntegration):

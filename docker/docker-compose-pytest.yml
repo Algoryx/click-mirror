@@ -1,0 +1,19 @@
+version: "3"
+services:
+  pytest:
+    image: registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:2.31.2.0_0.4.69
+    working_dir: "/click"
+    command: bash -c \
+      "pip3 install -r python-src/requirements-test.txt && \
+       pip3 install -r python-src/requirements-publish.txt && \
+       cd python-src && \
+       python3 setup.py sdist bdist_wheel && \
+       cd ../agxClick && \
+       python3 setup.py sdist bdist_wheel && \
+       cd .. && \
+       pip3 install python-src/dist/pClick*whl && \
+       pip3 install agxClick/dist/agxClick*whl && \
+       echo RUN agxpython agxClick/tests/agxpytest.py agxClick && \
+       bash"
+    volumes:
+      - ../:/click
