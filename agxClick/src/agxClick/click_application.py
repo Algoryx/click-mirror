@@ -30,6 +30,7 @@ class ClickApplication(AgxApplication):
         self._stop_application = False
         self.args = self.parse_arguments(args)
         self.simulation_stepping_enabled = self.args.start_paused is False
+        self.disable_clicksync = self.args.disable_clicksync is True
 
     def run(self, buildScene: Callable[[], Any]):
         """
@@ -46,6 +47,10 @@ class ClickApplication(AgxApplication):
 
         self._logger.info(f"Entering main loop {'with' if self.app.getViewer() else 'without'} graphics")
         self._logger.info(f"Realtime sync is {self.app.getRealTimeSync()}")
+        if self.disable_clicksync:
+            self._logger.info("Simulation will not wait for controlmessages")
+        else:
+            self._logger.info("Pausing simulation until handshake is completed, then each controlmessage will step simulation once")
 
         num_frames, wall_clock = self.mainloop()
 
@@ -53,14 +58,18 @@ class ClickApplication(AgxApplication):
 
     def mainloop(self):
         num_frames = 0
+        wall_clock = WallClock()
+        click_sync_enabled = not self.disable_clicksync
         while not self._stop_application:
-            if not self._click_frame_listener.handshake_completed:
+            # Reset wall_clock when handshake completed if syncing simulation step with controlmessage
+            if click_sync_enabled and not self._click_frame_listener.handshake_completed:
                 wall_clock = WallClock()
 
-            if self._click_frame_listener.step_simulation() and self.simulation_stepping_enabled:
-                self.app.step()
             if not _REGISTER_FRAME_LISTENER:
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
+            click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.step_simulation()
+            if click_ready_for_simstep and self.simulation_stepping_enabled:
+                self.app.step()
             self.stepApplication()
             self.enforce_step_realtime_settings()
             if self.args.stopAfterFrame and self.sim.getClock().getFrame() >= self.args.stopAfterFrame:
@@ -74,7 +83,10 @@ class ClickApplication(AgxApplication):
     def report_timing(self, num_frames, wall_clock):
         simsteps = self.sim.getClock().getFrame()
         walltime = wall_clock.time_since_init()
-        self._logger.info(f"Executed {num_frames} frames and {simsteps} simulation steps")
+        self._logger.info(f"Executed {num_frames} frames and {simsteps} simulation steps, received {self._click_frame_listener.num_controls_received} control messages")
+        if (simsteps != self._click_frame_listener.num_controls_received):
+            missed_simsteps = simsteps - self._click_frame_listener.num_controls_received
+            self._logger.warn(f"Controller could not keep up with simulation! {missed_simsteps} simulation steps taken without control message")
         self._logger.info(f"simulated time: {self.sim.getClock().getTime()} Wall clock time: {walltime}")
         return simsteps, walltime
 
@@ -84,6 +96,7 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation are executed")
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
+        parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run withtout waiting for control messages")
         args, _ = parser.parse_known_args(args)
         return args
 

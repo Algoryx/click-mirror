@@ -54,7 +54,7 @@ class ClickFrameListener(_parent):
         self.click_event_listener = ClickEventListener(self._server, self._click_objects, self.control_queue, self._on_exception)
         self._app.getSimulation().addEventListener(self.click_event_listener)
         self.handshake_completed = False
-        self._logger.info("Pausing simulation until handshake is completed and first controlmessage received")
+        self.num_controls_received = 0
         self.valid = True
 
     def update_scene(self, scene):
@@ -91,11 +91,12 @@ class ClickFrameListener(_parent):
                 message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
                 self._server.send(message)
             elif request.messageType == ControlMessageType:
+                self.num_controls_received += 1
                 self.control_queue.put(request)
                 self.click_event_listener.pending_send = True
                 if not self.handshake_completed:
                     self.handshake_completed = True
-                    self._logger.info(f"{'Handshake complete, stepping simulation once per controlmessage'}")
+                    self._logger.info(f"{'Handshake completed'}")
             elif request.messageType == ErrorMessageType:
                 self._logger.warning("Received Error message")
                 self._on_stop()
@@ -134,7 +135,7 @@ class ClickEventListener(agxSDK.StepEventListener):
         self.valid = True
 
     def pre(self, time: float):
-        if not self.valid:
+        if not self.valid or not self.pending_send:
             return
         try:
             self._logger.debug(f"{'Updating click objects'}")
@@ -153,7 +154,7 @@ class ClickEventListener(agxSDK.StepEventListener):
             raise ex
 
     def post(self, time: float):
-        if not self.valid:
+        if not self.valid or not self.pending_send:
             return
         try:
             if self.send_reset:
