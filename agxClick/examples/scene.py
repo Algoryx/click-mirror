@@ -26,7 +26,7 @@ def buildScene():
 
     from Brick.Physics import Component
     from Brick.AGXBrick import BrickSimulation
-    file, model = args.model.split(":")
+    file, model = args.model.rsplit(":", 1)
     logging.getLogger(__file__).info(f"Loading {file}:{model}")
     scene = Component.CreateFromFile(file, model)
     BrickSimulation.Default.AddComponent(scene)
