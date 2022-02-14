@@ -1,3 +1,8 @@
+0.1.22-SNAPSHOT
+- Support for multiple arms in one robot.
+- Bugfix example application wrt absolute windows paths to model
+- Add --disableClickSync which disables control message sync
+
 0.1.21
 - Fix Remove uncached Brick import
 
