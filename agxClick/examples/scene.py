@@ -8,6 +8,7 @@ import agxOSG
 from agxPythonModules.utils.environment import simulation, application
 import argparse
 import logging
+from typing import Tuple
 
 
 def createArgumentParser(args):
@@ -26,9 +27,13 @@ def buildScene():
 
     from Brick.Physics import Component
     from Brick.AGXBrick import BrickSimulation
-    file, model = args.model.split(":")
+    file, model = extract_file_model(args.model)
     logging.getLogger(__file__).info(f"Loading {file}:{model}")
     scene = Component.CreateFromFile(file, model)
     BrickSimulation.Default.AddComponent(scene)
     agxOSG.createVisual(sim, app.getSceneRoot())
     return scene
+
+
+def extract_file_model(file_model: str) -> Tuple[str]:
+    return file_model.rsplit(":", 1)
