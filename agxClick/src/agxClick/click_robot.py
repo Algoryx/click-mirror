@@ -81,8 +81,9 @@ class ClickRobot(ClickObject):
         assert None not in self.joint_protocolrefs(), f"Missing protocolReference in robot {self.name}, refs are: {self.joint_protocolrefs()}"
 
     def joints(self) -> List[Any]:
-        arms = list(map(lambda arm: arm, self.brickrobot.Arms))
-        return list(itertools.chain(*list(map(lambda arm: arm.Joints, arms))))
+        def flatten(lists: List[List]) -> List:
+            return list(itertools.chain.from_iterable(lists))
+        return flatten(map(lambda arm: arm.Joints, self.brickrobot.Arms))
 
     def joint_protocolrefs(self) -> List[str]:
         """

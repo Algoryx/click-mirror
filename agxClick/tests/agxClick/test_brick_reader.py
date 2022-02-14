@@ -119,7 +119,7 @@ class Test_click_brick_reader:
         assert robots[0].input_signals[1].__class__ is Brick.Signal.EngineTorqueInput
         assert robots[0].input_signals[0].__class__ is Brick.Signal.FixedVelocityEngineInput
 
-    def test_that_robot_has_drive_train_input_signals(self, two_arm_scene):
+    def test_that_robot_with_two_arms_is_valid(self, two_arm_scene):
         robots = find_robots_in_scene(two_arm_scene)
         assert len(robots) == 1
         robots[0].validate()
