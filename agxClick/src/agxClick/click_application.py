@@ -126,6 +126,7 @@ class ClickApplication(AgxApplication):
         self._click_frame_listener.stop()
 
     def on_keyboard_reset(self):
+        self._logger.info("Resetting scene")
         self.reset_scene(self._scene)
         self._click_frame_listener.send_reset()
 
