@@ -1,3 +1,8 @@
+0.1.23
+- Enabled profiling with --profile
+- Minor performance increase (3%)
+- Fix bug that updates robots btw reset and resetmessage to solve reset problem with --disableClickSync
+
 0.1.22
 - Support for multiple arms in one robot.
 - Bugfix example application wrt absolute windows paths to model
