@@ -54,21 +54,22 @@ class MessageFactory:
         Convert a Brick type to the corresponding click ValueType
         type is a Brick.Signal.*Input
         """
-        Brick = BrickUtils.import_Brick()
-        typemap = {
-            Brick.Signal.LockPositionInput: ValueType.Angle,
-            Brick.Signal.VelocityInput: ValueType.AngleVelocity,
-            Brick.Signal.ForceInput: ValueType.Torque,
-            Brick.Signal.MotorVelocityInput: ValueType.AngleVelocity,
-            Brick.Signal.FixedVelocityEngineInput: ValueType.AngleVelocity,
-            Brick.Signal.EngineTorqueInput: ValueType.Torque,
-            Brick.Signal.MotorForceInput: ValueType.Torque,
-            # NOTE: This is implemented like this to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
-            Brick.Signal.AdhesiveForceInput: ValueType.Activated,
-            Brick.Signal.ForceVectorOutput: ValueType.Force,
-            Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque
-        }
-        return typemap[type]
+        if not hasattr(cls, "typemap"):
+            Brick = BrickUtils.import_Brick()
+            cls.typemap = {
+                Brick.Signal.LockPositionInput: ValueType.Angle,
+                Brick.Signal.VelocityInput: ValueType.AngleVelocity,
+                Brick.Signal.ForceInput: ValueType.Torque,
+                Brick.Signal.MotorVelocityInput: ValueType.AngleVelocity,
+                Brick.Signal.FixedVelocityEngineInput: ValueType.AngleVelocity,
+                Brick.Signal.EngineTorqueInput: ValueType.Torque,
+                Brick.Signal.MotorForceInput: ValueType.Torque,
+                # NOTE: This is implemented like this to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
+                Brick.Signal.AdhesiveForceInput: ValueType.Activated,
+                Brick.Signal.ForceVectorOutput: ValueType.Force,
+                Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque
+            }
+        return cls.typemap[type]
 
     @classmethod
     def _degs_to_radians(cls, signals) -> List[float]:

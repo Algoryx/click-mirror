@@ -52,7 +52,21 @@ class ClickApplication(AgxApplication):
         else:
             self._logger.info("Pausing simulation until handshake is completed, then each controlmessage will step simulation once")
 
+        if self.args.profile:
+            import cProfile
+            profile = cProfile.Profile()
+            profile.enable()
+
         num_frames, wall_clock = self.mainloop()
+
+        if self.args.profile:
+            profile.disable()
+            if self.args.profileFile == "":
+                from pstats import SortKey, Stats
+                ps = Stats(profile).sort_stats(SortKey.CUMULATIVE)
+                ps.print_stats()
+            else:
+                profile.dump_stats(self.args.profileFile)
 
         self.report_timing(num_frames, wall_clock)
 
@@ -97,6 +111,8 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
         parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run withtout waiting for control messages")
+        parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
+        parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
         args, _ = parser.parse_known_args(args)
         return args
 
@@ -110,6 +126,7 @@ class ClickApplication(AgxApplication):
         self._click_frame_listener.stop()
 
     def on_keyboard_reset(self):
+        self._logger.info("Resetting scene")
         self.reset_scene(self._scene)
         self._click_frame_listener.send_reset()
 

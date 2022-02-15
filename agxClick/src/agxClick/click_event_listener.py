@@ -84,11 +84,12 @@ class ClickFrameListener(_parent):
                 return
 
             if request.messageType == HandshakeInitMessageType:
-                self._logger.warning("Received handshake init message")
+                self._logger.info("Received handshake init message")
                 message = MessageFactory.handshake_message_from_objects(self._click_objects, self._app.getSimulation().getTimeStep())
                 self._server.send(message)
             elif request.messageType == SensorRequestMessageType:
                 message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
+                self._logger.info(f"Received Sensor Request message, sending {message}")
                 self._server.send(message)
             elif request.messageType == ControlMessageType:
                 self.num_controls_received += 1
@@ -96,19 +97,19 @@ class ClickFrameListener(_parent):
                 self.click_event_listener.pending_send = True
                 if not self.handshake_completed:
                     self.handshake_completed = True
-                    self._logger.info(f"{'Handshake completed'}")
+                    self._logger.info(f"Handshake completed")
             elif request.messageType == ErrorMessageType:
                 self._logger.warning("Received Error message")
                 self._on_stop()
             elif request.messageType == ResetMessageType:
-                self._logger.warning("Received Reset message")
+                self._logger.info("Received Reset message")
                 self._on_reset()
                 self._server.send(ProtoMessageFactory.create_resetmessage())
             else:
                 self._logger.warning(f"Ignoring message: \n{request}\nSending errormessage as reply")
                 self._server.send(ProtoMessageFactory.create_errormessage())
         except Exception as ex:
-            self._logger.info(f"{'Exception encountered - Stopping click messaging'}")
+            self._logger.info(f"Exception encountered - Stopping click messaging")
             self.valid = False
             self._on_exception(ex)
             raise ex
@@ -138,9 +139,13 @@ class ClickEventListener(agxSDK.StepEventListener):
         if not self.valid or not self.pending_send:
             return
         try:
-            self._logger.debug(f"{'Updating click objects'}")
+            self._logger.debug(f"Updating click objects")
             request = self._control_queue.get(block=False)
             assert self._control_queue.empty()
+            if self.send_reset:
+                self._logger.info(f"Skipping update_robots... from ControlMessage - haven't sent Reset yet")
+                return
+
             update_robots_from_message(self._click_objects, request)
         except queue.Empty as ex:
             self._logger.fatal(f"No ControlMessage in queue")
@@ -158,16 +163,16 @@ class ClickEventListener(agxSDK.StepEventListener):
             return
         try:
             if self.send_reset:
-                self._logger.debug(f"{'Sending reset message'}")
+                self._logger.info(f"Sending reset message")
                 response = ProtoMessageFactory.create_resetmessage()
                 self.send_reset = False
             else:
-                self._logger.debug(f"{'Sending sensor message'}")
+                self._logger.debug(f"Sending sensor message")
                 response = MessageFactory.sensor_message_from_objects(self._click_objects, time)
             self._server.send(response)
             self.pending_send = False
         except Exception as ex:
-            self._logger.info(f"{'Exception encountered - Stopping click messaging'}")
+            self._logger.info(f"Exception encountered - Stopping click messaging")
             self.value = False
             self._on_exception(ex)
             raise ex
