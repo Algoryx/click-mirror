@@ -25,6 +25,12 @@ class AgxApplication:
         self.have_graphics = None
 
     def stepApplication(self):
+        """
+        Steps application
+        - Calls Listeners like KeyboardListener and FrameListeners
+        - Renders graphics
+        - Send/Receives RCS
+        """
         # Cache the fact that we have graphics or not. Depends on stepApplication not being called until after setting up agxOSG
         if self.have_graphics is None:
             self.have_graphics = self.app.getViewer()
@@ -32,6 +38,13 @@ class AgxApplication:
             self.app.executeOneStepWithGraphics()
         else:
             self.app.executeOneStepWithoutGraphics()
+
+    def stepSimulation(self):
+        """
+        Steps simulation one timestep
+        If self.app.getRealTimeSync() then sleep rest of timeslot
+        """
+        self.app.step()
 
     def stop(self):
         self.app.stop()

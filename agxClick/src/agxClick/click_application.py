@@ -83,7 +83,7 @@ class ClickApplication(AgxApplication):
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
             click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.step_simulation()
             if click_ready_for_simstep and self.simulation_stepping_enabled:
-                self.app.step()
+                self.stepSimulation()
             self.stepApplication()
             self.enforce_step_realtime_settings()
             if self.args.stopAfterFrame and self.sim.getClock().getFrame() >= self.args.stopAfterFrame:
