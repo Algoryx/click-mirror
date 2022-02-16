@@ -20,6 +20,29 @@ class WallClock:
         return time.time() - timestamp
 
 
+class GraphicsThrottler:
+
+    def __init__(self, framerate: int):
+        """
+        If framerate is 0 or negative -> render_graphics always returns True
+        """
+        self.framerate = framerate
+        self.last_render_timestamp = 0
+
+    def render_graphics(self, wall_clock: WallClock, auto_reset=True) -> bool:
+        """
+        """
+        if self.framerate <= 0:
+            return True
+        render = wall_clock.time_since(self.last_render_timestamp) > 1.0 / self.framerate
+        if render and auto_reset:
+            self.rendered(wall_clock)
+        return render
+
+    def rendered(self, wall_clock: WallClock):
+        self.last_render_timestamp = wall_clock.timestamp()
+
+
 class ClickApplication(AgxApplication):
     _click_frame_listener: ClickFrameListener
     _keyboardListener: KeyboardListener
@@ -45,7 +68,7 @@ class ClickApplication(AgxApplication):
         # We must control stepping ourselves to be able to drive steps from controller, and sync realtime if wanted
         self.app.setAutoStepping(False)
 
-        self._logger.info(f"Entering main loop {'with' if self.app.getViewer() else 'without'} graphics")
+        self._logger.info(f"Entering main loop {'with' if self.app.getViewer() else 'without'} graphics targeting {self.args.framerate} Hz")
         self._logger.info(f"Realtime sync is {self.app.getRealTimeSync()}")
         if self.disable_clicksync:
             self._logger.info("Simulation will not wait for controlmessages")
@@ -73,35 +96,39 @@ class ClickApplication(AgxApplication):
     def mainloop(self):
         num_frames = 0
         wall_clock = WallClock()
+        gfx_throttler = GraphicsThrottler(self.args.framerate)
         click_sync_enabled = not self.disable_clicksync
         while not self._stop_application:
             # Reset wall_clock when handshake completed if syncing simulation step with controlmessage
             if click_sync_enabled and not self._click_frame_listener.handshake_completed:
                 wall_clock = WallClock()
+                num_frames = 0
 
             if not _REGISTER_FRAME_LISTENER:
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
             click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.step_simulation()
             if click_ready_for_simstep and self.simulation_stepping_enabled:
                 self.stepSimulation()
-            self.stepApplication()
-            self.enforce_step_realtime_settings()
+            if (gfx_throttler.render_graphics(wall_clock)):
+                self.stepApplication()
+                self.enforce_step_realtime_settings()
+                num_frames += 1
             if self.args.stopAfterFrame and self.sim.getClock().getFrame() >= self.args.stopAfterFrame:
                 self._stop_application = True
             if self.args.stopAfter and self.sim.getClock().getTime() >= self.args.stopAfter:
                 self._stop_application = True
-            num_frames = num_frames + 1
 
         return num_frames, wall_clock
 
     def report_timing(self, num_frames, wall_clock):
         simsteps = self.sim.getClock().getFrame()
         walltime = wall_clock.time_since_init()
-        self._logger.info(f"Executed {num_frames} frames and {simsteps} simulation steps, received {self._click_frame_listener.num_controls_received} control messages")
+        self._logger.info(f"Rendered {num_frames} frames and {simsteps} simulation steps, received {self._click_frame_listener.num_controls_received} control messages")
         if (simsteps != self._click_frame_listener.num_controls_received):
             missed_simsteps = simsteps - self._click_frame_listener.num_controls_received
             self._logger.warn(f"Controller could not keep up with simulation! {missed_simsteps} simulation steps taken without control message")
         self._logger.info(f"simulated time: {self.sim.getClock().getTime()} Wall clock time: {walltime}")
+        self._logger.info(f"Wallclock sim freq: {simsteps/walltime:.1f} Hz Wallclock framerate: {num_frames/walltime:.1f}")
         return simsteps, walltime
 
     def parse_arguments(self, args):
@@ -113,6 +140,7 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run withtout waiting for control messages")
         parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
         parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
+        parser.add_argument('--framerate', type=int, default=0, help="Specify target framerate in fps, default is off(0). Only affects agxViewer, typically no speedup in browser")
         args, _ = parser.parse_known_args(args)
         return args
 
