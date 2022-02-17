@@ -97,13 +97,13 @@ class ClickApplication(AgxApplication):
     def parse_arguments(self, args):
         from argparse import ArgumentParser
         parser = ArgumentParser(args)
-        parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation are executed")
+        parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation steps has been executed")
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
-        parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run withtout waiting for control messages")
+        parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run without waiting for control messages")
         parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
         parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
-        parser.add_argument('--framerate', type=int, default=0, help="Specify target framerate in fps, default is off(0). Only affects agxViewer, typically no speedup in browser")
+        parser.add_argument('--framerate', type=int, default=0, help="Specify target framerate in fps, default is off(0). Recommended is 30-60. Only affects agxViewer, typically no speedup in browser")
         args, _ = parser.parse_known_args(args)
         return args
 

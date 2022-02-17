@@ -25,12 +25,20 @@ Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below com
 # Latest version
 pip install agxClick -U --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 # Specific version
-pip install agxClick==0.1.23 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install agxClick==0.1.24 --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 ```
 
 ## Usage Examples
 
 The [examples directory](examples) contain a simple example application, which can be used to run the example scenes in the [testdata directory](testdata).
+
+It is built on top of agxViewer but should be started as a python application, i.e. by running one of
+
+- `python examples/click_application.py` in a Windows environment
+- `python3 examples/click_application.py` in a OSX environment or Windows environment with both Python 2 and 3
+- `agxpython examples/click_application.py` in a Linux environment.
+
+It adds extra cmdline options to agxViewer which is explained when running with `--help`
 
 ### Brick Model Requirements
 
@@ -243,6 +251,37 @@ python3 -m pClick.demo.client --controlmessage "robot:1,1"
       }
     }
 ```
+
+### Performance
+
+The `--realTime` flag is used to set whether simulation time should be throttled to wall clock time or not.
+Setting it to 0 makes the simulation run as fast as possible.
+
+With click:
+
+- Each simulation step is synced with the controller, unless `--disableClickSync` is used
+- Every ControlMessage sent from controller will step the simulation one step
+- When using --realTime 1, syncing with wall clock is performed)
+
+If you want to run the simulation at full speed without waiting for control messages, use `--disableClickSync`.
+WARNING: This means that the results are non-deterministic - but it is also closer to what will happen in a real setting.
+
+Flag                 | Meaning
+---------------------|--------------------------------------------------------------------------------------------------
+`--realTime 0`       | Do not sync simulation with *wallclock time* - run as fast as possible
+`--realTime 1`       | Synchronize simulation with *wallclock time* - a 10 second simulation will take at least 10 seconds
+`--disableClickSync` | Do not sync simulation with *controller* - run as fast as possible. (Without this flag, synchronization will occur)
+`--framerate 60`     | Update graphics at a separate frequency than simulation.
+
+`--framerate` is useful when simulation timestep is less than 0.167 (60 Hz), but only has affect in agxViewer (when running agx on host), not in browser (with `--agxOnly`).
+
+If you want a simulation to run as fast as possible, you should use `--realTime 0 --disableClickSync --framerate 60`.
+If you want to run as close to realtime/walltime as possible, you should use e.g. `--realTime 1 --disableClickSync --framerate 60`.
+
+### Profiling
+
+Profiling can be done by providing examples with `--profile --stopAfter <seconds>`, e.g. `--profile --stopAfter 10`
+You can also add `--profileFile my_file.prof` which will create a file that can be opened with for example [snakeviz](https://jiffyclub.github.io/snakeviz/)
 
 ## Implementation details
 
