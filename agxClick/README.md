@@ -273,7 +273,7 @@ Flag                 | Meaning
 `--disableClickSync` | Do not sync simulation with *controller* - run as fast as possible. (Without this flag, synchronization will occur)
 `--framerate 60`     | Update graphics at a separate frequency than simulation.
 
-`--framerate` is useful when simulation timestep is less than 0.167 (60 Hz), but only has affect in agxViewer (when running agx on host), not in browser (with `--agxOnly`).
+`--framerate` is useful when simulation timestep is less than 0.167 (60 Hz). It can increase performance for agxViewer (when running agx on host), but typically not for SimulationView (with `--agxOnly`).
 
 If you want a simulation to run as fast as possible, you should use `--realTime 0 --disableClickSync --framerate 60`.
 If you want to run as close to realtime/walltime as possible, you should use e.g. `--realTime 1 --disableClickSync --framerate 60`.
