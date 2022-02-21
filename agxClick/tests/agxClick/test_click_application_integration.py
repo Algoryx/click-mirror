@@ -127,8 +127,9 @@ class TestHappyPathWithoutClickSync(TestClickIntegration):
         self.process: Popen = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, extra_flags="--disableClickSync")
 
         # If we send a message, we might wait indefinitely if process already finished, therefore resort to stderr parsing
-        stdout, stderr = self.process.communicate(None, timeout=5)
+        stdout, stderr = self.process.communicate(None, timeout=10)
         assert "simulated time: 1.0" in stderr.decode("UTF-8")
+
 
 @pytest.mark.integrationtest
 class TestSensorRequest(TestClickIntegration):

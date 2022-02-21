@@ -96,6 +96,9 @@ class ClickFrameListener(_parent):
     def can_step_simulation(self):
         return self.state is States.READ_CONTROLS
 
+    def handshake_completed(self):
+        return self.state is not States.RECV_HANDSHAKE
+
     def preFrame(self, time: float):
         try:
             if not self.state.can_receive() or not self.state.valid():
