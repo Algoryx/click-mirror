@@ -69,7 +69,7 @@ class ClickApplication(AgxApplication):
 
             if not _REGISTER_FRAME_LISTENER:
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
-            click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.step_simulation()
+            click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.can_step_simulation()
             if click_ready_for_simstep and self.simulation_stepping_enabled:
                 self.stepSimulation()
             if (gfx_throttler.render_graphics(wall_clock)):
