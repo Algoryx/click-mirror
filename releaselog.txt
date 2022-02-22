@@ -1,4 +1,4 @@
-0.1.25-SNAPSHOT
+0.1.25
 - Bugfix: Sends ResetMessage before SimulationStep, i.e. fixes the "bug" that stepped once between Reset and sending ResetMessage
 - Aborts Reset on HandshakeInit, so that reattached controllers does not get ResetMessage as first reply to HandshakeInit
 - Bugfix: Handshake now sends TorqueSensor as Torque Valuetype
