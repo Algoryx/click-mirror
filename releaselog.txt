@@ -1,3 +1,6 @@
+0.1.25-SNAPSHOT
+- Bugfix: Handshake now sends TorqueSensor as Torque Valuetype
+
 0.1.24
 - Implemented separate simulation and graphics frequency to improve performance in agxViewer. Enable with --framerate
 - Added performance and profiling sections to agxClick README.

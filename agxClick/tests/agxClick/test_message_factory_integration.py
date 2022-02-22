@@ -160,7 +160,7 @@ objects {
     controlsInOrder: "robot1_joint1"
     jointSensors: Angle
     jointSensors: AngleVelocity
-    jointSensors: Force
+    jointSensors: Torque
     controlEvents {
       key: "gripper"
       value: Activated
@@ -178,7 +178,7 @@ objects {
     controlsInOrder: "robot2_joint1"
     jointSensors: Angle
     jointSensors: AngleVelocity
-    jointSensors: Force
+    jointSensors: Torque
     controlEvents {
       key: "gripper"
       value: Activated
