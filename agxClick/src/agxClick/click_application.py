@@ -63,13 +63,13 @@ class ClickApplication(AgxApplication):
         click_sync_enabled = not self.disable_clicksync
         while not self._stop_application:
             # Reset wall_clock when handshake completed if syncing simulation step with controlmessage
-            if click_sync_enabled and not self._click_frame_listener.handshake_completed:
+            if click_sync_enabled and not self._click_frame_listener.handshake_completed():
                 wall_clock = WallClock()
                 num_frames = 0
 
             if not _REGISTER_FRAME_LISTENER:
                 self._click_frame_listener.preFrame(self.sim.getClock().getTime())
-            click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.step_simulation()
+            click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.can_step_simulation()
             if click_ready_for_simstep and self.simulation_stepping_enabled:
                 self.stepSimulation()
             if (gfx_throttler.render_graphics(wall_clock)):
