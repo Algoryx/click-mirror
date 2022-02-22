@@ -98,7 +98,6 @@ class MessageFactory:
             return [data.X, data.Y, data.Z]
         return data
 
-
     @classmethod
     def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
         """
@@ -118,7 +117,7 @@ class MessageFactory:
                 if len(robot.velocity_sensors) > 0:
                     jointsensors.append(ValueType.AngleVelocity)
                 if len(robot.torque_sensors) > 0:
-                    jointsensors.append(ValueType.Force)
+                    jointsensors.append(ValueType.Torque)
                 object.jointSensors.extend(jointsensors)
                 for name, event in robot.control_events().items():
                     object.controlEvents[name] = cls.to_click_control_type(event.__class__)
