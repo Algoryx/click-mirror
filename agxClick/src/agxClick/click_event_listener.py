@@ -38,7 +38,7 @@ class States(Enum):
         return self is not self.INVALID
 
     def can_receive(self):
-        return self is self.RECV or self is self.RECV_HANDSHAKE
+        return self is self.RECV or self is self.RECV_HANDSHAKE or self is self.SEND_RESET
 
 
 # class ClickFrameListener(agxOSG.ExampleApplicationListener):
@@ -101,16 +101,21 @@ class ClickFrameListener(_parent):
 
     def preFrame(self, time: float):
         try:
-            if not self.state.can_receive() or not self.state.valid():
+            if not self.state.can_receive():
                 return
             request = self._server.recv()
             if request is None:
                 return
-
             if request.messageType == HandshakeInitMessageType:
                 self._logger.info("Received handshake init message")
                 message = MessageFactory.handshake_message_from_objects(self._click_objects, self._app.getSimulation().getTimeStep())
                 self._server.send(message)
+                if self.state == States.SEND_RESET:
+                    self.state = States.RECV
+            elif self.state == States.SEND_RESET:
+                self._logger.info(f"Sending reset message")
+                self._server.send(ProtoMessageFactory.create_resetmessage())
+                self.state = States.RECV
             elif request.messageType == SensorRequestMessageType:
                 message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
                 self._logger.info(f"Received Sensor Request message, sending {message}")
@@ -138,9 +143,12 @@ class ClickFrameListener(_parent):
             raise ex
 
     def send_reset(self):
-        self.click_event_listener.send_reset = True
-        message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
-        self._logger.info(f"Sending Reset, next SensorResponse should be {message}")
+        self.state = States.SEND_RESET
+        self._logger.info(f"Sending Reset as next Response (unless Handshake encountered)")
+        try:
+            self._control_queue.get(block=False)
+        except Exception:
+            self._logger.info(f"ControlMessage queue emptied because of Reset")
 
     def stop(self):
         self._server.stop()
@@ -166,10 +174,6 @@ class ClickEventListener(agxSDK.StepEventListener):
             self._logger.debug(f"Updating click objects")
             request = self._control_queue.get(block=False)
             assert self._control_queue.empty()
-            # TODO: Do this in FrameController
-            # if self.send_reset:
-            #     self._logger.info(f"Skipping update_robots... from ControlMessage - haven't sent Reset yet")
-            #     return
 
             update_robots_from_message(self._click_objects, request)
             self.state = States.SEND_SENSORS
@@ -188,11 +192,6 @@ class ClickEventListener(agxSDK.StepEventListener):
         if self.state is not States.SEND_SENSORS:
             return
         try:
-            # if self.state == SEND_RESET:
-            #     self._logger.info(f"Sending reset message")
-            #     response = ProtoMessageFactory.create_resetmessage()
-            #     self.state = RECV
-            # else if self.state = SEND_SENSORS:
             self._logger.debug(f"Sending sensor message")
             response = MessageFactory.sensor_message_from_objects(self._click_objects, time)
             self._server.send(response)

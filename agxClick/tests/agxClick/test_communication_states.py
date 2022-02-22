@@ -2,12 +2,12 @@ from agxClick.click_event_listener import States
 import pytest
 
 
-@pytest.mark.parametrize("state", [States.RECV_HANDSHAKE, States.RECV])
-def test_that_recv_can_receive(state):
+@pytest.mark.parametrize("state", [States.RECV_HANDSHAKE, States.RECV, States.SEND_RESET])
+def test_that_can_receive(state):
     assert state.can_receive()
 
 
-@pytest.mark.parametrize("state", [States.READ_CONTROLS, States.INVALID, States.SEND_RESET, States.SEND_SENSORS])
+@pytest.mark.parametrize("state", [States.READ_CONTROLS, States.INVALID, States.SEND_SENSORS])
 def test_that_cannot_receive(state):
     assert not state.can_receive()
 
