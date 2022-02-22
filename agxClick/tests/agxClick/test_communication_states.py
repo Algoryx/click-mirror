@@ -12,6 +12,16 @@ def test_that_cannot_receive(state):
     assert not state.can_receive()
 
 
+@pytest.mark.parametrize("state", [States.READ_CONTROLS, States.SEND_SENSORS])
+def test_that_can_send(state):
+    assert state.can_send()
+
+
+@pytest.mark.parametrize("state", [States.INVALID, States.RECV_HANDSHAKE, States.RECV, States.SEND_RESET])
+def test_that_cannot_send(state):
+    assert not state.can_send()
+
+
 @pytest.mark.parametrize("state", [States.READ_CONTROLS, States.RECV_HANDSHAKE, States.RECV, States.SEND_RESET, States.SEND_SENSORS])
 def test_that_valid(state):
     assert state.valid()
