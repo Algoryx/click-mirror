@@ -1,5 +1,4 @@
-from agxClick import KeyboardListener, AgxApplication, ClickFrameListener
-from agxClick.click_event_listener import _REGISTER_FRAME_LISTENER
+from agxClick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ClickBatchListener
 from typing import Any, Callable, List
 import logging
 from agxClick.wallclock import WallClock
@@ -7,16 +6,18 @@ from agxClick.graphics_throttler import GraphicsThrottler
 
 
 class ClickApplication(AgxApplication):
-    _click_frame_listener: ClickFrameListener
-    _keyboardListener: KeyboardListener
 
     def __init__(self, args: List[str]):
         super().__init__(args)
         self._logger = logging.getLogger(__file__)
         self._stop_application = False
         self.args = self.parse_arguments(args)
+        self.batch_time = 0.0
+        self.batch_update_time = self.args.batch
         self.simulation_stepping_enabled = self.args.start_paused is False
         self.disable_clicksync = self.args.disable_clicksync is True
+        self._click_frame_listener = None
+        self.application_step_listeners: List[ApplicationStepListener] = []
 
     def run(self, buildScene: Callable[[], Any]):
         """
@@ -67,8 +68,8 @@ class ClickApplication(AgxApplication):
                 wall_clock = WallClock()
                 num_frames = 0
 
-            if not _REGISTER_FRAME_LISTENER:
-                self._click_frame_listener.preFrame(self.sim.getClock().getTime())
+            for listener in self.application_step_listeners:
+                listener.preFrame(self.sim.getClock().getTime())
             click_ready_for_simstep = self.disable_clicksync or self._click_frame_listener.can_step_simulation()
             if click_ready_for_simstep and self.simulation_stepping_enabled:
                 self.stepSimulation()
@@ -104,6 +105,7 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
         parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
         parser.add_argument('--framerate', type=int, default=0, help="Specify target framerate in fps, default is off(0). Recommended is 30-60. Only affects agxViewer, typically no speedup in browser")
+        parser.add_argument('--batch', type=float, default=None, help="Enable automatic restart of the scene after the specified number of seconds, with updated values for Brick BatchVariables and ParameterSpace variables")
         args, _ = parser.parse_known_args(args)
         return args
 
@@ -135,7 +137,8 @@ class ClickApplication(AgxApplication):
         We need to add listeners before possible listeners added by buildScene, which is why these updates are needed
         """
         self._scene = scene
-        self._click_frame_listener.update_scene(scene)
+        for listener in self.application_step_listeners:
+            listener.update_scene(scene)
 
     def add_listeners(self):
         self._click_frame_listener = ClickFrameListener(scene=None, app=self.app,
@@ -143,14 +146,16 @@ class ClickApplication(AgxApplication):
                                                         on_exception=self.on_exception,
                                                         on_reset=self.on_reset_message
                                                         )
-        if _REGISTER_FRAME_LISTENER:
-            self.app.addListener(self._click_frame_listener)
-
-        self._keyboardListener = KeyboardListener(on_stop=self.on_stop,
-                                                  on_reset=self.on_keyboard_reset,
-                                                  on_toggle_stepping=self.on_toggle_simulation_stepping
-                                                  )
-        self.sim.add(self._keyboardListener)
+        self.application_step_listeners.append(self._click_frame_listener)
+        if self.args.batch is not None:
+            self.application_step_listeners.append(ClickBatchListener(scene=None, batch_time=self.args.batch,
+                                                                      on_batch_end=self.on_keyboard_reset
+                                                                      ))
+        keyboardListener = KeyboardListener(on_stop=self.on_stop,
+                                            on_reset=self.on_keyboard_reset,
+                                            on_toggle_stepping=self.on_toggle_simulation_stepping
+                                            )
+        self.sim.add(keyboardListener)
 
     def enforce_step_realtime_settings(self):
         if self.app.getAutoStepping():

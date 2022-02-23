@@ -215,4 +215,24 @@ RobotWithTwoArms:
       segment2: this.arm2.segment1
       inputSignalType: SignalType.InputPositionSignal
     joint1:
+      initialPosition: 0
       protocolReference: Robot_joint1_1
+
+RobotWithTwoArmsBatch:
+  .extends: RobotWithTwoArms
+
+  variableJointPosition:
+    .type: Physics.ExperimentFactorialDimension
+    name: variableJointPosition
+    targets:
+      - this.arm1.joint1.initialPosition
+    model: this
+    start: -20
+    stop: 20
+    numStep: 3
+    
+  parameterSpaceMin:
+    .type: Physics.ExperimentParameterSpace
+    
+    factorialDimensions:
+      - this.variableJointPosition

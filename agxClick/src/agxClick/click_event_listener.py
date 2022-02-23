@@ -1,8 +1,10 @@
 import queue
+
+from matplotlib.pyplot import cla
 import agxSDK
 import agxOSG
 from typing import List, Callable
-from agxClick import MessageFactory, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject
+from agxClick import MessageFactory, ApplicationStepListener, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject, noop
 from pClick import Server, HandshakeInitMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType, ErrorMessageType
 from pClick import ControlMessage, MessageFactory as ProtoMessageFactory
 import logging
@@ -10,18 +12,6 @@ from queue import SimpleQueue
 from enum import Enum, auto
 
 from agxClick import get_click_configuration
-
-
-def noop(*args, **kwargs: None):
-    pass
-
-
-# Remove when https://git.algoryx.se/algoryx/agx/-/merge_requests/2401 is released
-_REGISTER_FRAME_LISTENER = False
-if _REGISTER_FRAME_LISTENER:
-    _parent = agxOSG.ExampleApplicationListener
-else:
-    _parent = object
 
 
 class States(Enum):
@@ -42,7 +32,7 @@ class States(Enum):
 
 
 # class ClickFrameListener(agxOSG.ExampleApplicationListener):
-class ClickFrameListener(_parent):
+class ClickFrameListener(ApplicationStepListener):
     def __init__(self, scene, app,
                  on_stop: Callable[[], None] = noop, 
                  on_exception: Callable[[Exception], None] = noop,
