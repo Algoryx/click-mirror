@@ -164,6 +164,7 @@ class TestBatch(TestClickIntegration):
         self.client = client = self.connect()
 
         message = self.send_control_message(client)
+        # tick three steps for sim time to reach batch limit 0.2
         message = send_receive(client, message)
         message = send_receive(client, message)
         message = send_receive(client, message)
