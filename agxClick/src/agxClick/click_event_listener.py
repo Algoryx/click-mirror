@@ -30,6 +30,9 @@ class States(Enum):
     def can_receive(self):
         return self is self.RECV or self is self.RECV_HANDSHAKE or self is self.SEND_RESET
 
+    def can_send(self):
+        return self is self.SEND_SENSORS or self is self.READ_CONTROLS
+
 
 # class ClickFrameListener(agxOSG.ExampleApplicationListener):
 class ClickFrameListener(ApplicationStepListener):
@@ -103,9 +106,7 @@ class ClickFrameListener(ApplicationStepListener):
                 if self.state == States.SEND_RESET:
                     self.state = States.RECV
             elif self.state == States.SEND_RESET:
-                self._logger.info(f"Sending reset message")
-                self._server.send(ProtoMessageFactory.create_resetmessage())
-                self.state = States.RECV
+                self._send_resetmessage()
             elif request.messageType == SensorRequestMessageType:
                 message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
                 self._logger.info(f"Received Sensor Request message, sending {message}")
@@ -132,13 +133,23 @@ class ClickFrameListener(ApplicationStepListener):
             self._on_exception(ex)
             raise ex
 
+    def _send_resetmessage(self):
+        self._logger.info(f"Sending reset message")
+        self._server.send(ProtoMessageFactory.create_resetmessage())
+        self.state = States.RECV
+
     def send_reset(self):
-        self.state = States.SEND_RESET
-        self._logger.info(f"Sending Reset as next Response (unless Handshake encountered)")
+        if self.state.can_send():
+            self._send_resetmessage()
+        else:
+            self._logger.info(f"Sending Reset as next Response (unless Handshake encountered)")
+            self.state = States.SEND_RESET
+
         try:
-            self._control_queue.get(block=False)
-        except Exception:
+            self.control_queue.get(block=False)
+        except queue.Empty as ex:
             self._logger.info(f"ControlMessage queue emptied because of Reset")
+            assert self.control_queue.empty()
 
     def stop(self):
         self._server.stop()
