@@ -67,7 +67,7 @@ class ClickFrameListener(ApplicationStepListener):
     def _state(self):
         return self.click_event_listener.state
 
-    @state.setter
+    @_state.setter
     def _state(self, new_state: States):
         self.click_event_listener.state = new_state
 
