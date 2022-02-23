@@ -158,6 +158,20 @@ class TestResetMessage(TestClickIntegration):
 
 
 @pytest.mark.integrationtest
+class TestBatch(TestClickIntegration):
+    def test_that_batch_sends_resetmessage(self, pyroot):
+        self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, extra_flags="--batch 0.2")
+        self.client = client = self.connect()
+
+        message = self.send_control_message(client)
+        message = send_receive(client, message)
+        message = send_receive(client, message)
+        message = send_receive(client, message)
+
+        assert message.messageType == ResetMessageType
+
+
+@pytest.mark.integrationtest
 class TestResetMessageWithRCS(TestResetMessage):
     """
     Test that ResetMessage works ok with rcs as well, this tests the pushFrameToRemoteViewer path
