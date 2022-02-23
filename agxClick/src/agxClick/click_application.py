@@ -12,8 +12,6 @@ class ClickApplication(AgxApplication):
         self._logger = logging.getLogger(__file__)
         self._stop_application = False
         self.args = self.parse_arguments(args)
-        self.batch_time = 0.0
-        self.batch_update_time = self.args.batch
         self.simulation_stepping_enabled = self.args.start_paused is False
         self.disable_clicksync = self.args.disable_clicksync is True
         self._click_frame_listener = None
