@@ -1,8 +1,5 @@
 import queue
-
-from matplotlib.pyplot import cla
 import agxSDK
-import agxOSG
 from typing import List, Callable
 from agxClick import MessageFactory, ApplicationStepListener, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject, noop
 from pClick import Server, HandshakeInitMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType, ErrorMessageType

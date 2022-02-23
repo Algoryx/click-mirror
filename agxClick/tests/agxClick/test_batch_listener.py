@@ -1,3 +1,4 @@
+from pytest import approx
 from agxClick import ClickBatchListener
 
 
@@ -28,4 +29,4 @@ class Test_batch_listener:
             app.step(time_step)
 
         assert app.num_resets == 2
-        assert equivalent(app.time - app.batch_listener.batch_start_time, 0.1)
+        assert app.time - app.batch_listener.batch_start_time == approx(0.1)
