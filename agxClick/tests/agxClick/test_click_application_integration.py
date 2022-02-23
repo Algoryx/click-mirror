@@ -163,12 +163,11 @@ class TestBatch(TestClickIntegration):
         self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, extra_flags="--batch 0.2")
         self.client = client = self.connect()
 
-        message = self.send_control_message(client)
         # tick three steps for sim time to reach batch limit 0.2
-        message = send_receive(client, message)
-        message = send_receive(client, message)
-        message = send_receive(client, message)
-
+        message = send_receive(client, self.create_controlmessage())
+        message = send_receive(client, self.create_controlmessage())
+        message = send_receive(client, self.create_controlmessage())
+        
         assert message.messageType == ResetMessageType
 
 
