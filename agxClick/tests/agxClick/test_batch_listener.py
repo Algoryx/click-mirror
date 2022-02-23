@@ -16,10 +16,6 @@ class _BatchApplicationFake():
         self.time += time_step
 
 
-def equivalent(a: float, b: float, threshold: float = 0.00001):
-    return abs(a - b) < threshold
-
-
 class Test_batch_listener:
     def test_that_batch_is_reset(self):
         app = _BatchApplicationFake(1)
@@ -29,4 +25,4 @@ class Test_batch_listener:
             app.step(time_step)
 
         assert app.num_resets == 2
-        assert app.time - app.batch_listener.batch_start_time == approx(0.1)
+        assert app.time - app.batch_listener.batch_start_time == approx(time_step)
