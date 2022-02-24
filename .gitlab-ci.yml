@@ -239,7 +239,7 @@ publish-agxClick:
     - cmake --build . --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release .
     - cmake --build . --target INSTALL --config Release
-    - build/bin/click-tests --reporter junit --out win-catch2-junit.xml
+    - bin/click-tests --reporter junit --out win-catch2-junit.xml
   artifacts:
     paths:
       - build/install
