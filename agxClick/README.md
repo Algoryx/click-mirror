@@ -283,9 +283,15 @@ If you want to run as close to realtime/walltime as possible, you should use e.g
 Profiling can be done by providing examples with `--profile --stopAfter <seconds>`, e.g. `--profile --stopAfter 10`
 You can also add `--profileFile my_file.prof` which will create a file that can be opened with for example [snakeviz](https://jiffyclub.github.io/snakeviz/)
 
+### Batch simulations
+
+The simulation scene can be restarted from the initial position continously and automatically after a specified amount of time.
+
+Add `--batch <seconds>` on the commandline and the ResetBatchListener will reset the simulation after the specified amout of time. If the Brick model include any `BatchVariables` or any `ParameterSpace`, those will also be updated to their next state (redefining the initial state). See [documentation](https://brick:ien1ieh7Cithoohoh2AhNg0waingaigu@d2epgodm7v8ass.cloudfront.net/) for Brick for more information about these types of models.
+
 ## Implementation details
 
-ClickApplication has four major parts
+ClickApplication has five major parts
 
 - The ClickApplication class itself, which steps the application and simulation in a loop.
 - A ClickFrameListener that is envoked each main loop iteration
@@ -294,3 +300,4 @@ ClickApplication has four major parts
   - Updates Robots from the queued ControlMessage before the simulation step.
   - Sends SensorMessage updated from Robots after the simulation step.
 - A KeyboardListener that overrides ExampleApplication keys in order to take control of Simulation flow.
+- A ResetBatchListener implementing the [Batch Simulation mode](#Batch-Simulations), used to monitor simulation time and ask ClickApplication to reset at intervals

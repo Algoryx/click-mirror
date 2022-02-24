@@ -1,8 +1,7 @@
 import queue
 import agxSDK
-import agxOSG
 from typing import List, Callable
-from agxClick import MessageFactory, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject
+from agxClick import MessageFactory, ApplicationStepListener, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject, noop
 from pClick import Server, HandshakeInitMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType, ErrorMessageType
 from pClick import ControlMessage, MessageFactory as ProtoMessageFactory
 import logging
@@ -10,18 +9,6 @@ from queue import SimpleQueue
 from enum import Enum, auto
 
 from agxClick import get_click_configuration
-
-
-def noop(*args, **kwargs: None):
-    pass
-
-
-# Remove when https://git.algoryx.se/algoryx/agx/-/merge_requests/2401 is released
-_REGISTER_FRAME_LISTENER = False
-if _REGISTER_FRAME_LISTENER:
-    _parent = agxOSG.ExampleApplicationListener
-else:
-    _parent = object
 
 
 class States(Enum):
@@ -45,7 +32,7 @@ class States(Enum):
 
 
 # class ClickFrameListener(agxOSG.ExampleApplicationListener):
-class ClickFrameListener(_parent):
+class ClickFrameListener(ApplicationStepListener):
     def __init__(self, scene, app,
                  on_stop: Callable[[], None] = noop, 
                  on_exception: Callable[[Exception], None] = noop,
@@ -77,11 +64,11 @@ class ClickFrameListener(_parent):
         self.num_controls_received = 0
 
     @property
-    def state(self):
+    def _state(self):
         return self.click_event_listener.state
 
-    @state.setter
-    def state(self, new_state: States):
+    @_state.setter
+    def _state(self, new_state: States):
         self.click_event_listener.state = new_state
 
     def update_scene(self, scene):
@@ -97,14 +84,14 @@ class ClickFrameListener(_parent):
         BrickSimulation.Default.SyncOutputParameters()
 
     def can_step_simulation(self):
-        return self.state is States.READ_CONTROLS
+        return self._state is States.READ_CONTROLS
 
     def handshake_completed(self):
-        return self.state is not States.RECV_HANDSHAKE
+        return self._state is not States.RECV_HANDSHAKE
 
     def preFrame(self, time: float):
         try:
-            if not self.state.can_receive():
+            if not self._state.can_receive():
                 return
             request = self._server.recv()
             if request is None:
@@ -113,9 +100,9 @@ class ClickFrameListener(_parent):
                 self._logger.info("Received handshake init message")
                 message = MessageFactory.handshake_message_from_objects(self._click_objects, self._app.getSimulation().getTimeStep())
                 self._server.send(message)
-                if self.state == States.SEND_RESET:
-                    self.state = States.RECV
-            elif self.state == States.SEND_RESET:
+                if self._state == States.SEND_RESET:
+                    self._state = States.RECV
+            elif self._state == States.SEND_RESET:
                 self._send_resetmessage()
             elif request.messageType == SensorRequestMessageType:
                 message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
@@ -124,9 +111,9 @@ class ClickFrameListener(_parent):
             elif request.messageType == ControlMessageType:
                 self.num_controls_received += 1
                 self.control_queue.put(request)
-                if self.state == States.RECV_HANDSHAKE:
+                if self._state == States.RECV_HANDSHAKE:
                     self._logger.info(f"Handshake completed")
-                self.state = States.READ_CONTROLS
+                self._state = States.READ_CONTROLS
             elif request.messageType == ErrorMessageType:
                 self._logger.warning("Received Error message")
                 self._on_stop()
@@ -139,21 +126,21 @@ class ClickFrameListener(_parent):
                 self._server.send(ProtoMessageFactory.create_errormessage())
         except Exception as ex:
             self._logger.info(f"Exception encountered - Stopping click messaging")
-            self.state = States.INVALID
+            self._state = States.INVALID
             self._on_exception(ex)
             raise ex
 
     def _send_resetmessage(self):
         self._logger.info(f"Sending reset message")
         self._server.send(ProtoMessageFactory.create_resetmessage())
-        self.state = States.RECV
+        self._state = States.RECV
 
     def send_reset(self):
-        if self.state.can_send():
+        if self._state.can_send():
             self._send_resetmessage()
         else:
             self._logger.info(f"Sending Reset as next Response (unless Handshake encountered)")
-            self.state = States.SEND_RESET
+            self._state = States.SEND_RESET
 
         try:
             self.control_queue.get(block=False)
