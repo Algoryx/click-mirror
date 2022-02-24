@@ -287,7 +287,7 @@ You can also add `--profileFile my_file.prof` which will create a file that can 
 
 The simulation scene can be restarted from the initial position continously and automatically after a specified amount of time.
 
-Add `--batch <seconds>` on the commandline and the ResetBatchListener will reset the simulation after the specified amout of time. If the Brick model include any `BatchVariables` or any `ParameterSpace`, those will also be updated to their next state (redefining the initial state). See documentation for Brick for more information about these types of models.
+Add `--batch <seconds>` on the commandline and the ResetBatchListener will reset the simulation after the specified amout of time. If the Brick model include any `BatchVariables` or any `ParameterSpace`, those will also be updated to their next state (redefining the initial state). See [documentation](https://brick:ien1ieh7Cithoohoh2AhNg0waingaigu@d2epgodm7v8ass.cloudfront.net/) for Brick for more information about these types of models.
 
 ## Implementation details
 
