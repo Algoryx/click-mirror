@@ -286,7 +286,7 @@ publish-dynamic-Win32-cpp-lib-windows:
   variables:
     PACKAGE_UPLOAD_NAME: click-win32
   needs:
-    - job: build-dynamic-Win32-cpp-lib-windows
+    - job: build-test-dynamic-Win32-cpp-lib-windows
       artifacts: true
 
 publish-x64-cpp-lib-windows:
@@ -294,5 +294,5 @@ publish-x64-cpp-lib-windows:
   variables:
     PACKAGE_UPLOAD_NAME: click-x64
   needs:
-    - job: build-x64-cpp-lib-windows
+    - job: build-test-x64-cpp-lib-windows
       artifacts: true
