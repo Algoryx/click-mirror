@@ -1,4 +1,4 @@
-from pytest import approx
+from pytest import approx, fixture
 from agxClick import ClickBatchListener
 
 
@@ -17,12 +17,31 @@ class _BatchApplicationFake():
 
 
 class Test_batch_listener:
-    def test_that_batch_is_reset(self):
-        app = _BatchApplicationFake(1)
-        num_steps = 21
-        time_step = 0.1
-        for i in range(num_steps):
-            app.step(time_step)
 
-        assert app.num_resets == 2
-        assert app.time - app.batch_listener.batch_start_time == approx(time_step)
+    @fixture(autouse=True)
+    def _setup(self):
+        self.time_step = 0.1
+        self.end_time = 1.0
+        self.app = _BatchApplicationFake(self.end_time)
+
+    def step_sim(self, n):
+        for _ in range(n):
+            self.app.step(self.time_step)
+
+    def test_that_batch_runs_specified_last_timestep(self):
+        self.step_sim(10)
+
+        assert self.app.num_resets == 0
+        assert self.app.time == approx(self.end_time)
+
+    def test_that_batch_is_reset(self):
+        self.step_sim(11)
+
+        assert self.app.num_resets == 1
+        assert self.app.time == approx(self.end_time + self.time_step)
+
+    def test_that_batch_is_reset_twice(self):
+        self.step_sim(21)
+
+        assert self.app.num_resets == 2
+        assert self.app.time - self.app.batch_listener.batch_start_time == approx(self.time_step)

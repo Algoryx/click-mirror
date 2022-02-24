@@ -64,11 +64,11 @@ class ClickFrameListener(ApplicationStepListener):
         self.num_controls_received = 0
 
     @property
-    def state(self):
+    def _state(self):
         return self.click_event_listener.state
 
-    @state.setter
-    def state(self, new_state: States):
+    @_state.setter
+    def _state(self, new_state: States):
         self.click_event_listener.state = new_state
 
     def update_scene(self, scene):
@@ -84,14 +84,14 @@ class ClickFrameListener(ApplicationStepListener):
         BrickSimulation.Default.SyncOutputParameters()
 
     def can_step_simulation(self):
-        return self.state is States.READ_CONTROLS
+        return self._state is States.READ_CONTROLS
 
     def handshake_completed(self):
-        return self.state is not States.RECV_HANDSHAKE
+        return self._state is not States.RECV_HANDSHAKE
 
     def preFrame(self, time: float):
         try:
-            if not self.state.can_receive():
+            if not self._state.can_receive():
                 return
             request = self._server.recv()
             if request is None:
@@ -100,9 +100,9 @@ class ClickFrameListener(ApplicationStepListener):
                 self._logger.info("Received handshake init message")
                 message = MessageFactory.handshake_message_from_objects(self._click_objects, self._app.getSimulation().getTimeStep())
                 self._server.send(message)
-                if self.state == States.SEND_RESET:
-                    self.state = States.RECV
-            elif self.state == States.SEND_RESET:
+                if self._state == States.SEND_RESET:
+                    self._state = States.RECV
+            elif self._state == States.SEND_RESET:
                 self._send_resetmessage()
             elif request.messageType == SensorRequestMessageType:
                 message = MessageFactory.sensor_message_from_objects(self._click_objects, self._app.getSimulation().getClock().getTime())
@@ -111,9 +111,9 @@ class ClickFrameListener(ApplicationStepListener):
             elif request.messageType == ControlMessageType:
                 self.num_controls_received += 1
                 self.control_queue.put(request)
-                if self.state == States.RECV_HANDSHAKE:
+                if self._state == States.RECV_HANDSHAKE:
                     self._logger.info(f"Handshake completed")
-                self.state = States.READ_CONTROLS
+                self._state = States.READ_CONTROLS
             elif request.messageType == ErrorMessageType:
                 self._logger.warning("Received Error message")
                 self._on_stop()
@@ -126,21 +126,21 @@ class ClickFrameListener(ApplicationStepListener):
                 self._server.send(ProtoMessageFactory.create_errormessage())
         except Exception as ex:
             self._logger.info(f"Exception encountered - Stopping click messaging")
-            self.state = States.INVALID
+            self._state = States.INVALID
             self._on_exception(ex)
             raise ex
 
     def _send_resetmessage(self):
         self._logger.info(f"Sending reset message")
         self._server.send(ProtoMessageFactory.create_resetmessage())
-        self.state = States.RECV
+        self._state = States.RECV
 
     def send_reset(self):
-        if self.state.can_send():
+        if self._state.can_send():
             self._send_resetmessage()
         else:
             self._logger.info(f"Sending Reset as next Response (unless Handshake encountered)")
-            self.state = States.SEND_RESET
+            self._state = States.SEND_RESET
 
         try:
             self.control_queue.get(block=False)
