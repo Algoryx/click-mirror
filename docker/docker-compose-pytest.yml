@@ -1,3 +1,5 @@
+# Run with docker compose -f docker/docker-compose-pytest.yml run pytest
+
 version: "3"
 services:
   pytest:
@@ -6,6 +8,7 @@ services:
     command: bash -c \
       "pip3 install -r python-src/requirements-test.txt && \
        pip3 install -r python-src/requirements-publish.txt && \
+       rm -rf python-src/dist agxClick/dist && \
        cd python-src && \
        python3 setup.py sdist bdist_wheel && \
        cd ../agxClick && \
