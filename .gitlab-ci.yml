@@ -246,7 +246,7 @@ publish-agxClick:
       - build/bin
     when: always
     reports:
-      junit: win-catch2-junit.xml
+      junit: build/win-catch2-junit.xml
 
 
 build-test-x64-cpp-lib-windows:
