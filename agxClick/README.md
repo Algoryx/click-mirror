@@ -287,7 +287,7 @@ You can also add `--profileFile my_file.prof` which will create a file that can 
 
 The simulation scene can be restarted from the initial position continously and automatically after a specified amount of time.
 
-Add `--batch <seconds>` on the commandline and the ClickBatchListener will reset the simulation after the specified amout of time. If the Brick model include any `BatchVariables` or any `ParameterSpace`, those will also be updated to their next state (redefining the initial state). See documentation for Brick for more information about these types of models.
+Add `--batch <seconds>` on the commandline and the ResetBatchListener will reset the simulation after the specified amout of time. If the Brick model include any `BatchVariables` or any `ParameterSpace`, those will also be updated to their next state (redefining the initial state). See documentation for Brick for more information about these types of models.
 
 ## Implementation details
 
@@ -300,4 +300,4 @@ ClickApplication has five major parts
   - Updates Robots from the queued ControlMessage before the simulation step.
   - Sends SensorMessage updated from Robots after the simulation step.
 - A KeyboardListener that overrides ExampleApplication keys in order to take control of Simulation flow.
-- A ClickBatchListener implementing the [Batch Simulation mode](#Batch-Simulations), used to monitor simulation time and ask ClickApplication to reset at intervals
+- A ResetBatchListener implementing the [Batch Simulation mode](#Batch-Simulations), used to monitor simulation time and ask ClickApplication to reset at intervals

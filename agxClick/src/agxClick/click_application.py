@@ -1,4 +1,4 @@
-from agxClick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ClickBatchListener
+from agxClick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ResetBatchListener
 from typing import Any, Callable, List
 import logging
 from agxClick.wallclock import WallClock
@@ -146,7 +146,7 @@ class ClickApplication(AgxApplication):
                                                         )
         self.application_step_listeners.append(self._click_frame_listener)
         if self.args.batch is not None:
-            self.application_step_listeners.append(ClickBatchListener(scene=None, batch_time=self.args.batch,
+            self.application_step_listeners.append(ResetBatchListener(scene=None, batch_time=self.args.batch,
                                                                       on_batch_end=self.on_keyboard_reset
                                                                       ))
         keyboardListener = KeyboardListener(on_stop=self.on_stop,

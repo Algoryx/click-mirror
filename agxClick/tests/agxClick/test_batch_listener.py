@@ -1,12 +1,12 @@
 from pytest import approx, fixture
-from agxClick import ClickBatchListener
+from agxClick import ResetBatchListener
 
 
 class _BatchApplicationFake():
     def __init__(self, batch_time: float) -> None:
         self.time = 0
         self.num_resets = 0
-        self.batch_listener = ClickBatchListener(None, batch_time, self.on_batch_end)
+        self.batch_listener = ResetBatchListener(None, batch_time, self.on_batch_end)
 
     def on_batch_end(self):
         self.num_resets += 1

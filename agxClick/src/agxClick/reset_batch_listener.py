@@ -2,7 +2,7 @@ from agxClick import ApplicationStepListener, noop
 from typing import Callable
 
 
-class ClickBatchListener(ApplicationStepListener):
+class ResetBatchListener(ApplicationStepListener):
     def __init__(self, scene, batch_time: float, on_batch_end: Callable[[], None] = noop) -> None:
         super().__init__()
         self._scene = scene
