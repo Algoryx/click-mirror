@@ -227,7 +227,7 @@ publish-agxClick:
       artifacts: true
     - job: test-agxClick
 
-.build-cpp-lib-windows:
+.build-test-cpp-lib-windows:
   stage: build
   tags:
     - windows
@@ -239,61 +239,32 @@ publish-agxClick:
     - cmake --build . --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release .
     - cmake --build . --target INSTALL --config Release
+    - build/bin/click-tests --reporter junit --out win-catch2-junit.xml
   artifacts:
     paths:
       - build/install
       - build/bin
-
-build-x64-cpp-lib-windows:
-  extends: .build-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "x64"
-    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
-
-build-static-Win32-cpp-lib-windows:
-  extends: .build-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "Win32"
-
-build-dynamic-Win32-cpp-lib-windows:
-  extends: .build-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "Win32"
-    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
-
-
-.test-cpp-lib-windows:
-  stage: test
-  tags:
-    - windows
-    - vs2019
-  needs:
-    - job: build-x64-cpp-lib-windows
-      artifacts: true
-  script:
-    - build/bin/click-tests --reporter junit --out win-catch2-junit.xml
-  artifacts:
     when: always
     reports:
       junit: win-catch2-junit.xml
 
-test-x64-cpp-lib-windows:
-  extends: .test-cpp-lib-windows
-  needs:
-    - job: build-x64-cpp-lib-windows
-      artifacts: true
 
-test-static-Win32-cpp-lib-windows:
-  extends: .test-cpp-lib-windows
-  needs:
-    - job: build-static-Win32-cpp-lib-windows
-      artifacts: true
+build-test-x64-cpp-lib-windows:
+  extends: .build-test-cpp-lib-windows
+  variables:
+    TARGET_ARCH: "x64"
+    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
-test-dynamic-Win32-cpp-lib-windows:
-  extends: .test-cpp-lib-windows
-  needs:
-    - job: build-dynamic-Win32-cpp-lib-windows
-      artifacts: true
+build-test-static-Win32-cpp-lib-windows:
+  extends: .build-test-cpp-lib-windows
+  variables:
+    TARGET_ARCH: "Win32"
+
+build-test-dynamic-Win32-cpp-lib-windows:
+  extends: .build-test-cpp-lib-windows
+  variables:
+    TARGET_ARCH: "Win32"
+    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
 .publish-cpp-lib-windows:
   extends: .run-in-docker
