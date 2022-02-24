@@ -300,4 +300,4 @@ ClickApplication has five major parts
   - Updates Robots from the queued ControlMessage before the simulation step.
   - Sends SensorMessage updated from Robots after the simulation step.
 - A KeyboardListener that overrides ExampleApplication keys in order to take control of Simulation flow.
-- A Batch Simulation mode, where the scene can be reset with a constant time interval. 
+- A ClickBatchListener implementing the [Batch Simulation mode](#Batch-Simulations), used to monitor simulation time and ask ClickApplication to reset at intervals
