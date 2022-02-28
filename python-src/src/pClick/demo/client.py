@@ -8,6 +8,8 @@ from pClick import Client
 from pClick import MessageFactory
 from argparse import ArgumentParser
 
+from pClick.Messaging_pb2 import SensorMessageType
+
 
 def parse_args():
     parser = ArgumentParser(description='Demo client connecting to click server')
@@ -48,9 +50,9 @@ if args.addr:
     addr = args.addr
 
 #  Socket to talk to server
-socket = Client()
+client = Client()
 print(f"Connecting to click server {addr}")
-socket.connect(addr)
+client.connect(addr)
 
 if args.controlmessage:
     message = MessageFactory.create_controlmessage()
@@ -66,29 +68,41 @@ if args.controlmessage:
         elif args.controltype.lower() == "torque":
             robot.torques.extend(arr)
     print(f"Sending {str(message)}")
-    socket.send(message)
+    client.send(message)
 elif args.resetmessage:
     message = MessageFactory.create_resetmessage()
     print(f"Sending resetmessage")
-    socket.send(message)
+    client.send(message)
 elif args.sensorrequest:
     message = MessageFactory.create_sensorrequestmessage()
     print(f"Sending sensor request message")
-    socket.send(message)
+    client.send(message)
 elif args.errormessage:
-    send_errormessage(socket)
+    send_errormessage(client)
 else:
     message = MessageFactory.create_handshake_init()
     print(f"Sending initiate handshake")
-    socket.send(message)
+    client.send(message)
 
-response = socket.recv()
+response = client.recv()
 print(f"Received response {response}")
 
 for i in range(0, args.range):
-    socket.send(message)
-    response = socket.recv()
+    client.send(message)
+    response = client.recv()
 print(f"Sent {args.range + 1} messages")
 
+if response.messageType == SensorMessageType:
+    print("Extracting data from SensorMessage")
+    # Example code for parsing SensorMessage, see <tests/pClick/test_messaging> test_that_SensorMessage_serializes() for more examples!
+    for objname in response.objects:
+        angleSensors = list(response.objects[objname].angleSensors)
+        if response.objects[objname].objectSensors[0].HasField("position"):
+            pos = list(response.objects[objname].objectSensors[0].position.arr)
+        else:
+            pos = "unset"
+        print(f"{objname}: angles: {angleSensors} position: {pos}")
+
+
 if args.end_with_errormessage:
-    send_errormessage(socket)
+    send_errormessage(client)
