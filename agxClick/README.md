@@ -65,7 +65,7 @@ python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleCli
 python3 -m pClick.demo.client
 # Step simulation 200 steps and get first simulation step SensorMessage
 python3 -m pClick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 199 --end-with-errormessage
-# It is also possible to run the C++ democlient, but the current version does only support 5 joints so there will be an error message
+# It is also possible to run the C++ democlient, which only supports ExampleClickScene. I.e you need to create your own for other scenes.
 bin/democlient
 ```
 

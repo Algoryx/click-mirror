@@ -13,7 +13,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-inline vector<double> angles = double_vector_from({1, 2, 3, 4, 5});
+inline vector<double> angles = double_vector_from({1, 2});
 inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
@@ -27,24 +27,31 @@ unique_ptr<Message> sendReceiveBlocking(Client &client, unique_ptr<Message> mess
     return response;
 }
 
-unique_ptr<Message> sendReceive(Client &client, unique_ptr<Message> message)
+unique_ptr<Message> sendReceive(Client &client, const Message & message, bool trace = false)
 {
-    cout << "Sending " << message->debugString() << endl;
-    client.send(*message);
+    if (trace)
+    {
+        cout << "Sending " << message.debugString() << endl;
+    }
+    client.send(message);
+    int slept = 0;
     while(true)
     {
         unique_ptr<Message> response = client.receive(false);
+        if (response && slept)
+        {
+            cout << "Would have blocked " << slept << " microseconds" << endl;
+        }
         if (response)
         {
-            cout << "Received " << response->debugString() << endl;
             return response;
         }
         else
         {
-            cout << "Would have blocked, trying again" << endl;
             using namespace std::this_thread;
             using namespace std::chrono;
             sleep_for(microseconds(100));
+            slept += 100;
         }
     }
 }
@@ -70,12 +77,14 @@ int main(int argc, char *argv[])
             ->withAngles(angles)
             ->withControlEvent("gripper", true)
         ->object("robot2")
-            ->withAngleVelocities(angleVelocities)
-        ->object("robot3")
-            ->withTorques(torques)
+            ->withAngles(angles)
         ->build();
 
-    reply = sendReceive(client, move(message));
+    cout << "Sending 1000 messages" << endl;
+    for(int i=0; i<1000;i++)
+        reply = sendReceive(client, *message, false);
+
+    cout << "Received " << reply->debugString() << endl;
 
     // Optional according to https://developers.google.com/protocol-buffers/docs/cpptutorial
  //   google::protobuf::ShutdownProtobufLibrary();
