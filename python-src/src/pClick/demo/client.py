@@ -56,6 +56,9 @@ client.connect(addr)
 
 if args.controlmessage:
     message = MessageFactory.create_controlmessage()
+    # Note: Below code uses the protobuf API directly, we recommend using the higher level agxClick ClickObject and ClickRobot instead
+    # to cushion client code from future protocol changes.
+    # The c++ Click API also has a wrapping layer that has the same cushioning effect.
     robotargs = args.controlmessage.split(";")
     for arg in robotargs:
         robotname, *values = arg.split(":")
@@ -91,18 +94,6 @@ for i in range(0, args.range):
     client.send(message)
     response = client.recv()
 print(f"Sent {args.range + 1} messages")
-
-if response.messageType == SensorMessageType:
-    print("Extracting data from SensorMessage")
-    # Example code for parsing SensorMessage, see <tests/pClick/test_messaging> test_that_SensorMessage_serializes() for more examples!
-    for objname in response.objects:
-        angleSensors = list(response.objects[objname].angleSensors)
-        if response.objects[objname].objectSensors[0].HasField("position"):
-            pos = list(response.objects[objname].objectSensors[0].position.arr)
-        else:
-            pos = "unset"
-        print(f"{objname}: angles: {angleSensors} position: {pos}")
-
 
 if args.end_with_errormessage:
     send_errormessage(client)
