@@ -49,12 +49,15 @@ class AgxApplication:
     def stop(self):
         self.app.stop()
 
+    def remote_viewer_exists(self) -> bool:
+        return hasattr(self.app, "getController") and self.app.getController()
+
     def reset_scene(self, scene_to_reset):
         from Brick.Physics import ComponentLoader
         from Brick.AGXBrick import BrickSimulation
 
         ComponentLoader.RepositionComponent(scene_to_reset)
         BrickSimulation.Default.ResetAgx()
-        if self.app.getController():
+        if self.remote_viewer_exists():
             self.app.pushFrameToRemoteViewer()
         BrickSimulation.Default.SyncOutputParameters()
