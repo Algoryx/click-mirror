@@ -1,3 +1,6 @@
+0.1.27
+- Add compatibility with AGX versions where ExampleApplication does not support websockets.
+
 0.1.26
 - Reset from Keybaord will send ResetMessage immediately if possible to prevent recv fail
 - --batch <seconds> will restart simulation from the initial position(s) continously. See agxClick/README.md.

@@ -103,13 +103,13 @@ pip install pClick --extra-index-url https://click-access:F2q7LauW_d-HJ7bH37sV@g
 - Linux Ubuntu 20.04 C++ libraries and binaries:
 
 ```bash
-wget --header "DEPLOY-TOKEN: F2q7LauW_d-HJ7bH37sV" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.26/click-shared-focal-amd64.deb"
+wget --header "DEPLOY-TOKEN: F2q7LauW_d-HJ7bH37sV" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.27/click-shared-focal-amd64.deb"
 apt-get install -yf /tmp/click-shared-focal-amd64.deb
 ```
 
 - Windows C++ libraries and binaries
-  - [Download win32 zip](https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.26/click-win32-0.1.26.zip)
-  - [Download x64 zip](https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.26/click-x64-0.1.26.zip)
+  - [Download win32 zip](https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.27/click-win32-0.1.27.zip)
+  - [Download x64 zip](https://click-access:F2q7LauW_d-HJ7bH37sV@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.27/click-x64-0.1.27.zip)
 
 ## Running Click democlient and demoserver
 
