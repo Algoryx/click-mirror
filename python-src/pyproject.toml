@@ -1,6 +1,18 @@
+[tool.poetry]
+name = "pClick"
+version = "0.1.27"
+description = "Controller to AGX messaging"
+authors = ["Algoryx Simulation <contact@algoryx.se>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = ">=3.6.9"
+protobuf = "3.17.1"
+pyzmq = "22.3.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
