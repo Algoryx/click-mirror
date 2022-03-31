@@ -28,6 +28,7 @@ namespace click
     CLICK_EXPORT std::vector<std::string> controlEvents(const std::string &objectname) const;
     CLICK_EXPORT ValueType controlEvent(const std::string &objectname, const std::string &eventname) const;
     CLICK_EXPORT SimulationSettings simulationSettings() const;
+    CLICK_EXPORT ValueType controlType() const;
     CLICK_EXPORT MessageType messageType() const;
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT ~HandshakeMessage();
