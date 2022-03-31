@@ -23,9 +23,9 @@ Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below com
 
 ```bash
 # Latest version
-pip install agxClick -U --extra-index-url https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install agxClick -U
 # Specific version
-pip install agxClick==0.1.35 --extra-index-url https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install agxClick==0.1.35
 ```
 
 ## Usage Examples

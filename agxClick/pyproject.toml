@@ -1,6 +1,20 @@
+[tool.poetry]
+name = "agxClick"
+version = "0.1.29"
+description = "Controller to AGX using pClick messaging"
+authors = ["Algoryx Simulation <contact@algoryx.se>"]
+license = "Apache-2.0"
+repository = "https://github.com/algoryx/click-mirror"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8 <3.10"
+pClick = ">=0.1.35"
+agxBrick = ">=0.5.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
-]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

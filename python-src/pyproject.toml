@@ -1,12 +1,14 @@
 [tool.poetry]
 name = "pClick"
-version = "0.1.27"
+version = "0.1.29"
 description = "Controller to AGX messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
+repository = "https://github.com/algoryx/click-mirror"
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.6.9"
+python = ">=3.8 <3.11"
 protobuf = "3.17.1"
 pyzmq = "22.3.0"
 
