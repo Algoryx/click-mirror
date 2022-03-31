@@ -15,6 +15,7 @@ class ClickApplication(AgxApplication):
         self.simulation_stepping_enabled = self.args.start_paused is False
         self.disable_clicksync = self.args.disable_clicksync is True
         self._click_frame_listener = None
+        self._reset_batch_listener = None
         self.application_step_listeners: List[ApplicationStepListener] = []
 
     def run(self, buildScene: Callable[[], Any]):
@@ -99,11 +100,14 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation steps has been executed")
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
-        parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true", help="Do not sync each simulation step with click client - simulation will run without waiting for control messages")
+        parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true",
+                            help="Do not sync each simulation step with click client - simulation will run without waiting for control messages")
         parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
         parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
-        parser.add_argument('--framerate', type=int, default=0, help="Specify target framerate in fps, default is off(0). Recommended is 30-60. Only affects agxViewer, typically no speedup in browser")
-        parser.add_argument('--batch', type=float, default=None, help="Enable automatic restart of the scene after the specified number of seconds, with updated values for Brick BatchVariables and ParameterSpace variables")
+        parser.add_argument('--framerate', type=int, default=0,
+                            help="Specify target framerate in fps, default is off(0). Recommended is 30-60. Only affects agxViewer, typically no speedup in browser")
+        parser.add_argument('--batch', type=float, default=None,
+                            help="Enable automatic restart of the scene after the specified number of seconds, with updated values for Brick BatchVariables and ParameterSpace variables")
         args, _ = parser.parse_known_args(args)
         return args
 
@@ -120,6 +124,12 @@ class ClickApplication(AgxApplication):
         self._logger.info("Resetting scene")
         self.reset_scene(self._scene)
         self._click_frame_listener.send_reset()
+
+    def reset_scene(self, scene_to_reset):
+        if (self._reset_batch_listener is not None):
+            self._reset_batch_listener.prepare_for_next_batch_state()
+        
+        super().reset_scene(scene_to_reset)
 
     def on_reset_message(self):
         assert self._scene
@@ -146,9 +156,9 @@ class ClickApplication(AgxApplication):
                                                         )
         self.application_step_listeners.append(self._click_frame_listener)
         if self.args.batch is not None:
-            self.application_step_listeners.append(ResetBatchListener(scene=None, batch_time=self.args.batch,
-                                                                      on_batch_end=self.on_keyboard_reset
-                                                                      ))
+            self._reset_batch_listener = ResetBatchListener(scene=None, batch_time=self.args.batch,
+                                                            on_batch_end=self.on_keyboard_reset)
+            self.application_step_listeners.append(self._reset_batch_listener)
         keyboardListener = KeyboardListener(on_stop=self.on_stop,
                                             on_reset=self.on_keyboard_reset,
                                             on_toggle_stepping=self.on_toggle_simulation_stepping

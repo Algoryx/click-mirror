@@ -9,11 +9,16 @@ class _BatchApplicationFake():
         self.batch_listener = ResetBatchListener(None, batch_time, self.on_batch_end)
 
     def on_batch_end(self):
+        self.batch_listener.prepare_for_next_batch_state()
         self.num_resets += 1
 
     def step(self, time_step: float):
         self.batch_listener.preFrame(self.time)
         self.time += time_step
+    
+    def reset(self):
+        self.on_batch_end()
+        
 
 
 class Test_batch_listener:
@@ -45,3 +50,26 @@ class Test_batch_listener:
 
         assert self.app.num_resets == 2
         assert self.app.time - self.app.batch_listener.batch_start_time == approx(self.time_step)
+
+    def test_batch_start_time(self):
+        self.step_sim(11)
+
+        assert self.app.batch_listener.batch_start_time == approx(10.0 * self.time_step)
+
+    def test_batch_reset_command_will_reset(self):
+        self.step_sim(4)
+        self.app.reset()
+
+        assert self.app.num_resets == 1
+        assert self.app.batch_listener.batch_start_time == approx(3.0 * self.time_step)
+    
+    def test_batch_reset_command_will_restart_batch_time(self):
+        self.step_sim(4)
+        self.app.reset()    
+        self.step_sim(9)
+
+        assert self.app.num_resets == 1
+        
+        self.step_sim(1)
+        
+        assert self.app.num_resets == 2

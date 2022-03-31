@@ -170,6 +170,25 @@ class TestBatch(TestClickIntegration):
         
         assert message.messageType == ResetMessageType
 
+@pytest.mark.integrationtest
+class TestBatchReset(TestClickIntegration):
+    def test_that_batch_resets_due_to_a_resetmessage(self, pyroot):
+        self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, extra_flags="--batch 0.2")
+        self.client = client = self.connect()
+
+        # tick one step
+        message = send_receive(client, self.create_controlmessage())
+        
+        message = MessageFactory.create_resetmessage()
+        # send reset message
+        message = send_receive(client, message)
+        
+        # three steps after the reset message is sent we get a new reset
+        message = send_receive(client, self.create_controlmessage())
+        message = send_receive(client, self.create_controlmessage())
+        message = send_receive(client, self.create_controlmessage())
+        
+        assert message.messageType == ResetMessageType
 
 @pytest.mark.integrationtest
 class TestResetMessageWithRCS(TestResetMessage):
