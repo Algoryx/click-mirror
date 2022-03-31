@@ -15,7 +15,10 @@ from agxBrickHosting import (
 
 class BrickEnv():
     '''
-    Initializes agx and brick and provides utilities
+    Initializes agx and brick and provides utilities so you can do
+    from brick_env import BrickEnv
+    brickenv = BrickEnv()
+    scene = brickenv.load_from_file(file_path, model_name)
     Inspired by https://git.algoryx.se/algoryx/agx/-/blob/master/brick/python/agxBrick/brick_gym_env.py
     '''
 
