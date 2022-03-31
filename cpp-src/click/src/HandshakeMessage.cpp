@@ -68,7 +68,7 @@ HandshakeMessage::SimulationSettings HandshakeMessage::simulationSettings() cons
 
 ValueType HandshakeMessage::controlType() const
 {
-  return static_cast<ValueType>(this->pm->controlType());
+  return static_cast<ValueType>(this->pm->controltype());
 }
 
 HandshakeMessage::HandshakeMessage(unique_ptr<protobuf::HandshakeMessage> HandshakeMessage)

@@ -80,7 +80,7 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
 
             THEN("it should contain controlType")
             {
-                REQUIRE(handshakeMessage->controlType() == ValueType::AngleVelocity);
+                REQUIRE(handshakeMessage->controlType() == ValueType::Force);
             }
 
             THEN("it should output debug string")
