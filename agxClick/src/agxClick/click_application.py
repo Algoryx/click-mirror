@@ -15,6 +15,7 @@ class ClickApplication(AgxApplication):
         self.simulation_stepping_enabled = self.args.start_paused is False
         self.disable_clicksync = self.args.disable_clicksync is True
         self._click_frame_listener = None
+        self._reset_batch_listener = None
         self.application_step_listeners: List[ApplicationStepListener] = []
 
     def run(self, buildScene: Callable[[], Any]):
@@ -121,6 +122,12 @@ class ClickApplication(AgxApplication):
         self.reset_scene(self._scene)
         self._click_frame_listener.send_reset()
 
+    def reset_scene(self, scene_to_reset):
+        if (self._reset_batch_listener is not None):
+            self._reset_batch_listener.prepare_for_next_batch_state()
+        else:
+            super().reset_scene(scene_to_reset)
+
     def on_reset_message(self):
         assert self._scene
         self.reset_scene(self._scene)
@@ -146,9 +153,9 @@ class ClickApplication(AgxApplication):
                                                         )
         self.application_step_listeners.append(self._click_frame_listener)
         if self.args.batch is not None:
-            self.application_step_listeners.append(ResetBatchListener(scene=None, batch_time=self.args.batch,
-                                                                      on_batch_end=self.on_keyboard_reset
-                                                                      ))
+            self._reset_batch_listener = ResetBatchListener(scene=None, batch_time=self.args.batch,
+                                                                      on_batch_end=self.on_keyboard_reset)
+            self.application_step_listeners.append(self._reset_batch_listener)
         keyboardListener = KeyboardListener(on_stop=self.on_stop,
                                             on_reset=self.on_keyboard_reset,
                                             on_toggle_stepping=self.on_toggle_simulation_stepping

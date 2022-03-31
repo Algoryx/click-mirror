@@ -8,6 +8,7 @@ class ResetBatchListener(ApplicationStepListener):
         self._scene = scene
         self._batch_time = batch_time
         self.batch_start_time = 0.0
+        self.current_time = 0.0
         self._on_batch_end = on_batch_end
 
     def geq(self, a: float, b: float, threshold: float = 0.00001):
@@ -16,11 +17,15 @@ class ResetBatchListener(ApplicationStepListener):
     def batch_has_ended(self, time):
         return self.geq(time, self.batch_start_time + self._batch_time)
 
+    def prepare_for_next_batch_state(self):
+        self.update_parameters()
+        self._on_batch_end()
+        self.restart_batch_time(self.current_time)
+    
     def preFrame(self, time: float):
+        self.current_time = time
         if self.batch_has_ended(time):
-            self.update_parameters()
-            self._on_batch_end()
-            self.restart_batch_time(time)
+            self.prepare_for_next_batch_state()
 
     def update_parameters(self):
         if self._scene is not None:
