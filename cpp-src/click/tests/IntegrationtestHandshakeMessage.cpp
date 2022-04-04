@@ -78,6 +78,11 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
                 REQUIRE(handshakeMessage->simulationSettings().timeStep == 0.0);
             }
 
+            THEN("it should contain controlType")
+            {
+                REQUIRE(handshakeMessage->controlType() == ValueType::Force);
+            }
+
             THEN("it should output debug string")
             {
 
