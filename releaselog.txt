@@ -1,3 +1,7 @@
+0.1.28
+- Add controlType retrieval to C++ HandshakeMessage API
+- When the ResetBatchListener is used, a reset call will also step to the next batch configuration
+
 0.1.27
 - Add compatibility with AGX versions where ExampleApplication does not support websockets.
 
