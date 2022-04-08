@@ -78,14 +78,17 @@ DriveTrainJointVelocity:
   motorAngleSensor:
     .type: Robotics.Sensor.RotatingBodyAngleSensor
     rotatingBody: this.engine
+    protocolReference: engineAngle
 
   motorTorqueSensor:
     .type: Robotics.Sensor.FixedVelocityEngineTorqueSensor
     engine: this.engine
+    protocolReference: engineTorque
 
   motorVelocitySensor:
     .type: Robotics.Sensor.RotatingBodyVelocitySensor
     rotatingBody: this.engine
+    protocolReference: engineVelocity
 
   engine:
     .value: FixedVelocityEngine

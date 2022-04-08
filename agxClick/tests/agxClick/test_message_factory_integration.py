@@ -150,6 +150,15 @@ class Test_message_factory_integration:
         assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[0].force.arr == [0, 0, 0]
         assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[1].directionalTorque.arr == [0, 0, 0]
 
+    def test_that_drive_train_sensors_are_included_in_sensormessage(self, drive_train_scene):
+        robots = find_robots_in_scene(drive_train_scene)
+
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+
+        assert message.objects["robot"].sensors["engineAngle"][0].GetData() == 0.0
+        assert message.objects["robot"].sensors["engineTorque"][0].GetData() == 0.0
+        assert message.objects["robot"].sensors["engineVelocity"][0].GetData() == 0.0
+
 
 _handshake_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION

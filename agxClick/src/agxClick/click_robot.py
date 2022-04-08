@@ -56,10 +56,6 @@ class ClickRobot(ClickObject):
         self.torque_sensors: List[Brick.Signal.ForceScalarOutput] = []    # Nm
         self.angle_sensors: List[Brick.Signal.MotorAngleOutput] = []     # DEG in Brick
         self.velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
-        # internal sensors are for example internal drive train sensors 
-        self.internal_torque_sensors: List[Brick.Signal.ForceScalarOutput] = []    # Nm
-        self.internal_angle_sensors: List[Brick.Signal.MotorAngleOutput] = []     # DEG in Brick
-        self.internal_velocity_sensors: List[Brick.Signal.MotorVelocityOutput] = []  # RAD/s in Brick
         self.num_joints = len(self.joints())
         self.control_event_dict = {}
         self.sensors: Dict[str, List[Brick.Signal.Output]] = {}
@@ -76,11 +72,11 @@ class ClickRobot(ClickObject):
         assert len(self.name) > 1, "Invalid robot name '{self.name}'"
         assert self.num_joints == len(self.input_signals), f"Number of input_signals {len(self.input_signals)} did not match number of joints {self.num_joints}"
         if (self.torque_sensors):
-            assert self.num_joints == len(self.torque_sensors), f"Number of torque_sensors {len(self.torque_sensors)} did not match number of joints {self.num_joints}"
+            assert self.num_joints == len(self.torque_sensors), f"Number of input_signals {len(self.torque_sensors)} did not match number of joints {self.num_joints}"
         if (self.angle_sensors):
-            assert self.num_joints == len(self.angle_sensors), f"Number of angle_sensors {len(self.angle_sensors)} did not match number of joints {self.num_joints}"
+            assert self.num_joints == len(self.angle_sensors), f"Number of input_signals {len(self.angle_sensors)} did not match number of joints {self.num_joints}"
         if (self.velocity_sensors):
-            assert self.num_joints == len(self.velocity_sensors), f"Number of velocity_sensors {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
+            assert self.num_joints == len(self.velocity_sensors), f"Number of input_signals {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
 
         assert None not in self.joint_protocolrefs(), f"Missing protocolReference in robot {self.name}, refs are: {self.joint_protocolrefs()}"
 
@@ -152,6 +148,12 @@ class ClickRobot(ClickObject):
         for signal in self.brickrobot.GetSignals():
             self._populate_signal(signal)
 
+    def _sensor_of_or(self, signal, default_reply):
+        for sensor in self.brickrobot.Sensors:
+            if signal == sensor.GetOrCreateSignal():
+                return sensor
+        return default_reply
+
     def _sensor_of(self, signal):
         for sensor in self.brickrobot.Sensors:
             if signal == sensor.GetOrCreateSignal():
@@ -160,24 +162,14 @@ class ClickRobot(ClickObject):
 
     def _populate_signal(self, signal):
         Brick = BrickUtils.import_Brick()
-        if isinstance(signal, Brick.Signal.PositionScalarOutput):
+        sensor = self._sensor_of_or(signal, object)
+        if isinstance(sensor, Brick.Robotics.Sensor.JointSensor):
             if signal.__class__ is Brick.Signal.MotorAngleOutput:
                 self.angle_sensors.append(signal)
-            else:
-                self.internal_angle_sensors.append(signal)
-        elif isinstance(signal, Brick.Signal.VelocityScalarOutput):
-            if signal.__class__ is Brick.Signal.MotorVelocityOutput:
+            elif signal.__class__ is Brick.Signal.MotorVelocityOutput:
                 self.velocity_sensors.append(signal)
-            else:
-                self.internal_velocity_sensors.append(signal)
-        elif isinstance(signal, Brick.Signal.ForceScalarOutput):
-            if isinstance(signal, Brick.Signal.FixedVelocityEngineTorqueOutput):
-                self.internal_torque_sensors.append(signal)
-            else:
+            elif isinstance(signal, Brick.Signal.ForceScalarOutput):
                 self.torque_sensors.append(signal)
-  
-        elif isinstance(signal, Brick.Signal.VelocityScalarOutput):
-            self.internal_velocity_sensors.append(signal)
         elif isinstance(signal, Brick.Signal.LockPositionInput) or \
                 isinstance(signal, Brick.Signal.ForceInput) or \
                 isinstance(signal, Brick.Signal.VelocityInput):
@@ -188,7 +180,10 @@ class ClickRobot(ClickObject):
                 shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
-        elif isinstance(signal, Brick.Signal.ConnectorVectorOutput):
+        elif isinstance(signal, Brick.Signal.ConnectorVectorOutput) or \
+                isinstance(signal, Brick.Signal.PositionScalarOutput) or \
+                isinstance(signal, Brick.Signal.VelocityScalarOutput) or \
+                isinstance(signal, Brick.Signal.ForceScalarOutput):
             id = self._sensor_of(signal)['protocolReference']
             assert id, f"Missing protocolReference in robot {self.name} sensor {self._sensor_of(signal)['name']}"
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name {id} in {self.name}")
