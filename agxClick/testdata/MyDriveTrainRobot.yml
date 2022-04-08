@@ -49,6 +49,7 @@ DriveTrainJointTemplate:
   gear:
     .type: HolonomicGearConnector
 
+
 # Declare a drive train joint with a TorqueDrivenEngine
 # The input signal is then a EngineTorqueInput signal
 # Which will be found in the joint initialization
@@ -73,6 +74,19 @@ DriveTrainJointTorque:
 # and replace the default input signal
 DriveTrainJointVelocity:
   .extends: DriveTrainJointTemplate
+  
+  motorAngleSensor:
+    .type: Robotics.Sensor.RotatingBodyAngleSensor
+    rotatingBody: this.engine
+
+  motorTorqueSensor:
+    .type: Robotics.Sensor.FixedVelocityEngineTorqueSensor
+    engine: this.engine
+
+  motorVelocitySensor:
+    .type: Robotics.Sensor.RotatingBodyVelocitySensor
+    rotatingBody: this.engine
+
   engine:
     .value: FixedVelocityEngine
     targetRPM: 1
