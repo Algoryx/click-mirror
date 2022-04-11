@@ -72,11 +72,11 @@ class ClickRobot(ClickObject):
         assert len(self.name) > 1, "Invalid robot name '{self.name}'"
         assert self.num_joints == len(self.input_signals), f"Number of input_signals {len(self.input_signals)} did not match number of joints {self.num_joints}"
         if (self.torque_sensors):
-            assert self.num_joints == len(self.torque_sensors), f"Number of input_signals {len(self.torque_sensors)} did not match number of joints {self.num_joints}"
+            assert self.num_joints == len(self.torque_sensors), f"Number of torque_sensors {len(self.torque_sensors)} did not match number of joints {self.num_joints}"
         if (self.angle_sensors):
-            assert self.num_joints == len(self.angle_sensors), f"Number of input_signals {len(self.angle_sensors)} did not match number of joints {self.num_joints}"
+            assert self.num_joints == len(self.angle_sensors), f"Number of angle_sensors {len(self.angle_sensors)} did not match number of joints {self.num_joints}"
         if (self.velocity_sensors):
-            assert self.num_joints == len(self.velocity_sensors), f"Number of input_signals {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
+            assert self.num_joints == len(self.velocity_sensors), f"Number of velocity_sensors {len(self.velocity_sensors)} did not match number of joints {self.num_joints}"
 
         assert None not in self.joint_protocolrefs(), f"Missing protocolReference in robot {self.name}, refs are: {self.joint_protocolrefs()}"
 

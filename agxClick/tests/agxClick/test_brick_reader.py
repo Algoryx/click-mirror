@@ -119,7 +119,6 @@ class Test_click_brick_reader:
         assert Brick.Signal.RotatingBodyAngleOutput == robots[0].sensors["engineAngle"][0].__class__
         assert Brick.Signal.FixedVelocityEngineTorqueOutput == robots[0].sensors["engineTorque"][0].__class__
         assert Brick.Signal.RotatingBodyVelocityOutput == robots[0].sensors["engineVelocity"][0].__class__
-        
 
     def test_that_robot_with_two_arms_is_valid(self, two_arm_scene):
         robots = find_robots_in_scene(two_arm_scene)
