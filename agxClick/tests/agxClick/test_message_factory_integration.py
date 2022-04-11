@@ -75,6 +75,12 @@ class Test_message_factory_integration:
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
         assert str(message) == _sensor_facit
 
+    def test_that_generating_sensormessage_drive_train_creates_correct_sensormessage(self, drive_train_scene):
+        robots = find_robots_in_scene(drive_train_scene)
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+        print(str(message))
+        assert str(message) == _drive_train_facit
+
     def test_that_reading_position_controlmessage_updates_robots(self, scene):
         robots = find_robots_in_scene(scene)
         controlmessage = create_faked_controlmessage_for(robots)
@@ -250,6 +256,61 @@ objects {
         arr: 0.0
         arr: 0.0
         arr: -0.75
+      }
+    }
+  }
+}
+simVars {
+  simulatedTime: 1.0
+}
+"""
+
+_drive_train_facit = """messageType: SensorMessageType
+objects {
+  key: "robot"
+  value {
+    angleSensors: 0.0
+    angleSensors: 0.0
+    angleVelocitySensors: 0.0
+    angleVelocitySensors: 0.0
+    torqueSensors: 0.0
+    torqueSensors: 0.0
+    objectSensors {
+      position {
+        arr: 0.0
+        arr: 0.0
+        arr: 0.0
+      }
+    }
+    objectSensors {
+      rpy {
+        arr: 0.0
+        arr: 0.0
+        arr: 0.0
+      }
+    }
+    sensors {
+      key: "engineAngle"
+      value {
+        sensor {
+          angle: 0.0
+        }
+      }
+    }
+    sensors {
+      key: "engineTorque"
+      value {
+        sensor {
+          torque: 0.0
+        }
+      }
+    }
+    sensors {
+      key: "engineVelocity"
+      value {
+        sensor {
+          angleVelocity: 0.0
+        }
       }
     }
   }
