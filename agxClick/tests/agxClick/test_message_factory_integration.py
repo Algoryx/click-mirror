@@ -161,9 +161,9 @@ class Test_message_factory_integration:
 
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
 
-        assert message.objects["robot"].sensors["engineAngle"][0].GetData() == 0.0
-        assert message.objects["robot"].sensors["engineTorque"][0].GetData() == 0.0
-        assert message.objects["robot"].sensors["engineVelocity"][0].GetData() == 0.0
+        assert message.objects["robot"].sensors["engineAngle"].sensor[0].angle == 0.0
+        assert message.objects["robot"].sensors["engineTorque"].sensor[0].torque == 0.0
+        assert message.objects["robot"].sensors["engineVelocity"].sensor[0].angleVelocity == 0.0
 
 
 _handshake_facit = """messageType: HandshakeMessageType
