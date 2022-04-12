@@ -9,6 +9,7 @@ def drive_train_scene(brickenv, pyroot):
     model_name = "ExampleDriveTrainClickScene"
     return brickenv.load_from_file(file_path, model_name)
 
+
 @pytest.fixture(scope="function")
 def two_arm_scene(brickenv, pyroot):
     file_path = f"{pyroot}/testdata/MyRobot.yml"
