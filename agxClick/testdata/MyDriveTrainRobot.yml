@@ -113,7 +113,7 @@ MyArm:
     .type: DriveTrainJointVelocity
 
   joint1:
-    .type: DriveTrainJointTorque
+    .type: DriveTrainJointVelocity
     segment1: this.segment1
     segment2: this.segment2
 

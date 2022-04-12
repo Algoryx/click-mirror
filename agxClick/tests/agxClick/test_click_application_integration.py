@@ -1,4 +1,4 @@
-from pClick.Messaging_pb2 import ResetMessage, ResetMessageType
+from pClick.Messaging_pb2 import ControlMessage, ResetMessage, ResetMessageType, ValueType
 import pytest
 from pytest import approx
 from subprocess import Popen, PIPE
@@ -140,6 +140,29 @@ class TestSensorRequest(TestClickIntegration):
         sensormessage = self.send_sensor_request(client)
         assert sensormessage.simVars.simulatedTime == 0.0
         assert sum(sensormessage.objects['robot1'].angleSensors) != 0
+
+@pytest.mark.integrationtest
+class TestVelocityControlMessage(TestClickIntegration):
+    def create_controlmessage(self):
+        message = MessageFactory.create_controlmessage()
+        robot = message.objects["robot"]
+        robot.angleVelocities.extend([1, 1])
+        print(robot)
+        return message
+
+    def start_simulation(self, simulation_seconds, app_path, time_step, extra_flags="") -> Popen:
+        python_executable = "agxpython" if platform.system() == "Linux" else "python3"
+        cmd = f'{python_executable} examples/click_application.py --model testdata/ClickScene.yml:ExampleDriveTrainClickScene --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
+        print(f"Executing {cmd}")
+        process = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=app_path)
+        return process
+
+    def test_that_controlmessage_has_effect(self, pyroot):
+        self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1)
+        self.client = client = self.connect()
+        controlmessage = self.create_controlmessage()
+        sensormessage = send_receive(client, controlmessage)
+        assert sum(sensormessage.objects['robot'].angleSensors) != 0
 
 
 @pytest.mark.integrationtest

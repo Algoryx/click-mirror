@@ -78,7 +78,6 @@ class Test_message_factory_integration:
     def test_that_generating_sensormessage_drive_train_creates_correct_sensormessage(self, drive_train_scene):
         robots = find_robots_in_scene(drive_train_scene)
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
-        print(str(message))
         assert str(message) == _drive_train_facit
 
     def test_that_reading_position_controlmessage_updates_robots(self, scene):
@@ -295,6 +294,9 @@ objects {
         sensor {
           angle: 0.0
         }
+        sensor {
+          angle: 0.0
+        }
       }
     }
     sensors {
@@ -303,11 +305,17 @@ objects {
         sensor {
           torque: 0.0
         }
+        sensor {
+          torque: 0.0
+        }
       }
     }
     sensors {
       key: "engineVelocity"
       value {
+        sensor {
+          angleVelocity: 0.0
+        }
         sensor {
           angleVelocity: 0.0
         }
