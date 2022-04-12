@@ -167,8 +167,9 @@ class TestBatch(TestClickIntegration):
         message = send_receive(client, self.create_controlmessage())
         message = send_receive(client, self.create_controlmessage())
         message = send_receive(client, self.create_controlmessage())
-        
+
         assert message.messageType == ResetMessageType
+
 
 @pytest.mark.integrationtest
 class TestBatchReset(TestClickIntegration):
@@ -178,17 +179,18 @@ class TestBatchReset(TestClickIntegration):
 
         # tick one step
         message = send_receive(client, self.create_controlmessage())
-        
+
         message = MessageFactory.create_resetmessage()
         # send reset message
         message = send_receive(client, message)
-        
+
         # three steps after the reset message is sent we get a new reset
         message = send_receive(client, self.create_controlmessage())
         message = send_receive(client, self.create_controlmessage())
         message = send_receive(client, self.create_controlmessage())
-        
+
         assert message.messageType == ResetMessageType
+
 
 @pytest.mark.integrationtest
 class TestResetMessageWithRCS(TestResetMessage):
