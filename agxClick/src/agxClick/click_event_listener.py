@@ -60,7 +60,10 @@ class ClickFrameListener(ApplicationStepListener):
         self._server = Server(f"tcp://*:5555")
         self.control_queue: SimpleQueue[ControlMessage] = SimpleQueue()
         self.click_event_listener = ClickEventListener(self._server, self._click_objects, self.control_queue, self._on_exception)
-        self._app.getSimulation().addEventListener(self.click_event_listener)
+        highestPriority = 100
+        self._app.getSimulation().addEventListener(self.click_event_listener, highestPriority)
+        lowestPriority = 0
+        self._app.getSimulation().addEventListener(ClickOutputEventListener(self.click_event_listener), lowestPriority)
         self.num_controls_received = 0
 
     @property
@@ -156,7 +159,7 @@ class ClickEventListener(agxSDK.StepEventListener):
     def __init__(self, server: Server, click_objects: List[ClickObject], control_queue: SimpleQueue, on_exception: Callable[[Exception], None] = noop):
         """
         """
-        super().__init__()
+        super().__init__(agxSDK.StepEventListener.PRE_COLLIDE)
         self._server = server
         self._click_objects = click_objects
         self._control_queue: SimpleQueue = control_queue
@@ -165,7 +168,7 @@ class ClickEventListener(agxSDK.StepEventListener):
         # The state is shared by both listeners
         self.state = States.RECV_HANDSHAKE
 
-    def pre(self, time: float):
+    def preCollide(self, time: float):
         if self.state is not States.READ_CONTROLS:
             return
         try:
@@ -186,16 +189,24 @@ class ClickEventListener(agxSDK.StepEventListener):
             self._on_exception(ex)
             raise ex
 
-    def post(self, time: float):
-        if self.state is not States.SEND_SENSORS:
+
+class ClickOutputEventListener(agxSDK.StepEventListener):
+    def __init__(self, input_listener: ClickEventListener):
+        """
+        """
+        super().__init__(agxSDK.StepEventListener.LAST_STEP)
+        self._input_listener = input_listener
+
+    def last(self, time: float):
+        if self._input_listener.state is not States.SEND_SENSORS:
             return
         try:
-            self._logger.debug(f"Sending sensor message")
-            response = MessageFactory.sensor_message_from_objects(self._click_objects, time)
-            self._server.send(response)
-            self.state = States.RECV
+            self._input_listener._logger.debug(f"Sending sensor message")
+            response = MessageFactory.sensor_message_from_objects(self._input_listener._click_objects, time)
+            self._input_listener._server.send(response)
+            self._input_listener.state = States.RECV
         except Exception as ex:
-            self._logger.info(f"Exception encountered - Stopping click messaging")
-            self.state = States.INVALID
-            self._on_exception(ex)
+            self._input_listener._logger.info(f"Exception encountered - Stopping click messaging")
+            self._input_listener.state = States.INVALID
+            self._input_listener._on_exception(ex)
             raise ex
