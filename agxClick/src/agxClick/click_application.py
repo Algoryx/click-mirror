@@ -128,7 +128,7 @@ class ClickApplication(AgxApplication):
     def reset_scene(self, scene_to_reset):
         if (self._reset_batch_listener is not None):
             self._reset_batch_listener.prepare_for_next_batch_state()
-        
+
         super().reset_scene(scene_to_reset)
 
     def on_reset_message(self):

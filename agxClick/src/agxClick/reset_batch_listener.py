@@ -20,7 +20,7 @@ class ResetBatchListener(ApplicationStepListener):
     def prepare_for_next_batch_state(self):
         self.update_parameters()
         self.restart_batch_time(self.current_time)
-    
+
     def preFrame(self, time: float):
         self.current_time = time
         if self.batch_has_ended(time):
