@@ -1,3 +1,9 @@
+0.1.29
+- Require AGXBrick 0.5.4 or later.
+- agxClick support Brick.Signals RotatingBodyAngleOutput, RotatingBodyVelocityOutput and FixedVelocityEngineTorqueOutput.
+- Client input events come in to agxClick as early as possible.
+- agxClick output events come in as late as possible.
+
 0.1.28
 - Add controlType retrieval to C++ HandshakeMessage API
 - When the ResetBatchListener is used, a reset call will also step to the next batch configuration
