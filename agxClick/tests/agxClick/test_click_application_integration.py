@@ -69,9 +69,12 @@ class TestClickIntegration:
         assert handshake.messageType == HandshakeMessageType
         return handshake
 
-    def start_simulation(self, simulation_seconds, app_path, time_step, extra_flags="") -> Popen:
+    def start_simulation(self, simulation_seconds, app_path, time_step, model="testdata/ClickScene.yml:ExampleClickScene", extra_flags="") -> Popen:
+        """
+        If you provide a different model, you probably need to override create_controlmessage as well to match the chosen model
+        """
         python_executable = "agxpython" if platform.system() == "Linux" else "python3"
-        cmd = f'{python_executable} examples/click_application.py --model testdata/ClickScene.yml:ExampleClickScene --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
+        cmd = f'{python_executable} examples/click_application.py --model {model} --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
         print(f"Executing {cmd}")
         process = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=app_path)
         return process
@@ -151,15 +154,8 @@ class TestVelocityControlMessage(TestClickIntegration):
         print(robot)
         return message
 
-    def start_simulation(self, simulation_seconds, app_path, time_step, extra_flags="") -> Popen:
-        python_executable = "agxpython" if platform.system() == "Linux" else "python3"
-        cmd = f'{python_executable} examples/click_application.py --model testdata/ClickScene.yml:ExampleDriveTrainClickScene --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
-        print(f"Executing {cmd}")
-        process = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=app_path)
-        return process
-
     def test_that_controlmessage_has_effect(self, pyroot):
-        self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1)
+        self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, model="testdata/ClickScene.yml:ExampleDriveTrainClickScene")
         self.client = client = self.connect()
         controlmessage = self.create_controlmessage()
         sensormessage = send_receive(client, controlmessage)
