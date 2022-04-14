@@ -5,7 +5,8 @@ from subprocess import Popen, PIPE
 from pClick import Client, MessageFactory, HandshakeMessageType, SensorMessageType, MessageSerializer
 import zmq
 from time import sleep
-import platform
+import os
+import sys
 
 
 def send(client: Client, message):
@@ -73,10 +74,10 @@ class TestClickIntegration:
         """
         If you provide a different model, you probably need to override create_controlmessage as well to match the chosen model
         """
-        python_executable = "agxpython" if platform.system() == "Linux" else "python3"
+        python_executable = sys.executable
         cmd = f'{python_executable} examples/click_application.py --model {model} --timeStep {time_step} --stopAfter {simulation_seconds} --agxOnly {extra_flags}'
         print(f"Executing {cmd}")
-        process = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, cwd=app_path)
+        process = Popen(cmd.split(" "), stdout=PIPE, stderr=PIPE, shell=False, cwd=app_path)
         return process
 
     def connect(self):
