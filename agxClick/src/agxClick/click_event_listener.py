@@ -156,6 +156,10 @@ class ClickFrameListener(ApplicationStepListener):
 
 
 class ClickEventListener(agxSDK.StepEventListener):
+    """
+    Responsible for retrieving messages and updating click objects.
+    This should be done as early as possible in a simulation step, so set a high priority for this listener
+    """
     def __init__(self, server: Server, click_objects: List[ClickObject], control_queue: SimpleQueue, on_exception: Callable[[Exception], None] = noop):
         """
         """
@@ -191,8 +195,18 @@ class ClickEventListener(agxSDK.StepEventListener):
 
 
 class ClickOutputEventListener(agxSDK.StepEventListener):
+    """
+    Responsible for sending and creating messages from click objects.
+    This should be done as late as possible in a simulation step to make sure all values are done propagating from AGX to Brick.
+    Run with a low priority.
+
+    The reason this is a separate class from ClickEventListener is because of the difference in call priority.
+    This class is a proxy for a companioning ClickEventListener where all data is stored.
+    """
+
     def __init__(self, input_listener: ClickEventListener):
         """
+        input_listener is the companioning ClickEventListener where all data is stored.
         """
         super().__init__(agxSDK.StepEventListener.LAST_STEP)
         self._input_listener = input_listener
