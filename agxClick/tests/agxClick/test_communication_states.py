@@ -63,4 +63,3 @@ def test_that_state_from_container_is_set():
     userclass.state = States.INVALID
 
     assert userclass.state == States.INVALID
-

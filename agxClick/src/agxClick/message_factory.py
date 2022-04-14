@@ -64,10 +64,14 @@ class MessageFactory:
                 Brick.Signal.FixedVelocityEngineInput: ValueType.AngleVelocity,
                 Brick.Signal.EngineTorqueInput: ValueType.Torque,
                 Brick.Signal.MotorForceInput: ValueType.Torque,
-                # NOTE: This is implemented like this to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
+                # NOTE: AdhesiveForceInput is mapped to Activated to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
                 Brick.Signal.AdhesiveForceInput: ValueType.Activated,
                 Brick.Signal.ForceVectorOutput: ValueType.Force,
-                Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque
+                Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque,
+                Brick.Signal.RotatingBodyAngleOutput: ValueType.Angle,
+                Brick.Signal.RotatingBodyVelocityOutput: ValueType.AngleVelocity,
+                Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque
+
             }
         return cls.typemap[type]
 
@@ -157,16 +161,25 @@ class MessageFactory:
         for name, signals in robot.sensors.items():
             for signal in signals:
                 sensor = sensors.sensors[name].sensor.add()
-                arr = cls.array_to_populate(signal, sensor, robot.name)
-                arr.extend(cls._signal_to_floats(signal))
+                value_type = cls.to_click_control_type(signal.__class__)
+                if value_type == ValueType.Angle:
+                    sensor.angle = signal.GetData()
+                elif value_type == ValueType.Torque:
+                    sensor.torque = signal.GetData()
+                elif value_type == ValueType.AngleVelocity:
+                    sensor.angleVelocity = signal.GetData()
+                else:
+                    arr = cls.array_to_populate(signal, value_type, sensor, robot.name)
+                    arr.extend(cls._signal_to_floats(signal))
 
     @classmethod
-    def array_to_populate(cls, signal, sensor, robotname):
-        value_type = cls.to_click_control_type(signal.__class__)
+    def array_to_populate(cls, signal, value_type, sensor, robotname):
         if value_type == ValueType.Force:
             return sensor.force.arr
         elif value_type == ValueType.DirectionalTorque:
             return sensor.directionalTorque.arr
+        elif value_type == ValueType.Angle:
+            return sensor.angle
         else:
             # TODO: Add tests for rest of valuetypes, missing 8 so far.
             raise Exception(f"Unrecognized (=Not Implemented) signal in {robotname}: {signal._ModelType}")
