@@ -170,9 +170,9 @@ class ClickRobot(ClickObject):
                 self.velocity_sensors.append(signal)
             elif isinstance(signal, Brick.Signal.ForceScalarOutput):
                 self.torque_sensors.append(signal)
-        elif isinstance(signal, Brick.Signal.LockPositionInput) or \
-                isinstance(signal, Brick.Signal.ForceInput) or \
-                isinstance(signal, Brick.Signal.VelocityInput):
+        elif isinstance(signal, (Brick.Signal.LockPositionInput,
+                                 Brick.Signal.ForceInput,
+                                 Brick.Signal.VelocityInput)):
             self.input_signals.append(signal)
         elif signal.__class__ is Brick.Signal.AdhesiveForceInput:
             shortname = signal['name']
