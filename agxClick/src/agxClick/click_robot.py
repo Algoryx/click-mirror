@@ -180,10 +180,10 @@ class ClickRobot(ClickObject):
                 shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
-        elif isinstance(signal, Brick.Signal.ConnectorVectorOutput) or \
-                isinstance(signal, Brick.Signal.PositionScalarOutput) or \
-                isinstance(signal, Brick.Signal.VelocityScalarOutput) or \
-                isinstance(signal, Brick.Signal.ForceScalarOutput):
+        elif isinstance(signal, (Brick.Signal.ConnectorVectorOutput,
+                                 Brick.Signal.PositionScalarOutput,
+                                 Brick.Signal.VelocityScalarOutput,
+                                 Brick.Signal.ForceScalarOutput)):
             id = self._sensor_of(signal)['protocolReference']
             assert id, f"Missing protocolReference in robot {self.name} sensor {self._sensor_of(signal)['name']}"
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as sensor, with name {id} in {self.name}")
