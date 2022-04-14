@@ -64,7 +64,7 @@ class MessageFactory:
                 Brick.Signal.FixedVelocityEngineInput: ValueType.AngleVelocity,
                 Brick.Signal.EngineTorqueInput: ValueType.Torque,
                 Brick.Signal.MotorForceInput: ValueType.Torque,
-                # NOTE: This is implemented like this to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
+                # NOTE: AdhesiveForceInput is mapped to Activated to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
                 Brick.Signal.AdhesiveForceInput: ValueType.Activated,
                 Brick.Signal.ForceVectorOutput: ValueType.Force,
                 Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque,
