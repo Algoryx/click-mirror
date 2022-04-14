@@ -154,7 +154,7 @@ class TestVelocityControlMessage(TestClickIntegration):
         print(robot)
         return message
 
-    def test_that_controlmessage_has_effect(self, pyroot):
+    def test_that_controlmessage_triggers_simulation_step(self, pyroot):
         self.process = self.start_simulation(simulation_seconds=1.0, app_path=pyroot, time_step=0.1, model="testdata/ClickScene.yml:ExampleDriveTrainClickScene")
         self.client = client = self.connect()
         controlmessage = self.create_controlmessage()
