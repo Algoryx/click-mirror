@@ -30,7 +30,7 @@ def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=
 
 
 @pytest.mark.integrationtest
-class Test_message_factory_integration:
+class Test_sensor_message_from_objects:
 
     @pytest.fixture(scope="class", autouse=True)
     def exec_from_brick_config_expected_path(self, request):
@@ -70,10 +70,18 @@ class Test_message_factory_integration:
         assert ValueType.Force in message.objects["robot"].sensors["forceTorqueSensor"].types
         assert ValueType.DirectionalTorque in message.objects["robot"].sensors["forceTorqueSensor"].types
 
-    def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
-        robots = find_robots_in_scene(scene)
-        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
-        assert str(message) == _sensor_facit
+    def test_that_click_box_is_included_in_handshake(self, click_scene):
+        objects = get_click_configuration(click_scene)
+
+        message = MessageFactory.handshake_message_from_objects(objects, 0.03)
+
+        assert ValueType.Position in message.objects["box"].objectSensors
+        assert ValueType.RPY in message.objects["box"].objectSensors
+        assert message.objects["box"].objectSensors == [ValueType.Position, ValueType.RPY]
+
+
+@pytest.mark.integrationtest
+class Test_update_robots_from_message:
 
     def test_that_generating_sensormessage_drive_train_creates_correct_sensormessage(self, drive_train_scene):
         robots = find_robots_in_scene(drive_train_scene)
@@ -130,14 +138,14 @@ class Test_message_factory_integration:
             update_robots_from_message(robots, bad_controlmessage)
         assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
 
-    def test_that_click_box_is_included_in_handshake(self, click_scene):
-        objects = get_click_configuration(click_scene)
 
-        message = MessageFactory.handshake_message_from_objects(objects, 0.03)
+@pytest.mark.integrationtest
+class Test_sensor_message_from_objects:
 
-        assert ValueType.Position in message.objects["box"].objectSensors
-        assert ValueType.RPY in message.objects["box"].objectSensors
-        assert message.objects["box"].objectSensors == [ValueType.Position, ValueType.RPY]
+    def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
+        robots = find_robots_in_scene(scene)
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+        assert str(message) == _sensor_facit
 
     def test_that_click_box_is_included_in_sensormessage(self, click_scene):
         objects = get_click_configuration(click_scene)
