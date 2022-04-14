@@ -84,7 +84,7 @@ SCENARIO("message declarations")
             {
                 assertEqual(ValueType::Force, protobuf::Force);
             }
-            THEN("Angle")
+            THEN("DirectionalTorque")
             {
                 assertEqual(ValueType::DirectionalTorque, protobuf::DirectionalTorque);
             }

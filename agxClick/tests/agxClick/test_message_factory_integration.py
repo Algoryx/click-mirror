@@ -83,6 +83,11 @@ class Test_sensor_message_from_objects:
 @pytest.mark.integrationtest
 class Test_update_robots_from_message:
 
+    def test_that_generating_sensormessage_drive_train_creates_correct_sensormessage(self, drive_train_scene):
+        robots = find_robots_in_scene(drive_train_scene)
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+        assert str(message) == _drive_train_facit
+
     def test_that_reading_position_controlmessage_updates_robots(self, scene):
         robots = find_robots_in_scene(scene)
         controlmessage = create_faked_controlmessage_for(robots)
@@ -157,6 +162,15 @@ class Test_sensor_message_from_objects:
 
         assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[0].force.arr == [0, 0, 0]
         assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[1].directionalTorque.arr == [0, 0, 0]
+
+    def test_that_drive_train_sensors_are_included_in_sensormessage(self, drive_train_scene):
+        robots = find_robots_in_scene(drive_train_scene)
+
+        message = MessageFactory.sensor_message_from_objects(robots, 1.0)
+
+        assert message.objects["robot"].sensors["engineAngle"].sensor[0].angle == 0.0
+        assert message.objects["robot"].sensors["engineTorque"].sensor[0].torque == 0.0
+        assert message.objects["robot"].sensors["engineVelocity"].sensor[0].angleVelocity == 0.0
 
 
 _handshake_facit = """messageType: HandshakeMessageType
@@ -249,6 +263,70 @@ objects {
         arr: 0.0
         arr: 0.0
         arr: -0.75
+      }
+    }
+  }
+}
+simVars {
+  simulatedTime: 1.0
+}
+"""
+
+_drive_train_facit = """messageType: SensorMessageType
+objects {
+  key: "robot"
+  value {
+    angleSensors: 0.0
+    angleSensors: 0.0
+    angleVelocitySensors: 0.0
+    angleVelocitySensors: 0.0
+    torqueSensors: 0.0
+    torqueSensors: 0.0
+    objectSensors {
+      position {
+        arr: 0.0
+        arr: 0.0
+        arr: 0.0
+      }
+    }
+    objectSensors {
+      rpy {
+        arr: 0.0
+        arr: 0.0
+        arr: 0.0
+      }
+    }
+    sensors {
+      key: "engineAngle"
+      value {
+        sensor {
+          angle: 0.0
+        }
+        sensor {
+          angle: 0.0
+        }
+      }
+    }
+    sensors {
+      key: "engineTorque"
+      value {
+        sensor {
+          torque: 0.0
+        }
+        sensor {
+          torque: 0.0
+        }
+      }
+    }
+    sensors {
+      key: "engineVelocity"
+      value {
+        sensor {
+          angleVelocity: 0.0
+        }
+        sensor {
+          angleVelocity: 0.0
+        }
       }
     }
   }
