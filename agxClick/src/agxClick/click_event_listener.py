@@ -60,10 +60,8 @@ class ClickFrameListener(ApplicationStepListener):
         self._server = Server(f"tcp://*:5555")
         self.control_queue: SimpleQueue[ControlMessage] = SimpleQueue()
         self.click_event_listener = ClickEventListener(self._server, self._click_objects, self.control_queue, self._on_exception)
-        highestPriority = 100
-        self._app.getSimulation().addEventListener(self.click_event_listener, highestPriority)
-        lowestPriority = 0
-        self._app.getSimulation().addEventListener(ClickOutputEventListener(self.click_event_listener), lowestPriority)
+        self._app.getSimulation().addEventListener(self.click_event_listener, agxSDK.EventManager.HIGHEST_PRIORITY)
+        self._app.getSimulation().addEventListener(ClickOutputEventListener(self.click_event_listener), agxSDK.EventManager.LOWEST_PRIORITY)
         self.num_controls_received = 0
 
     @property
