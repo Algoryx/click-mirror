@@ -17,6 +17,13 @@ def two_arm_scene(brickenv, pyroot):
     return brickenv.load_from_file(file_path, model_name)
 
 
+@pytest.fixture(scope="function")
+def suction_gripper_scene(brickenv, pyroot):
+    file_path = f"{pyroot}/testdata/MySuctionGripperRobot.yml"
+    model_name = "MySuctionGripperRobot"
+    return brickenv.load_from_file(file_path, model_name)
+
+
 @pytest.mark.integrationtest
 class Test_click_brick_reader:
 
@@ -67,6 +74,15 @@ class Test_click_brick_reader:
         assert robots[0].control_events()["gripper"].__class__ == Brick.Signal.AdhesiveForceInput
         assert robots[0].control_events()["gripper"].GetData() == 200.0
         assert robots[1].control_events()["gripper"].GetData() == 200.0
+
+    def test_that_robot_has_suction_gripper_vacuum_signals(self, suction_gripper_scene):
+        robots = find_robots_in_scene(suction_gripper_scene)
+        assert robots[0].has_control_events()
+        import Brick.Signal
+        assert robots[0].control_events()["pumpInputSignal"].__class__ == Brick.Signal.ComponentBoolInput
+        assert robots[0].control_events()["pumpInputSignal"].GetData() is True
+        assert robots[0].control_events()["pumpOutputSignal"].__class__ == Brick.Signal.ComponentBoolOutput
+        assert robots[0].control_events()["pumpOutputSignal"].GetData() is True
 
     def test_that_robot_grippers_are_enabled(self, scene):
         robots = find_robots_in_scene(scene)
