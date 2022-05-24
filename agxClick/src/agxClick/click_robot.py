@@ -180,7 +180,6 @@ class ClickRobot(ClickObject):
                 shortname = str(signal._ModelValuePath).rsplit('.', 1)[-1]
             self.logger.info(f"Configuring signal {signal._ModelValuePath} as controlEvent, will accept {shortname} in controlmessage for {self.name}")
             self.control_event_dict[shortname] = signal
-        # elif isinstance(signal, Brick.Signal.ComponentBoolInput, Brick.Signal.ComponentBoolOutput):
         elif signal.__class__ is Brick.Signal.ComponentBoolInput or \
                 signal.__class__ is Brick.Signal.ComponentBoolOutput:
             shortname = signal['name']
