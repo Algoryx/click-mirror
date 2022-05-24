@@ -23,8 +23,8 @@ setuptools.setup(
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     install_requires=[
-        'pClick>=0.1.8',
-        'agxBrick>=0.4.68'
+        'pClick>=0.1.29',
+        'agxBrick>=0.5.7'
     ],
     python_requires=">=3.6.9",
 )
