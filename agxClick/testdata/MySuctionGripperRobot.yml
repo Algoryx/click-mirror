@@ -1,0 +1,103 @@
+.format: 4
+# Testdata for DriveTrainJoint: A robot with one force and one velocity driven drivetrain joint
+
+.import:
+  Robotics: [Robot, RobotArm, Segment, RobotBase, Joint, HingeJoint, SignalType, Sensor]
+  Physics.Mechanics: [RigidBodyAttachment, HingeConnector, LockJointConnector]
+  Physics.Mechanics.HingeConnector: [RotationalActuatorHingeConnector]
+  MyRobot: [MyRobot]
+
+
+MyCupBody:
+  .extends: Physics.Mechanics.RigidBody
+  cylinder:
+    .type: Physics.Geometry.Cylinder
+    radius: 0.05
+    length: 0.01
+    localTransform:
+      position: Vec3(0,0,-0.005)
+      rotation: Quat.AngleAxis(90,Vec3(1,0,0))
+    
+  attachment:
+    .type: Physics.Mechanics.RigidBodyAttachment
+    localTransform:
+      position: Vec3(0,0,-0.06)
+
+MyCup:
+  .extends: AGXBrick.SuctionGripper.Cup
+  body: 
+    .value: MyCupBody
+    localTransform:
+      position: Vec3(0,0,0)
+    cylinder:
+      radius: this.lipRadius
+      length: this.lipHeight
+  lipRadius: 0.02
+  localLineSensorVector: Vec3(0,0,0.1)
+
+MyHolderBody:
+  .extends: Physics.Mechanics.RigidBody
+  
+  cupAttachment:
+    .type: Physics.Mechanics.RigidBodyAttachment
+    localTransform:
+      position: Vec3(0,0.04,0.005)
+
+HolderSegment:
+  .extends: Robotics.Segment
+  body: MyHolderBody
+  inputAttachment:
+    localTransform:
+      position: Vec3(0,0,-0.01)
+      rotation: Quat.AngleAxis(90, Vec3(1,0,0))
+  outputAttachment:
+    localTransform:
+      position: Vec3(0,0,1)
+      rotation: Quat.AngleAxis(90, Vec3(1,0,0))
+
+CupConnector:
+  .extends: Physics.Mechanics.LockJointConnector
+  mainInteraction:
+    stiffness6D:
+      defaultValue: 1E3
+      aroundTangent: 1E1
+      aroundNormal: 1E1
+      aroundCross: 1E1
+    damping6D:
+      defaultValue: 1E2
+      aroundTangent: 1E0
+      aroundNormal: 1E0
+      aroundCross: 1E0
+
+
+MyGripper:
+  .extends: AGXBrick.SuctionGripper
+  holderSegment: 
+    .type: HolderSegment
+    .value: HolderSegment
+  holder: this.holderSegment.body
+  cup:
+    .type: MyCup
+    connector:
+      .value: CupConnector
+      attachment1: this.holder.cupAttachment
+      attachment2: this.cup.body.attachment
+
+# Build a robot with the robot arm
+MySuctionGripperRobot:
+  .extends: MyRobot
+  wantInternalPositioning: true
+  arm1:
+    joint0:
+      protocolReference: Robot_joint0
+    joint1:
+      protocolReference: Robot_joint1
+  
+  gripper:
+    .type: MyGripper
+    .value: MyGripper
+
+  gripperLoc:
+    .type: Physics.Mechanics.LockJointConnector
+    attachment1: this.arm1.segment2.outputAttachment
+    attachment2: this.gripper.holderSegment.inputAttachment

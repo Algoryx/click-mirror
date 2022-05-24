@@ -35,7 +35,10 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
         else:
             raise Exception(f"Updating robot from controltype {robot.controlType()} has not been implemented")
         for key, enabled in control.controlEvents.items():
-            robot.control_events()[key].SetData(100.0 if enabled else 0.0)
+            if type(robot.control_events()[key].GetData()) == bool:
+                robot.control_events()[key].SetData(enabled)
+            else:
+                robot.control_events()[key].SetData(100.0 if enabled else 0.0)
 
 
 def validate_message(controlmessage, robot, values):
@@ -70,7 +73,9 @@ class MessageFactory:
                 Brick.Signal.TorqueVectorOutput: ValueType.DirectionalTorque,
                 Brick.Signal.RotatingBodyAngleOutput: ValueType.Angle,
                 Brick.Signal.RotatingBodyVelocityOutput: ValueType.AngleVelocity,
-                Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque
+                Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque,
+                Brick.Signal.ComponentBoolInput: ValueType.Activated,
+                Brick.Signal.ComponentBoolOutput: ValueType.Activated
 
             }
         return cls.typemap[type]
