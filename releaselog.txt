@@ -1,3 +1,7 @@
+0.1.30-SNAPSHOT
+- Require AGXBrick 0.5.7 or later
+- agxClick support Brick.Signals ComponentBoolInput and ComponentBoolOutput
+
 0.1.29
 - Require AGXBrick 0.5.4 or later.
 - agxClick support Brick.Signals RotatingBodyAngleOutput, RotatingBodyVelocityOutput and FixedVelocityEngineTorqueOutput.
