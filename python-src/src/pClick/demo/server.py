@@ -29,7 +29,9 @@ def main():
     server = Server(addr)
 
     while True:
-        request = server.recv_blocking()
+        request = server.recv()
+        if request is None:
+            continue
         if args.trace:
             print(f"Received request: {request}")
 
