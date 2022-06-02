@@ -35,25 +35,28 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
     }
     client.send(message);
     int slept = 0;
-    while(true)
-    {
-        unique_ptr<Message> response = client.receive(false);
-        if (response && slept)
+    try:
+        while(true)
         {
-            cout << "Would have blocked " << slept << " microseconds" << endl;
+            unique_ptr<Message> response = client.receive(false);
+            if (response && slept)
+            {
+                cout << "Would have blocked " << slept << " microseconds" << endl;
+            }
+            if (response)
+            {
+                return response;
+            }
+            else
+            {
+                using namespace std::this_thread;
+                using namespace std::chrono;
+                sleep_for(microseconds(100));
+                slept += 100;
+            }
         }
-        if (response)
-        {
-            return response;
-        }
-        else
-        {
-            using namespace std::this_thread;
-            using namespace std::chrono;
-            sleep_for(microseconds(100));
-            slept += 100;
-        }
-    }
+    catch (ex):
+        client.shutdown()
 }
 
 int main(int argc, char *argv[])
