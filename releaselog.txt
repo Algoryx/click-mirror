@@ -1,3 +1,6 @@
+0.1.31
+- DemoServer reacts to Ctrl-Break.
+
 0.1.30
 - Require AGXBrick 0.5.7 or later
 - agxClick support Brick.Signals ComponentBoolInput and ComponentBoolOutput
