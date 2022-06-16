@@ -64,6 +64,11 @@ def scene_forceinput(load_brick_scene):
 
 
 @pytest.fixture(scope="function")
+def scene_position_velocity_force_input(load_brick_scene):
+    return load_brick_scene("/testdata/MyScene.yml", "MyScenePositionVelocityForce")
+
+
+@pytest.fixture(scope="function")
 def scene_missing_protref(load_brick_scene):
     return load_brick_scene("/testdata/MissingProtRefScene.yml", "MyScene")
 

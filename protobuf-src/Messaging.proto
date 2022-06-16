@@ -83,11 +83,12 @@ message HandshakeMessage {
     
   message Object {
     repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
+    repeated ValueType controlTypesInOrder = 8;   // The controlTypes of each control in controlsInorder in the same order
     repeated string jointSensorsInOrder = 7;   // The sensors in the order they are expected in every SensorMessage
     repeated ValueType jointSensors = 2;       // sensor types per control (joints), indicates which vectors in SensorMessage are sent
     map<string, ValueType> controlEvents = 3;  // Which controls are optional, ie not present in every ControlMessage.
-                                               // Optionals will default to default scalar value. IE 0 for doubles, (0,0,0) for Vec3, false for activated, etc.
-                                               // (If the controller sends a value in first ControlMessage it will be used in first simulation step)
+    // Optionals will default to default scalar value. IE 0 for doubles, (0,0,0) for Vec3, false for activated, etc.
+    // (If the controller sends a value in first ControlMessage it will be used in first simulation step)
     map<string, Sensors> sensors = 4;          // Sensors per joint or other part
     repeated ValueType objectSensors = 6;      // The sensors that will be present for each object in a SensorMessage
   };

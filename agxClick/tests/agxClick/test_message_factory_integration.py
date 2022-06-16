@@ -64,11 +64,12 @@ class Test_handshake_message_from_objects:
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
 
-    # def test_that_generating_handshake_creates_individual_handshake_inputs(self, scene_position_velocity_force_input):
-    #     robots = find_robots_in_scene(scene_position_velocity_force_input)
-    #     import Brick.Signal
-    #     message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-    #     assert message.controlType == ValueType.Torque
+    def test_that_generating_handshake_creates_individual_handshake_inputs(self, scene_position_velocity_force_input):
+        robots = find_robots_in_scene(scene_position_velocity_force_input)
+        message = MessageFactory.handshake_message_from_objects(robots, 0.03)
+        # TODO: Make sure this is Multiple or something indicating many types
+        assert message.controlType == ValueType.Angle
+        assert str(message) == _handshake_multipleinputs_facit
 
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
@@ -215,6 +216,53 @@ objects {
     objectSensors: RPY
     jointSensorsInOrder: "robot2_joint0"
     jointSensorsInOrder: "robot2_joint1"
+  }
+}
+simSettings {
+  timeStep: 0.03
+}
+"""
+
+_handshake_multipleinputs_facit = """messageType: HandshakeMessageType
+version: CURRENT_VERSION
+objects {
+  key: "robot1"
+  value {
+    controlsInOrder: "robot1_joint0"
+    controlsInOrder: "robot1_joint1"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Torque
+    controlEvents {
+      key: "gripper"
+      value: Activated
+    }
+    objectSensors: Position
+    objectSensors: RPY
+    jointSensorsInOrder: "robot1_joint0"
+    jointSensorsInOrder: "robot1_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: AngleVelocity
+  }
+}
+objects {
+  key: "robot2"
+  value {
+    controlsInOrder: "robot2_joint0"
+    controlsInOrder: "robot2_joint1"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Torque
+    controlEvents {
+      key: "gripper"
+      value: Activated
+    }
+    objectSensors: Position
+    objectSensors: RPY
+    jointSensorsInOrder: "robot2_joint0"
+    jointSensorsInOrder: "robot2_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Torque
   }
 }
 simSettings {

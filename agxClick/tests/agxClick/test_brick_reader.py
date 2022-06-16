@@ -67,6 +67,15 @@ class Test_click_brick_reader:
         import Brick.Signal
         assert robots[0].controlType() == Brick.Signal.LockPositionInput
 
+    def test_that_robot_has_multiple_input_types(self, scene_position_velocity_force_input):
+        robots = find_robots_in_scene(scene_position_velocity_force_input)
+        robots[0].validate()
+        import Brick.Signal
+        assert robots[0].input_signals[0].__class__ == Brick.Signal.LockPositionInput
+        assert robots[0].input_signals[1].__class__ == Brick.Signal.MotorVelocityInput
+        assert robots[1].input_signals[0].__class__ == Brick.Signal.LockPositionInput
+        assert robots[1].input_signals[1].__class__ == Brick.Signal.MotorForceInput
+
     def test_that_robot_has_gripper(self, scene_positioninput):
         robots = find_robots_in_scene(scene_positioninput)
         assert robots[0].has_control_events()
