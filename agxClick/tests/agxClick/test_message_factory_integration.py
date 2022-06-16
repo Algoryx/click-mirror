@@ -30,7 +30,7 @@ def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=
 
 
 @pytest.mark.integrationtest
-class Test_sensor_message_from_objects:
+class Test_handshake_message_from_objects:
 
     @pytest.fixture(scope="class", autouse=True)
     def exec_from_brick_config_expected_path(self, request):
