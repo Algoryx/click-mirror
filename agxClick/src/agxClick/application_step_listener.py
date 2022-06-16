@@ -5,7 +5,7 @@ class ApplicationStepListener():
     def preFrame(self, time: float):
         pass
 
-    def update_scene(self, scene_positioninput):
+    def update_scene(self, scene):
         self._scene = scene
 
 
