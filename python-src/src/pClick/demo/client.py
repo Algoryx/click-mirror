@@ -56,9 +56,8 @@ client.connect(addr)
 
 if args.controlmessage:
     message = MessageFactory.create_controlmessage()
-    # Note: Below code uses the protobuf API directly, we recommend using the higher level agxClick ClickObject and ClickRobot instead
-    # to cushion client code from future protocol changes.
-    # The c++ Click API also has a wrapping layer that has the same cushioning effect.
+    # Note: Below code uses the protobuf API directly, which does not protect client code from future protocol changes.
+    # The C++ Click API has a client layer adding that protection that has not been implemented in python yet.
     robotargs = args.controlmessage.split(";")
     for arg in robotargs:
         robotname, *values = arg.split(":")

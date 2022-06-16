@@ -28,7 +28,10 @@ def main():
         addr = args.addr
     server = Server(addr)
 
+    # Note: Below code uses the protobuf API directly, we recommend using the higher level agxClick ClickObject and ClickRobot instead
+    # if possible - to protect client code from future protocol changes.
     while True:
+
         request = server.recv()
         if request is None:
             continue
