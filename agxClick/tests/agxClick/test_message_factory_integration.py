@@ -67,9 +67,11 @@ class Test_handshake_message_from_objects:
     def test_that_generating_handshake_creates_individual_handshake_inputs(self, scene_position_velocity_force_input):
         robots = find_robots_in_scene(scene_position_velocity_force_input)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        # TODO: Make sure this is Multiple or something indicating many types
-        assert message.controlType == ValueType.Angle
         assert str(message) == _handshake_multipleinputs_facit
+        # TODO: How do we indicate in a backward compatible way that message level controlType is deprecated?
+        # ValueType.Deprecated perhaps? Or ValueType.Invalid? Or ValueType.Multiple?
+        # It should be possible to diagnose that the field is no longer used.
+        assert message.controlType == ValueType.Angle
 
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
