@@ -34,15 +34,15 @@ class Test_click_brick_reader:
         yield
         chdir(request.config.invocation_dir)
 
-    def test_that_model_has_robots_with_arms(self, scene):
+    def test_that_model_has_robots_with_arms(self, scene_positioninput):
         import Brick.Robotics
-        assert len(scene['InternalComponents']) == 12, f"All recursive components not found"
-        assert scene['InternalComponents'][0].__class__ is Brick.Robotics.Robot
-        assert len(scene['InternalComponents'][0].Arms) == 1
-        assert len(scene['InternalComponents'][0].Arms[0].Joints) == 2
+        assert len(scene_positioninput['InternalComponents']) == 12, f"All recursive components not found"
+        assert scene_positioninput['InternalComponents'][0].__class__ is Brick.Robotics.Robot
+        assert len(scene_positioninput['InternalComponents'][0].Arms) == 1
+        assert len(scene_positioninput['InternalComponents'][0].Arms[0].Joints) == 2
 
-    def test_that_robot_has_jointnames(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_robot_has_jointnames(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         assert len(robots[0].brickrobot.Arms[0].Joints) == 2
         print(robots[0].brickrobot.Arms[0].Joints[0].ProtocolReference)
         assert "robot1_joint0" in robots[0].joint_protocolrefs()
@@ -61,14 +61,14 @@ class Test_click_brick_reader:
         import Brick.Signal
         assert robots[0].controlType() == Brick.Signal.MotorForceInput
 
-    def test_that_robot_has_position_input(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_robot_has_position_input(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         robots[0].validate()
         import Brick.Signal
         assert robots[0].controlType() == Brick.Signal.LockPositionInput
 
-    def test_that_robot_has_gripper(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_robot_has_gripper(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         assert robots[0].has_control_events()
         import Brick.Signal
         assert robots[0].control_events()["gripper"].__class__ == Brick.Signal.AdhesiveForceInput
@@ -84,19 +84,19 @@ class Test_click_brick_reader:
         assert robots[0].control_events()["pumpOutputSignal"].__class__ == Brick.Signal.ComponentBoolOutput
         assert robots[0].control_events()["pumpOutputSignal"].GetData() is True
 
-    def test_that_robot_grippers_are_enabled(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_robot_grippers_are_enabled(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         assert robots[0].control_events()["gripper"].GetData() == 200.0
         assert robots[1].control_events()["gripper"].GetData() == 200.0
 
-    def test_that_robot_has_pose(self, scene):
+    def test_that_robot_has_pose(self, scene_positioninput):
         import Brick.Math
-        robots = find_robots_in_scene(scene)
+        robots = find_robots_in_scene(scene_positioninput)
         assert robots[0].brickrobot.Transform.Position.__class__ == Brick.Math.Vec3
         assert robots[0].brickrobot.Transform.Rotation.__class__ == Brick.Math.Quat
 
-    def test_that_model_has_expected_topology(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_model_has_expected_topology(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         assert len(robots) == 2
         assert len(robots[0].input_signals) == 2
         assert str(robots[0]) == """name: robot1
@@ -115,8 +115,8 @@ class Test_click_brick_reader:
         objects = get_click_configuration(click_scene)
         assert len(objects) == 3
 
-    def test_that_scene_does_not_have_click_configuration(self, scene):
-        assert not has_click_configuration(scene)
+    def test_that_scene_does_not_have_click_configuration(self, scene_positioninput):
+        assert not has_click_configuration(scene_positioninput)
 
     def test_that_exception_raised_for_missing_protocolreference(self, scene_missing_protref):
         with pytest.raises(AssertionError) as excinfo:

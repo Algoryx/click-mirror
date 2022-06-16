@@ -2,8 +2,8 @@ from typing import List
 from agxClick import ClickObject, ClickRobot, BrickUtils
 
 
-def has_click_configuration(scene) -> bool:
-    return BrickUtils.get_component_attribute(scene, "clickobjects") is not None
+def has_click_configuration(scene_positioninput) -> bool:
+    return BrickUtils.get_component_attribute(scene_positioninput, "clickobjects") is not None
 
 
 def get_click_configuration(click_scene) -> List[ClickRobot]:
@@ -21,7 +21,7 @@ def get_click_configuration(click_scene) -> List[ClickRobot]:
     return objects
 
 
-def find_robots_in_scene(scene) -> List[ClickRobot]:
+def find_robots_in_scene(scene_positioninput) -> List[ClickRobot]:
     """
     Looks for Brick.Robotics.Robot:s in scene
     Will not look for ClickScene entry
@@ -42,7 +42,7 @@ def find_robots_in_scene(scene) -> List[ClickRobot]:
                 brick_robots.extend(find_robots(comp))
             return brick_robots
 
-    brick_robots = find_robots(scene)
+    brick_robots = find_robots(scene_positioninput)
     robots = []
     for brick_robot in brick_robots:
         robot = ClickRobot(brick_robot)

@@ -39,30 +39,36 @@ class Test_handshake_message_from_objects:
         yield
         chdir(request.config.invocation_dir)
 
-    def test_joints(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_joints(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         assert [x * 1.0 for x in range(1, robots[0].num_joints + 1)] == [1.0, 2.0]
 
-    def test_that_generating_handshake_creates_correct_handshake(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_generating_handshake_creates_correct_handshake(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert str(message) == _handshake_facit
 
-    def test_that_generating_handshake_creates_correct_handshake_velocity_input(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_generating_handshake_creates_correct_handshake_velocity_input(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         import Brick.Signal
         robots[0].input_signals = [Brick.Signal.MotorVelocityInput()] * len(robots[0].input_signals)
         robots[0].validate()
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.AngleVelocity
 
-    def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         import Brick.Signal
         robots[0].input_signals = [Brick.Signal.MotorForceInput()] * len(robots[0].input_signals)
         robots[0].validate()
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
+
+    # def test_that_generating_handshake_creates_individual_handshake_inputs(self, scene_position_velocity_force_input):
+    #     robots = find_robots_in_scene(scene_position_velocity_force_input)
+    #     import Brick.Signal
+    #     message = MessageFactory.handshake_message_from_objects(robots, 0.03)
+    #     assert message.controlType == ValueType.Torque
 
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
@@ -88,8 +94,8 @@ class Test_update_robots_from_message:
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
         assert str(message) == _drive_train_facit
 
-    def test_that_reading_position_controlmessage_updates_robots(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_reading_position_controlmessage_updates_robots(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         controlmessage = create_faked_controlmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
         assert "".join(str(robot) for robot in robots) == _updated_robots_str
@@ -120,8 +126,8 @@ class Test_update_robots_from_message:
         update_robots_from_message(robots, controlmessage)
         assert self.data_to_float(robots[0].input_signals) == [2, 4]
 
-    def test_that_reading_controlmessage_without_controlevent_skips_controlevent(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_reading_controlmessage_without_controlevent_skips_controlevent(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         assert robots[0].control_events()['gripper'].GetData() == 200.0
         assert robots[1].control_events()['gripper'].GetData() == 200.0
         controlmessage = create_faked_controlmessage_for(robots, add_control_event=False)
@@ -129,7 +135,7 @@ class Test_update_robots_from_message:
         assert robots[0].control_events()['gripper'].GetData() == 200.0
         assert robots[1].control_events()['gripper'].GetData() == 200.0
 
-    @pytest.mark.parametrize("the_scene", ["scene", "scene_velocityinput", "scene_forceinput"])
+    @pytest.mark.parametrize("the_scene", ["scene_positioninput", "scene_velocityinput", "scene_forceinput"])
     def test_that_missing_values_in_controlmessage_gives_informative_exception(self, the_scene, request):
         robots = find_robots_in_scene(request.getfixturevalue(the_scene))
         missing_robot = [robots[0]]
@@ -142,8 +148,8 @@ class Test_update_robots_from_message:
 @pytest.mark.integrationtest
 class Test_sensor_message_from_objects:
 
-    def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene):
-        robots = find_robots_in_scene(scene)
+    def test_that_generating_sensormessage_creates_correct_sensormessage(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
         assert str(message) == _sensor_facit
 

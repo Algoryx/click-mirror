@@ -49,7 +49,7 @@ def example5(load_brick_scene):
 
 
 @pytest.fixture(scope="function")
-def scene(load_brick_scene):
+def scene_positioninput(load_brick_scene):
     return load_brick_scene("/testdata/MyScene.yml", "MyScenePosition")
 
 

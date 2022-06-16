@@ -55,7 +55,7 @@ class ClickFrameListener(ApplicationStepListener):
             self._logger.warning("Scene is None, update_scene() must be called before first application step!")
             self._click_objects = None
         else:
-            self.update_scene(scene)
+            self.update_scene(scene_positioninput)
 
         self._server = Server(f"tcp://*:5555")
         self.control_queue: SimpleQueue[ControlMessage] = SimpleQueue()
@@ -72,11 +72,11 @@ class ClickFrameListener(ApplicationStepListener):
     def _state(self, new_state: States):
         self.click_event_listener.state = new_state
 
-    def update_scene(self, scene):
-        if (has_click_configuration(scene)):
-            self._click_objects: List[ClickObject] = get_click_configuration(scene)
+    def update_scene(self, scene_positioninput):
+        if (has_click_configuration(scene_positioninput)):
+            self._click_objects: List[ClickObject] = get_click_configuration(scene_positioninput)
         else:
-            self._click_objects: List[ClickObject] = find_robots_in_scene(scene)
+            self._click_objects: List[ClickObject] = find_robots_in_scene(scene_positioninput)
         self.click_event_listener._click_objects = self._click_objects
         self._retrieve_initial_values()
 
