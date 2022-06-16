@@ -67,6 +67,10 @@ class Test_handshake_message_from_objects:
     def test_that_generating_handshake_creates_individual_handshake_inputs(self, scene_position_velocity_force_input):
         robots = find_robots_in_scene(scene_position_velocity_force_input)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
+        assert message.objects["robot1"].controlTypesInOrder[0] == ValueType.Angle
+        assert message.objects["robot1"].controlTypesInOrder[1] == ValueType.AngleVelocity
+        assert message.objects["robot2"].controlTypesInOrder[0] == ValueType.Angle
+        assert message.objects["robot2"].controlTypesInOrder[1] == ValueType.Torque
         assert str(message) == _handshake_multipleinputs_facit
         # TODO: How do we indicate in a backward compatible way that message level controlType is deprecated?
         # ValueType.Deprecated perhaps? Or ValueType.Invalid? Or ValueType.Multiple?
