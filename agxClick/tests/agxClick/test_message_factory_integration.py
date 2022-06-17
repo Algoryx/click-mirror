@@ -7,6 +7,7 @@ from os import chdir
 from pytest import approx
 
 
+# Kept for backward compatibility test
 def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=True):
     """
     add_control_event, if True an event will be added with False for first robot, True for rest
@@ -23,6 +24,23 @@ def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=
             control.torques.extend([x * 3.0 for x in range(1, robot.num_joints + 1)])
         else:
             raise Exception(f"Faking {robot.controlType()} has not been implemented")
+        if (add_control_event):
+            for name in robot.control_events().keys():
+                control.controlEvents[name] = i
+    return control_m
+
+
+def create_faked_controlmessage_persignal_for(robots: List[ClickRobot], add_control_event=True):
+    """
+    add_control_event, if True an event will be added with False for first robot, True for rest
+    """
+    control_m = ProtoMessageFactory.create_controlmessage()
+    j = 1
+    for i, robot in enumerate(robots):
+        control = control_m.objects[robot.name]
+        for _ in robot.input_signals:
+            control.values.append(j * 1.3)
+            j += 1
         if (add_control_event):
             for name in robot.control_events().keys():
                 control.controlEvents[name] = i
@@ -64,7 +82,7 @@ class Test_handshake_message_from_objects:
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
 
-    def test_that_generating_handshake_creates_individual_handshake_inputs(self, scene_position_velocity_force_input):
+    def test_that_generating_handshake_creates_multiple_input_types(self, scene_position_velocity_force_input):
         robots = find_robots_in_scene(scene_position_velocity_force_input)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.objects["robot1"].controlTypesInOrder[0] == ValueType.Angle
@@ -75,7 +93,7 @@ class Test_handshake_message_from_objects:
         # TODO: How do we indicate in a backward compatible way that message level controlType is deprecated?
         # ValueType.Deprecated perhaps? Or ValueType.Invalid? Or ValueType.Multiple?
         # It should be possible to diagnose that the field is no longer used.
-        assert message.controlType == ValueType.Angle
+        assert message.controlType == ValueType.Deprecated
 
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
@@ -104,8 +122,21 @@ class Test_update_robots_from_message:
     def test_that_reading_position_controlmessage_updates_robots(self, scene_positioninput):
         robots = find_robots_in_scene(scene_positioninput)
         controlmessage = create_faked_controlmessage_for(robots)
+
         update_robots_from_message(robots, controlmessage)
-        assert "".join(str(robot) for robot in robots) == _updated_robots_str
+
+        assert "".join(str(robot) for robot in robots) == _updated_robots_same_input_types_facit
+
+    def test_that_reading_multiple_input_type_controlmessage_updates_robots(self, scene_position_velocity_force_input):
+        robots = find_robots_in_scene(scene_position_velocity_force_input)
+        controlmessage = create_faked_controlmessage_persignal_for(robots)
+        update_robots_from_message(robots, controlmessage)
+
+        # Explanation next line: Because we have not taken a simulation step, there is no output from GetData
+        robots[1].input_signals[1].GetData = lambda: robots[1].input_signals[1].Motor.MaxForce
+        assert robots[1].input_signals[1].GetData() == 5.2
+
+        assert "".join(str(robot) for robot in robots) == _updated_robots_multiple_input_types_facit
 
     def data_to_float(self, arr):
         res = list()
@@ -114,6 +145,10 @@ class Test_update_robots_from_message:
         return res
 
     def data_to_float_motorforce(self, arr):
+        """
+        Retrieve set force without taking a simulation step (there is no output from GetData)
+        # Ref: https://git.algoryx.se/algoryx/agx/-/issues/1101
+        """
         res = list()
         for val in arr:
             res.append(val.Motor.MaxForce)
@@ -123,8 +158,6 @@ class Test_update_robots_from_message:
         robots = find_robots_in_scene(scene_forceinput)
         controlmessage = create_faked_controlmessage_for(robots)
         update_robots_from_message(robots, controlmessage)
-        # TODO: When agxBrick with issue 1101 fixed is released, use data_to_float, it will implement GetData correctly
-        # Ref: https://git.algoryx.se/algoryx/agx/-/issues/1101
         assert self.data_to_float_motorforce(robots[0].input_signals) == [3, 6]
 
     def test_that_reading_velocity_controlmessage_updates_robots(self, scene_velocityinput):
@@ -204,6 +237,8 @@ objects {
     objectSensors: RPY
     jointSensorsInOrder: "robot1_joint0"
     jointSensorsInOrder: "robot1_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Angle
   }
 }
 objects {
@@ -222,6 +257,8 @@ objects {
     objectSensors: RPY
     jointSensorsInOrder: "robot2_joint0"
     jointSensorsInOrder: "robot2_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Angle
   }
 }
 simSettings {
@@ -231,6 +268,7 @@ simSettings {
 
 _handshake_multipleinputs_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION
+controlType: Deprecated
 objects {
   key: "robot1"
   value {
@@ -396,11 +434,12 @@ simVars {
 }
 """
 
-_updated_robots_str = """name: robot1
+_updated_robots_same_input_types_facit = """name: robot1
     num_joints: 2
     jointnames: ['robot1_joint0', 'robot1_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
-    2 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465]
+    2 input_types: ['Brick.Signal.LockPositionInput', 'Brick.Signal.LockPositionInput']
+    2 input_values: [57.29577951308232, 114.59155902616465]
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
@@ -409,7 +448,30 @@ name: robot2
     num_joints: 2
     jointnames: ['robot2_joint0', 'robot2_joint1']
     control input type: <class 'Brick.Signal.LockPositionInput'>
-    2 input_signals: Brick.Signal.LockPositionInput: [57.29577951308232, 114.59155902616465]
+    2 input_types: ['Brick.Signal.LockPositionInput', 'Brick.Signal.LockPositionInput']
+    2 input_values: [57.29577951308232, 114.59155902616465]
+    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
+    2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
+    2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
+    control events: ['gripper: 100.0']
+"""
+
+_updated_robots_multiple_input_types_facit = """name: robot1
+    num_joints: 2
+    jointnames: ['robot1_joint0', 'robot1_joint1']
+    control input type: None
+    2 input_types: ['Brick.Signal.LockPositionInput', 'Brick.Signal.MotorVelocityInput']
+    2 input_values: [74.48451336700703, 2.6]
+    2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
+    2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
+    2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]
+    control events: ['gripper: 0.0']
+name: robot2
+    num_joints: 2
+    jointnames: ['robot2_joint0', 'robot2_joint1']
+    control input type: None
+    2 input_types: ['Brick.Signal.LockPositionInput', 'Brick.Signal.MotorForceInput']
+    2 input_values: [223.45354010102108, 5.2]
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
     2 angle_sensors: Brick.Signal.MotorAngleOutput: [0.0, 0.0]
     2 velocity_sensors: Brick.Signal.MotorVelocityOutput: [0.0, 0.0]

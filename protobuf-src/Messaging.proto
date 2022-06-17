@@ -23,6 +23,7 @@ enum ValueType {
   Force = 7;               // Newton vec3
   DirectionalTorque = 8;   // Nm     vec3
   AngularAcceleration = 9; // rad/s2 vec3
+  Deprecated = 15;         // The value is deprecated - "use a newer version"
 }
 
 message Message {
@@ -97,7 +98,7 @@ message HandshakeMessage {
     double timeStep = 1;                       // Timestep of the simulation
   };
   
-  ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques
+  ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques. Deprecated - use controlTypesInOrder
   map<string, Object> objects = 4;            // Key is name of object/robot
   SimulationSettings simSettings = 5;
 }
@@ -121,9 +122,11 @@ message ControlMessage {
     // - needs controlEvent type anyway probably(?)
     // + can copy vectors more effectively, ie together with extend instead of individually
     // + fewer bytes in message
-    repeated double angles = 1;            // Present in every ControlMessage
-    repeated double angleVelocities = 2;   // Present in every ControlMessage
-    repeated double torques = 3;           // Present in every ControlMessage
+    // NOTE: Next four repeats are mutually exclusive!
+    repeated double angles = 1;            // Present in every ControlMessage. Deprecated - use values.
+    repeated double angleVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
+    repeated double torques = 3;           // Present in every ControlMessage. Deprecated - use values.
+    repeated double values = 5;            // Present in every ControlMessage. Must be correct type according to handshake.
     map<string, bool> controlEvents = 4;   // Optionals, if missing, keep same value as before
   };
 

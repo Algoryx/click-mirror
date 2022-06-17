@@ -2,6 +2,7 @@ from typing import Any, List, Tuple, Dict
 from agxClick import BrickUtils
 import logging
 import itertools
+from pClick import ValueType
 
 
 class ClickObject():
@@ -114,8 +115,12 @@ class ClickRobot(ClickObject):
             - Signal.MotorForceInput
             - Signal.MotorVelocityInput
         """
-        assert len(self.input_signals) > 0
-        return self.input_signals[0].__class__
+        assert len(self.input_signals) > 0, "No input signals"
+        types = {s.__class__ for s in self.input_signals}
+        if len(types) == 1:
+            return types.pop()
+        # TODO: Probably want to assert here, and provide has_control_type() or similar
+        return None
 
     def __str__(self):
         def classname(cls):
@@ -123,6 +128,9 @@ class ClickRobot(ClickObject):
 
         def values(signals):
             return list(map(lambda signal: signal.GetData(), signals))
+
+        def types(signals):
+            return list(map(lambda signal: classname(signal), signals))
 
         def signalstr(signals):
             if len(signals) == 0:
@@ -137,7 +145,8 @@ class ClickRobot(ClickObject):
     num_joints: {self.num_joints}
     jointnames: {self.joint_protocolrefs()}
     control input type: {self.controlType()}
-    {len(self.input_signals)} input_signals: {signalstr(self.input_signals)}
+    {len(self.input_signals)} input_types: {types(self.input_signals)}
+    {len(self.input_signals)} input_values: {values(self.input_signals)}
     {len(self.torque_sensors)} torque_sensors: {signalstr(self.torque_sensors)}
     {len(self.angle_sensors)} angle_sensors: {signalstr(self.angle_sensors)}
     {len(self.velocity_sensors)} velocity_sensors: {signalstr(self.velocity_sensors)}
