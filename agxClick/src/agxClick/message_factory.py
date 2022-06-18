@@ -1,5 +1,6 @@
 from typing import List, Any
 from agxClick import ClickRobot, BrickUtils
+from agxClick.click_robot import ClickObject
 from pClick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 import math
 
@@ -89,8 +90,6 @@ class MessageFactory:
                 Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque,
                 Brick.Signal.ComponentBoolInput: ValueType.Activated,
                 Brick.Signal.ComponentBoolOutput: ValueType.Activated,
-                # TODO: Not sure this is a good idea
-                None: ValueType.Deprecated
             }
         return cls.typemap[type]
 
@@ -122,14 +121,14 @@ class MessageFactory:
         return data
 
     @classmethod
-    def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
+    def handshake_message_from_objects(cls, objects: List[ClickObject], timeStep) -> HandshakeMessage:
         """
         Creates a HandshakeMessage from a list of robots
         """
         handshake = ProtoMessageFactory.create_handshake()
-        handshake.controlType = cls.to_click_control_type(robots[0].controlType())
+        handshake.controlType = cls.check_uniform_controltype(objects)
         handshake.simSettings.timeStep = timeStep
-        for robot in robots:
+        for robot in objects:
             object = handshake.objects[robot.name]
             if robot.is_robot():
                 object.controlsInOrder.extend(robot.joint_protocolrefs())
@@ -150,6 +149,17 @@ class MessageFactory:
             object.objectSensors.append(ValueType.Position)
             object.objectSensors.append(ValueType.RPY)
         return handshake
+
+    @classmethod
+    def check_uniform_controltype(cls, objects):
+        """
+        For backward compatibility we use the specific controlType if all signals are the same type
+        """
+        robots = list(filter(lambda robot: robot.is_robot(), objects))
+        control_types = {type for robot in robots for type in robot.control_types()}
+        if len(control_types) == 1:
+            return cls.to_click_control_type(robots[0].controlType())
+        return ValueType.Multiple
 
     @classmethod
     def sensor_message_from_objects(cls, robots: List[ClickRobot], simulated_time) -> SensorMessage:

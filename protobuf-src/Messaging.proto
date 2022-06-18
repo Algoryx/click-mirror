@@ -23,7 +23,7 @@ enum ValueType {
   Force = 7;               // Newton vec3
   DirectionalTorque = 8;   // Nm     vec3
   AngularAcceleration = 9; // rad/s2 vec3
-  Deprecated = 15;         // The value is deprecated - "use a newer version"
+  Multiple = 15;           // Multiple ValueType:s
 }
 
 message Message {

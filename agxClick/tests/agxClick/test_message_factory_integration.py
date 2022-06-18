@@ -70,6 +70,7 @@ class Test_handshake_message_from_objects:
         robots = find_robots_in_scene(scene_positioninput)
         import Brick.Signal
         robots[0].input_signals = [Brick.Signal.MotorVelocityInput()] * len(robots[0].input_signals)
+        robots[1].input_signals = [Brick.Signal.MotorVelocityInput()] * len(robots[0].input_signals)
         robots[0].validate()
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.AngleVelocity
@@ -78,6 +79,7 @@ class Test_handshake_message_from_objects:
         robots = find_robots_in_scene(scene_positioninput)
         import Brick.Signal
         robots[0].input_signals = [Brick.Signal.MotorForceInput()] * len(robots[0].input_signals)
+        robots[1].input_signals = [Brick.Signal.MotorForceInput()] * len(robots[0].input_signals)
         robots[0].validate()
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
@@ -89,11 +91,12 @@ class Test_handshake_message_from_objects:
         assert message.objects["robot1"].controlTypesInOrder[1] == ValueType.AngleVelocity
         assert message.objects["robot2"].controlTypesInOrder[0] == ValueType.Angle
         assert message.objects["robot2"].controlTypesInOrder[1] == ValueType.Torque
-        assert str(message) == _handshake_multipleinputs_facit
-        # TODO: How do we indicate in a backward compatible way that message level controlType is deprecated?
-        # ValueType.Deprecated perhaps? Or ValueType.Invalid? Or ValueType.Multiple?
-        # It should be possible to diagnose that the field is no longer used.
-        assert message.controlType == ValueType.Deprecated
+
+    def test_that_handshake_with_multiple_input_types_has_no_robot_controltype(self, scene_position_velocity_force_input):
+        robots = find_robots_in_scene(scene_position_velocity_force_input)
+        message = MessageFactory.handshake_message_from_objects(robots, 0.03)
+
+        assert message.controlType == ValueType.Multiple
 
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
@@ -266,53 +269,6 @@ simSettings {
 }
 """
 
-_handshake_multipleinputs_facit = """messageType: HandshakeMessageType
-version: CURRENT_VERSION
-controlType: Deprecated
-objects {
-  key: "robot1"
-  value {
-    controlsInOrder: "robot1_joint0"
-    controlsInOrder: "robot1_joint1"
-    jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Torque
-    controlEvents {
-      key: "gripper"
-      value: Activated
-    }
-    objectSensors: Position
-    objectSensors: RPY
-    jointSensorsInOrder: "robot1_joint0"
-    jointSensorsInOrder: "robot1_joint1"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: AngleVelocity
-  }
-}
-objects {
-  key: "robot2"
-  value {
-    controlsInOrder: "robot2_joint0"
-    controlsInOrder: "robot2_joint1"
-    jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Torque
-    controlEvents {
-      key: "gripper"
-      value: Activated
-    }
-    objectSensors: Position
-    objectSensors: RPY
-    jointSensorsInOrder: "robot2_joint0"
-    jointSensorsInOrder: "robot2_joint1"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: Torque
-  }
-}
-simSettings {
-  timeStep: 0.03
-}
-"""
 
 _sensor_facit = """messageType: SensorMessageType
 objects {
@@ -459,7 +415,7 @@ name: robot2
 _updated_robots_multiple_input_types_facit = """name: robot1
     num_joints: 2
     jointnames: ['robot1_joint0', 'robot1_joint1']
-    control input type: None
+    control input type: Multiple
     2 input_types: ['Brick.Signal.LockPositionInput', 'Brick.Signal.MotorVelocityInput']
     2 input_values: [74.48451336700703, 2.6]
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
@@ -469,7 +425,7 @@ _updated_robots_multiple_input_types_facit = """name: robot1
 name: robot2
     num_joints: 2
     jointnames: ['robot2_joint0', 'robot2_joint1']
-    control input type: None
+    control input type: Multiple
     2 input_types: ['Brick.Signal.LockPositionInput', 'Brick.Signal.MotorForceInput']
     2 input_values: [223.45354010102108, 5.2]
     2 torque_sensors: Brick.Signal.LockForceOutput: [0.0, 0.0]
