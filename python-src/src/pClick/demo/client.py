@@ -27,8 +27,8 @@ def parse_args():
                         help=f'Send sensor request message')
     parser.add_argument('--controlmessage', metavar='<value>', type=str, default=None,
                         help=f'send controlmessage with control values set to <value>. Overrides --handshake-init. Examples --controlmessage robot1:0,0;panda2:1,1')
-    parser.add_argument('--controltype', metavar='<value>', choices=["Angle", "AngleVelocity", "Torque"], default="Angle",
-                        help=f'How to interpret controlmessage values, ie Angle, AngleVelocity, or Torque. Default is Angle')
+    parser.add_argument('--controltype', metavar='<value>', choices=["Angle", "AngleVelocity", "Torque"], default=None,
+                        help=f'How to interpret controlmessage values, ie Angle, AngleVelocity, or Torque. Default is to interpret each value individually')
     parser.add_argument('--errormessage', dest='errormessage', action="store_true",
                         help=f'Send error message')
     parser.add_argument('--resetmessage', dest='resetmessage', action="store_true",
@@ -63,7 +63,9 @@ if args.controlmessage:
         robotname, *values = arg.split(":")
         robot = message.objects[robotname]
         arr = list(map(float, values[0].split(",")))
-        if args.controltype.lower() == "angle":
+        if args.controltype is None:
+            robot.values.extend(arr)
+        elif args.controltype.lower() == "angle":
             robot.angles.extend(arr)
         elif args.controltype.lower() == "anglevelocity":
             robot.angleVelocities.extend(arr)
