@@ -34,7 +34,7 @@ class States(Enum):
 # class ClickFrameListener(agxOSG.ExampleApplicationListener):
 class ClickFrameListener(ApplicationStepListener):
     def __init__(self, scene, app,
-                 on_stop: Callable[[], None] = noop, 
+                 on_stop: Callable[[], None] = noop,
                  on_exception: Callable[[Exception], None] = noop,
                  on_reset: Callable[[], None] = noop):
         """
@@ -55,7 +55,7 @@ class ClickFrameListener(ApplicationStepListener):
             self._logger.warning("Scene is None, update_scene() must be called before first application step!")
             self._click_objects = None
         else:
-            self.update_scene(scene_positioninput)
+            self.update_scene(scene)
 
         self._server = Server(f"tcp://*:5555")
         self.control_queue: SimpleQueue[ControlMessage] = SimpleQueue()
