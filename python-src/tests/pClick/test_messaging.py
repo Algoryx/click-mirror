@@ -5,7 +5,7 @@ from pClick import MessageFactory, MessageSerializer
 from pathlib import Path
 import pytest
 
-# See [Python Generated Code](https://developers.google.com/protocol-buffers/docs/reference/python-generated) 
+# See [Python Generated Code](https://developers.google.com/protocol-buffers/docs/reference/python-generated)
 # for details on how the generated protobuf code is used
 
 
@@ -60,15 +60,15 @@ def test_that_Handshake_props_are_set():
     handshake = handshake_message()
 
     message = MessageSerializer.from_bytes(handshake.SerializeToString())
-    assert len(handshake.SerializeToString()) == 90
+    assert len(handshake.SerializeToString()) == 94
 
-    assert message.controlType == ValueType.Force
+    assert message.controlType == ValueType.Multiple
     assert message.objects["robot"].controlsInOrder[1] == "joint2"
     assert message.objects["robot"].jointSensors[0] is ValueType.Angle
     assert message.objects["robot"].jointSensors[2] is ValueType.Torque
     assert str(message) == """messageType: HandshakeMessageType
 version: CURRENT_VERSION
-controlType: Force
+controlType: Multiple
 objects {
   key: "robot"
   value {
@@ -91,6 +91,8 @@ objects {
     objectSensors: Position
     jointSensorsInOrder: "joint1"
     jointSensorsInOrder: "joint2"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Torque
   }
 }
 """
@@ -98,11 +100,12 @@ objects {
 
 def handshake_message():
     handshake = MessageFactory.create_handshake()
-    handshake.controlType = ValueType.Force
+    handshake.controlType = ValueType.Multiple
     object = handshake.objects["robot"]
 
     object.controlsInOrder.extend(["joint1", "joint2"])
     object.jointSensorsInOrder.extend(["joint1", "joint2"])
+    object.controlTypesInOrder.extend([ValueType.Angle, ValueType.Torque])
     object.controlEvents["gripper"] = ValueType.Activated
     object.sensors["external_1"].types.extend([ValueType.Force, ValueType.AngularAcceleration])
     object.jointSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])

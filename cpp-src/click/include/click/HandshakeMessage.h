@@ -21,6 +21,7 @@ namespace click
 
     CLICK_EXPORT std::vector<std::string> objects() const;
     CLICK_EXPORT std::vector<std::string> controlsInOrder(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<ValueType> controlTypesInOrder(const std::string &objectname) const;
     CLICK_EXPORT std::vector<std::string> jointSensorsInOrder(const std::string &objectname) const;
     CLICK_EXPORT std::vector<ValueType> jointSensors(const std::string &objectname) const;
     CLICK_EXPORT std::vector<ValueType> sensors(const std::string &objectname, const std::string &sensorname) const;

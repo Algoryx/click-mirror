@@ -2,6 +2,7 @@ from typing import Any, List, Tuple, Dict
 from agxClick import BrickUtils
 import logging
 import itertools
+from pClick import ValueType
 
 
 class ClickObject():
@@ -108,14 +109,27 @@ class ClickRobot(ClickObject):
 
     def controlType(self):
         """
+        DEPRECATED: Use control_types()
         Returns how this robot expects to be controlled
         return a Brick.Signal.SignalBase, one of Brick.Signal.*Input, see https://brick:ien1ieh7Cithoohoh2AhNg0waingaigu@d2epgodm7v8ass.cloudfront.net/Introduction.html under Modules->Signal
             - Signal.LockPositionInput
             - Signal.MotorForceInput
             - Signal.MotorVelocityInput
         """
-        assert len(self.input_signals) > 0
-        return self.input_signals[0].__class__
+        control_types = set(self.control_types())
+        assert len(control_types) > 0, "Misconfiguration: Robot {self.name} has no input signals"
+        assert len(control_types) == 1, "Robot {self.name} has multiple controltypes - use control_types()"
+        return control_types.pop()
+
+    def control_types(self) -> List:
+        """
+        Returns how this robot expects to be controlled
+        return a List[Brick.Signal.SignalBase], one of Brick.Signal.*Input, see https://brick:ien1ieh7Cithoohoh2AhNg0waingaigu@d2epgodm7v8ass.cloudfront.net/Introduction.html under Modules->Signal
+            - Signal.LockPositionInput
+            - Signal.MotorForceInput
+            - Signal.MotorVelocityInput
+        """
+        return [s.__class__ for s in self.input_signals]
 
     def __str__(self):
         def classname(cls):
@@ -123,6 +137,9 @@ class ClickRobot(ClickObject):
 
         def values(signals):
             return list(map(lambda signal: signal.GetData(), signals))
+
+        def types(signals):
+            return list(map(lambda signal: classname(signal), signals))
 
         def signalstr(signals):
             if len(signals) == 0:
@@ -136,8 +153,9 @@ class ClickRobot(ClickObject):
         return f"""name: {self.name}
     num_joints: {self.num_joints}
     jointnames: {self.joint_protocolrefs()}
-    control input type: {self.controlType()}
-    {len(self.input_signals)} input_signals: {signalstr(self.input_signals)}
+    control input type: {self.controlType() if len(set(self.control_types())) == 1 else "Multiple"}
+    {len(self.input_signals)} input_types: {types(self.input_signals)}
+    {len(self.input_signals)} input_values: {values(self.input_signals)}
     {len(self.torque_sensors)} torque_sensors: {signalstr(self.torque_sensors)}
     {len(self.angle_sensors)} angle_sensors: {signalstr(self.angle_sensors)}
     {len(self.velocity_sensors)} velocity_sensors: {signalstr(self.velocity_sensors)}

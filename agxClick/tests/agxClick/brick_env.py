@@ -8,6 +8,7 @@ from agxPythonModules.utils.environment import create_or_set_script_context
 from agxBrickHosting import (
     init as brick_init,
     registerAgxSimulation,
+    unregisterAgxSimulation,
     getRegisteredAgxSimulation,
     locateBrickRootFromEnvironment,
 )
@@ -56,3 +57,22 @@ class BrickEnv():
         component = Component.CreateFromFile(file_path, model_name)
         self.brickSimulation.AddComponent(component)
         return component
+
+    def deinit(self):
+        """
+        If using many BrickEnv, e.g. in testing, you need to call deinit when done to not run out of the 
+        max 5 sim_names defined in find_brick_sim_name.
+
+        Alternatively use cleanup for a faster solution
+        """
+        unregisterAgxSimulation(self.brick_sim_name)
+
+    def cleanup(self):
+        """
+        If re-using the same BrickEnv, e.g. in testing, you need to call cleanup between usages to not have the
+        new agx simulation loaded on top of the old one.
+
+        Alternatively use deinit for a slower solution that creates a new simulation.
+        """
+        cleanup_mask = agxSDK.Simulation.SYSTEM + agxSDK.Simulation.SPACE
+        self.brickSimulation.AgxSimulation.cleanup(cleanup_mask)

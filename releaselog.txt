@@ -1,3 +1,8 @@
+0.1.32
+- Implemented support for multiple input signal values, i.e. Torque in one joint and Angles on another.
+- Deprecation warning on use of Control Type per scene in favor of Control Type per joint (C++ and python)
+- Deprecation warning on use of withAngles(), withAngleVelocities() and withTorques() in favor of withValues() (C++)
+
 0.1.31
 - DemoServer reacts to Ctrl-Break.
 

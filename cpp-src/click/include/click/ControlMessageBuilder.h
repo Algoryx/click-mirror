@@ -30,25 +30,38 @@ namespace click
     {
     public:
         /**
+         * Add per joint values to the current object
+         * This method can always be used in place of withAngles, withAngleVelocities, or withTorques
+         *
+         * \return a Builder
+         */
+        CLICK_EXPORT virtual AddControlEventBuilder *withValues(std::vector<double> values) = 0;
+        /**
+         * @deprecated use withValues
          * Add angles to the current object
+         * Can only be used when all Robot joints have the same input signal type
          *
          * \return a Builder
          */
         CLICK_EXPORT virtual AddControlEventBuilder *withAngles(std::vector<double> angles) = 0;
         /**
+         * @deprecated use withValues
          * Add angleVelocities to the current object
          *
          * \return a Builder
          */
         CLICK_EXPORT virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles) = 0;
         /**
+         * @deprecated use withValues
          * Add torques to the current object
+         * Can only be used when all Robot joints have the same input signal type
          *
          * \return a Builder
          */
         CLICK_EXPORT virtual AddControlEventBuilder *withTorques(std::vector<double> torques) = 0;
         /**
          * Build the message
+         * Can only be used when all Robot joints have the same input signal type
          *
          * \return a ControlMessage
          */
@@ -85,6 +98,7 @@ namespace click
     public:
         CLICK_EXPORT virtual AddControlBuilder *object(std::string name);
         CLICK_EXPORT virtual AddControlEventBuilder *withAngles(std::vector<double> angles);
+        CLICK_EXPORT virtual AddControlEventBuilder *withValues(std::vector<double> values);
         CLICK_EXPORT virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles);
         CLICK_EXPORT virtual AddControlEventBuilder *withTorques(std::vector<double> torques);
         CLICK_EXPORT virtual AddControlEventBuilder *withControlEvent(std::string name, bool activated);

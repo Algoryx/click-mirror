@@ -25,7 +25,8 @@ namespace click {
     Acceleration = 6,              // m/s2   vec3
     Force = 7,                     // Newton vec3
     DirectionalTorque = 8,         // Nm     vec3
-    AngularAcceleration = 9        // rad/s2 vec3
+    AngularAcceleration = 9,       // rad/s2 vec3
+    Multiple = 15                  // Multiple ValueType:s
   };
 
   class MessageSerializer;

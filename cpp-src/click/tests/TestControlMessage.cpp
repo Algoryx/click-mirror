@@ -20,8 +20,9 @@ SCENARIO("controlmessage serialization", "[click]")
         vector<double> angles = double_vector_from({1, 2, 3, 4, 5});
         vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
         vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
+        vector<double> values = double_vector_from({4, 5, 6, 7, 8});
 
-        WHEN("adding a robots with controls")
+        WHEN("adding a robot with angle controls")
         {
             unique_ptr<ControlMessage> controlMessage = ControlMessageBuilderImpl::builder()
                 ->object("robot1")
@@ -37,7 +38,23 @@ SCENARIO("controlmessage serialization", "[click]")
                 REQUIRE(controlMessage->controlEvent("robot1", "gripper2") == false);
             }
         }
-        WHEN("adding three robots with controls")
+        WHEN("adding a robot with per joint controls")
+        {
+            unique_ptr<ControlMessage> controlMessage = ControlMessageBuilderImpl::builder()
+                ->object("robot1")
+                    ->withValues(values)
+                    ->withControlEvent("gripper", true)
+                    ->withControlEvent("gripper2", false)
+                ->build();
+
+            THEN("it should have two grippers one activated and one not activated")
+            {
+                REQUIRE(controlMessage->messageType() == MessageType::ControlMessageType);
+                REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
+                REQUIRE(controlMessage->controlEvent("robot1", "gripper2") == false);
+            }
+        }
+        WHEN("adding three robots with different controls")
         {
             unique_ptr<ControlMessage> controlMessage = ControlMessageBuilderImpl::builder()
                 ->object("robot1")

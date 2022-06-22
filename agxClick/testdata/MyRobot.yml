@@ -82,7 +82,7 @@ MyRobotArm:
         constrainDof: true
     segment1: this.segment1
     segment2: this.segment2
-    inputSignalType: SignalType.InputVelocitySignal
+    inputSignalType: SignalType.InputPositionSignal
 
   segment1:
     .type: MySegment

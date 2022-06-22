@@ -18,6 +18,13 @@ vector<string> HandshakeMessage::controlsInOrder(const std::string &objectname) 
   return vector<string>(vec.begin(), vec.end());
 }
 
+vector<ValueType> HandshakeMessage::controlTypesInOrder(const std::string &objectname) const{
+  vector<ValueType> controlTypes;
+  for (auto &sensor : this->pm->objects().at(objectname).controltypesinorder())
+    controlTypes.push_back(static_cast<ValueType>(sensor));
+  return controlTypes;
+}
+
 vector<string> HandshakeMessage::jointSensorsInOrder(const std::string &objectname) const{
   auto vec = this->pm->objects().at(objectname).jointsensorsinorder();
   return vector<string>(vec.begin(), vec.end());

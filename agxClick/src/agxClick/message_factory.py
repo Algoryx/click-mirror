@@ -1,5 +1,6 @@
 from typing import List, Any
 from agxClick import ClickRobot, BrickUtils
+from agxClick.click_robot import ClickObject
 from pClick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 import math
 
@@ -8,11 +9,19 @@ def _identity(x):
     return x
 
 
-def _signals2float(targets: List, source: List[float], conversion_function=_identity):
+def _set_converted_signal_value(targets: List, source: List[float]):
     """
+    Set signal values
+    Converts Angle type values to degrees
     target is a list of Brick.Signal
     """
     for i, target in enumerate(targets):
+        control_type = MessageFactory.to_click_control_type(target.__class__)
+        if control_type == ValueType.Angle:
+            conversion_function = math.degrees
+        else:
+            conversion_function = _identity
+
         target.SetData(conversion_function(source[i]))
 
 
@@ -22,18 +31,23 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
     """
     for robot in filter(lambda object: object.is_robot(), robots):
         control = controlmessage.objects[robot.name]
-        control_type = MessageFactory.to_click_control_type(robot.controlType())
-        if control_type == ValueType.Angle:
-            validate_message(controlmessage, robot, control.angles)
-            _signals2float(robot.input_signals, control.angles, math.degrees)
-        elif control_type == ValueType.AngleVelocity:
-            validate_message(controlmessage, robot, control.angleVelocities)
-            _signals2float(robot.input_signals, control.angleVelocities)
-        elif control_type == ValueType.Torque:
-            validate_message(controlmessage, robot, control.torques)
-            _signals2float(robot.input_signals, control.torques)
+        if len(control.values):
+            validate_message(controlmessage, robot, control.values)
+            _set_converted_signal_value(robot.input_signals, control.values)
         else:
-            raise Exception(f"Updating robot from controltype {robot.controlType()} has not been implemented")
+            # For backward compatibility and possibly performance we still support these:
+            control_type = MessageFactory.to_click_control_type(robot.controlType())
+            if control_type == ValueType.Angle:
+                validate_message(controlmessage, robot, control.angles)
+                _set_converted_signal_value(robot.input_signals, control.angles)
+            elif control_type == ValueType.AngleVelocity:
+                validate_message(controlmessage, robot, control.angleVelocities)
+                _set_converted_signal_value(robot.input_signals, control.angleVelocities)
+            elif control_type == ValueType.Torque:
+                validate_message(controlmessage, robot, control.torques)
+                _set_converted_signal_value(robot.input_signals, control.torques)
+            else:
+                raise Exception(f"Updating robot from controltype {robot.controlType()} has not been implemented")
         for key, enabled in control.controlEvents.items():
             if type(robot.control_events()[key].GetData()) == bool:
                 robot.control_events()[key].SetData(enabled)
@@ -75,8 +89,7 @@ class MessageFactory:
                 Brick.Signal.RotatingBodyVelocityOutput: ValueType.AngleVelocity,
                 Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque,
                 Brick.Signal.ComponentBoolInput: ValueType.Activated,
-                Brick.Signal.ComponentBoolOutput: ValueType.Activated
-
+                Brick.Signal.ComponentBoolOutput: ValueType.Activated,
             }
         return cls.typemap[type]
 
@@ -108,17 +121,18 @@ class MessageFactory:
         return data
 
     @classmethod
-    def handshake_message_from_objects(cls, robots: List[ClickRobot], timeStep) -> HandshakeMessage:
+    def handshake_message_from_objects(cls, objects: List[ClickObject], timeStep) -> HandshakeMessage:
         """
         Creates a HandshakeMessage from a list of robots
         """
         handshake = ProtoMessageFactory.create_handshake()
-        handshake.controlType = cls.to_click_control_type(robots[0].controlType())
+        handshake.controlType = cls.check_uniform_controltype(objects)
         handshake.simSettings.timeStep = timeStep
-        for robot in robots:
+        for robot in objects:
             object = handshake.objects[robot.name]
             if robot.is_robot():
                 object.controlsInOrder.extend(robot.joint_protocolrefs())
+                object.controlTypesInOrder.extend(cls.to_click_control_types(robot.input_signals))
                 object.jointSensorsInOrder.extend(robot.joint_protocolrefs())
                 jointsensors = list()
                 if len(robot.angle_sensors) > 0:
@@ -135,6 +149,17 @@ class MessageFactory:
             object.objectSensors.append(ValueType.Position)
             object.objectSensors.append(ValueType.RPY)
         return handshake
+
+    @classmethod
+    def check_uniform_controltype(cls, objects):
+        """
+        For backward compatibility we use the specific controlType if all signals are the same type
+        """
+        robots = list(filter(lambda robot: robot.is_robot(), objects))
+        control_types = {type for robot in robots for type in robot.control_types()}
+        if len(control_types) == 1:
+            return cls.to_click_control_type(robots[0].controlType())
+        return ValueType.Multiple
 
     @classmethod
     def sensor_message_from_objects(cls, robots: List[ClickRobot], simulated_time) -> SensorMessage:

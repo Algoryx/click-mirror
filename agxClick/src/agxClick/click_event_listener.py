@@ -34,7 +34,7 @@ class States(Enum):
 # class ClickFrameListener(agxOSG.ExampleApplicationListener):
 class ClickFrameListener(ApplicationStepListener):
     def __init__(self, scene, app,
-                 on_stop: Callable[[], None] = noop, 
+                 on_stop: Callable[[], None] = noop,
                  on_exception: Callable[[Exception], None] = noop,
                  on_reset: Callable[[], None] = noop):
         """
@@ -72,11 +72,11 @@ class ClickFrameListener(ApplicationStepListener):
     def _state(self, new_state: States):
         self.click_event_listener.state = new_state
 
-    def update_scene(self, scene):
-        if (has_click_configuration(scene)):
-            self._click_objects: List[ClickObject] = get_click_configuration(scene)
+    def update_scene(self, scene_positioninput):
+        if (has_click_configuration(scene_positioninput)):
+            self._click_objects: List[ClickObject] = get_click_configuration(scene_positioninput)
         else:
-            self._click_objects: List[ClickObject] = find_robots_in_scene(scene)
+            self._click_objects: List[ClickObject] = find_robots_in_scene(scene_positioninput)
         self.click_event_listener._click_objects = self._click_objects
         self._retrieve_initial_values()
 
