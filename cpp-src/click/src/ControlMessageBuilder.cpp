@@ -24,6 +24,11 @@ AddControlEventBuilder *ControlMessageBuilderImpl::withAngles(vector<double> ang
     currObject->mutable_angles()->Assign(angles.begin(), angles.end());
     return this;
 }
+AddControlEventBuilder *ControlMessageBuilderImpl::withValues(vector<double> values)
+{
+    currObject->mutable_values()->Assign(values.begin(), values.end());
+    return this;
+}
 AddControlEventBuilder *ControlMessageBuilderImpl::withAngleVelocities(vector<double> angles)
 {
     currObject->mutable_anglevelocities()->Assign(angles.begin(), angles.end());

@@ -38,6 +38,12 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
                 REQUIRE_THAT(handshakeMessage->controlsInOrder("robot"), Equals(expected));
             }
 
+            THEN("it should contain controls types in order")
+            {
+                vector<ValueType> expected = {ValueType::Angle, ValueType::Torque};
+                REQUIRE_THAT(handshakeMessage->controlTypesInOrder("robot"), Equals(expected));
+            }
+
             THEN("it should contain jointSensors in order")
             {
                 vector<string> expected({"joint1", "joint2"});
@@ -80,7 +86,7 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
 
             THEN("it should contain controlType")
             {
-                REQUIRE(handshakeMessage->controlType() == ValueType::Force);
+                REQUIRE(handshakeMessage->controlType() == ValueType::Multiple);
             }
 
             THEN("it should output debug string")
