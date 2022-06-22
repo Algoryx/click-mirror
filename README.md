@@ -87,6 +87,28 @@ The same will happen when the Simulation is reset from simulation side, eg a use
 4. Client sends ControlMessage
 5. Server sends SensorMessage
 
+### HandshakeMessage
+
+The HandshakeMessage contains both
+
+- A Deprecated ControlType per scene
+- The new ControlType per joint
+
+Using ControlType per joint is preferred, but ControlType per scene is still supported but only **when all joint input signals are the same type**
+The server can always send ValueType.Multiple as ControlType, meaning client must check the Control Type of every joint.
+The server may (for backward compatibility) send ValueType.Angle, ValueType.AngleVelocity or ValueType.Torque if all joints have that same Control Type.
+
+Also see ControlMessage below!
+
+### ControlMessage
+
+The ControlMessage contains mutually exclusive
+
+- values - meaning each value may be of different type as specified in handshake
+- angles (Deprecated) - meaning all values are Angle values as specified in handshake
+- angleVelocities (Deprecated) - meaning all values are AngleVelocitiy values as specified in handshake
+- torques (Deprecated) - meaning all values are Torque values as specified in handshake
+
 ### Stepping the simulation
 
 The simulation is not started until after the first handshake is complete, ie when the first ControlMessage is received.
