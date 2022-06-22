@@ -71,8 +71,8 @@ class Test_handshake_message_from_objects:
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.AngleVelocity
 
-    def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_torqueinput):
-        robots = find_robots_in_scene(scene_torqueinput)
+    def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_forceinput):
+        robots = find_robots_in_scene(scene_forceinput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
 
