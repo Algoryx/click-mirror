@@ -66,21 +66,13 @@ class Test_handshake_message_from_objects:
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert str(message) == _handshake_facit
 
-    def test_that_generating_handshake_creates_correct_handshake_velocity_input(self, scene_positioninput):
-        robots = find_robots_in_scene(scene_positioninput)
-        import Brick.Signal
-        robots[0].input_signals = [Brick.Signal.MotorVelocityInput()] * len(robots[0].input_signals)
-        robots[1].input_signals = [Brick.Signal.MotorVelocityInput()] * len(robots[0].input_signals)
-        robots[0].validate()
+    def test_that_generating_handshake_creates_correct_handshake_velocity_input(self, scene_velocityinput):
+        robots = find_robots_in_scene(scene_velocityinput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.AngleVelocity
 
-    def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_positioninput):
-        robots = find_robots_in_scene(scene_positioninput)
-        import Brick.Signal
-        robots[0].input_signals = [Brick.Signal.MotorForceInput()] * len(robots[0].input_signals)
-        robots[1].input_signals = [Brick.Signal.MotorForceInput()] * len(robots[0].input_signals)
-        robots[0].validate()
+    def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_forceinput):
+        robots = find_robots_in_scene(scene_forceinput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.controlType == ValueType.Torque
 
