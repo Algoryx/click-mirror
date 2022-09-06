@@ -1,3 +1,6 @@
+0.1.33
+- Add retrieval of simulated time to SensorMessage API
+
 0.1.32
 - Implemented support for multiple input signal values, i.e. Torque in one joint and Angles on another.
 - Deprecation warning on use of Control Type per scene in favor of Control Type per joint (C++ and python)
