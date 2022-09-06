@@ -10,11 +10,6 @@ SensorMessage::SensorMessage(unique_ptr<protobuf::SensorMessage> sensorMessage)
   this->sensorMess = move(sensorMessage);
 };
 
-string SensorMessage::debugString() const
-{
-  return this->sensorMess->DebugString();
-}
-
 vector<double> SensorMessage::angles(const string &objectname) const
 {
 
@@ -28,10 +23,14 @@ vector<double> SensorMessage::angleVelocities(const string &objectname) const
   return vector<double>(vec.begin(), vec.end());
 }
 
-vector<double> SensorMessage::torques(const string &objectname) const
+string SensorMessage::debugString() const
 {
-  auto vec = this->sensorMess->objects().at(objectname).torquesensors();
-  return vector<double>(vec.begin(), vec.end());
+  return this->sensorMess->DebugString();
+}
+
+MessageType SensorMessage::messageType() const
+{
+  return static_cast<MessageType>(sensorMess->messagetype());
 }
 
 Vec3 SensorMessage::objectRPY(const string &objectname) const
@@ -65,6 +64,39 @@ inline void copy_n(const protobuf::SensorMessage_Vec3 &src, Vec3 &trg)
 inline Vec3 createFrom(const protobuf::SensorMessage_Vec3 &src)
 {
   return Vec3{src.arr().at(0), src.arr().at(1), src.arr().at(2)};
+}
+
+vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
+{
+  vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
+  auto target = res.begin();
+  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
+  {
+    if (sensor.has_acceleration())
+      copy_n(sensor.acceleration(), target->acceleration);
+    else if (sensor.has_activated())
+      target->activated = sensor.activated();
+    else if (sensor.has_angle())
+      target->angle = sensor.angle();
+    else if (sensor.has_anglevelocity())
+      target->angleVelocity = sensor.anglevelocity();
+    else if (sensor.has_angularacceleration())
+      copy_n(sensor.angularacceleration(), target->angularAcceleration);
+    else if (sensor.has_directionaltorque())
+      copy_n(sensor.directionaltorque(), target->directionalTorque);
+    else if (sensor.has_force())
+      copy_n(sensor.force(), target->force);
+    else if (sensor.has_position())
+      copy_n(sensor.position(), target->position);
+    else if (sensor.has_rpy())
+      copy_n(sensor.rpy(), target->rpy);
+    else if (sensor.has_torque())
+      target->torque = sensor.torque();
+    else
+      throw runtime_error("Return not implemented for " + sensor.DebugString());
+    target++;
+  }
+  return res;
 }
 
 Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const
@@ -108,43 +140,20 @@ bool SensorMessage::sensorBool(const std::string &objectname, const std::string 
     throw runtime_error("Not a bool: " + sensor.DebugString());
 }
 
-vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
+double SensorMessage::simulatedTime() const
 {
-  vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
-  auto target = res.begin();
-  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
-  {
-    if (sensor.has_acceleration())
-      copy_n(sensor.acceleration(), target->acceleration);
-    else if (sensor.has_activated())
-      target->activated = sensor.activated();
-    else if (sensor.has_angle())
-      target->angle = sensor.angle();
-    else if (sensor.has_anglevelocity())
-      target->angleVelocity = sensor.anglevelocity();
-    else if (sensor.has_angularacceleration())
-      copy_n(sensor.angularacceleration(), target->angularAcceleration);
-    else if (sensor.has_directionaltorque())
-      copy_n(sensor.directionaltorque(), target->directionalTorque);
-    else if (sensor.has_force())
-      copy_n(sensor.force(), target->force);
-    else if (sensor.has_position())
-      copy_n(sensor.position(), target->position);
-    else if (sensor.has_rpy())
-      copy_n(sensor.rpy(), target->rpy);
-    else if (sensor.has_torque())
-      target->torque = sensor.torque();
-    else
-      throw runtime_error("Return not implemented for " + sensor.DebugString());
-    target++;
-  }
-  return res;
+  return this->sensorMess->simvars().simulatedtime();
 }
 
-MessageType SensorMessage::messageType() const
+vector<double> SensorMessage::torques(const string &objectname) const
 {
-  return static_cast<MessageType>(sensorMess->messagetype());
+  auto vec = this->sensorMess->objects().at(objectname).torquesensors();
+  return vector<double>(vec.begin(), vec.end());
 }
+
+/*
+ * Privates
+ */
 
 string SensorMessage::serializeToBytes() const
 {

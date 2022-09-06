@@ -45,12 +45,9 @@ namespace click
      * \return a Vector of angle velocitities
      */
     CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
-    /**
-     * Get torques, if any, for the object with name objectname
-     *
-     * \return a Vector of torques
-     */
-    CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
+    
+    CLICK_EXPORT std::string debugString() const;
+    CLICK_EXPORT MessageType messageType() const;
 
     /**
      * Get rotation for the object with name objectname
@@ -74,8 +71,15 @@ namespace click
     CLICK_EXPORT Vec3 sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const;
     CLICK_EXPORT double sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const;
     CLICK_EXPORT bool sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const;
-    CLICK_EXPORT MessageType messageType() const;
-    CLICK_EXPORT std::string debugString() const;
+    CLICK_EXPORT double simulatedTime() const;
+
+    /**
+     * Get torques, if any, for the object with name objectname
+     *
+     * \return a Vector of torques
+     */
+    CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
+
     CLICK_EXPORT ~SensorMessage();
 
   private:

@@ -26,7 +26,11 @@ SCENARIO("sensormessage serialization from file", "[click]")
             THEN("it should have debugstring")
             {
                 REQUIRE_THAT(sensorMessage->debugString(), Contains("messageType: SensorMessageType"));
-                //     REQUIRE_THAT(sensorMessage->debugString(), Equals("SensorMessageType"));
+            }
+
+            THEN("it should contain simulated time")
+            {
+                REQUIRE(sensorMessage->simulatedTime() == 0.0);
             }
 
             THEN("robot1 should have angles")
