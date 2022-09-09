@@ -46,15 +46,17 @@ bool Client::send(const Message& message) const
 
 unique_ptr<Message> Client::receive(bool block)
 {
-  MessageSerializer serializer;
-  zmq::mutable_buffer buf;
   auto recv_flags = zmq::recv_flags::dontwait;
   if (block)
     recv_flags = zmq::recv_flags::none;
+
+  zmq::mutable_buffer buf;
   auto status = m_socket->recv(buf, recv_flags);
+
   if (status.has_value()) {
     string bytes;
     bytes.copy(static_cast<char*>(buf.data()), buf.size());
+    MessageSerializer serializer;
     return serializer.fromBytes(bytes);
   }
   else
