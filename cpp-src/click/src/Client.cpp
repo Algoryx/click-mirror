@@ -5,10 +5,7 @@
 #include <click/SensorMessage.h>
 #include <click/MessageSerializer.h>
 
-#pragma warning(push)
-#pragma warning(disable : 4005) // Macro redefinition in zmqpp
-#include <zmqpp/zmqpp.hpp>
-#pragma warning(pop)
+#include <zmq.hpp>
 
 #include <memory>
 
@@ -19,10 +16,10 @@ Client::Client()
 {
   // Verify protobuf version
   GOOGLE_PROTOBUF_VERIFY_VERSION;
-  m_context = std::make_unique<zmqpp::context>();
+  m_context = std::make_unique<zmq::context_t>();
 
-  zmqpp::socket_type type = zmqpp::socket_type::request;
-  m_socket = std::make_unique<zmqpp::socket>(*m_context, type);
+  zmq::socket_type type = zmq::socket_type::req;
+  m_socket = std::make_unique<zmq::socket_t>(*m_context, type);
 }
 
 void Client::connect(const std::string& endpoint) {
@@ -30,27 +27,36 @@ void Client::connect(const std::string& endpoint) {
 }
 
 bool Client::send(const std::string& bytes) const {
-  return m_socket->send(bytes);
+  return m_socket->send(zmq::buffer(std::string_view(bytes))).has_value();
 }
 
 bool Client::receive(std::string& responseBytes) const{
-  return m_socket->receive(responseBytes, true);
+  zmq::mutable_buffer buf;
+  auto res = m_socket->recv(buf, zmq::recv_flags::dontwait);
+  responseBytes.copy(static_cast<char*>(buf.data()), buf.size());
+  return res.has_value();
 }
 
 bool Client::send(const Message& message) const
 {
   MessageSerializer serializer;
   string bytes = serializer.serializeToString(message);
-  return m_socket->send(bytes);
+  return m_socket->send(zmq::buffer(std::string_view(bytes))).has_value();
 }
 
 unique_ptr<Message> Client::receive(bool block)
 {
   MessageSerializer serializer;
-  string bytes;
-  bool status = m_socket->receive(bytes, !block);
-  if (status)
+  zmq::mutable_buffer buf;
+  auto recv_flags = zmq::recv_flags::dontwait;
+  if (block)
+    recv_flags = zmq::recv_flags::none;
+  auto status = m_socket->recv(buf, recv_flags);
+  if (status.has_value()) {
+    string bytes;
+    bytes.copy(static_cast<char*>(buf.data()), buf.size());
     return serializer.fromBytes(bytes);
+  }
   else
     return unique_ptr<Message>();
 }

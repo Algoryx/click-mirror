@@ -30,7 +30,7 @@ include(${CONAN_CMAKE_LOCAL_FILE})
 conan_cmake_configure(
   REQUIRES 
     protobuf/3.17.1
-    zmqpp/4.2.0
+    cppzmq/4.8.1
   BUILD_REQUIRES
     protobuf/3.17.1
     catch2/2.13.7
