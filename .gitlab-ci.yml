@@ -233,7 +233,7 @@ publish-agxClick:
     - vs2019
   variables: 
     # Use project specific conan directory to cache between builds but not between projects
-    - CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
     - mkdir build
     - cd build
