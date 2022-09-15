@@ -60,8 +60,24 @@ unique_ptr<Message> Client::blockingReceive()
   return this->receive();
 }
 
-Client::~Client()
+void Client::terminate()
 {
+  cerr << "Terminating Click Client" << endl;
   m_socket->close();
   m_socket.reset();
+  m_context->terminate();
+  m_context.reset();
+}
+
+Client::~Client()
+{
+  cerr << "Destructing Click Client" << endl;
+  if (m_socket) {
+    m_socket->close();
+    m_socket.reset();
+  }
+  if (m_context) {
+    m_context->terminate();
+    m_context.reset();
+  }
 }

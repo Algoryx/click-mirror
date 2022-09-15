@@ -73,6 +73,13 @@ namespace click {
      */
     CLICK_EXPORT std::unique_ptr<Message> blockingReceive();
 
+    /**
+     * Shutdown ZMQ Sockets and Context
+     * Any subsequent calls to connect, send and/or receive will fail!
+     * NOTE: Calling terminate() is done automatically in destructor
+     */
+    CLICK_EXPORT void terminate();
+
     CLICK_EXPORT ~Client();
 
   private:
