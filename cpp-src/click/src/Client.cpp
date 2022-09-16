@@ -62,22 +62,26 @@ unique_ptr<Message> Client::blockingReceive()
 
 void Client::terminate()
 {
-  cerr << "Terminating Click Client" << endl;
-  m_socket->close();
-  m_socket.reset();
-  m_context->terminate();
-  m_context.reset();
+  if (m_socket)
+  {
+    m_socket->close();
+    m_socket.reset();
+  }
+  if (m_context)
+  {
+    m_context->terminate();
+    m_context.reset();
+  }
 }
 
 Client::~Client()
 {
-  cerr << "Destructing Click Client" << endl;
-  if (m_socket) {
-    m_socket->close();
-    m_socket.reset();
-  }
-  if (m_context) {
-    m_context->terminate();
-    m_context.reset();
+  try {
+    this->terminate();
+  } catch (exception &e) {
+    string what(e.what());
+    if (what.find("WSASTARTUP") != string::npos) {
+      cerr << "WSASTARTUP exception intercepted, did you declare Client as static? Do not use static, or if you must, call Client::terminate() before shutting down Windows Sockets" << endl;
+    }
   }
 }
