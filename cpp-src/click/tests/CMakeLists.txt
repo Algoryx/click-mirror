@@ -3,6 +3,7 @@ add_executable(click-tests)
 target_sources(click-tests
     PRIVATE
         CatchMain.cpp
+        TestClient.cpp
         TestControlMessage.cpp
         TestErrorMessage.cpp
         TestInithandshakeMessage.cpp

@@ -23,7 +23,7 @@ class Client
 {
   public:
     CLICK_EXPORT Client();
-
+  
     /**
      * Asynchronously connects to an endpoint.
      * Happily keep trying to connect until there is something there.
@@ -87,9 +87,12 @@ class Client
      * The reason this method is exposed is if Client is declared as static in a Windows application,
      * because if static the destructor will be called after Windows Sockets are shut down causing a "WSASTARTUP not yet performed" exception
      */
-    CLICK_EXPORT void terminate();
+    CLICK_EXPORT virtual void terminate();
 
     CLICK_EXPORT ~Client();
+
+  protected:
+    CLICK_EXPORT void terminateAndWSAWarn();
 
   private:
     std::unique_ptr<zmqpp::socket> m_socket;

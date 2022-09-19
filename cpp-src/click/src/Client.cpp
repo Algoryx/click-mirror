@@ -74,8 +74,7 @@ void Client::terminate()
   }
 }
 
-Client::~Client()
-{
+void Client::terminateAndWSAWarn() {
   try {
     this->terminate();
   } catch (exception &e) {
@@ -85,4 +84,9 @@ Client::~Client()
     }
     throw e;
   }
+}
+
+Client::~Client()
+{
+  this->terminateAndWSAWarn();
 }
