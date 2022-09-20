@@ -74,19 +74,7 @@ void Client::terminate()
   }
 }
 
-void Client::terminateAndWSAWarn() {
-  try {
-    this->terminate();
-  } catch (exception &e) {
-    string what(e.what());
-    if (what.find("WSASTARTUP") != string::npos) {
-      cerr << "WSASTARTUP exception intercepted, did you declare Client as static? Do not use static, or if you must, call Client::terminate() before shutting down Windows Sockets" << endl;
-    }
-    throw e;
-  }
-}
-
 Client::~Client()
 {
-  this->terminateAndWSAWarn();
+  this->terminate();
 }
