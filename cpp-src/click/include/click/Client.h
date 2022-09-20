@@ -85,7 +85,7 @@ class Client
      * 
      * NOTE: Calling terminate() is done automatically in destructor
      * The reason this method is exposed is if Client is declared as static in a Windows application,
-     * because if static the destructor will be called after Windows Sockets are shut down causing a "WSASTARTUP not yet performed" exception
+     * because if static the destructor will be called after Windows Sockets are shut down causing a "WSASTARTUP not yet performed" assertion
      */
     CLICK_EXPORT void terminate();
 

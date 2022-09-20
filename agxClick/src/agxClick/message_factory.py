@@ -56,7 +56,7 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
 
 
 def validate_message(controlmessage, robot, values):
-    assert len(robot.input_signals) == len(values), f"Missing values for {robot.name} in controlmessage, got {len(values)}/{len(robot.input_signals)} - {controlmessage}"
+    assert len(robot.input_signals) == len(values), f"Mismatching number of values for {robot.name} in controlmessage, got {len(values)} should be {len(robot.input_signals)} - {controlmessage}"
 
 
 class MessageFactory:

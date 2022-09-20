@@ -1,5 +1,5 @@
 0.1.34
-- Add terminate() to Client and helpful message when "WSASTARTUP not yet performed" exception occurs.
+- Add terminate() to Client and documentation for when "WSASTARTUP not yet performed" assertion occurs.
 
 0.1.33
 - Add retrieval of simulated time to SensorMessage API
