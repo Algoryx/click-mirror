@@ -177,7 +177,7 @@ class Test_update_robots_from_message:
         bad_controlmessage = create_faked_controlmessage_for(missing_robot)
         with pytest.raises(AssertionError) as excinfo:
             update_robots_from_message(robots, bad_controlmessage)
-        assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
+        assert "Mismatching number of values for robot2 in controlmessage, got 0 should be 2" in str(excinfo)
 
 
 @pytest.mark.integrationtest
