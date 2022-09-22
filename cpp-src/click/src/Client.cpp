@@ -60,8 +60,21 @@ unique_ptr<Message> Client::blockingReceive()
   return this->receive();
 }
 
+void Client::terminate()
+{
+  if (m_socket)
+  {
+    m_socket->close();
+    m_socket.reset();
+  }
+  if (m_context)
+  {
+    m_context->terminate();
+    m_context.reset();
+  }
+}
+
 Client::~Client()
 {
-  m_socket->close();
-  m_socket.reset();
+  this->terminate();
 }
