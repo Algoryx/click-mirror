@@ -36,7 +36,8 @@ class ClickFrameListener(ApplicationStepListener):
     def __init__(self, scene, app,
                  on_stop: Callable[[], None] = noop,
                  on_exception: Callable[[Exception], None] = noop,
-                 on_reset: Callable[[], None] = noop):
+                 on_reset: Callable[[], None] = noop,
+                 server: Server = None):
         """
         scene is the top Brick.Component of the scene
         app is the running ExampleApplication
@@ -44,6 +45,7 @@ class ClickFrameListener(ApplicationStepListener):
         on_stop is an optional function to call on ErrorMessage, ie when stopping application
         on_exception is an optional function to call when exception occurs
         on_reset is an optional function to call when a ResetMessage is received
+        server is an optional server to use instead of the default Server("tcp://*:5555")
         """
         super().__init__()
         self._logger = logging.getLogger(__file__)
@@ -57,7 +59,7 @@ class ClickFrameListener(ApplicationStepListener):
         else:
             self.update_scene(scene)
 
-        self._server = Server(f"tcp://*:5555")
+        self._server = server if server else Server(f"tcp://*:5555")
         self.control_queue: SimpleQueue[ControlMessage] = SimpleQueue()
         self.click_event_listener = ClickEventListener(self._server, self._click_objects, self.control_queue, self._on_exception)
         self._app.getSimulation().addEventListener(self.click_event_listener, agxSDK.EventManager.HIGHEST_PRIORITY)
