@@ -1,7 +1,6 @@
 stages:
   - prebuild
   - build
-  - build2
   - test
   - publish
 
