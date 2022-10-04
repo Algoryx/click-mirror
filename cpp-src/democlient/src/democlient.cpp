@@ -34,18 +34,25 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
         cout << "Sending " << message.debugString() << endl;
     }
     client.send(message);
+
+#ifndef _WIN32
     int slept = 0;
+#endif
+
     while(true)
     {
         unique_ptr<Message> response = client.receive(false);
+#ifndef _WIN32
         if (response && slept)
         {
             cout << "Would have blocked " << slept << " microseconds" << endl;
         }
+#endif
         if (response)
         {
             return response;
         }
+#ifndef _WIN32
         else
         {
             using namespace std::this_thread;
@@ -53,6 +60,7 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
             sleep_for(microseconds(100));
             slept += 100;
         }
+#endif
     }
 }
 
