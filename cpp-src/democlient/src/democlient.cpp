@@ -35,19 +35,17 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
     }
     client.send(message);
 
-#ifndef _WIN32
     int slept = 0;
-#endif
 
     while(true)
     {
         unique_ptr<Message> response = client.receive(false);
-#ifndef _WIN32
+
         if (response && slept)
         {
             cout << "Would have blocked " << slept << " microseconds" << endl;
         }
-#endif
+
         if (response)
         {
             return response;
