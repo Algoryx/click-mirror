@@ -55,8 +55,11 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
         {
             using namespace std::this_thread;
             using namespace std::chrono;
+            auto start = std::chrono::system_clock::now();
             sleep_for(microseconds(100));
-            slept += 100;
+            auto stop = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = stop-start;
+            slept += elapsed_seconds.count() * 1000000;
         }
 #endif
     }
