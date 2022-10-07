@@ -34,25 +34,34 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
         cout << "Sending " << message.debugString() << endl;
     }
     client.send(message);
+
     int slept = 0;
+
     while(true)
     {
         unique_ptr<Message> response = client.receive(false);
+
         if (response && slept)
         {
             cout << "Would have blocked " << slept << " microseconds" << endl;
         }
+
         if (response)
         {
             return response;
         }
+#ifndef _WIN32
         else
         {
             using namespace std::this_thread;
             using namespace std::chrono;
+            auto start = std::chrono::system_clock::now();
             sleep_for(microseconds(100));
-            slept += 100;
+            auto stop = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds = stop-start;
+            slept += elapsed_seconds.count() * 1000000;
         }
+#endif
     }
 }
 

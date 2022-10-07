@@ -1,4 +1,7 @@
 0.1.34
+- Remove sleep in democlient.cpp for windows builds to increase speed a lot on Windows which has low resolution sleep (~10 ms) only.
+
+0.1.34
 - Add terminate() to Client and documentation for when "WSASTARTUP not yet performed" assertion occurs.
 - Add --addr flag to ClickApplication to enable using ipc or different port than default one(5555). 
 
