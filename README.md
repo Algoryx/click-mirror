@@ -119,19 +119,19 @@ After that, the simulation is stepped once per message, except after a ResetMess
 - Python, all platforms: Go to [agxClick](agxClick/README.md#install) for python install instructions. If you only want click and not agxClick, then do:
 
 ```bash
-pip install pClick --extra-index-url https://click-access:LVSR4CNNupvPcRcZx3aL@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install pClick --extra-index-url https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
 ```
 
 - Linux Ubuntu 20.04 C++ libraries and binaries:
 
 ```bash
-wget --header "DEPLOY-TOKEN: LVSR4CNNupvPcRcZx3aL" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.34/click-shared-focal-amd64.deb"
+wget --header "DEPLOY-TOKEN: rCsE-NdRsaknXcceBPVM" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.34/click-shared-focal-amd64.deb"
 apt-get install -yf /tmp/click-shared-focal-amd64.deb
 ```
 
 - Windows C++ libraries and binaries
-  - [Download win32 zip](https://click-access:LVSR4CNNupvPcRcZx3aL@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.34/click-win32-0.1.34.zip)
-  - [Download x64 zip](https://click-access:LVSR4CNNupvPcRcZx3aL@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.34/click-x64-0.1.34.zip)
+  - [Download win32 zip](https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.34/click-win32-0.1.34.zip)
+  - [Download x64 zip](https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.34/click-x64-0.1.34.zip)
 
 ## Running Click democlient and demoserver
 
