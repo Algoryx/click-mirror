@@ -117,8 +117,8 @@ class ClickRobot(ClickObject):
             - Signal.MotorVelocityInput
         """
         control_types = set(self.control_types())
-        assert len(control_types) > 0, "Misconfiguration: Robot {self.name} has no input signals"
-        assert len(control_types) == 1, "Robot {self.name} has multiple controltypes - use control_types()"
+        assert len(control_types) > 0, f"Misconfiguration: Robot {self.name} has no input signals"
+        assert len(control_types) == 1, f"Robot {self.name} has multiple controltypes - use control_types()"
         return control_types.pop()
 
     def control_types(self) -> List:
