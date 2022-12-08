@@ -5,6 +5,7 @@
 #
 
 from pClick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
+from pClick.server import SizeCollector
 from argparse import ArgumentParser
 
 
@@ -18,7 +19,36 @@ def parse_args():
                         help=f'set addr. Ie ipc:///tmp/click.ipc. host and port will be ignored')
     parser.add_argument('--trace', action='store_true',
                         help=f'print what is sent/received')
+    parser.add_argument('--trace-sizes', action='store_true',
+                        help=f'print size of what is sent/received')
     return parser.parse_args()
+
+
+class SizeCollectorChanges(SizeCollector):
+    send_updated = False
+    recv_updated = False
+    _send_size = None
+    _recv_size = None
+
+    @property
+    def is_updated(self):
+        return self.recv_updated or self.send_updated
+
+    @property
+    def send_size(self):
+        return self._send_size
+
+    @property
+    def recv_size(self):
+        return self._recv_size
+
+    def sendSize(self, len: int):
+        self.send_updated = len != self._send_size
+        self._send_size = len
+
+    def recvSize(self, len: int):
+        self.recv_updated = len != self._recv_size
+        self._recv_size = len
 
 
 def main():
@@ -27,6 +57,8 @@ def main():
     if args.addr:
         addr = args.addr
     server = Server(addr)
+    if args.trace_sizes:
+        server.size_collector = SizeCollectorChanges()
 
     # Note: Below code uses the protobuf API directly, we recommend using the higher level agxClick ClickObject and ClickRobot instead
     # if possible - to protect client code from future protocol changes.
@@ -48,6 +80,8 @@ def main():
             if args.trace:
                 print(f"Sending sensormessage: {response}")
             server.send(response)
+        if args.trace_sizes and server.size_collector.is_updated:
+            print(f"Send size: {server.size_collector.send_size} Recv size: {server.size_collector.recv_size}")
 
 
 def handshake_message():
