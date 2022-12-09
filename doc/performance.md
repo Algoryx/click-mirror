@@ -77,11 +77,18 @@ bin/democlient --range 1000  1.36s user 3.08s system 26% cpu 16.648 total
 ### 248 Hz
 
 ```bash
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --disableClickSync -- -p
+Rendered 120 frames and 993 simulation steps, received 0 control messages
+simulated time: 4.00377596821636 Wall clock time: 4.2987220287323
+Wallclock sim freq: 231.0 Hz Wallclock framerate: 27.9
+
 bin/democlient --timings --range 993
-➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4 -- -p
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4 -- -p
 Rendered 118 frames and 993 simulation steps, received 993 control messages
 simulated time: 4.00377596821636 Wall clock time: 4.089172124862671
 Wallclock sim freq: 242.8 Hz Wallclock framerate: 28.9
+
+
 ```
 
 ### 500 Hz
@@ -99,3 +106,26 @@ Rendered 131 frames and 2000 simulation steps, received 2000 control messages
 simulated time: 4.000000189989805 Wall clock time: 4.457549095153809
 Wallclock sim freq: 448.7 Hz Wallclock framerate: 29.4
 ```
+
+## Conclusion
+
+Test                            | Wall clock
+--------------------------------|-----------
+248 Hz DisableClickSync         | 4.3 sek
+248 Hz democlient without sleep | 4.1 sek
+500 Hz DisableClickSync         | 4.3 sek
+500 Hz democlient without sleep | 4.5 sek
+
+### OSX
+
+On OSX click does not have a big impact on speed.
+At 500 Hz, the difference is within error limits
+
+### Windows
+
+Windows is waaay slower than OSX on this. Does not understand why yet.
+
+Sandra:
+Om jag kör samma som Markus körde, 250 Hz, 1000 steg, (4 sekunder simuleringstid) så får jag:
+Med --disableClickSync: 8.2 sek med getDataoch setData, 4 sekunder utan.
+Utan --disableClickSync: 12.2 sek med getDataoch setData, 8,4 sekunder utan.
