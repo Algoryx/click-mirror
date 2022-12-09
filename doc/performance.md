@@ -9,6 +9,10 @@ time bin/democlient > apa
 grep "Would have blocked" apa |sort -n|awk '{print $4}'|awk '{s+=$1} END {print s/10000.0}'
 # client.py
 python3 -m pClick.demo.client --controlmessage  --controltype Angle --range   0.56s user 0.40s system 42% cpu 2.237 total
+
+## profile
+
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --framerate 30 --trace-sizes --profile --profileFile waspwara.profile -- -p
 ```
 
 This

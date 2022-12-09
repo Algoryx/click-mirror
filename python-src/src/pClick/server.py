@@ -33,7 +33,9 @@ class SizeCollectorChanges(SizeCollector):
 
     @property
     def is_updated(self):
-        return self.recv_updated or self.send_updated
+        res = self.recv_updated or self.send_updated
+        self.send_updated = self.recv_updated = False
+        return res
 
     @property
     def send_size(self):
@@ -44,10 +46,12 @@ class SizeCollectorChanges(SizeCollector):
         return self._recv_size
 
     def sendSize(self, len: int):
+        assert len > 0
         self.send_updated = len != self._send_size
         self._send_size = len
 
     def recvSize(self, len: int):
+        assert len > 0
         self.recv_updated = len != self._recv_size
         self._recv_size = len
 
