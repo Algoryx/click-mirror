@@ -31,6 +31,7 @@ conan_cmake_configure(
   REQUIRES 
     protobuf/3.21.9
     zmqpp/4.2.0
+    argparse/2.9
   BUILD_REQUIRES
     protobuf/3.21.9
     catch2/2.13.7

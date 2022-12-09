@@ -1,6 +1,7 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <argparse/argparse.hpp>
 #include <click/Client.h>
 #include <click/ControlMessageBuilder.h>
 #include <click/HandshakeInitMessageBuilder.h>
@@ -65,10 +66,30 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
     }
 }
 
+argparse::ArgumentParser parseArgs(int argc, char** argv)
+{
+    argparse::ArgumentParser args("my_program");
+    args.add_argument("--trace")
+        .help("Print sent/recv messages")
+        .default_value(false)
+        .implicit_value(true);
+      args.add_argument("--addr")
+        .help("An alternate address to connect to, like ipc:///tmp/click.ipc")
+        .default_value(std::string("tcp://localhost:5555"));
+      args.add_argument("--range")
+        .help("How many extra messages to send/recv")
+        .default_value(0)
+        .scan<'i', int>();
+    args.parse_args(argc, argv);
+    return args;
+}
+
 int main(int argc, char *argv[])
 {
-    const string endpoint = "tcp://localhost:5555";
-//    const string endpoint = "tcp://host.docker.internal:5555";
+    auto args = parseArgs(argc, argv);
+    bool trace = args.get<bool>("trace");
+    const std::string endpoint = args.get<std::string>("addr");
+    int n = args.get<int>("range");
 
     // Verify protobuf version
     Client client;
@@ -89,9 +110,10 @@ int main(int argc, char *argv[])
             ->withAngles(angles)
         ->build();
 
-    cout << "Sending 1000 messages" << endl;
-    for(int i=0; i<1000;i++)
-        reply = sendReceive(client, *message, false);
+    cout << "Sending "<< n << " messages" << endl;
+    for(int i=0; i<n;i++)
+        reply = sendReceive(client, *message, trace);
+        // reply = sendReceiveBlocking(client, *message, false);
 
     cout << "Received " << reply->debugString() << endl;
 
