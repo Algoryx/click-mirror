@@ -25,6 +25,33 @@ class SizeCollectorSizes(SizeCollector):
         self.recv_sizes.add(len)
 
 
+class SizeCollectorChanges(SizeCollector):
+    send_updated = False
+    recv_updated = False
+    _send_size = None
+    _recv_size = None
+
+    @property
+    def is_updated(self):
+        return self.recv_updated or self.send_updated
+
+    @property
+    def send_size(self):
+        return self._send_size
+
+    @property
+    def recv_size(self):
+        return self._recv_size
+
+    def sendSize(self, len: int):
+        self.send_updated = len != self._send_size
+        self._send_size = len
+
+    def recvSize(self, len: int):
+        self.recv_updated = len != self._recv_size
+        self._recv_size = len
+
+
 class Server:
     def __init__(self, addr: str, size_collector=SizeCollector()):
         self.context = zmq.Context()
