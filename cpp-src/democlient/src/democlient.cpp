@@ -71,6 +71,10 @@ argparse::ArgumentParser parseArgs(int argc, char** argv)
         .help("Print sent/recv messages")
         .default_value(false)
         .implicit_value(true);
+    args.add_argument("--timings")
+        .help("Print timing info, e.g time spent in recv etc")
+        .default_value(false)
+        .implicit_value(true);
     // args.add_argument("--print-message-times")
     //     .help("Print time spent in recv")
     //     .default_value(false)
@@ -94,6 +98,7 @@ int main(int argc, char *argv[])
 {
     auto args = parseArgs(argc, argv);
     bool trace = args.get<bool>("trace");
+    bool timings = args.get<bool>("timings");
     bool blocking_receive = args.get<bool>("blocking-receive");
     const std::string endpoint = args.get<std::string>("addr");
     int n = args.get<int>("range");
@@ -118,6 +123,10 @@ int main(int argc, char *argv[])
         ->build();
 
     cout << "Sending "<< n << " messages" << endl;
+    auto start = std::chrono::system_clock::now();
+    recv_total = 0;
+    idling_total = 0;
+
     for(int i=0; i<n;i++) {
         if (blocking_receive)
             reply = sendReceiveBlocking(client, *message, trace);
@@ -125,11 +134,18 @@ int main(int argc, char *argv[])
             reply = sendReceive(client, *message, trace);
     }
 
+    auto stop = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = stop-start;
     if (trace)
         cout << "Received " << reply->debugString() << endl;
-    double tosecs = 1000000.0;
-    cout << "Receive took " << recv_total/tosecs << " secs in total " << recv_total/tosecs/n << " per roundtrip " << endl;
-    cout << "Idled betweeen send-recv for " << idling_total/tosecs << " secs in total " << idling_total/tosecs/n << " per roundtrip" << endl;
+    if (timings) {
+        double tosecs = 1000000.0;
+        cout << "Receive took " << recv_total/tosecs << " secs in total " << recv_total/tosecs/n << " per roundtrip " << endl;
+        cout << "Idled betweeen send-recv for " << idling_total/tosecs << " secs in total " << idling_total/tosecs/n << " per roundtrip" << endl;
+        cout << "Total time for " << n << " messages: " << elapsed.count() << " secs" << endl;
+    }
+
+
     // Optional according to https://developers.google.com/protocol-buffers/docs/cpptutorial
  //   google::protobuf::ShutdownProtobufLibrary();
 }
