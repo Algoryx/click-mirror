@@ -46,3 +46,45 @@ client.py -> server.py  IPC block   |                               | 1.8       
 # Bigger scenes
 
 When emulating WASPVARA scene, sending 210 bytes receiving 890 is around 2% slower than 160/215
+
+
+# Performance measure log
+
+```bash
+python3 -m pClick.demo.server
+time bin/democlient --range 10000
+Sending 10000 messages
+Receive took 0.318723 secs in total 3.18723e-05 per roundtrip
+Idled betweeen send-recv for 1.49206 secs in total 0.000149206 per roundtrip
+bin/democlient --range 10000  0.36s user 0.64s system 52% cpu 1.907 total
+
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --framerate 30 --trace-sizes -- -p
+time bin/democlient --range 1000
+Sending 1000 messages
+Receive took 0.059227 secs in total 5.9227e-05 per roundtrip
+Idled betweeen send-recv for 16.5428 secs in total 0.0165428 per roundtrip
+bin/democlient --range 1000  1.36s user 3.08s system 26% cpu 16.648 total
+```
+
+--> Roundrip utan simulering: 0.15 millisec --> 6702 Hz
+--> Roundtrip med waspvarasimulering: 16.54 millisec --> 60Hz
+--> En factor 110 alltså.
+--> Själva receiven tog dubbelt så lång tid mot waspwara. Det är samma datamängd men något mer komplex struktur från waspvara, så det kan vara så att serialiseringen tar längre tid.
+
+
+## Wasp wara
+
+
+```bash
+➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 --disableClickSync -- -p
+Rendered 120 frames and 2000 simulation steps, received 0 control messages
+Controller could not keep up with simulation! 2000 simulation steps taken without control message
+simulated time: 4.000000189989805 Wall clock time: 4.304728984832764
+Wallclock sim freq: 464.6 Hz Wallclock framerate: 27.9
+
+
+➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 -- -p
+Rendered 131 frames and 2000 simulation steps, received 2000 control messages
+simulated time: 4.000000189989805 Wall clock time: 4.457549095153809
+Wallclock sim freq: 448.7 Hz Wallclock framerate: 29.4
+```
