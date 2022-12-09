@@ -36,5 +36,13 @@ client.cpp -> server.py IPC block   |                               | 1.6       
 client.py -> server.py  TCP block   |                               | 2.3                 | 0.23             |
 client.py -> server.py  IPC block   |                               | 1.8                 | 0.23             |
 
-## TCP
+## Conclusions
 
+- The sleep takes a significant amount of time - don't use it.
+- Blocking comm vs nosleep non-blocking has no significant performance difference.
+- IPC is significantly faster
+- Removing prints makes a significant performance difference ~7%
+
+# Bigger scenes
+
+When emulating WASPVARA scene, sending 210 bytes receiving 890 is around 2% slower than 160/215
