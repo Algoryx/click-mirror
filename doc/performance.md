@@ -74,6 +74,17 @@ bin/democlient --range 1000  1.36s user 3.08s system 26% cpu 16.648 total
 
 ## Wasp wara
 
+### 248 Hz
+
+```bash
+bin/democlient --timings --range 993
+➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4 -- -p
+Rendered 118 frames and 993 simulation steps, received 993 control messages
+simulated time: 4.00377596821636 Wall clock time: 4.089172124862671
+Wallclock sim freq: 242.8 Hz Wallclock framerate: 28.9
+```
+
+### 500 Hz
 
 ```bash
 ➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 --disableClickSync -- -p
