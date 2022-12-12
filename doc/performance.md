@@ -12,7 +12,10 @@ python3 -m pClick.demo.client --controlmessage  --controltype Angle --range   0.
 
 ## profile
 
-/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --disableClickSync --profile --profileFile waspwara.profile
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --disableClickSync --profile --profileFile waspwara-nosync.profile
+
+time bin/democlient --timings --range 993
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --profile --profileFile waspwara-sync.profile
 ```
 
 This
@@ -47,29 +50,28 @@ client.py -> server.py  IPC block   |                               | 1.8       
 
 When emulating WASPVARA scene, sending 210 bytes receiving 890 is around 2% slower than 160/215
 
-
 # Performance measure log
 
 ```bash
 python3 -m pClick.demo.server
 time bin/democlient --range 10000
-Sending 10000 messages
-Receive took 0.318723 secs in total 3.18723e-05 per roundtrip
-Idled betweeen send-recv for 1.49206 secs in total 0.000149206 per roundtrip
-bin/democlient --range 10000  0.36s user 0.64s system 52% cpu 1.907 total
+Sending 1000 messages
+Receive took 0.033541 secs in total 3.3541e-05 per roundtrip
+Idled betweeen send-recv for 0.153801 secs in total 0.000153801 per roundtrip
+Total time for 1000 messages: 0.196399 secs
+bin/democlient --timings --range 1000  0.04s user 0.07s system 52% cpu 0.205 total
 
-/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --framerate 30 --trace-sizes -- -p
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --framerate 30 --trace-sizes --realTime 0
 time bin/democlient --range 1000
 Sending 1000 messages
-Receive took 0.059227 secs in total 5.9227e-05 per roundtrip
-Idled betweeen send-recv for 16.5428 secs in total 0.0165428 per roundtrip
-bin/democlient --range 1000  1.36s user 3.08s system 26% cpu 16.648 total
+Receive took 0.043621 secs in total 4.3621e-05 per roundtrip
+Idled betweeen send-recv for 2.69866 secs in total 0.00269866 per roundtrip
+Total time for 1000 messages: 2.77226 secs
 ```
 
---> Roundrip utan simulering: 0.15 millisec --> 6702 Hz
---> Roundtrip med waspvarasimulering: 16.54 millisec --> 60Hz
---> En factor 110 alltså.
---> Själva receiven tog dubbelt så lång tid mot waspwara. Det är samma datamängd men något mer komplex struktur från waspvara, så det kan vara så att serialiseringen tar längre tid.
+--> Roundrip utan simulering: 0.19 millisec --> 5091 Hz
+--> Roundtrip med waspvarasimulering: 2.77 millisec --> 361
+--> En factor 14 alltså.
 
 ## Wasp wara
 
@@ -109,22 +111,31 @@ Wallclock sim freq: 428.1 Hz Wallclock framerate: 29.1
 
 ## Conclusion
 
-Test                            | Wall clock OSX | Client recv idle
---------------------------------|----------------|-----------------
-248 Hz DisableClickSync         | 1.9 sek        | -
-248 Hz democlient without sleep | 2.8 sek        | 2.7
-500 Hz DisableClickSync         | 2.6 sek        | -
-500 Hz democlient without sleep | 4.7 sek        | 4.6
-
 ### OSX
 
-On OSX click seem to have a 47% increase in time, but client is idling.
+2020 MacBook Pro
+
+Test                                        | Wall clock OSX | Client recv idle
+--------------------------------------------|----------------|-----------------
+248 Hz DisableClickSync                     | 1.9 sek        | -
+248 Hz democlient without sleep             | 2.8 sek        | 2.7
+248 Hz DisableClickSync no graphics         | 1.5 sek        | -
+248 Hz democlient without sleep no graphics | 2.7 sek        | 2.6
+500 Hz DisableClickSync                     | 2.6 sek        | -
+500 Hz democlient without sleep             | 4.7 sek        | 4.6
+
+On OSX enabling sync means a 47% increase in time, but client is idling, i.e. waiting for simulation.
+Profiling shows 55% of increase is internal data transfer (Brick-AGX, not click). 20% is Click (protobuf, zmq).
 
 ### Windows
 
-Windows is waaay slower than OSX on this. Does not understand why yet.
+2022 Desktop
 
-Sandra:
-Om jag kör samma som Markus körde, 250 Hz, 1000 steg, (4 sekunder simuleringstid) så får jag:
-Med --disableClickSync: 8.2 sek med getDataoch setData, 4 sekunder utan.
-Utan --disableClickSync: 12.2 sek med getDataoch setData, 8,4 sekunder utan.
+Test                                        | Wall clock OSX | Client recv idle
+--------------------------------------------|----------------|-----------------
+248 Hz DisableClickSync                     | 2.5 sek        | -
+248 Hz democlient without sleep             | 2.5 sek        | 2.?
+248 Hz DisableClickSync no graphics         | 1.1 sek        | -
+248 Hz democlient without sleep no graphics | 1.5 sek        | 1.?
+
+Enabling sync means no significant increase in time, client is idling, i.e. waiting for simulation.
