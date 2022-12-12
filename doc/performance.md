@@ -119,6 +119,8 @@ Wallclock sim freq: 428.1 Hz Wallclock framerate: 29.1
 
 ### OSX
 
+No short term gains, but moving to C++ should increase the Brick-AGX data transfer performance, which probably come from poor implementation of pythondotnet on OSX.
+
 2020 MacBook Pro
 
 Test                                        | Wall clock OSX | Client recv idle
@@ -135,7 +137,21 @@ Profiling shows 55% of increase is internal data transfer (Brick-AGX, not click)
 
 ### Windows
 
-2022 Desktop
+Comparing ABB performance with ours, there is a big difference (328%) between 8.22 vs 2.5 sek, and 224% for no sync.
+We should look into why their performance is so much worse than ours.
+
+In the long run, we could look into using C++ protobuf from Python, or implement Click serverside completely in C++ when rebrick is mature.
+
+#### ABB Desktop(?)
+
+Test                            | Wall clock OSX
+--------------------------------|---------------
+248 Hz DisableClickSync         | 5.6 sek
+248 Hz democlient without sleep | 8.22 sek
+
+Enabling sync means 47% increase in wallclock time.
+
+#### 2022 Desktop
 
 Test                                        | Wall clock OSX | Client recv idle
 --------------------------------------------|----------------|-----------------
@@ -144,4 +160,7 @@ Test                                        | Wall clock OSX | Client recv idle
 248 Hz DisableClickSync no graphics         | 1.1 sek        | -
 248 Hz democlient without sleep no graphics | 1.5 sek        | 1.?
 
-Enabling sync means no significant increase in time, client is idling, i.e. waiting for simulation.
+The difference is only visible without graphics:
+Enabling sync means 64% increase in wallclock time.
+Profiling shows >39% of increase is from click, mainly protobuf in python(>31%). 9% of increase is Brick-AGX.
+We need to dig deeper to trace the rest of the increase (there is several other many small contributions from protobuf).
