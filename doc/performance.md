@@ -23,7 +23,7 @@ This
 
 10000 times.
 
-Results
+Results OSX
 what                                | client would block average ms | wall clock time [s] | ms per roundtrip | Improvement
 ------------------------------------|-------------------------------|---------------------|------------------|------------
 client.cpp -> server.py TCP 100ms   | 0.178                         | 2.5                 | 0.25             |
@@ -35,6 +35,12 @@ client.cpp -> server.py IPC nosleep | 0.243                         | 1.7       
 client.cpp -> server.py IPC block   |                               | 1.6                 | 0.16             |
 client.py -> server.py  TCP block   |                               | 2.3                 | 0.23             |
 client.py -> server.py  IPC block   |                               | 1.8                 | 0.23             |
+
+Results Win 210/890
+what                                | client would block average ms | wall clock time [s] | ms per roundtrip | Improvement
+------------------------------------|-------------------------------|---------------------|------------------|------------
+client.cpp -> server.py TCP nosleep   | -                         | 3.4              | 0.34           |
+
 
 ## Conclusions
 
