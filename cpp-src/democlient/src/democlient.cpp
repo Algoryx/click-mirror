@@ -18,8 +18,8 @@ inline vector<double> angles = double_vector_from({1, 2});
 inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
-int recv_total = 0;
-int idling_total = 0;
+std::chrono::microseconds recv_total;
+std::chrono::microseconds idling_total;
 
 
 unique_ptr<Message> sendReceiveBlocking(Client &client, const Message & message, bool trace = false)
@@ -31,7 +31,8 @@ unique_ptr<Message> sendReceiveBlocking(Client &client, const Message & message,
     auto start = std::chrono::system_clock::now();
     unique_ptr<Message> response = client.blockingReceive();
     auto stop = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_micros = stop-start;
+    auto last_receive = stop-start;
+    recv_total = std::chrono::duration_cast<std::chrono::microseconds>(last_receive);
     return response;
 }
 
@@ -51,8 +52,8 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
             auto stop = std::chrono::system_clock::now();
             auto last_receive = stop-recvstart;
             auto time_btw_send_recv = recvstart-start;
-            recv_total += last_receive.count();
-            idling_total += time_btw_send_recv.count();
+            recv_total += std::chrono::duration_cast<std::chrono::microseconds>(last_receive);
+            idling_total += std::chrono::duration_cast<std::chrono::microseconds>(time_btw_send_recv);
             return response;
         }
 #ifndef _WIN32
@@ -75,10 +76,6 @@ argparse::ArgumentParser parseArgs(int argc, char** argv)
         .help("Print timing info, e.g time spent in recv etc")
         .default_value(false)
         .implicit_value(true);
-    // args.add_argument("--print-message-times")
-    //     .help("Print time spent in recv")
-    //     .default_value(false)
-    //     .implicit_value(true);
     args.add_argument("--blocking-receive")
         .help("Do blocking receives instead of non-blocking")
         .default_value(false)
@@ -124,8 +121,8 @@ int main(int argc, char *argv[])
 
     cout << "Sending "<< n << " messages" << endl;
     auto start = std::chrono::system_clock::now();
-    recv_total = 0;
-    idling_total = 0;
+    recv_total = std::chrono::microseconds::zero();
+    idling_total = std::chrono::microseconds::zero();
 
     for(int i=0; i<n;i++) {
         if (blocking_receive)
@@ -135,14 +132,14 @@ int main(int argc, char *argv[])
     }
 
     auto stop = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed = stop-start;
+    auto elapsed = stop-start;
     if (trace)
         cout << "Received " << reply->debugString() << endl;
     if (timings) {
         double tosecs = 1000000.0;
-        cout << "Receive took " << recv_total/tosecs << " secs in total " << recv_total/tosecs/n << " per roundtrip " << endl;
-        cout << "Idled betweeen send-recv for " << idling_total/tosecs << " secs in total " << idling_total/tosecs/n << " per roundtrip" << endl;
-        cout << "Total time for " << n << " messages: " << elapsed.count() << " secs" << endl;
+        cout << "Receive took " << recv_total.count()/tosecs << " secs in total " << recv_total.count()/tosecs/n << " per roundtrip " << endl;
+        cout << "Idled betweeen send-recv for " << idling_total.count()/tosecs << " secs in total " << idling_total.count()/tosecs/n << " per roundtrip" << endl;
+        cout << "Total time for " << n << " messages: " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count()/tosecs << " secs" << endl;
     }
 
 
