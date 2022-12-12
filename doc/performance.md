@@ -12,7 +12,7 @@ python3 -m pClick.demo.client --controlmessage  --controltype Angle --range   0.
 
 ## profile
 
-/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --framerate 30 --trace-sizes --profile --profileFile waspwara.profile -- -p
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --disableClickSync --profile --profileFile waspwara.profile
 ```
 
 This
@@ -71,19 +71,18 @@ bin/democlient --range 1000  1.36s user 3.08s system 26% cpu 16.648 total
 --> En factor 110 alltså.
 --> Själva receiven tog dubbelt så lång tid mot waspwara. Det är samma datamängd men något mer komplex struktur från waspvara, så det kan vara så att serialiseringen tar längre tid.
 
-
 ## Wasp wara
 
-### 248 Hz
+### 248 Hz realtime
 
 ```bash
-/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --disableClickSync -- -p
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --disableClickSync
 Rendered 120 frames and 993 simulation steps, received 0 control messages
 simulated time: 4.00377596821636 Wall clock time: 4.2987220287323
 Wallclock sim freq: 231.0 Hz Wallclock framerate: 27.9
 
 bin/democlient --timings --range 993
-/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4 -- -p
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4 --realTime 0
 Rendered 118 frames and 993 simulation steps, received 993 control messages
 simulated time: 4.00377596821636 Wall clock time: 4.089172124862671
 Wallclock sim freq: 242.8 Hz Wallclock framerate: 28.9
@@ -94,32 +93,32 @@ Wallclock sim freq: 242.8 Hz Wallclock framerate: 28.9
 ### 500 Hz
 
 ```bash
-➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 --disableClickSync -- -p
-Rendered 120 frames and 2000 simulation steps, received 0 control messages
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 --realTime 0 --disableClickSync
+Rendered 98 frames and 2000 simulation steps, received 0 control messages
 Controller could not keep up with simulation! 2000 simulation steps taken without control message
-simulated time: 4.000000189989805 Wall clock time: 4.304728984832764
-Wallclock sim freq: 464.6 Hz Wallclock framerate: 27.9
+simulated time: 4.000000189989805 Wall clock time: 4.081348180770874
+Wallclock sim freq: 490.0 Hz Wallclock framerate: 24.0
 
+# Synced
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 --realTime 0
 
-➜  robotics-digital-lab git:(main) ✗ /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.002 --framerate 30 --stopAfter 4 -- -p
-Rendered 131 frames and 2000 simulation steps, received 2000 control messages
-simulated time: 4.000000189989805 Wall clock time: 4.457549095153809
-Wallclock sim freq: 448.7 Hz Wallclock framerate: 29.4
+Rendered 136 frames and 2000 simulation steps, received 2000 control messages
+simulated time: 4.000000189989805 Wall clock time: 4.672284841537476
+Wallclock sim freq: 428.1 Hz Wallclock framerate: 29.1
 ```
 
 ## Conclusion
 
-Test                            | Wall clock
---------------------------------|-----------
-248 Hz DisableClickSync         | 4.3 sek
-248 Hz democlient without sleep | 4.1 sek
-500 Hz DisableClickSync         | 4.3 sek
-500 Hz democlient without sleep | 4.5 sek
+Test                            | Wall clock OSX | Client recv idle
+--------------------------------|----------------|-----------------
+248 Hz DisableClickSync         | 1.9 sek        | -
+248 Hz democlient without sleep | 2.8 sek        | 2.7
+500 Hz DisableClickSync         | 2.6 sek        | -
+500 Hz democlient without sleep | 4.7 sek        | 4.6
 
 ### OSX
 
-On OSX click does not have a big impact on speed.
-At 500 Hz, the difference is within error limits
+On OSX click seem to have a 47% increase in time, but client is idling.
 
 ### Windows
 
