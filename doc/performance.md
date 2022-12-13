@@ -162,5 +162,5 @@ Test                                        | Wall clock OSX | Client recv idle
 
 The difference is only visible without graphics:
 Enabling sync means 64% increase in wallclock time.
-Profiling shows >39% of increase is from click, mainly protobuf in python(>31%). 9% of increase is Brick-AGX.
-We need to dig deeper to trace the rest of the increase (there is several other many small contributions from protobuf).
+Profiling shows ~70% of increase is from click, mainly protobuf in python(~52%). 9% of increase is Brick-AGX.
+8% is from within AGX and the rest from the python application.
