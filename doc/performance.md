@@ -137,8 +137,12 @@ Profiling shows 55% of increase is internal data transfer (Brick-AGX, not click)
 
 ### Windows
 
-Comparing ABB performance with ours, there is a big difference (328%) between 8.22 vs 2.5 sek, and 224% for no sync.
+Comparing ABB Windows performance with ours, there is a big difference (328%) between 8.22 vs 2.5 sek. 224% for no sync.
+It is also worse than both OSX and Linux laptops we tested with.
 We should look into why their performance is so much worse than ours.
+
+1. Test without graphics to see if graphic settings might be the cause
+2. If not, what is the big hardware difference?
 
 In the long run, we could look into using C++ protobuf from Python, or implement Click serverside completely in C++ when rebrick is mature.
 
@@ -151,7 +155,7 @@ Test                            | Wall clock OSX
 
 Enabling sync means 47% increase in wallclock time.
 
-#### 2022 Desktop
+#### 2022 Win Desktop
 
 Test                                        | Wall clock Windows | Client recv idle
 --------------------------------------------|--------------------|-----------------
@@ -164,3 +168,15 @@ The difference is only visible without graphics:
 Enabling sync means 64% increase in wallclock time.
 Profiling shows ~70% of increase is from click, mainly protobuf in python(~52%). 9% of increase is Brick-AGX.
 8% is from within AGX and the rest from the python application.
+
+#### 2020 Linux Laptop
+
+Test                                        | Wall clock Windows | Client recv idle
+--------------------------------------------|--------------------|-----------------
+248 Hz DisableClickSync                     | 5.2 sek            | -
+248 Hz democlient without sleep             | 7.59 sek           | 7.56
+248 Hz DisableClickSync no graphics         | 2.0 sek            | -
+248 Hz democlient without sleep no graphics | 3.50 sek           | 3.48
+
+On Linux enabling sync means a 63% increase in time, but client is idling, i.e. waiting for simulation.
+Profiling shows 52% of increase is internal data transfer (Brick-AGX, not click). 11% is Click (protobuf, zmq).
