@@ -42,7 +42,7 @@ client.py -> server.py  IPC block   |                               | 1.8       
 Results Win 210/890
 what                                | client would block average ms | wall clock time [s] | ms per roundtrip | Improvement
 ------------------------------------|-------------------------------|---------------------|------------------|------------
-client.cpp -> server.py TCP nosleep   | -                         | 3.4              | 0.34           |
+client.cpp -> server.py TCP nosleep | -                             | 3.4                 | 0.34             |
 
 
 ## Conclusions
@@ -153,12 +153,12 @@ Enabling sync means 47% increase in wallclock time.
 
 #### 2022 Desktop
 
-Test                                        | Wall clock OSX | Client recv idle
---------------------------------------------|----------------|-----------------
-248 Hz DisableClickSync                     | 2.5 sek        | -
-248 Hz democlient without sleep             | 2.5 sek        | 2.?
-248 Hz DisableClickSync no graphics         | 1.1 sek        | -
-248 Hz democlient without sleep no graphics | 1.5 sek        | 1.?
+Test                                        | Wall clock Windows | Client recv idle
+--------------------------------------------|--------------------|-----------------
+248 Hz DisableClickSync                     | 2.5 sek            | -
+248 Hz democlient without sleep             | 2.5 sek            | 2.?
+248 Hz DisableClickSync no graphics         | 1.1 sek            | -
+248 Hz democlient without sleep no graphics | 1.5 sek            | 1.?
 
 The difference is only visible without graphics:
 Enabling sync means 64% increase in wallclock time.
