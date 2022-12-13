@@ -58,6 +58,7 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
         }
 #ifndef _WIN32
         else {
+            // Uncomment next line to lower unecessary CPU usage, but be wary that it increases communication latency
             // std::this_thread::sleep_for(std::chrono::microseconds(100));
         }
 #endif
