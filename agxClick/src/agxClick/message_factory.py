@@ -30,7 +30,7 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
     Updates a list of robots from a controlmessage
     """
     for robot in filter(lambda object: object.is_robot(), robots):
-        # TODO: Might want to just return when this happens?
+        # NOTE: We could output warning and return, but we prefer to fail to prevent user missing the problem
         assert robot.name in controlmessage.objects, f"Robot {robot.name} not found in controlmessage - client probably sent wrong name"
         control = controlmessage.objects[robot.name]
         if len(control.values):

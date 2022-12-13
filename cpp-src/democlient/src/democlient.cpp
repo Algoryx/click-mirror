@@ -58,6 +58,7 @@ unique_ptr<Message> sendReceive(Client &client, const Message & message, bool tr
         }
 #ifndef _WIN32
         else {
+            // Uncomment next line to lower unecessary CPU usage, but be wary that it increases communication latency
             // std::this_thread::sleep_for(std::chrono::microseconds(100));
         }
 #endif
@@ -121,7 +122,7 @@ int main(int argc, char *argv[])
     recv_total = std::chrono::microseconds::zero();
     idling_total = std::chrono::microseconds::zero();
 
-    for(int i=0; i<n;i++) {
+    for(int i = 0; i < n; i++) {
         if (blocking_receive)
             reply = sendReceiveBlocking(client, *message, trace);
         else
