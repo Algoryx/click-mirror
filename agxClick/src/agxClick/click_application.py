@@ -1,5 +1,6 @@
 from agxClick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ResetBatchListener
 from pClick import Server
+from pClick.server import SizeCollector, SizeCollectorChanges
 from typing import Any, Callable, List
 import logging
 from agxClick.wallclock import WallClock
@@ -18,6 +19,7 @@ class ClickApplication(AgxApplication):
         self._click_frame_listener = None
         self._reset_batch_listener = None
         self.application_step_listeners: List[ApplicationStepListener] = []
+        self.server = None
 
     def run(self, buildScene: Callable[[], Any]):
         """
@@ -81,6 +83,8 @@ class ClickApplication(AgxApplication):
                 self._stop_application = True
             if self.args.stopAfter and self.sim.getClock().getTime() >= self.args.stopAfter:
                 self._stop_application = True
+            if self.args.trace_sizes and self.server.size_collector.is_updated:
+                print(f"Received {self.server.size_collector.recv_size} from client, Sent {self.server.size_collector.send_size} bytes to client")
 
         return num_frames, wall_clock
 
@@ -111,6 +115,8 @@ class ClickApplication(AgxApplication):
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")
         parser.add_argument('--stopAfter', type=float, default=None, help="Stop when this simulation time is reached")
         parser.add_argument('--stopAfterFrame', type=int, default=None, help="Stop when this number of simulation steps has been executed")
+        parser.add_argument('--trace-sizes', action='store_true',
+                            help=f'print size of what is sent/received')
         args, _ = parser.parse_known_args(args)
         return args
 
@@ -153,12 +159,13 @@ class ClickApplication(AgxApplication):
 
     def add_listeners(self):
         self._logger.info(f"Starting server on {self.args.addr}")
-        server = Server(self.args.addr)
+        size_collector = SizeCollectorChanges() if self.args.trace_sizes else SizeCollector()
+        self.server = Server(self.args.addr, size_collector)
         self._click_frame_listener = ClickFrameListener(scene=None, app=self.app,
                                                         on_stop=self.on_stop,
                                                         on_exception=self.on_exception,
                                                         on_reset=self.on_reset_message,
-                                                        server=server
+                                                        server=self.server
                                                         )
         self.application_step_listeners.append(self._click_frame_listener)
         if self.args.batch is not None:

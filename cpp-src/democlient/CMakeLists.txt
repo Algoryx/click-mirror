@@ -10,4 +10,5 @@ target_compile_features(democlient PRIVATE cxx_std_17)
 target_link_libraries(democlient
     PRIVATE
     click
+    CONAN_PKG::argparse
 )
