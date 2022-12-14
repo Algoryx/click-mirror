@@ -4,28 +4,22 @@ from abc import abstractmethod
 
 
 class SizeCollector:
+    """
+    A no operation SizeCollector.
+    """
 
     def sendSize(self, len: int):
         pass
 
     def recvSize(self, len: int):
         pass
-
-
-class SizeCollectorSizes(SizeCollector):
-
-    send_sizes = set()
-    recv_sizes = set()
-
-    def sendSize(self, len: int):
-        self.send_sizes.add(len)
-
-    @abstractmethod
-    def recvSize(self, len: int):
-        self.recv_sizes.add(len)
 
 
 class SizeCollectorChanges(SizeCollector):
+    """
+    A SizeCollector that enables retrieving changes in send/receive sizes.
+    is_updated() returns True if there is a change.
+    """
     send_updated = False
     recv_updated = False
     _send_size = None
@@ -33,6 +27,10 @@ class SizeCollectorChanges(SizeCollector):
 
     @property
     def is_updated(self):
+        """
+        Returns True if there is a change in send_size or recv_size.
+        Side effect: Resets change, i.e. calling is_updated() twice after change will yield True, then False.
+        """
         res = self.recv_updated or self.send_updated
         self.send_updated = self.recv_updated = False
         return res
