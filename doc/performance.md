@@ -180,3 +180,19 @@ Test                                        | Wall clock Windows | Client recv i
 
 On Linux enabling sync means a 63% increase in time, but client is idling, i.e. waiting for simulation.
 Profiling shows 52% of increase is internal data transfer (Brick-AGX, not click). 11% is Click (protobuf, zmq).
+
+
+#### 2017 Win Desktop
+
+Test                                        | Wall clock Windows
+--------------------------------------------|-------------------
+248 Hz DisableClickSync no graphics         | 1.9 sek
+248 Hz democlient without sleep no graphics | sek
+
+#### 2021 Win Desktop
+
+Test                                        | Wall clock Windows
+--------------------------------------------|-------------------
+248 Hz DisableClickSync                     | 4.1 sek
+248 Hz DisableClickSync no graphics         | 1.46 sek
+248 Hz democlient without sleep no graphics | 3.2
