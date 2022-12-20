@@ -77,7 +77,8 @@ void Client::terminate()
   }
   if (m_context)
   {
-    m_context->terminate();
+    m_context->shutdown();
+    m_context->close();
     m_context.reset();
   }
 }
