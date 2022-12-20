@@ -29,7 +29,7 @@ include(${CONAN_CMAKE_LOCAL_FILE})
 
 conan_cmake_configure(
   REQUIRES 
-    protobuf/3.17.1
+    protobuf/3.21.9
     cppzmq/4.8.1
     argparse/2.9
   BUILD_REQUIRES
