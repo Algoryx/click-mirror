@@ -31,8 +31,9 @@ conan_cmake_configure(
   REQUIRES 
     protobuf/3.17.1
     cppzmq/4.8.1
+    argparse/2.9
   BUILD_REQUIRES
-    protobuf/3.17.1
+    protobuf/3.21.9
     catch2/2.13.7
   GENERATORS
     cmake

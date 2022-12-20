@@ -1,6 +1,8 @@
-/build*
 __pycache__
-oos
 */src/*.egg-info
 */dist
-*/build
+oos*
+build*
+cmake-build*
+.idea
+.DS_Store

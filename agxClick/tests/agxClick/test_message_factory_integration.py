@@ -173,11 +173,21 @@ class Test_update_robots_from_message:
     @pytest.mark.parametrize("the_scene", ["scene_positioninput", "scene_velocityinput", "scene_forceinput"])
     def test_that_missing_values_in_controlmessage_gives_informative_exception(self, the_scene, request):
         robots = find_robots_in_scene(request.getfixturevalue(the_scene))
-        missing_robot = [robots[0]]
-        bad_controlmessage = create_faked_controlmessage_for(missing_robot)
+        robot0 = [robots[0]]
+        bad_controlmessage = create_faked_controlmessage_for(robot0)
+        # Add robot1 with no values
+        bad_controlmessage.objects[robots[1].name]
         with pytest.raises(AssertionError) as excinfo:
             update_robots_from_message(robots, bad_controlmessage)
-        assert "Missing values for robot2 in controlmessage, got 0/2" in str(excinfo)
+        assert "Mismatching number of values for robot2 in controlmessage, got 0 should be 2" in str(excinfo)
+
+    def test_that_missing_robot_in_controlmessage_gives_informative_exception(self, scene_positioninput):
+        robots = find_robots_in_scene(scene_positioninput)
+        robot0 = [robots[0]]
+        bad_controlmessage = create_faked_controlmessage_for(robot0)
+        with pytest.raises(AssertionError) as excinfo:
+            update_robots_from_message(robots, bad_controlmessage)
+        assert "Robot robot2 not found in controlmessage - client probably sent wrong name" in str(excinfo)
 
 
 @pytest.mark.integrationtest

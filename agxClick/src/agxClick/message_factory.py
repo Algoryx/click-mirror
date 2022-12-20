@@ -30,6 +30,8 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
     Updates a list of robots from a controlmessage
     """
     for robot in filter(lambda object: object.is_robot(), robots):
+        # NOTE: We could output warning and return, but we prefer to fail to prevent user missing the problem
+        assert robot.name in controlmessage.objects, f"Robot {robot.name} not found in controlmessage - client probably sent wrong name"
         control = controlmessage.objects[robot.name]
         if len(control.values):
             validate_message(controlmessage, robot, control.values)
@@ -56,7 +58,7 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
 
 
 def validate_message(controlmessage, robot, values):
-    assert len(robot.input_signals) == len(values), f"Missing values for {robot.name} in controlmessage, got {len(values)}/{len(robot.input_signals)} - {controlmessage}"
+    assert len(robot.input_signals) == len(values), f"Mismatching number of values for {robot.name} in controlmessage, got {len(values)} should be {len(robot.input_signals)} - {controlmessage}"
 
 
 class MessageFactory:

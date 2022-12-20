@@ -5,6 +5,7 @@
 #
 
 from pClick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
+from pClick.server import SizeCollectorChanges
 from argparse import ArgumentParser
 
 
@@ -18,6 +19,8 @@ def parse_args():
                         help=f'set addr. Ie ipc:///tmp/click.ipc. host and port will be ignored')
     parser.add_argument('--trace', action='store_true',
                         help=f'print what is sent/received')
+    parser.add_argument('--trace-sizes', action='store_true',
+                        help=f'print size of what is sent/received')
     return parser.parse_args()
 
 
@@ -27,6 +30,8 @@ def main():
     if args.addr:
         addr = args.addr
     server = Server(addr)
+    if args.trace_sizes:
+        server.size_collector = SizeCollectorChanges()
 
     # Note: Below code uses the protobuf API directly, we recommend using the higher level agxClick ClickObject and ClickRobot instead
     # if possible - to protect client code from future protocol changes.
@@ -48,6 +53,8 @@ def main():
             if args.trace:
                 print(f"Sending sensormessage: {response}")
             server.send(response)
+        if args.trace_sizes and server.size_collector.is_updated:
+            print(f"Received {server.size_collector.recv_size} from client, Sent {server.size_collector.send_size} bytes to client")
 
 
 def handshake_message():
@@ -69,9 +76,10 @@ def sensor_message():
     sensor_m = MessageFactory.create_sensormessage()
     robot = sensor_m.objects["robot1"]
 
-    robot.angleSensors.extend([1.0, 1.1])
-    robot.angleVelocitySensors.extend([2.0, 2.1])
-    robot.torqueSensors.extend([3.0, 3.1])
+    size = 2
+    robot.angleSensors.extend([1.0] * size)
+    robot.angleVelocitySensors.extend([2.0] * size)
+    robot.torqueSensors.extend([3.0] * size)
 
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()

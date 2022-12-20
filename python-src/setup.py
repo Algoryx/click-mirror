@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pClick",
-    version="0.1.33",
+    version="0.1.34",
     author="Algoryx Simulation",
     author_email="contact@algoryx.se",
     description="Controller to AGX messaging",
@@ -23,7 +23,7 @@ setuptools.setup(
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     install_requires=[
-        'protobuf==3.17.1',
+        'protobuf==3.20.3',
         'pyzmq==22.3.0'
     ],
     python_requires=">=3.6.9",
