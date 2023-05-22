@@ -229,6 +229,7 @@ publish-agxClick:
   stage: build
   tags:
     - windows
+    - x64
     - vs2019
   variables: 
     # Use project specific conan directory to cache between builds but not between projects
@@ -257,11 +258,17 @@ build-test-x64-cpp-lib-windows:
     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
 build-test-static-Win32-cpp-lib-windows:
+  tags:
+    - win32
+    - vs2019
   extends: .build-test-cpp-lib-windows
   variables:
     TARGET_ARCH: "Win32"
 
 build-test-dynamic-Win32-cpp-lib-windows:
+  tags:
+    - win32
+    - vs2019
   extends: .build-test-cpp-lib-windows
   variables:
     TARGET_ARCH: "Win32"
@@ -283,6 +290,9 @@ build-test-dynamic-Win32-cpp-lib-windows:
     - tags
 
 publish-dynamic-Win32-cpp-lib-windows:
+  tags:
+    - win32
+    - vs2019
   extends: .publish-cpp-lib-windows
   variables:
     PACKAGE_UPLOAD_NAME: click-win32

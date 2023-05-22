@@ -186,7 +186,7 @@ This section and below are for developers developing Click
 └──testdata
 ```
 
-### Build, test, and install click c++ library from source
+### Build, test, and install click c++ library from source on Linux/OSX
 
 NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install.
 
@@ -204,6 +204,19 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=
 ```
 
 `ninja click-tests && ninja test` will compile test dependencies and run tests in one step.
+
+### Build on Windows
+
+```bash
+cmake -B oos -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=oos/install -G "Visual Studio 17 2022" -A x64 cpp-src
+cmake --build oos --config Release --target INSTALL
+```
+
+or for shared library, add BUILD_SHARED_LIBS:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=ON ../cpp-src
+```
 
 ### Reset c++ builds
 
