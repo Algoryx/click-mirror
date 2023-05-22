@@ -29,8 +29,27 @@ time bin/democlient --timings --range 993
 /usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --profile --profileFile waspwara-sync.profile
 ```
 
-This
+## client.py
 
+<<<<<<< HEAD
+=======
+```bash
+time python3.9 -m pClick.demo.client --controlmessage "panda_tool:1,1,1,1,1,1,1;panda_2:1,1,1,1,1,1,1" --controltype Angle --range 9999
+0.58s user 0.41s system 42% cpu 2.325 total
+```
+
+### profile
+
+```bash
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --disableClickSync --profile --profileFile nosync.profile
+
+time bin/democlient --timings --range 993
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --profile --profileFile sync.profile
+```
+
+Payloads:
+
+>>>>>>> main
 - client.cpp sends ControlMessages payload of 210 bytes, recv 890 bytes
 - client.py sends ControlMessages payload of 155 bytes
 - recv SensorMessage payload of 215 bytes

@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument('--controlmessage', metavar='<value>', type=str, default=None,
                         help=f'send controlmessage with control values set to <value>. Overrides --handshake-init. Examples --controlmessage robot1:0,0;panda2:1,1')
     parser.add_argument('--controltype', metavar='<value>', choices=["Angle", "AngleVelocity", "Torque"], default=None,
-                        help=f'How to interpret controlmessage values, ie Angle, AngleVelocity, or Torque. Default is to interpret each value individually')
+                        help=f'How to interpret controlmessage values, ie Angle(radians), AngleVelocity(radians/sec), or Torque(Nm). Default is to interpret each value individually')
     parser.add_argument('--errormessage', dest='errormessage', action="store_true",
                         help=f'Send error message')
     parser.add_argument('--resetmessage', dest='resetmessage', action="store_true",

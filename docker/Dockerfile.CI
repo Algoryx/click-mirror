@@ -14,7 +14,8 @@ RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -qy \
   cmake && \
   rm -rf /var/lib/apt/lists/*
-RUN pip3 install -U conan
+# TODO: Upgrade to use conan 2.0, needs profile etc
+RUN pip3 install -U conan==1.*
 
 # Not needed yet, but might when using c#
 # RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
