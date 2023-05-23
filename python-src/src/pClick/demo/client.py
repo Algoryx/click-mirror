@@ -9,7 +9,7 @@ from pClick import MessageFactory
 from argparse import ArgumentParser
 
 from pClick.Messaging_pb2 import SensorMessageType
-
+from time import time
 
 def parse_args():
     parser = ArgumentParser(description='Demo client connecting to click server')
@@ -54,6 +54,8 @@ client = Client()
 print(f"Connecting to click server {addr}")
 client.connect(addr)
 
+start_time = time()
+
 if args.controlmessage:
     message = MessageFactory.create_controlmessage()
     # Note: Below code uses the protobuf API directly, which does not protect client code from future protocol changes.
@@ -94,7 +96,9 @@ print(f"Received response {response}")
 for i in range(0, args.range):
     client.send(message)
     response = client.recv()
-print(f"Sent {args.range + 1} messages")
+wall_time = time() - start_time
+freq = (args.range + 1) / wall_time
+print(f"Sent/received {args.range + 1} messages in {wall_time:.2f} seconds, ie {freq:.0f} Hz")
 
 if args.end_with_errormessage:
     send_errormessage(client)
