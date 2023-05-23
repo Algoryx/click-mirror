@@ -76,7 +76,7 @@ def sensor_message():
     sensor_m = MessageFactory.create_sensormessage()
     robot = sensor_m.objects["robot1"]
 
-    size = 30
+    size = 2
     robot.angleSensors.extend([1.0] * size)
     robot.angleVelocitySensors.extend([2.0] * size)
     robot.torqueSensors.extend([3.0] * size)
