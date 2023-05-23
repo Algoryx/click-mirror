@@ -14,7 +14,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-inline vector<double> angles = double_vector_from({0,-130.0/180.0*3.14, 30.0 / 180.0 * 3.14, 0, 0, 0,0 ,0  ,-130.0 / 180.0 * 3.14,0,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0,0,0,0,0});
+inline vector<double> angles = double_vector_from({1, 2});
 inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
@@ -113,8 +113,11 @@ int main(int argc, char *argv[])
 
     // Controlmessage
     message = ControlMessageBuilderImpl::builder()
-        ->object("mYuMi")
-            ->withValues(angles)
+        ->object("robot1")
+            ->withAngles(angles)
+            ->withControlEvent("gripper", true)
+        ->object("robot2")
+            ->withAngles(angles)
         ->build();
 
     cout << "Sending "<< n << " messages" << endl;
