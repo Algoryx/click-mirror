@@ -215,7 +215,8 @@ cmake --build oos --config Release --target INSTALL
 or for shared library, add BUILD_SHARED_LIBS:
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=ON ../cpp-src
+cmake -B oos -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=oos/install -G "Visual Studio 17 2022" -A x64 cpp-src
+cmake --build oos --config Release --target INSTALL
 ```
 
 ### Reset c++ builds
