@@ -88,7 +88,7 @@ argparse::ArgumentParser parseArgs(int argc, char** argv)
 }
 
 
-std::unique_ptr<SensorMessage> sensor_message() {
+std::unique_ptr<SensorMessage> build_sensor_message() {
     size_t size = 2;
     vector<double> values;
     for(int i=0; i<size; i++)
@@ -99,15 +99,14 @@ std::unique_ptr<SensorMessage> sensor_message() {
             ->withAngles(values)
             ->withAngleVelocities(values)
             ->withTorques(values)
+            // ->external_sensor("external_1")
+            //     ->withForce({4, 4.1, 4.2})
+            //     ->withAngularAcceleration({5, 5.1, 5.2})
         ->object("box")
             ->withPosition({1.0, 2.0, 3.0})
+            ->withRPY({4.0, 5.0, 6.0})
         ->build();
 
-    // box = sensor_m.objects["box"]
-    // sensor = box.objectSensors.add()
-    // sensor.position.arr.extend([1.0, 2.0, 3.0])
-    // sensor = box.objectSensors.add()
-    // sensor.rpy.arr.extend([4.0, 5.0, 6.0])
     // val = robot.sensors["external_1"].sensor.add()
     // val.force.arr.extend([4.0, 4.1, 4.2])
     // val = robot.sensors["external_1"].sensor.add()
@@ -129,7 +128,7 @@ int main(int argc, char *argv[])
     std::unique_ptr<Message> reply;
     server.bind(endpoint);
 
-    std::unique_ptr<ErrorMessage> error_message = ErrorMessageBuilder::builder()->build();
+    auto sensor_message = build_sensor_message();
 
     while(true) {
         if (blocking_receive)
@@ -145,7 +144,7 @@ int main(int argc, char *argv[])
             case MessageType::ControlMessageType:
                 if(trace)
                     std::cerr <<  "Got control message: " << std::endl;
-                server.send(*error_message);
+                server.send(*sensor_message);
                 break;
             default:
                 if(trace)

@@ -11,7 +11,7 @@ SensorMessageBuilderImpl::SensorMessageBuilderImpl(unique_ptr<protobuf::SensorMe
     this->message = std::move(control_m);
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::object(string name)
+AddSensorValuesBuilder *SensorMessageBuilderImpl::object(const string& name)
 {
     google::protobuf::Map<string, protobuf::SensorMessage_Object> *map = this->message->mutable_objects();
     // Allocate new object
@@ -20,26 +20,33 @@ AddSensorValuesBuilder *SensorMessageBuilderImpl::object(string name)
     return this;
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngles(vector<double> angles)
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngles(const vector<double>& angles)
 {
     currObject->mutable_anglesensors()->Assign(angles.begin(), angles.end());
     return this;
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::withPosition(vector<double> vec3)
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withPosition(const Vec3& vec3)
 {
     auto object_sensor = currObject->add_objectsensors();
     object_sensor->mutable_position()->mutable_arr()->Assign(vec3.begin(), vec3.end());
     return this;
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngleVelocities(vector<double> angles)
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withRPY(const Vec3& vec3)
+{
+    auto object_sensor = currObject->add_objectsensors();
+    object_sensor->mutable_rpy()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngleVelocities(const vector<double>& angles)
 {
     currObject->mutable_anglevelocitysensors()->Assign(angles.begin(), angles.end());
     return this;
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::withTorques(vector<double> torques)
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withTorques(const vector<double>& torques)
 {
     currObject->mutable_torquesensors()->Assign(torques.begin(), torques.end());
     return this;

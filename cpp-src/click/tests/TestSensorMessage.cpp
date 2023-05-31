@@ -37,6 +37,20 @@ SCENARIO("Sensormessage serialization", "[click]")
                 REQUIRE(SensorMessage->angles("robot1").size() == 5);
             }
         }
+        WHEN("adding a box with position and rpy")
+        {
+            unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
+                ->object("box")
+                    ->withPosition({1, 2, 3})
+                    ->withRPY({4, 5, 6})
+                ->build();
+
+            THEN("it should have values")
+            {
+                REQUIRE(SensorMessage->objectPosition("box") == Vec3{1, 2, 3});
+                REQUIRE(SensorMessage->objectRPY("box") == Vec3{4, 5, 6});
+            }
+        }
         WHEN("adding three robots with different controls")
         {
             unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()

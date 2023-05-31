@@ -21,18 +21,19 @@ namespace click
          *
          * \return a Builder
          */
-        CLICK_EXPORT virtual AddSensorValuesBuilder *object(std::string name) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *object(const std::string& name) = 0;
         CLICK_EXPORT virtual ~SensorMessageBuilder();
     };
 
     class AddSensorValuesBuilder
     {
     public:
-        CLICK_EXPORT virtual AddSensorValuesBuilder *object(std::string name) = 0;
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngles(std::vector<double> angles) = 0;
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngleVelocities(std::vector<double> angles) = 0;
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withTorques(std::vector<double> torques) = 0;
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withPosition(std::vector<double> vec3) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *object(const std::string& name) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngles(const std::vector<double>& angles) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngleVelocities(const std::vector<double>& angles) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withTorques(const std::vector<double>& torques) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withPosition(const Vec3& vec3) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withRPY(const Vec3& vec3) = 0;
         CLICK_EXPORT virtual std::unique_ptr<SensorMessage> build() = 0;
         CLICK_EXPORT virtual ~AddSensorValuesBuilder();
     };
@@ -40,11 +41,12 @@ namespace click
     class SensorMessageBuilderImpl : SensorMessageBuilder, AddSensorValuesBuilder
     {
     public:
-        CLICK_EXPORT virtual AddSensorValuesBuilder *object(std::string name);
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngles(std::vector<double> angles);
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngleVelocities(std::vector<double> angles);
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withTorques(std::vector<double> torques);
-        CLICK_EXPORT virtual AddSensorValuesBuilder *withPosition(std::vector<double> vec3);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *object(const std::string& name);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngles(const std::vector<double>& angles);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withAngleVelocities(const std::vector<double>& angles);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withTorques(const std::vector<double>& torques);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withPosition(const Vec3& vec3);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withRPY(const Vec3& vec3);
         CLICK_EXPORT virtual std::unique_ptr<SensorMessage> build();
         CLICK_EXPORT virtual ~SensorMessageBuilderImpl();
         /**
