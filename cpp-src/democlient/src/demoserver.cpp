@@ -2,13 +2,14 @@
 #include <thread>
 #include <iostream>
 #include <argparse/argparse.hpp>
-#include <click/Server.h>
 #include <click/ControlMessageBuilder.h>
-#include <click/SensorMessage.h>
-#include <click/SensorMessageBuilder.h>
 #include <click/ErrorMessageBuilder.h>
 #include <click/HandshakeMessageBuilder.h>
 #include <click/HandshakeInitMessageBuilder.h>
+#include <click/MessageSerializer.h>
+#include <click/SensorMessage.h>
+#include <click/SensorMessageBuilder.h>
+#include <click/Server.h>
 
 using namespace std;
 using namespace click;
@@ -39,13 +40,8 @@ std::unique_ptr<Message> receiveBlocking(Server& server, bool trace = false)
     return response;
 }
 
-std::unique_ptr<Message> sendReceive(Server& server, const Message& message, bool trace = false)
+std::unique_ptr<Message> receive(Server& server, bool trace = false)
 {
-    if (trace) {
-        cout << "Sending " << message.debugString() << endl;
-    }
-    server.send(message);
-
     auto start = std::chrono::system_clock::now();
     auto recvstart = std::chrono::system_clock::now();
     while(true) {
@@ -59,12 +55,6 @@ std::unique_ptr<Message> sendReceive(Server& server, const Message& message, boo
             idling_total += std::chrono::duration_cast<std::chrono::microseconds>(time_btw_send_recv);
             return response;
         }
-#ifndef _WIN32
-        else {
-            // Uncomment next line to lower unecessary CPU usage, but be wary that it increases communication latency
-            // std::this_thread::sleep_for(std::chrono::microseconds(100));
-        }
-#endif
         recvstart = std::chrono::system_clock::now();
     }
 }
@@ -80,9 +70,14 @@ argparse::ArgumentParser parseArgs(int argc, char** argv)
         .help("Do blocking receives instead of non-blocking")
         .default_value(false)
         .implicit_value(true);
-      args.add_argument("--addr")
+    args.add_argument("--addr")
         .help("An alternate address to bind to, like ipc:///tmp/click.ipc")
         .default_value(std::string("tcp://*:5555"));
+    args.add_argument("--trace-sizes")
+        .help("print size of what is sent/received")
+        .default_value(false)
+        .implicit_value(true);
+
     args.parse_args(argc, argv);
     return args;
 }
@@ -114,6 +109,7 @@ int main(int argc, char *argv[])
     bool trace = args.get<bool>("trace");
     bool blocking_receive = args.get<bool>("blocking-receive");
     const std::string endpoint = args.get<std::string>("addr");
+    bool trace_sizes = args.get<bool>("trace-sizes");
 
     // Verify protobuf version
     Server server;
@@ -122,23 +118,28 @@ int main(int argc, char *argv[])
     server.bind(endpoint);
 
     auto sensor_message = build_sensor_message();
+    if (trace_sizes) {
+        MessageSerializer message_serializer;
+        std::cerr << "Sensor message size is " << message_serializer.serializeToString(*sensor_message).size() << std::endl;
+    }
 
     while(true) {
         if (blocking_receive)
             reply = receiveBlocking(server, trace);
         else
-            reply = sendReceive(server, *message, trace);
+            reply = receive(server, trace);
         switch(reply->messageType()) {
             case MessageType::HandshakeInitMessageType:
                 if(trace)
                     std::cerr <<  "Got handshakeinit message: " << std::endl;
                 server.send(*HandshakeMessageBuilder::builder()->build());
                 break;
-            case MessageType::ControlMessageType:
+            case MessageType::ControlMessageType: {
                 if(trace)
                     std::cerr <<  "Got control message: " << std::endl;
                 server.send(*sensor_message);
                 break;
+            }
             default:
                 if(trace)
                     std::cerr <<  "Got unhandled message: " << std::endl;
