@@ -76,21 +76,13 @@ argparse::ArgumentParser parseArgs(int argc, char** argv)
         .help("Print sent/recv messages")
         .default_value(false)
         .implicit_value(true);
-    args.add_argument("--timings")
-        .help("Print timing info, e.g time spent in recv etc")
-        .default_value(false)
-        .implicit_value(true);
     args.add_argument("--blocking-receive")
         .help("Do blocking receives instead of non-blocking")
         .default_value(false)
         .implicit_value(true);
       args.add_argument("--addr")
-        .help("An alternate address to connect to, like ipc:///tmp/click.ipc")
+        .help("An alternate address to bind to, like ipc:///tmp/click.ipc")
         .default_value(std::string("tcp://*:5555"));
-      args.add_argument("--range")
-        .help("How many extra messages to send/recv")
-        .default_value(0)
-        .scan<'i', int>();
     args.parse_args(argc, argv);
     return args;
 }
@@ -107,14 +99,9 @@ std::unique_ptr<SensorMessage> sensor_message() {
             ->withAngles(values)
             ->withAngleVelocities(values)
             ->withTorques(values)
+        ->object("box")
+            ->withPosition({1.0, 2.0, 3.0})
         ->build();
-    // sensor_m = MessageFactory.create_sensormessage()
-    // robot = sensor_m.objects["robot1"]
-
-    // size = 2
-    // robot.angleSensors.extend([1.0] * size)
-    // robot.angleVelocitySensors.extend([2.0] * size)
-    // robot.torqueSensors.extend([3.0] * size)
 
     // box = sensor_m.objects["box"]
     // sensor = box.objectSensors.add()
@@ -133,10 +120,8 @@ int main(int argc, char *argv[])
 {
     auto args = parseArgs(argc, argv);
     bool trace = args.get<bool>("trace");
-    bool timings = args.get<bool>("timings");
     bool blocking_receive = args.get<bool>("blocking-receive");
     const std::string endpoint = args.get<std::string>("addr");
-    int n = args.get<int>("range");
 
     // Verify protobuf version
     Server server;
@@ -153,15 +138,18 @@ int main(int argc, char *argv[])
             reply = sendReceive(server, *message, trace);
         switch(reply->messageType()) {
             case MessageType::HandshakeInitMessageType:
-                std::cerr <<  "Got handshakeinit message: " << reply->debugString() << std::endl;
+                if(trace)
+                    std::cerr <<  "Got handshakeinit message: " << std::endl;
                 server.send(*HandshakeMessageBuilder::builder()->build());
                 break;
             case MessageType::ControlMessageType:
-                std::cerr <<  "Got control message: " << reply->debugString() << std::endl;
+                if(trace)
+                    std::cerr <<  "Got control message: " << std::endl;
                 server.send(*error_message);
                 break;
             default:
-                std::cerr <<  "Got unhandled message: " << reply->debugString() << std::endl;
+                if(trace)
+                    std::cerr <<  "Got unhandled message: " << std::endl;
                 server.send(*ErrorMessageBuilder::builder()->build());
         }
     }

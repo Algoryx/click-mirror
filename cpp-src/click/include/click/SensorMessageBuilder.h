@@ -28,10 +28,11 @@ namespace click
     class AddSensorValuesBuilder
     {
     public:
+        CLICK_EXPORT virtual AddSensorValuesBuilder *object(std::string name) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder *withAngles(std::vector<double> angles) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder *withAngleVelocities(std::vector<double> angles) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder *withTorques(std::vector<double> torques) = 0;
-        CLICK_EXPORT virtual AddSensorValuesBuilder *object(std::string name) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withPosition(std::vector<double> vec3) = 0;
         CLICK_EXPORT virtual std::unique_ptr<SensorMessage> build() = 0;
         CLICK_EXPORT virtual ~AddSensorValuesBuilder();
     };
@@ -43,6 +44,7 @@ namespace click
         CLICK_EXPORT virtual AddSensorValuesBuilder *withAngles(std::vector<double> angles);
         CLICK_EXPORT virtual AddSensorValuesBuilder *withAngleVelocities(std::vector<double> angles);
         CLICK_EXPORT virtual AddSensorValuesBuilder *withTorques(std::vector<double> torques);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withPosition(std::vector<double> vec3);
         CLICK_EXPORT virtual std::unique_ptr<SensorMessage> build();
         CLICK_EXPORT virtual ~SensorMessageBuilderImpl();
         /**

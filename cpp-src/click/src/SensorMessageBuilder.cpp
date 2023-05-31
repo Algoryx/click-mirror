@@ -26,6 +26,13 @@ AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngles(vector<double> angl
     return this;
 }
 
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withPosition(vector<double> vec3)
+{
+    auto object_sensor = currObject->add_objectsensors();
+    object_sensor->mutable_position()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
 AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngleVelocities(vector<double> angles)
 {
     currObject->mutable_anglevelocitysensors()->Assign(angles.begin(), angles.end());

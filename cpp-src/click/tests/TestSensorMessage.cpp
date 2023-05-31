@@ -46,6 +46,8 @@ SCENARIO("Sensormessage serialization", "[click]")
                     ->withAngleVelocities(angleVelocities)
                 ->object("robot3")
                     ->withTorques(torques)
+                ->object("box")
+                    ->withPosition({1.0, 2.0, 3.0})
                 ->build();
 
             THEN("it should contain the control values")
@@ -57,6 +59,18 @@ SCENARIO("Sensormessage serialization", "[click]")
 
                 string control_facit =
                     "messageType: SensorMessageType\n"
+                    "objects {\n"
+                    "  key: \"box\"\n"
+                    "  value {\n"
+                    "    objectSensors {\n"
+                    "      position {\n"
+                    "        arr: 1\n"
+                    "        arr: 2\n"
+                    "        arr: 3\n"
+                    "      }\n"
+                    "    }\n"
+                    "  }\n"
+                    "}\n"
                     "objects {\n"
                     "  key: \"robot1\"\n"
                     "  value {\n"
