@@ -99,20 +99,13 @@ std::unique_ptr<SensorMessage> build_sensor_message() {
             ->withAngles(values)
             ->withAngleVelocities(values)
             ->withTorques(values)
-            // ->external_sensor("external_1")
-            //     ->withForce({4, 4.1, 4.2})
-            //     ->withAngularAcceleration({5, 5.1, 5.2})
+            ->withExternalSensor("external_1")
+                ->withForce({4, 4.1, 4.2})
+                ->withAngularAcceleration({5, 5.1, 5.2})
         ->object("box")
             ->withPosition({1.0, 2.0, 3.0})
             ->withRPY({4.0, 5.0, 6.0})
         ->build();
-
-    // val = robot.sensors["external_1"].sensor.add()
-    // val.force.arr.extend([4.0, 4.1, 4.2])
-    // val = robot.sensors["external_1"].sensor.add()
-    // val.angularAcceleration.arr.extend([5.0, 5.1, 5.2])
-
-    // return sensor_m    
 }
 
 int main(int argc, char *argv[])

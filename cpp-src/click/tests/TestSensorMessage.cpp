@@ -37,6 +37,22 @@ SCENARIO("Sensormessage serialization", "[click]")
                 REQUIRE(SensorMessage->angles("robot1").size() == 5);
             }
         }
+        WHEN("adding a robot with external sensors")
+        {
+            unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
+                ->object("robot1")
+                    ->withExternalSensor("external_1")
+                        ->withForce({4, 4.1, 4.2})
+                        ->withAngularAcceleration({5, 5.1, 5.2})
+                ->build();
+
+            THEN("it should have values")
+            {
+                REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].force == Vec3{4, 4.1, 4.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[1].angularAcceleration == Vec3{5, 5.1, 5.2});
+            }
+        }
         WHEN("adding a box with position and rpy")
         {
             unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
