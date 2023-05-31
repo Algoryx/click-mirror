@@ -5,6 +5,7 @@ target_sources(click-tests
         CatchMain.cpp
         TestControlMessage.cpp
         TestErrorMessage.cpp
+        TestHandshakeMessage.cpp
         TestInithandshakeMessage.cpp
         TestMessage.cpp
         TestProtobufMessages.cpp

@@ -80,7 +80,7 @@ ValueType HandshakeMessage::controlType() const
 
 HandshakeMessage::HandshakeMessage(unique_ptr<protobuf::HandshakeMessage> HandshakeMessage)
 {
-  this->pm = move(HandshakeMessage);
+  this->pm = std::move(HandshakeMessage);
 };
 
 string HandshakeMessage::debugString() const

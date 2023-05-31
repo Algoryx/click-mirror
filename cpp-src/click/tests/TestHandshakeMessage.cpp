@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
-#include <click/SensorRequestMessage.h>
-#include <click/SensorRequestMessageBuilder.h>
+#include <click/HandshakeMessage.h>
+#include <click/HandshakeMessageBuilder.h>
 #include <click/MessageSerializer.h>
 #include <Messaging.pb.h>
 
@@ -14,25 +14,26 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-SCENARIO("SensorRequestMessage serialization", "[click]")
+// TODO: Implement this fully, only build() supported yet
+SCENARIO("handshake serialization", "[click]")
 {
-    GIVEN("A handshake init message")
+    GIVEN("A handshake message")
     {
        WHEN("it has been constructed")
         {
-            unique_ptr<SensorRequestMessage> message = SensorRequestMessageBuilder::builder()->build();
+            unique_ptr<HandshakeMessage> message = HandshakeMessageBuilder::builder()->build();
 
             THEN("it should contain type")
             {
-                REQUIRE(message->messageType() == MessageType::SensorRequestMessageType);
+                REQUIRE(message->messageType() == MessageType::HandshakeMessageType);
             }
 
             THEN("it should have debugstring with correct type")
             {
-                REQUIRE_THAT(message->debugString(), StartsWith("messageType: SensorRequestMessageType"));
+                REQUIRE_THAT(message->debugString(), StartsWith("messageType: HandshakeMessageType"));
             }
 
-            THEN("it should serialize to at least 1 byte")
+            THEN("it should serialize to zero bytes, all defaults")
             {
                 MessageSerializer serializer;
                 REQUIRE(serializer.serializeToString(*message).length() > 1);
@@ -42,9 +43,10 @@ SCENARIO("SensorRequestMessage serialization", "[click]")
             {
                 MessageSerializer serializer;
                 string bytes = serializer.serializeToString(*message);
-                unique_ptr<Message> smessage = serializer.fromBytes(bytes);
-                REQUIRE(smessage->messageType() == MessageType::SensorRequestMessageType);
-                REQUIRE_THAT(smessage->debugString(), Equals(message->debugString()));
+
+                unique_ptr<Message> message = serializer.fromBytes(bytes);
+                REQUIRE(message->messageType() == MessageType::HandshakeMessageType);
+                REQUIRE_THAT(message->debugString(), Equals(message->debugString()));
             }
         }
     }

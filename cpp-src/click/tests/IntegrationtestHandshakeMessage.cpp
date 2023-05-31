@@ -24,7 +24,7 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
             MessageSerializer serializer;
             unique_ptr<Message> message = serializer.handshakeMessageFromIStream(&input);
             REQUIRE(message->messageType() == MessageType::HandshakeMessageType);
-            unique_ptr<HandshakeMessage> handshakeMessage = toHandshakeMessage(move(message));
+            unique_ptr<HandshakeMessage> handshakeMessage = toHandshakeMessage(std::move(message));
 
             THEN("it should contain a robot object")
             {

@@ -2,12 +2,14 @@ find_package(zmqpp REQUIRED)
 
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
+    include/click/Server.h
     include/click/ControlMessage.h
     include/click/ControlMessageBuilder.h
     include/click/DllExport.h
     include/click/ErrorMessage.h
     include/click/ErrorMessageBuilder.h
     include/click/HandshakeMessage.h
+    include/click/HandshakeMessageBuilder.h
     include/click/HandshakeInitMessage.h
     include/click/HandshakeInitMessageBuilder.h
     include/click/Message.h
@@ -25,9 +27,11 @@ target_sources(click
         src/ErrorMessage.cpp
         src/ErrorMessageBuilder.cpp
         src/Client.cpp
+        src/Server.cpp
         src/ControlMessage.cpp
         src/ControlMessageBuilder.cpp
         src/HandshakeMessage.cpp
+        src/HandshakeMessageBuilder.cpp
         src/HandshakeInitMessage.cpp
         src/HandshakeInitMessageBuilder.cpp
         src/Message.cpp

@@ -21,7 +21,7 @@ unique_ptr<Message> MessageSerializer::sensorMessageFromIStream(istream *input)
   unique_ptr<protobuf::SensorMessage> pm = make_unique<protobuf::SensorMessage>();
   pm->ParseFromIstream(input);
   // Need to explicitly call private constructor
-  return unique_ptr<SensorMessage>(new SensorMessage(move(pm)));
+  return unique_ptr<SensorMessage>(new SensorMessage(std::move(pm)));
 }
 
 unique_ptr<Message> MessageSerializer::handshakeMessageFromIStream(istream *input)
@@ -29,7 +29,7 @@ unique_ptr<Message> MessageSerializer::handshakeMessageFromIStream(istream *inpu
   unique_ptr<protobuf::HandshakeMessage> pm = make_unique<protobuf::HandshakeMessage>();
   pm->ParseFromIstream(input);
   // Need to explicitly call private constructor
-  return unique_ptr<HandshakeMessage>(new HandshakeMessage(move(pm)));
+  return unique_ptr<HandshakeMessage>(new HandshakeMessage(std::move(pm)));
 }
 
 unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
@@ -43,49 +43,49 @@ unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
       unique_ptr<protobuf::HandshakeInitMessage> pm = make_unique<protobuf::HandshakeInitMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<HandshakeInitMessage>(new HandshakeInitMessage(move(pm)));
+      return unique_ptr<HandshakeInitMessage>(new HandshakeInitMessage(std::move(pm)));
     }
     case protobuf::ErrorMessageType:
     {
       unique_ptr<protobuf::ErrorMessage> pm = make_unique<protobuf::ErrorMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<ErrorMessage>(new ErrorMessage(move(pm)));
+      return unique_ptr<ErrorMessage>(new ErrorMessage(std::move(pm)));
     }
     case protobuf::ResetMessageType:
     {
       unique_ptr<protobuf::ResetMessage> pm = make_unique<protobuf::ResetMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<ResetMessage>(new ResetMessage(move(pm)));
+      return unique_ptr<ResetMessage>(new ResetMessage(std::move(pm)));
     }
     case protobuf::SensorRequestMessageType:
     {
       unique_ptr<protobuf::SensorRequestMessage> pm = make_unique<protobuf::SensorRequestMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<SensorRequestMessage>(new SensorRequestMessage(move(pm)));
+      return unique_ptr<SensorRequestMessage>(new SensorRequestMessage(std::move(pm)));
     }
     case protobuf::HandshakeMessageType:
     {
       unique_ptr<protobuf::HandshakeMessage> pm = make_unique<protobuf::HandshakeMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<HandshakeMessage>(new HandshakeMessage(move(pm)));
+      return unique_ptr<HandshakeMessage>(new HandshakeMessage(std::move(pm)));
     }
     case protobuf::ControlMessageType:
     {
       unique_ptr<protobuf::ControlMessage> pm = make_unique<protobuf::ControlMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<ControlMessage>(new ControlMessage(move(pm)));
+      return unique_ptr<ControlMessage>(new ControlMessage(std::move(pm)));
     }
     case protobuf::SensorMessageType:
     {
       unique_ptr<protobuf::SensorMessage> pm = make_unique<protobuf::SensorMessage>();
       pm->ParseFromString(bytes);
       // Need to explicitly call private constructor
-      return unique_ptr<SensorMessage>(new SensorMessage(move(pm)));
+      return unique_ptr<SensorMessage>(new SensorMessage(std::move(pm)));
     }
     default:
       throw runtime_error("Serializing not implemented for: " + pm.DebugString());
