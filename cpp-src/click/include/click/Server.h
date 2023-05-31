@@ -29,7 +29,7 @@ class Server
      * 
      * \param endpoint The zmq endpoint to connect to
      */
-    void bind(const std::string& endpoint);
+    CLICK_EXPORT void bind(const std::string& endpoint);
 
     /**
      * Sends bytes over the socket.

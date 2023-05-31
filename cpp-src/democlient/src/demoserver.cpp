@@ -4,6 +4,8 @@
 #include <argparse/argparse.hpp>
 #include <click/Server.h>
 #include <click/ControlMessageBuilder.h>
+#include <click/SensorMessage.h>
+#include <click/SensorMessageBuilder.h>
 #include <click/ErrorMessageBuilder.h>
 #include <click/HandshakeMessageBuilder.h>
 #include <click/HandshakeInitMessageBuilder.h>
@@ -24,20 +26,20 @@ std::chrono::microseconds recv_total;
 std::chrono::microseconds idling_total;
 
 
-unique_ptr<Message> receiveBlocking(Server& server, bool trace = false)
+std::unique_ptr<Message> receiveBlocking(Server& server, bool trace = false)
 {
     if (trace) {
         cerr << "Receive blocking " << endl;
     }
     auto start = std::chrono::system_clock::now();
-    unique_ptr<Message> response = server.blockingReceive();
+    std::unique_ptr<Message> response = server.blockingReceive();
     auto stop = std::chrono::system_clock::now();
     auto last_receive = stop-start;
     recv_total = std::chrono::duration_cast<std::chrono::microseconds>(last_receive);
     return response;
 }
 
-unique_ptr<Message> sendReceive(Server& server, const Message& message, bool trace = false)
+std::unique_ptr<Message> sendReceive(Server& server, const Message& message, bool trace = false)
 {
     if (trace) {
         cout << "Sending " << message.debugString() << endl;
@@ -47,7 +49,7 @@ unique_ptr<Message> sendReceive(Server& server, const Message& message, bool tra
     auto start = std::chrono::system_clock::now();
     auto recvstart = std::chrono::system_clock::now();
     while(true) {
-        unique_ptr<Message> response = server.receive(false);
+        std::unique_ptr<Message> response = server.receive(false);
 
         if (response) {
             auto stop = std::chrono::system_clock::now();
@@ -93,6 +95,40 @@ argparse::ArgumentParser parseArgs(int argc, char** argv)
     return args;
 }
 
+
+std::unique_ptr<SensorMessage> sensor_message() {
+    size_t size = 2;
+    vector<double> values;
+    for(int i=0; i<size; i++)
+        values.push_back(1.0);
+
+    return SensorMessageBuilderImpl::builder()
+        ->object("robot1")
+            ->withAngles(values)
+            ->withAngleVelocities(values)
+            ->withTorques(values)
+        ->build();
+    // sensor_m = MessageFactory.create_sensormessage()
+    // robot = sensor_m.objects["robot1"]
+
+    // size = 2
+    // robot.angleSensors.extend([1.0] * size)
+    // robot.angleVelocitySensors.extend([2.0] * size)
+    // robot.torqueSensors.extend([3.0] * size)
+
+    // box = sensor_m.objects["box"]
+    // sensor = box.objectSensors.add()
+    // sensor.position.arr.extend([1.0, 2.0, 3.0])
+    // sensor = box.objectSensors.add()
+    // sensor.rpy.arr.extend([4.0, 5.0, 6.0])
+    // val = robot.sensors["external_1"].sensor.add()
+    // val.force.arr.extend([4.0, 4.1, 4.2])
+    // val = robot.sensors["external_1"].sensor.add()
+    // val.angularAcceleration.arr.extend([5.0, 5.1, 5.2])
+
+    // return sensor_m    
+}
+
 int main(int argc, char *argv[])
 {
     auto args = parseArgs(argc, argv);
@@ -104,11 +140,11 @@ int main(int argc, char *argv[])
 
     // Verify protobuf version
     Server server;
-    unique_ptr<Message> message;
-    unique_ptr<Message> reply;
+    std::unique_ptr<Message> message;
+    std::unique_ptr<Message> reply;
     server.bind(endpoint);
 
-    unique_ptr<ErrorMessage> error_message = ErrorMessageBuilder::builder()->build();
+    std::unique_ptr<ErrorMessage> error_message = ErrorMessageBuilder::builder()->build();
 
     while(true) {
         if (blocking_receive)

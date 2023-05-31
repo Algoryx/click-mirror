@@ -17,6 +17,7 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/ResetMessage.h
     include/click/ResetMessageBuilder.h
     include/click/SensorMessage.h
+    include/click/SensorMessageBuilder.h
     include/click/SensorRequestMessage.h
     include/click/SensorRequestMessageBuilder.h
 )
@@ -42,6 +43,7 @@ target_sources(click
         src/SensorRequestMessage.cpp
         src/SensorRequestMessageBuilder.cpp
         src/SensorMessage.cpp
+        src/SensorMessageBuilder.cpp
         ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h
  )

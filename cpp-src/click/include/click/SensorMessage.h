@@ -88,6 +88,7 @@ namespace click
 
     std::unique_ptr<protobuf::SensorMessage> sensorMess;
 
+    friend class SensorMessageBuilderImpl;
     friend class MessageSerializer;
   };
 
