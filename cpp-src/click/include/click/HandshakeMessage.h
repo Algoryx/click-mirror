@@ -11,6 +11,7 @@ namespace click
   {
     class HandshakeMessage;
   }
+  class HandshakeMessageBuilder;
   class HandshakeMessage : public Message
   {
   public:
@@ -41,6 +42,7 @@ namespace click
     std::unique_ptr<protobuf::HandshakeMessage> pm;
 
     friend class MessageSerializer;
+    friend class HandshakeMessageBuilder;
   };
 
   CLICK_EXPORT std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);

@@ -5,11 +5,13 @@ target_sources(click-tests
         CatchMain.cpp
         TestControlMessage.cpp
         TestErrorMessage.cpp
+        TestHandshakeMessage.cpp
         TestInithandshakeMessage.cpp
         TestMessage.cpp
         TestProtobufMessages.cpp
         TestResetMessage.cpp
         TestSensorRequestMessage.cpp
+        TestSensorMessage.cpp
         TestSrcDir.cpp
         IntegrationtestSensorMessage.cpp
         IntegrationtestHandshakeMessage.cpp

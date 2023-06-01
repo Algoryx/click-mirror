@@ -12,3 +12,15 @@ target_link_libraries(democlient
     click
     CONAN_PKG::argparse
 )
+
+add_executable(demoserver)
+target_sources(demoserver
+    PRIVATE
+        src/demoserver.cpp
+    )
+target_compile_features(demoserver PRIVATE cxx_std_17)
+target_link_libraries(demoserver
+    PRIVATE
+    click
+    CONAN_PKG::argparse
+)
