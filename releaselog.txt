@@ -1,3 +1,6 @@
+0.1.36-SNAPSHOT
+- Add C++ demoserver
+
 0.1.35
 - Remove sleep in democlient.cpp for windows builds to increase speed a lot on Windows which has low resolution sleep (~10 ms) only.
 - Specify units for control signals in the demo client.
