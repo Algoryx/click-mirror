@@ -183,6 +183,8 @@ test-agxclick:
       artifacts: true
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
+    # TODO: Move this to a separate CI container to speed up.
+    - pip3 install poetry pytest
     - cd agxclick
     - poetry add ../python-src/dist/*whl
     - poetry install && python run pytest --junitxml=agxclick-junit.xml

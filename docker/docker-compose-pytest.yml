@@ -5,6 +5,7 @@ services:
   pytest:
     image: registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:agx-2.32.1.0_agxbrick-0.5.7
     working_dir: "/click"
+    # TODO: Below is outdated, update to use poetry
     command: bash -c \
       "pip3 install -r python-src/requirements-test.txt && \
        pip3 install -r python-src/requirements-publish.txt && \

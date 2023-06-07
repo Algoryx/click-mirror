@@ -231,13 +231,15 @@ rm -rf * .github.conan.cmake
 NOTE: Read [agxclick](agxclick/README.md) to build and test agxclick
 
 ```bash
-# Install requirements
-pip3 install -r python-src/requirements-test.txt
 # Install click locally
 pip3 install -e python-src
+# Create virtual environment with requirements installed
+cd python-src
+poetry install
 # Run tests
-pytest python-src
+poetry run pytest
 # Run demo server
+poetry shell
 python3 -m pclick.demo.server
 ```
 
@@ -251,8 +253,7 @@ protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
 ### Build pip archive
 
 ```bash
-pip3 install -r python-src/requirements-publish.txt
-python3 setup.py sdist bdist_wheel
+poetry build
 ```
 
 ### Test frameworks
