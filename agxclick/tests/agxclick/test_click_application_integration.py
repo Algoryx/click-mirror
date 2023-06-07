@@ -19,20 +19,20 @@ class TestHappyPath(TestClickIntegration):
         assert sensormessage.simVars.simulatedTime == 0.0
 
         sensormessage = self.send_control_message(client)
-        assert sensormessage.simVars.simulatedTime == 0.0
+        assert sensormessage.simVars.simulatedTime == pytest.approx(0.1)
 
         # The simulation has now started, but we must send another control message to verify since first simulatedTime is 0.0
         sensormessage = self.send_control_message(client)
-        assert sensormessage.simVars.simulatedTime >= 0.1
+        assert sensormessage.simVars.simulatedTime == pytest.approx(0.2)
 
         sensormessage = self.send_control_message(client)
-        assert sensormessage.simVars.simulatedTime >= 0.2
+        assert sensormessage.simVars.simulatedTime == pytest.approx(0.3)
 
         # Verify that handshake and sensor request can be sent after handshake as well
         handshake = self.send_handshake(client)
 
         sensormessage = self.send_sensor_request(client)
-        assert sensormessage.simVars.simulatedTime > 0.0
+        assert sensormessage.simVars.simulatedTime == pytest.approx(0.3)
 
 
 @pytest.mark.integrationtest
@@ -80,7 +80,7 @@ class TestResetMessage(TestClickIntegration):
         self.client = client = self.connect()
 
         sensormessage = self.send_control_message(client)
-        assert sensormessage.simVars.simulatedTime == 0.0
+        assert sensormessage.simVars.simulatedTime == pytest.approx(0.1)
 
         message = MessageFactory.create_resetmessage()
         print("Sending reset message")
