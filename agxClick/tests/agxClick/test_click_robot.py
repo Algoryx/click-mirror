@@ -1,4 +1,4 @@
-from agxClick import ClickRobot
+from agxclick import ClickRobot
 
 
 class FakeClickRobot(ClickRobot):

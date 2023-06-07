@@ -15,7 +15,7 @@
     ],
     "python.testing.pytestArgs": [
         "python-src/tests",
-        "agxClick/tests"
+        "agxclick/tests"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,

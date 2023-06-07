@@ -1,7 +1,7 @@
 from typing import List, Any
-from agxClick import ClickRobot, BrickUtils
-from agxClick.click_robot import ClickObject
-from pClick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
+from agxclick import ClickRobot, BrickUtils
+from agxclick.click_robot import ClickObject
+from pclick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 import math
 
 

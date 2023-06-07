@@ -1,4 +1,4 @@
-from agxClick import ApplicationStepListener, noop
+from agxclick import ApplicationStepListener, noop
 from typing import Callable
 
 

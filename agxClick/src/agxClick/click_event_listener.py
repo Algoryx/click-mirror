@@ -1,14 +1,14 @@
 import queue
 import agxSDK
 from typing import List, Callable
-from agxClick import MessageFactory, ApplicationStepListener, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject, noop
-from pClick import Server, HandshakeInitMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType, ErrorMessageType
-from pClick import ControlMessage, MessageFactory as ProtoMessageFactory
+from agxclick import MessageFactory, ApplicationStepListener, update_robots_from_message, find_robots_in_scene, has_click_configuration, ClickObject, noop
+from pclick import Server, HandshakeInitMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType, ErrorMessageType
+from pclick import ControlMessage, MessageFactory as ProtoMessageFactory
 import logging
 from queue import SimpleQueue
 from enum import Enum, auto
 
-from agxClick import get_click_configuration
+from agxclick import get_click_configuration
 
 
 class States(Enum):

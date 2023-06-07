@@ -1,8 +1,8 @@
 from typing import Any, List, Tuple, Dict
-from agxClick import BrickUtils
+from agxclick import BrickUtils
 import logging
 import itertools
-from pClick import ValueType
+from pclick import ValueType
 
 
 class ClickObject():

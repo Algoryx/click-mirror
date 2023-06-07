@@ -1,5 +1,5 @@
 from typing import List
-from pClick import MessageFactory, ValueType
+from pclick import MessageFactory, ValueType
 
 
 class ClickRobot():

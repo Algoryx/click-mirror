@@ -1,5 +1,5 @@
 import pytest
-from agxClick import find_robots_in_scene, get_click_configuration, has_click_configuration
+from agxclick import find_robots_in_scene, get_click_configuration, has_click_configuration
 from os import chdir
 
 

@@ -1,4 +1,4 @@
-from agxClick.click_event_listener import States
+from agxclick.click_event_listener import States
 import pytest
 
 

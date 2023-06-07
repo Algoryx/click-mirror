@@ -1,7 +1,7 @@
 import pytest
 from pytest import approx
 from subprocess import Popen, PIPE
-from pClick import Client, MessageFactory, HandshakeMessageType, SensorMessageType, MessageSerializer
+from pclick import Client, MessageFactory, HandshakeMessageType, SensorMessageType, MessageSerializer
 import zmq
 from time import sleep
 import sys

@@ -1,5 +1,5 @@
 import zmq
-from pClick.message_proto_helpers import MessageSerializer, Message
+from pclick.message_proto_helpers import MessageSerializer, Message
 
 
 class Client:

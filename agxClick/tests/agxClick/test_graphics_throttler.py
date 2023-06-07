@@ -1,5 +1,5 @@
-from agxClick.graphics_throttler import GraphicsThrottler
-from agxClick.wallclock import WallClock
+from agxclick.graphics_throttler import GraphicsThrottler
+from agxclick.wallclock import WallClock
 
 
 def test_graphics_throttler_defaults_to_always_zero():

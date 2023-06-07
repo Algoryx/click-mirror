@@ -1,5 +1,5 @@
 import math
-from agxClick import MessageFactory
+from agxclick import MessageFactory
 
 
 class _SignalFake:

@@ -10,11 +10,11 @@ Click implements C++ and Python clients. Additional language support can be adde
 
 There are currently three main parts of click
 
-- [agxClick](agxClick/README.md) - a Simulation application using pClick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
+- [agxclick](agxclick/README.md) - a Simulation application using pclick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
 - click - C++ click library with a democlient.
-- pClick - Python click library with a demo client and demo server
+- pclick - Python click library with a demo client and demo server
 
-The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without agxClick, but the real benefit of Brick integration comes with agxClick.
+The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without agxclick, but the real benefit of Brick integration comes with agxclick.
 
 ## Introduction
 
@@ -116,10 +116,10 @@ After that, the simulation is stepped once per message, except after a ResetMess
 
 ## Installing
 
-- Python, all platforms: Go to [agxClick](agxClick/README.md#install) for python install instructions. If you only want click and not agxClick, then do:
+- Python, all platforms: Go to [agxclick](agxclick/README.md#install) for python install instructions. If you only want click and not agxclick, then do:
 
 ```bash
-pip install pClick --extra-index-url https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/pypi/simple
+pip install pclick
 ```
 
 - Linux Ubuntu 20.04 C++ libraries and binaries:
@@ -135,11 +135,11 @@ apt-get install -yf /tmp/click-shared-focal-amd64.deb
 
 ## Running Click democlient and demoserver
 
-**Go to [agxClick](agxClick/README.md#Usage%20Examples) for brick model examples.**  
+**Go to [agxclick](agxclick/README.md#Usage%20Examples) for brick model examples.**  
 After installing (or building from source as specified below), run these commands in separate prompts:
 
 ```bash
-python3 -m pClick.demo.server
+python3 -m pclick.demo.server
 ```
 
 ```bash
@@ -180,9 +180,9 @@ This section and below are for developers developing Click
 |  └──CMakeLists.txt
 ├──python-src
 |  ├──src
-|  |  └──pClick
+|  |  └──pclick
 |  └──tests
-|     └──pClick
+|     └──pclick
 └──testdata
 ```
 
@@ -226,9 +226,9 @@ cd build
 rm -rf * .github.conan.cmake
 ```
 
-### Build and test python pClick from source
+### Build and test python pclick from source
 
-NOTE: Read [agxClick](agxClick/README.md) to build and test agxClick
+NOTE: Read [agxclick](agxclick/README.md) to build and test agxclick
 
 ```bash
 # Install requirements
@@ -238,7 +238,7 @@ pip3 install -e python-src
 # Run tests
 pytest python-src
 # Run demo server
-python3 -m pClick.demo.server
+python3 -m pclick.demo.server
 ```
 
 The generated protobuf python code is committed in git repo.
@@ -269,7 +269,7 @@ Python tests are using pytest
 
 #### Python remarks
 
-To circumvent clashes with python library click and pyClick, the python library is called pClick.
+To circumvent clashes with python library click and pyClick, the python library is called pclick.
 
 ### Release:s
 
@@ -278,7 +278,7 @@ Release tags are semver only, eg 0.1.2.
 
 Steps:
 
-1. Update version in agxClick/setup.py, python-src/setup.py, README.md. Suggestion: Search and Replace old version for new.
+1. Update version in agxclick/setup.py, python-src/setup.py, README.md. Suggestion: Search and Replace old version for new.
 2. Update releaselog.txt
 3. Push to branch and do MR
 4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.1.16; git push origin 0.1.16`.
@@ -286,5 +286,5 @@ Steps:
 
 ## Build pipeline dependencies - updating agxBrick version
 
-agxClick tests uses the generic Docker Image `registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:latest`.
+agxclick tests uses the generic Docker Image `registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:latest`.
 Therefore when raising minimum required agxBrick version, [agxBrick needs to be updated in the upstream](https://git.algoryx.se/algoryx/external/agx-docker) as well in order for tests to run.

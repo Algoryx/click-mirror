@@ -1,10 +1,10 @@
-from agxClick.brick_utils import BrickUtils
-from agxClick.click_robot import ClickRobot, ClickObject
-from agxClick.brick_reader import find_robots_in_scene, get_click_configuration, has_click_configuration
-from agxClick.message_factory import MessageFactory, update_robots_from_message
-from agxClick.application_step_listener import ApplicationStepListener, noop
-from agxClick.reset_batch_listener import ResetBatchListener
-from agxClick.click_event_listener import ClickFrameListener
-from agxClick.keyboard_listener import KeyboardListener
-from agxClick.agx_application import AgxApplication
-from agxClick.click_application import ClickApplication
+from agxclick.brick_utils import BrickUtils
+from agxclick.click_robot import ClickRobot, ClickObject
+from agxclick.brick_reader import find_robots_in_scene, get_click_configuration, has_click_configuration
+from agxclick.message_factory import MessageFactory, update_robots_from_message
+from agxclick.application_step_listener import ApplicationStepListener, noop
+from agxclick.reset_batch_listener import ResetBatchListener
+from agxclick.click_event_listener import ClickFrameListener
+from agxclick.keyboard_listener import KeyboardListener
+from agxclick.agx_application import AgxApplication
+from agxclick.click_application import ClickApplication

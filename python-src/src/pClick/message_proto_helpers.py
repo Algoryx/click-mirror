@@ -1,5 +1,5 @@
-from pClick.Messaging_pb2 import CURRENT_VERSION, Message, ErrorMessage, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage, SensorRequestMessage
-from pClick.Messaging_pb2 import HandshakeInitMessageType, ErrorMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType
+from pclick.Messaging_pb2 import CURRENT_VERSION, Message, ErrorMessage, HandshakeMessage, SensorMessage, ControlMessage, ResetMessage, HandshakeInitMessage, SensorRequestMessage
+from pclick.Messaging_pb2 import HandshakeInitMessageType, ErrorMessageType, HandshakeMessageType, SensorMessageType, ControlMessageType, ResetMessageType, SensorRequestMessageType
 
 
 class MessageFactory:

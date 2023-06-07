@@ -11,7 +11,7 @@ On Linux agxViewer must be used:
 import sys
 from scene import buildScene
 try:
-    from agxClick import ClickApplication
+    from agxclick import ClickApplication
 except Exception as ex:
     print(ex)
     print("This can happen if you are using agxViewer on Mac because of platfrom module not being loadable bug.")

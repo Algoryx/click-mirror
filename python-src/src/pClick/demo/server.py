@@ -4,8 +4,8 @@
 #   Expects Message from client, replies with Message
 #
 
-from pClick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
-from pClick.server import SizeCollectorChanges
+from pclick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
+from pclick.server import SizeCollectorChanges
 from argparse import ArgumentParser
 
 
@@ -33,7 +33,7 @@ def main():
     if args.trace_sizes:
         server.size_collector = SizeCollectorChanges()
 
-    # Note: Below code uses the protobuf API directly, we recommend using the higher level agxClick ClickObject and ClickRobot instead
+    # Note: Below code uses the protobuf API directly, we recommend using the higher level agxclick ClickObject and ClickRobot instead
     # if possible - to protect client code from future protocol changes.
     while True:
 

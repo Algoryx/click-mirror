@@ -1,5 +1,5 @@
 from typing import List
-from agxClick import ClickObject, ClickRobot, BrickUtils
+from agxclick import ClickObject, ClickRobot, BrickUtils
 
 
 def has_click_configuration(scene_positioninput) -> bool:

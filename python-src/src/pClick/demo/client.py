@@ -4,11 +4,11 @@
 #   Sends "HandshakeInit" to server, expects "Handshake" back
 #
 
-from pClick import Client
-from pClick import MessageFactory
+from pclick import Client
+from pclick import MessageFactory
 from argparse import ArgumentParser
 
-from pClick.Messaging_pb2 import SensorMessageType
+from pclick.Messaging_pb2 import SensorMessageType
 from time import time
 
 def parse_args():

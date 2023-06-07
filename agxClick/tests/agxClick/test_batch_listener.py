@@ -1,5 +1,5 @@
 from pytest import approx, fixture
-from agxClick import ResetBatchListener
+from agxclick import ResetBatchListener
 
 
 class _BatchApplicationFake():

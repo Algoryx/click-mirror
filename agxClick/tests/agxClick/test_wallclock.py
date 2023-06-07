@@ -1,4 +1,4 @@
-from agxClick.wallclock import WallClock
+from agxclick.wallclock import WallClock
 
 
 def test_wallclock():

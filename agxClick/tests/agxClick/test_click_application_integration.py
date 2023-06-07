@@ -1,8 +1,8 @@
-from pClick.Messaging_pb2 import ResetMessageType
+from pclick.Messaging_pb2 import ResetMessageType
 import pytest
 from pytest import approx
 from subprocess import Popen
-from pClick import MessageFactory
+from pclick import MessageFactory
 from test_integation_base import TestClickIntegration, send_receive
 
 

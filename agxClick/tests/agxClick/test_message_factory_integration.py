@@ -1,7 +1,7 @@
-from pClick.Messaging_pb2 import Force
+from pclick.Messaging_pb2 import Force
 import pytest
-from agxClick import MessageFactory, update_robots_from_message, find_robots_in_scene, get_click_configuration, ClickRobot, ClickObject
-from pClick import ValueType, MessageFactory as ProtoMessageFactory
+from agxclick import MessageFactory, update_robots_from_message, find_robots_in_scene, get_click_configuration, ClickRobot, ClickObject
+from pclick import ValueType, MessageFactory as ProtoMessageFactory
 from typing import List
 from os import chdir
 from pytest import approx

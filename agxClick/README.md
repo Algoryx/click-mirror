@@ -1,9 +1,9 @@
-# AgxClick
+# agxclick
 
-AgxClick uses pClick, AGX and agxBrick to a implement a simulation application that implements Click out of the box for a provided Brick model.
+agxclick uses pclick, AGX and agxBrick to a implement a simulation application that implements Click out of the box for a provided Brick model.
 
 - You can use click_application.py (see below) to load any Brick model and it will find the robots and connect their signals to Click. See Brick Model Requirements below for more info.
-- You can Inherit AgxClick.ClickApplication and override it's methods to customize your own application.
+- You can Inherit agxclick.ClickApplication and override it's methods to customize your own application.
 - You can connect with any Click client to the simulation.
 
 The flow is the same as for Click
@@ -23,9 +23,9 @@ Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below com
 
 ```bash
 # Latest version
-pip install agxClick -U
+pip install agxclick -U
 # Specific version
-pip install agxClick==0.1.35
+pip install agxclick==0.1.35
 ```
 
 ## Usage Examples
@@ -62,9 +62,9 @@ Run below command(s) after the usual AGX `setup_env` command:
 # Start Click application with a Brick model containing Robots
 python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleClickScene
 # From different terminal, to get handshake
-python3 -m pClick.demo.client
+python3 -m pclick.demo.client
 # Step simulation 200 steps and get first simulation step SensorMessage
-python3 -m pClick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 199 --end-with-errormessage
+python3 -m pclick.demo.client --controlmessage "robot1:1,1;robot2:1,1" --range 199 --end-with-errormessage
 # It is also possible to run the C++ democlient, which only supports ExampleClickScene. I.e you need to create your own for other scenes.
 bin/democlient
 ```
@@ -122,11 +122,11 @@ This scene shows how to use the 3D Force and Torque Sensors.
 # Start simulation
 python3 examples/click_application.py --model testdata/ClickScene.yml:ExampleSensorClickScene
 # Get handshake
-python3 -m pClick.demo.client
+python3 -m pclick.demo.client
 # Get sensor message
-python3 -m pClick.demo.client --sensorrequest
+python3 -m pclick.demo.client --sensorrequest
 # Step and get sensor message
-python3 -m pClick.demo.client --controlmessage "robot:1,1"
+python3 -m pclick.demo.client --controlmessage "robot:1,1"
 ```
 
 Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the protocolReference:s force-sensor and torque-sensor which needs to be unique per robot:
@@ -146,7 +146,7 @@ Note that the scene uses MyRobot.yml:RobotWith3DSensor which adds the protocolRe
 The handshake contains sensors which was not present in the previous scene.
 
 ```bash
-python3 -m pClick.demo.client
+python3 -m pclick.demo.client
 --- text removed for brevity ---
 objects {
   key: "robot"
@@ -176,7 +176,7 @@ objects {
 The SensorMessage contains gives us the values, all zeroes since no simulation step has been done yet.
 
 ```text
-python3 -m pClick.demo.client --sensorrequest
+python3 -m pclick.demo.client --sensorrequest
 --- text removed for brevity ---
 objects {
   key: "robot"
@@ -228,7 +228,7 @@ objects {
 When stepping with the controlmessage we get sensor values back:
 
 ```bash
-python3 -m pClick.demo.client --controlmessage "robot:1,1"
+python3 -m pclick.demo.client --controlmessage "robot:1,1"
 --- text removed for brevity ---
     sensors {
       key: "forceTorqueSensor"

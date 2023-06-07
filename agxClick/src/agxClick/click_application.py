@@ -1,10 +1,10 @@
-from agxClick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ResetBatchListener
-from pClick import Server
-from pClick.server import SizeCollector, SizeCollectorChanges
+from agxclick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ResetBatchListener
+from pclick import Server
+from pclick.server import SizeCollector, SizeCollectorChanges
 from typing import Any, Callable, List
 import logging
-from agxClick.wallclock import WallClock
-from agxClick.graphics_throttler import GraphicsThrottler
+from agxclick.wallclock import WallClock
+from agxclick.graphics_throttler import GraphicsThrottler
 
 
 class ClickApplication(AgxApplication):

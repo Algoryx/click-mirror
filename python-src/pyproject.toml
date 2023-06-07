@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pClick"
+name = "pclick"
 version = "0.1.29"
 description = "Controller to AGX messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]

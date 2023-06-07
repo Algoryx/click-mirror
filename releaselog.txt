@@ -24,13 +24,13 @@
 
 0.1.30
 - Require AGXBrick 0.5.7 or later
-- agxClick support Brick.Signals ComponentBoolInput and ComponentBoolOutput
+- agxclick support Brick.Signals ComponentBoolInput and ComponentBoolOutput
 
 0.1.29
 - Require AGXBrick 0.5.4 or later.
-- agxClick support Brick.Signals RotatingBodyAngleOutput, RotatingBodyVelocityOutput and FixedVelocityEngineTorqueOutput.
-- Client input events come in to agxClick as early as possible.
-- agxClick output events come in as late as possible.
+- agxclick support Brick.Signals RotatingBodyAngleOutput, RotatingBodyVelocityOutput and FixedVelocityEngineTorqueOutput.
+- Client input events come in to agxclick as early as possible.
+- agxclick output events come in as late as possible.
 
 0.1.28
 - Add controlType retrieval to C++ HandshakeMessage API
@@ -41,7 +41,7 @@
 
 0.1.26
 - Reset from Keybaord will send ResetMessage immediately if possible to prevent recv fail
-- --batch <seconds> will restart simulation from the initial position(s) continously. See agxClick/README.md.
+- --batch <seconds> will restart simulation from the initial position(s) continously. See agxclick/README.md.
 
 0.1.25
 - Bugfix: Sends ResetMessage before SimulationStep, i.e. fixes the "bug" that stepped once between Reset and sending ResetMessage
@@ -50,7 +50,7 @@
 
 0.1.24
 - Implemented separate simulation and graphics frequency to improve performance in agxViewer. Enable with --framerate
-- Added performance and profiling sections to agxClick README.
+- Added performance and profiling sections to agxclick README.
 
 0.1.23
 - Enabled profiling with --profile
@@ -69,14 +69,14 @@
 - C++ API supports SimulationSettings in HandshakeMessage
 
 0.1.19
-- agxClick supports grouping several signals into one sensor if they have the same protocolReference.
+- agxclick supports grouping several signals into one sensor if they have the same protocolReference.
 
 0.1.18
-- agxClick support Brick.Physics.DriveTrain Signals.
+- agxclick support Brick.Physics.DriveTrain Signals.
 - Minimum version of agxBrick required is 0.4.68.
 
 0.1.17
-- agxClick uses Sensor name as Click identifier, see agxClick/README.md
+- agxclick uses Sensor name as Click identifier, see agxclick/README.md
 
 0.1.16
-- agxClick finds one JointForce3DSensor and one JointTorque3DSensor per robot, and adds them to HandshakeMessage and SensorMessage
+- agxclick finds one JointForce3DSensor and one JointTorque3DSensor per robot, and adds them to HandshakeMessage and SensorMessage
