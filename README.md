@@ -122,16 +122,16 @@ After that, the simulation is stepped once per message, except after a ResetMess
 pip install pclick
 ```
 
-- Linux Ubuntu 20.04 C++ libraries and binaries:
+- Linux Ubuntu 20.04 C++ libraries and binaries (only available to registered users at git.algoryx.se for now):
 
 ```bash
-wget --header "DEPLOY-TOKEN: rCsE-NdRsaknXcceBPVM" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.35/click-shared-focal-amd64.deb"
+wget --header "DEPLOY-TOKEN: <SECRET>" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.1.35/click-shared-focal-amd64.deb"
 apt-get install -yf /tmp/click-shared-focal-amd64.deb
 ```
 
-- Windows C++ libraries and binaries
-  - [Download win32 zip](https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.35/click-win32-0.1.35.zip)
-  - [Download x64 zip](https://click-access:rCsE-NdRsaknXcceBPVM@git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.35/click-x64-0.1.35.zip)
+- Windows C++ libraries and binaries (only available to registered users at git.algoryx.se for now)
+  - [Download win32 zip](https://git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.35/click-win32-0.1.35.zip)
+  - [Download x64 zip](https://git.algoryx.se/api/v4/projects/262/packages/generic/click/0.1.35/click-x64-0.1.35.zip)
 
 ## Running Click democlient and demoserver
 
