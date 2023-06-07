@@ -94,7 +94,7 @@ std::unique_ptr<SensorMessage> build_sensor_message() {
             ->withAngles(values)
             ->withAngleVelocities(values)
             ->withTorques(values)
-            ->withExternalSensor("external_1")
+            ->withSensor("external_1")
                 ->withForce({4, 4.1, 4.2})
                 ->withAngularAcceleration({5, 5.1, 5.2})
         ->object("box")
