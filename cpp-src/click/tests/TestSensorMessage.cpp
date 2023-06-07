@@ -41,7 +41,7 @@ SCENARIO("Sensormessage serialization", "[click]")
         {
             unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
                 ->object("robot1")
-                    ->withExternalSensor("external_1")
+                    ->withSensor("external_1")
                         ->withForce({4, 4.1, 4.2})
                         ->withAngularAcceleration({5, 5.1, 5.2})
                 ->build();

@@ -111,6 +111,13 @@
         "cinttypes": "cpp",
         "*.inc": "cpp",
         "__bits": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__verbose_abort": "cpp",
+        "any": "cpp",
+        "charconv": "cpp",
+        "forward_list": "cpp",
+        "numbers": "cpp",
+        "span": "cpp",
+        "typeindex": "cpp"
     }
 }

@@ -40,7 +40,7 @@ AddSensorValuesBuilder *SensorMessageBuilderImpl::withRPY(const Vec3& vec3)
     return this;
 }
 
-CLICK_EXPORT AddExternalSensorBuilder *click::SensorMessageBuilderImpl::withExternalSensor(const std::string &name)
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withSensor(const std::string &name)
 {
     protobuf::SensorMessage_Sensors sensor;
     (*currObject->mutable_sensors())[name] = sensor;
@@ -48,14 +48,14 @@ CLICK_EXPORT AddExternalSensorBuilder *click::SensorMessageBuilderImpl::withExte
     return this;
 }
 
-CLICK_EXPORT AddExternalSensorBuilder *click::SensorMessageBuilderImpl::withForce(const Vec3 &vec3)
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withForce(const Vec3 &vec3)
 {
     auto sensor = curr_sensor->add_sensor();
     sensor->mutable_force()->mutable_arr()->Assign(vec3.begin(), vec3.end());
     return this;
 }
 
-CLICK_EXPORT AddExternalSensorBuilder *click::SensorMessageBuilderImpl::withAngularAcceleration(const Vec3 &vec3)
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngularAcceleration(const Vec3 &vec3)
 {
     auto sensor = curr_sensor->add_sensor();
     sensor->mutable_force()->mutable_arr()->Assign(vec3.begin(), vec3.end());
