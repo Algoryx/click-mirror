@@ -10,7 +10,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.8 <3.10"
 pclick = ">=0.1.29"
-agxBrick = ">=0.5.7"
+agxBrick = ">=0.5.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

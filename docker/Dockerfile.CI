@@ -15,7 +15,7 @@ RUN apt-get update && \
   cmake && \
   rm -rf /var/lib/apt/lists/*
 # TODO: Upgrade to use conan 2.0, needs profile etc
-RUN pip3 install -U conan==1.*
+RUN pip3 install -U conan==1.* poetry pytest
 
 # Not needed yet, but might when using c#
 # RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \

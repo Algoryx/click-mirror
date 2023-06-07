@@ -142,8 +142,7 @@ publish-shared-cpp-lib-linux:
   image: $CI_REGISTRY_IMAGE/docker-ci
   script:
     - cd $PYTHONDIR
-    - pip3 install -r requirements-publish.txt
-    - python3 setup.py sdist bdist_wheel
+    - poetry build
   artifacts:
     paths:
       - $PYTHONDIR/dist/
@@ -166,9 +165,8 @@ test-python-lib:
     - job: build-python-lib
       artifacts: true
   script:
-    - pip3 install -r python-src/requirements-test.txt
-    - pip3 install python-src/dist/pclick*whl
-    - pytest python-src --junitxml=pclick-junit.xml
+    - cd python-src
+    - poetry install && poetry run pytest --junitxml=pclick-junit.xml
   artifacts:
     when: always
     reports:
@@ -185,10 +183,9 @@ test-agxclick:
       artifacts: true
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
-    - pip3 install -r python-src/requirements-test.txt
-    - pip3 install python-src/dist/pclick*whl
-    - pip3 install agxclick/dist/agxclick*whl
-    - pytest agxclick --junitxml=agxclick-junit.xml
+    - cd agxclick
+    - poetry add ../python-src/dist/*whl
+    - poetry install && python run pytest --junitxml=agxclick-junit.xml
   artifacts:
     when: always
     reports:
@@ -200,10 +197,7 @@ test-agxclick:
   image: $CI_REGISTRY_IMAGE/docker-ci
   script:
     - cd $PYTHONDIR
-    - pip3 install -r requirements-publish.txt
-    - PACKAGE_VERSION=$CI_COMMIT_TAG
-    - grep 'version="'${PACKAGE_VERSION}'"' setup.py
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*${PACKAGE_VERSION}*
+    - poetry publish --build --username=__token__ --password=${pypi_password}
   only:
     - tags
 
