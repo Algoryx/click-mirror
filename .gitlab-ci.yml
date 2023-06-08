@@ -291,7 +291,7 @@ push-main-to-github:
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - git remote add mirror git@github.com:Algoryx/click-mirror.git
+    - git remote add mirror git@github.com:Algoryx/click-mirror.git || echo remote mirror already exists.
     - eval "$(ssh-agent -s)"
     - ssh-add ${click_github_push_key}
     # TODO: use main:main
