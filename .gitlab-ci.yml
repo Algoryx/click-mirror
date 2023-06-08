@@ -295,10 +295,10 @@ push-main-to-github:
     - eval "$(ssh-agent -s)"
     - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
     - ssh-add ${click_github_push_key}
-    - echo ${CI_COMMIT_REF_NAME} ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME} ${CI_COMMIT_BRANCH}
+    - git branch
     # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
     # TODO: Use ${CI_COMMIT_REF_NAME} instead of testbranch
-    - git push mirror ${CI_COMMIT_REF_NAME}:testbranch
+    - git push mirror origin/${CI_COMMIT_REF_NAME}:testbranch
   # TODO: Only run on main and tags
   # only:
   #   - main
