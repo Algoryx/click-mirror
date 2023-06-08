@@ -1,6 +1,6 @@
 # Click
 
-The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
+The main idea behind click is to enable a non-Brick controller talking to a Brick enabled [AGX](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by Brick.
 The name comes from the sound two Bricks makes when connected.
 
 There are three main considerations
@@ -20,10 +20,14 @@ A typical flow is
 5. Server responds with Sensors
 6. The loop 4-5 is repeated.
 
-## Run demo server
+## Run demo
 
 ```bash
-python3 -m pclick.demo.server
+python3.9 -m pclick.demo.server --trace
+```
+
+```bash
+python3 -m pclick.demo.client
 ```
 
 ## Use
@@ -31,3 +35,11 @@ python3 -m pclick.demo.server
 ```python
 import pclick
 ```
+
+## Usage Examples
+
+Visit the [GitHub repo](https://github.com/algoryx/click-mirror) for more info and usage examples.
+
+## License
+
+[Apache License 2.0](https://github.com/algoryx/click-mirror/LICENSE)

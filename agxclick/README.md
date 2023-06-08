@@ -1,6 +1,6 @@
 # agxclick
 
-agxclick uses pclick, AGX and agxBrick to a implement a simulation application that implements Click out of the box for a provided Brick model.
+agxclick uses [pclick](https://pypi.org/project/pclick/), [AGX](https://www.algoryx.se/agx-dynamics/) and [agxBrick](https://pypi.org/project/agxBrick/) to a implement a simulation application that implements Click out of the box for a provided Brick model.
 
 - You can use click_application.py (see below) to load any Brick model and it will find the robots and connect their signals to Click. See Brick Model Requirements below for more info.
 - You can Inherit agxclick.ClickApplication and override it's methods to customize your own application.
@@ -19,7 +19,7 @@ NOTE: The Controller step and the simulation step is in full sync, meaning that 
 
 ## Install
 
-Prerequisites: AGX and agxBrick (You need to install agxBrick prior to below commands)
+Prerequisites: AGX and agxBrick
 
 ```bash
 # Latest version
@@ -301,3 +301,7 @@ ClickApplication has five major parts
   - Sends SensorMessage updated from Robots after the simulation step.
 - A KeyboardListener that overrides ExampleApplication keys in order to take control of Simulation flow.
 - A ResetBatchListener implementing the [Batch Simulation mode](#Batch-Simulations), used to monitor simulation time and ask ClickApplication to reset at intervals
+
+## License
+
+[Apache License 2.0](https://github.com/algoryx/click-mirror/LICENSE)
