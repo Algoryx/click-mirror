@@ -11,6 +11,7 @@ services:
     command: bash -c \
       "cd agxclick && \
        poetry add --editable ../python-src && \
+       poetry install && \
        echo RUN poetry run pytest && \
        bash"
     volumes:
