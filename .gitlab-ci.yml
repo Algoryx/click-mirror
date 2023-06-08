@@ -219,8 +219,9 @@ test-agxclick:
   script:
     - cd $PYTHONDIR
     - poetry publish --build --username=__token__ --password=${pypi_password}
-  only:
-    - tags
+  # TODO: Enable!
+  # only:
+  #   - tags
 
 publish-pclick:
   extends: .publish-python-lib
