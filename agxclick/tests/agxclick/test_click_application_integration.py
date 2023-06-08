@@ -70,7 +70,7 @@ class TestVelocityControlMessage(TestClickIntegration):
         self.client = client = self.connect()
         controlmessage = self.create_controlmessage()
         sensormessage = send_receive(client, controlmessage)
-        assert sum(sensormessage.objects['robot'].angleSensors) != 0
+        assert sum(sensormessage.objects['robot'].angleSensors) != 0.0
 
 
 @pytest.mark.integrationtest
