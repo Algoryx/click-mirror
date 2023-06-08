@@ -200,19 +200,11 @@ publish-pclick:
   extends: .publish-python-lib
   variables:
     PYTHONDIR: python-src
-  needs:
-    - job: build-python-lib
-      artifacts: true
-    - job: test-python-lib
 
 publish-agxclick:
   extends: .publish-python-lib
   variables:
     PYTHONDIR: agxclick
-  needs:
-    - job: build-agxclick
-      artifacts: true
-    - job: test-agxclick
 
 .build-test-cpp-lib-windows:
   stage: build
