@@ -7,7 +7,6 @@ services:
     build:  
       dockerfile: Dockerfile.CI-agx
     working_dir: "/click"
-    # TODO: Below is outdated, update to use poetry
     command: bash -c \
       "cd agxclick && \
        poetry add --editable ../python-src && \
