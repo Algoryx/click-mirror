@@ -19,6 +19,8 @@ stages:
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  variables:
+    CI_IMAGE_TAG: 0.0.1
 
 
 .build_and_push: &build-and-push
@@ -36,12 +38,27 @@ build-docker-ci:
     - cd docker
     - export DOCKER_FILE=Dockerfile.CI
     - export IMAGE_NAME=docker-ci
-    - export DOCKER_IMAGE_TAG=latest
+    - export DOCKER_IMAGE_TAG=${CI_IMAGE_TAG}
     - *build-and-push
   only:
     changes:
       - .gitlab-ci.yml
       - docker/Dockerfile.CI
+
+build-docker-ci-agx:
+  extends: .build-docker
+  image: docker:latest
+  stage: prebuild
+  script:
+    - cd docker
+    - export DOCKER_FILE=Dockerfile.CI-agx
+    - export IMAGE_NAME=docker-ci-agx
+    - export DOCKER_IMAGE_TAG=${CI_IMAGE_TAG}
+    - *build-and-push
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - docker/Dockerfile.CI-agx
 
 
 # The license is copied from https://git.algoryx.se/algoryx/agx/-/blob/master/data/cfg/agx.lic to secret build variable agx_lic
@@ -58,7 +75,7 @@ test-license:
 build-cpp-lib-linux:
   extends: .run-in-docker
   stage: build
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - mkdir build
     - cd build
@@ -83,7 +100,7 @@ build-shared-cpp-lib-linux:
 .test-cpp-lib-linux:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - build/bin/click-tests --reporter junit --out catch2-junit.xml
   artifacts:
@@ -108,7 +125,7 @@ test-shared-cpp-lib-linux:
 .publish-cpp-lib-linux:
   extends: .run-in-docker
   stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - PACKAGE_VERSION=$CI_COMMIT_TAG
     - grep "click VERSION $PACKAGE_VERSION" cpp-src/CMakeLists.txt
@@ -139,7 +156,7 @@ publish-shared-cpp-lib-linux:
 .build-python:
   extends: .run-in-docker
   stage: build
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - cd $PYTHONDIR
     - poetry build
@@ -160,7 +177,7 @@ build-agxclick:
 test-python-lib:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   needs:
     - job: build-python-lib
       artifacts: true
@@ -175,7 +192,7 @@ test-python-lib:
 test-agxclick:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:agx-2.32.1.0_agxbrick-0.5.7
+  image: $CI_REGISTRY_IMAGE/docker-ci-agx:${CI_IMAGE_TAG}
   needs:
     - job: build-python-lib
       artifacts: true
@@ -183,9 +200,6 @@ test-agxclick:
       artifacts: true
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
-    # TODO: Move next two lines to a separate CI container to speed up.
-    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qy python3-pip python3-venv
-    - pip3 install poetry pytest
     - cd agxclick
     - poetry add ../python-src/dist/*whl
     - poetry run pytest --junitxml=agxclick-junit.xml
@@ -197,7 +211,7 @@ test-agxclick:
 .publish-python-lib:
   extends: .run-in-docker
   stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - cd $PYTHONDIR
     - poetry publish --build --username=__token__ --password=${pypi_password}
@@ -274,7 +288,7 @@ build-test-dynamic-Win32-cpp-lib-windows:
 .publish-cpp-lib-windows:
   extends: .run-in-docker
   stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - find build
     - PACKAGE_VERSION=$CI_COMMIT_TAG

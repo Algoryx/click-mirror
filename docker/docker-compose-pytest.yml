@@ -3,21 +3,15 @@
 version: "3"
 services:
   pytest:
-    image: registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:agx-2.32.1.0_agxbrick-0.5.7
+    image: registry.algoryx.se/algoryx/external/click/docker-ci-agx:0.0.1
+    build:
+      dockerfile: Dockerfile.CI-agx
     working_dir: "/click"
     # TODO: Below is outdated, update to use poetry
     command: bash -c \
-      "pip3 install -r python-src/requirements-test.txt && \
-       pip3 install -r python-src/requirements-publish.txt && \
-       rm -rf python-src/dist agxclick/dist && \
-       cd python-src && \
-       python3 setup.py sdist bdist_wheel && \
-       cd ../agxclick && \
-       python3 setup.py sdist bdist_wheel && \
-       cd .. && \
-       pip3 install python-src/dist/pclick*whl && \
-       pip3 install agxclick/dist/agxclick*whl && \
-       echo RUN pytest agxclick && \
+      "cd agxclick && \
+       poetry add --editable ../python-src && \
+       echo RUN poetry run pytest agxclick && \
        bash"
     volumes:
       - ../:/click
