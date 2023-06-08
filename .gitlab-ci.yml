@@ -176,7 +176,7 @@ test-agxclick:
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
     - cd agxclick
-    - poetry add ../python-src/dist/*whl && poetry install
+    - poetry add ../python-src && poetry install
     - poetry run pytest --junitxml=agxclick-junit.xml
   artifacts:
     when: always
