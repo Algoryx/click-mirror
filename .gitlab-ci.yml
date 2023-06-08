@@ -188,7 +188,7 @@ test-agxclick:
     - pip3 install poetry pytest
     - cd agxclick
     - poetry add ../python-src/dist/*whl
-    - poetry install && python run pytest --junitxml=agxclick-junit.xml
+    - poetry run pytest --junitxml=agxclick-junit.xml
   artifacts:
     when: always
     reports:
