@@ -4,7 +4,12 @@ stages:
   - test
   - publish
 
+.docker-vars:
+  variables:
+    CI_IMAGE_TAG: 0.0.1
+
 .run-in-docker:
+  extends: .docker-vars
   tags:
     - linux
     - docker
@@ -13,14 +18,13 @@ stages:
 #    - docker:dind
 
 .build-docker:
+  extends: .docker-vars
   tags:
     - linux
     - docker-host
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  variables:
-    CI_IMAGE_TAG: 0.0.1
 
 
 .build_and_push: &build-and-push
