@@ -128,7 +128,7 @@ class Test_update_robots_from_message:
         update_robots_from_message(robots, controlmessage)
 
         # Explanation next line: Because we have not taken a simulation step, there is no output from GetData
-        robots[1].input_signals[1].GetData = lambda: robots[1].input_signals[1].Motor.MaxForce
+        robots[1].input_signals[1].GetData = lambda: robots[1].input_signals[1].Motor.ConstantForce
         assert robots[1].input_signals[1].GetData() == 5.2
 
         assert "".join(str(robot) for robot in robots) == _updated_robots_multiple_input_types_facit
@@ -146,7 +146,7 @@ class Test_update_robots_from_message:
         """
         res = list()
         for val in arr:
-            res.append(val.Motor.MaxForce)
+            res.append(val.Motor.ConstantForce)
         return res
 
     def test_that_reading_force_controlmessage_updates_robots(self, scene_forceinput):
