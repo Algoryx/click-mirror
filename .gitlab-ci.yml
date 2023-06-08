@@ -295,6 +295,8 @@ push-main-to-github:
     - eval "$(ssh-agent -s)"
     - chmod 0600 ${click_github_push_key} # Need to be protected to add.
     - file ${click_github_push_key}
+    - wc ${click_github_push_key}
+    - cksum ${click_github_push_key}
     - ssh-add ${click_github_push_key}
     # TODO: use main:main
     - git push mirror feature/github:testbranch
