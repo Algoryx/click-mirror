@@ -157,34 +157,10 @@ publish-shared-cpp-lib-linux:
     - job: build-shared-cpp-lib-linux
       artifacts: true
 
-.build-python:
-  extends: .run-in-docker
-  stage: build
-  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
-  script:
-    - cd $PYTHONDIR
-    - poetry build
-  artifacts:
-    paths:
-      - $PYTHONDIR/dist/
-
-build-python-lib:
-  extends: .build-python
-  variables:
-    PYTHONDIR: python-src
-  
-build-agxclick:
-  extends: .build-python
-  variables:
-    PYTHONDIR: agxclick
-
 test-python-lib:
   extends: .run-in-docker
   stage: test
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
-  needs:
-    - job: build-python-lib
-      artifacts: true
   script:
     - cd python-src
     - poetry install && poetry run pytest --junitxml=pclick-junit.xml
@@ -197,11 +173,6 @@ test-agxclick:
   extends: .run-in-docker
   stage: test
   image: $CI_REGISTRY_IMAGE/docker-ci-agx:${CI_IMAGE_TAG}
-  needs:
-    - job: build-python-lib
-      artifacts: true
-    - job: build-agxclick
-      artifacts: true
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
     - cd agxclick
@@ -218,6 +189,8 @@ test-agxclick:
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - cd $PYTHONDIR
+    - ls dist
+    - rm -rf dist
     - poetry publish --build --username=__token__ --password=${pypi_password}
   # TODO: Enable!
   # only:
