@@ -295,7 +295,7 @@ push-main-to-github:
     - eval "$(ssh-agent -s)"
     - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
     - ssh-add ${click_github_push_key}
-    - git branch
+    - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts # We should only do this once really
     # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
     # TODO: Use ${CI_COMMIT_REF_NAME} instead of testbranch
     - git push mirror origin/${CI_COMMIT_REF_NAME}:testbranch
