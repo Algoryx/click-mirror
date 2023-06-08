@@ -293,6 +293,7 @@ push-main-to-github:
   script:
     - git remote add mirror git@github.com:Algoryx/click-mirror.git || echo remote mirror already exists.
     - eval "$(ssh-agent -s)"
+    - chmod 0600 ${click_github_push_key}
     - ssh-add ${click_github_push_key}
     # TODO: use main:main
     - git push mirror feature/github:testbranch
