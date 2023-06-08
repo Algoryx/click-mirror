@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "agxclick"
 version = "0.1.31"
-description = "Controller to AGX using pclick messaging"
+description = "Controller to AGX Dynamics communication using pclick messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
 repository = "https://github.com/algoryx/click-mirror"

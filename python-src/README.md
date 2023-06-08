@@ -1,6 +1,6 @@
 # Click
 
-The main idea behind click is to enable a non-Brick controller talking to a Brick enabled [AGX](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by Brick.
+The main idea behind click is to enable a non-Brick controller talking to a Brick enabled [AGX Dynamics](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by Brick.
 The name comes from the sound two Bricks makes when connected.
 
 There are three main considerations

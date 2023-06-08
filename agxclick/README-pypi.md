@@ -1,6 +1,6 @@
 # agxclick
 
-agxclick uses [pclick](https://pypi.org/project/pclick/), [AGX](https://www.algoryx.se/agx-dynamics/) and [agxBrick](https://pypi.org/project/agxBrick/) to a implement a simulation application that implements Click out of the box for a provided Brick model.
+agxclick uses [pclick](https://pypi.org/project/pclick/), [AGX Dynamics](https://www.algoryx.se/agx-dynamics/) and [agxBrick](https://pypi.org/project/agxBrick/) to a implement a simulation application that implements Click out of the box for a provided Brick model.
 
 - You can use click_application.py (see below) to load any Brick model and it will find the robots and connect their signals to Click. See Brick Model Requirements below for more info.
 - You can Inherit agxclick.ClickApplication and override it's methods to customize your own application.
@@ -34,4 +34,4 @@ Visit the [GitHub repo](https://github.com/algoryx/click-mirror/agxClick/README.
 
 ## License
 
-[Apache License 2.0](https://github.com/algoryx/click-mirror/LICENSE)
+  [Apache License 2.0](https://github.com/algoryx/click-mirror/LICENSE)
