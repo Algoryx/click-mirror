@@ -152,39 +152,13 @@ This section and below are for developers developing Click
 
 ### Development Links
 
-- [C++ ControlMessage example](cpp-src/click/tests/test_control_message.cpp)
+- [C++ ControlMessage example](cpp-src/click/tests/TestControlMessage.cpp)
 - [C++ democlient](cpp-src/democlient/src/democlient.cpp)
-- [Python demoserver](python-src/src/server.py)
+- [C++ demoserver](cpp-src/democlient/src/demoserver.cpp)
+- [Python democlient](python-src/src/pclick/demo/client.py)
+- [Python demoserver](python-src/src/pclick/demo/server.py)
 - [Current protobuf schema](protobuf-src/Messaging.proto)
 - [Technology choices etc](doc/messaging.md)
-
-### Directory Structure with CMake relevant files expanded
-
-```text
-├──cpp-src
-|  ├──click
-|  |  ├──include/click
-|  |  ├──shared_conf
-|  |  ├──src
-|  |  ├──tests
-|  |  |  └──CMakeLists.txt
-|  |  └──CMakeLists.txt
-|  ├──CMakeModules
-|  ├──democlient
-|  |  ├──src
-|  |  └──CMakeLists.txt
-|  └──CMakeLists.txt
-├──doc
-├──docker
-├──protobuf-src
-|  └──CMakeLists.txt
-├──python-src
-|  ├──src
-|  |  └──pclick
-|  └──tests
-|     └──pclick
-└──testdata
-```
 
 ### Build, test, and install click c++ library from source on Linux/OSX
 
@@ -274,7 +248,8 @@ To circumvent clashes with python library click and pyClick, the python library 
 
 ### Release:s
 
-Releases are made by pushing the tag to be released, GitLab will build, test and publish the version.
+*Releases are only done on git.algoryx.se, and tags are then pushed to github.*
+They are made by pushing the tag to be released, GitLab will build, test and publish the version.
 Release tags are semver only, eg 0.1.2.
 
 Steps:
@@ -283,7 +258,7 @@ Steps:
 2. Update releaselog.txt
 3. Push to branch and do MR
 4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.1.16; git push origin 0.1.16`.
-5. When built, the new release is available in the [Package Registry](https://git.algoryx.se/algoryx/external/click/-/packages)
+5. When built, binary artifacts:s are available in the [Package Registry](https://git.algoryx.se/algoryx/external/click/-/packages) and python artifacts at [pypi.org](pypi.org).
 
 ## Build pipeline dependencies - updating agxBrick version
 
