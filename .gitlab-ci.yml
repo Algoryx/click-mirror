@@ -189,8 +189,6 @@ test-agxclick:
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - cd $PYTHONDIR
-    - ls dist
-    - rm -rf dist
     - poetry publish --build --username=__token__ --password=${pypi_password}
   # TODO: Enable!
   # only:
