@@ -7,7 +7,7 @@ FROM ubuntu:20.04
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -qy \
   curl wget apt-transport-https gpg \
-  gcc python3-pip python3-venv ninja-build tzdata git zip && \
+  gcc python3-pip python3-venv ninja-build tzdata git git-lfs zip && \
   rm -rf /var/lib/apt/lists/*
 
 # https://apt.kitware.com/ is to enable using newer cmake versions (20.04 version is too old for latest protobuf)

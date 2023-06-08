@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.CI
-    image: registry.algoryx.se/algoryx/external/click/docker-ci:0.0.1
+    image: registry.algoryx.se/algoryx/external/click/docker-ci:0.0.2
     working_dir: "/click"
     command: ${CMD:-"bash"}
     volumes:

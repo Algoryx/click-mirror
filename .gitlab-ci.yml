@@ -6,7 +6,7 @@ stages:
 
 .docker-vars:
   variables:
-    CI_IMAGE_TAG: 0.0.1
+    CI_IMAGE_TAG: 0.0.2
 
 .run-in-docker:
   extends: .docker-vars
@@ -285,3 +285,14 @@ publish-x64-cpp-lib-windows:
   needs:
     - job: build-test-x64-cpp-lib-windows
       artifacts: true
+
+push-main-to-github:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
+  script:
+    - git remote add mirror git@github.com:Algoryx/click-mirror.git
+    - ssh-add {click_github_push_key}
+    # TODO: use main:main
+    - git push mirror feature/github:testbranch
+  # TODO: Only run on main
