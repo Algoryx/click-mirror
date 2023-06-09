@@ -298,7 +298,6 @@ push-main-to-github:
     # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
     # TODO: Use ${CI_COMMIT_REF_NAME} instead of testbranch
     - git push mirror origin/${CI_COMMIT_REF_NAME}:testbranch
-  # TODO: Only run on main and tags
-  # only:
-  #   - main
-  #   - tags
+  only:
+    - main
+    - tags
