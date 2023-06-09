@@ -6,7 +6,7 @@ stages:
 
 .docker-vars:
   variables:
-    CI_IMAGE_TAG: 0.0.1
+    CI_IMAGE_TAG: 0.0.2
 
 .run-in-docker:
   extends: .docker-vars
@@ -24,7 +24,7 @@ stages:
     - docker-host
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
 
 .build_and_push: &build-and-push
@@ -285,3 +285,20 @@ publish-x64-cpp-lib-windows:
   needs:
     - job: build-test-x64-cpp-lib-windows
       artifacts: true
+
+push-main-to-github:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
+  script:
+    - git remote add mirror git@github.com:Algoryx/click-mirror.git || echo remote mirror already exists.
+    - eval "$(ssh-agent -s)"
+    - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
+    - ssh-add ${click_github_push_key}
+    # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
+    # TODO: Use ${CI_COMMIT_REF_NAME} instead of testbranch
+    - git push mirror origin/${CI_COMMIT_REF_NAME}:testbranch
+  # TODO: Only run on main and tags
+  # only:
+  #   - main
+  #   - tags
