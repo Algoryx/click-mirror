@@ -296,7 +296,7 @@ push-main-to-github:
     - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
     - ssh-add ${click_github_push_key}
     # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
-    - git push mirror origin/${CI_COMMIT_REF_NAME}:${CI_COMMIT_REF_NAME}
+    - git push mirror refs/removes/origin/${CI_COMMIT_REF_NAME}:refs/heads/${CI_COMMIT_REF_NAME}
   only:
     - main
 
