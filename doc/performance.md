@@ -2,7 +2,7 @@
 # Performance
 
 ```bash
-python3.9 -m pClick.demo.server --trace-sizes
+python3.9 -m pclick.demo.server --trace-sizes
 # client.cpp
 ```bash
 time bin/democlient --range 10000 --timings
@@ -17,7 +17,7 @@ bin/democlient --range 10000 --timings
 ## client.py
 
 ```bash
-time python3.9 -m pClick.demo.client --controlmessage "panda_tool:1,1,1,1,1,1,1;panda_2:1,1,1,1,1,1,1" --controltype Angle --range 9999
+time python3.9 -m pclick.demo.client --controlmessage "panda_tool:1,1,1,1,1,1,1;panda_2:1,1,1,1,1,1,1" --controltype Angle --range 9999
 0.58s user 0.41s system 42% cpu 2.325 total
 ```
 

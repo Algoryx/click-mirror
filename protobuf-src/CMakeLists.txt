@@ -21,5 +21,5 @@ protobuf_generate(TARGET clickprotobuf LANGUAGE cpp)
 # Update generated python
 protobuf_generate(TARGET clickprotobuf LANGUAGE python)
 add_custom_command(TARGET clickprotobuf POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/Messaging_pb2.py ${PROJECT_SOURCE_DIR}/../python-src/src/pClick/Messaging_pb2.py
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/Messaging_pb2.py ${PROJECT_SOURCE_DIR}/../python-src/src/pclick/Messaging_pb2.py
 )

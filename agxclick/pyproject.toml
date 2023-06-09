@@ -1,19 +1,19 @@
 [tool.poetry]
-name = "pclick"
-version = "0.1.35"
-description = "Controller to AGX Dynamics messaging"
+name = "agxclick"
+version = "0.1.31"
+description = "Controller to AGX Dynamics communication using pclick messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
 repository = "https://github.com/algoryx/click-mirror"
-readme = "README.md"
+readme = "README-pypi.md"
 packages = [
-    { include = "pclick", from = "src" },
+    { include = "agxclick", from = "src" },
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8 <3.11"
-protobuf = "3.20.3"
-pyzmq = "22.3.0"
+python = ">=3.8 <3.10"
+pclick = ">=0.1.31"
+agxBrick = ">=0.5.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
