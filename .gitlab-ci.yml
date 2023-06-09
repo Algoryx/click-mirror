@@ -286,7 +286,21 @@ publish-x64-cpp-lib-windows:
     - job: build-test-x64-cpp-lib-windows
       artifacts: true
 
-push-to-github:
+push-main-to-github:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
+  script:
+    - git remote add mirror git@github.com:Algoryx/click-mirror.git || echo remote mirror already exists.
+    - eval "$(ssh-agent -s)"
+    - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
+    - ssh-add ${click_github_push_key}
+    # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
+    - git push mirror origin/${CI_COMMIT_REF_NAME}:${CI_COMMIT_REF_NAME}
+  only:
+    - main
+
+push-tag-to-github:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
@@ -298,5 +312,4 @@ push-to-github:
     # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
     - git push mirror ${CI_COMMIT_REF_NAME}
   only:
-    - main
     - tags
