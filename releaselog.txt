@@ -1,5 +1,7 @@
-0.1.36-SNAPSHOT
+0.1.36
 - Add C++ demoserver
+- Rename packages and modules according to PEP8, i.e pClick is now pclick. agxClick is now agxclick.
+- First version to be available from http://pypi.org
 
 0.1.35
 - Remove sleep in democlient.cpp for windows builds to increase speed a lot on Windows which has low resolution sleep (~10 ms) only.

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "agxclick"
-version = "0.1.31"
+version = "0.1.36"
 description = "Controller to AGX Dynamics communication using pclick messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
@@ -12,7 +12,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.8 <3.10"
-pclick = ">=0.1.31"
+pclick = ">=0.1.36"
 agxBrick = ">=0.5.21"
 
 [tool.poetry.dev-dependencies]
