@@ -163,7 +163,7 @@ test-python-lib:
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - cd python-src
-    - poetry install && poetry run pytest --junitxml=pclick-junit.xml
+    - (poetry install && poetry run pytest --junitxml=pclick-junit.xml)
   artifacts:
     when: always
     reports:
@@ -176,7 +176,7 @@ test-agxclick:
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
     - cd agxclick
-    - poetry add ../python-src && poetry install
+    - (poetry add ../python-src && poetry install)
     - poetry run pytest --junitxml=agxclick-junit.xml
   artifacts:
     when: always
