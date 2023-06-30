@@ -165,16 +165,15 @@ This section and below are for developers developing Click
 NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install.
 
 ```bash
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install ../cpp-src
+cmake -B oos -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=oos/install cpp-src
+cd oos
 ninja && ninja test install
 ```
 
 or for shared library, add BUILD_SHARED_LIBS:
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=ON ../cpp-src
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=oos/install -DBUILD_SHARED_LIBS=ON cpp-src
 ```
 
 `ninja click-tests && ninja test` will compile test dependencies and run tests in one step.
@@ -184,6 +183,8 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR=Ninja -DCMAKE_INSTALL_PREFIX=
 ```bash
 cmake -B oos -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=oos/install -G "Visual Studio 17 2022" -A x64 cpp-src
 cmake --build oos --config Release --target INSTALL
+cd oos
+ctest
 ```
 
 or for shared library, add BUILD_SHARED_LIBS:
