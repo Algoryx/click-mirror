@@ -181,7 +181,7 @@ test-agxclick:
   artifacts:
     when: always
     reports:
-      junit: agxclick-junit.xml
+      junit: agxclick/agxclick-junit.xml
 
 .publish-python-lib:
   extends: .run-in-docker
