@@ -26,6 +26,10 @@ endif()
 
 include(${CONAN_CMAKE_LOCAL_FILE})
 
+if(WIN32)
+# Needed for 32 bit builds on windows
+set(ZMQOPTIONS "zeromq:encryption=None")
+endif()
 
 conan_cmake_configure(
   REQUIRES 
@@ -39,8 +43,7 @@ conan_cmake_configure(
     cmake
     cmake_find_package
   OPTIONS
-    # Needed for 32 bit builds on windows
-    zeromq:encryption=False
+    ${ZMQOPTIONS}
 )
 
 conan_cmake_autodetect(settings)
