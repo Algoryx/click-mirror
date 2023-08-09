@@ -27,13 +27,13 @@ std::chrono::microseconds recv_total;
 std::chrono::microseconds idling_total;
 
 
-std::unique_ptr<Message> receiveBlocking(Server& server, bool trace = false)
+std::unique_ptr<Message> receive_blocking(Server& server, bool trace = false)
 {
     if (trace) {
         cerr << "Receive blocking " << endl;
     }
     auto start = std::chrono::system_clock::now();
-    std::unique_ptr<Message> response = server.blockingReceive();
+    std::unique_ptr<Message> response = server.blocking_receive();
     auto stop = std::chrono::system_clock::now();
     auto last_receive = stop-start;
     recv_total = std::chrono::duration_cast<std::chrono::microseconds>(last_receive);
@@ -59,7 +59,7 @@ std::unique_ptr<Message> receive(Server& server, bool trace = false)
     }
 }
 
-argparse::ArgumentParser parseArgs(int argc, char** argv)
+argparse::ArgumentParser parse_args(int argc, char** argv)
 {
     argparse::ArgumentParser args("my_program");
     args.add_argument("--trace")
@@ -105,7 +105,7 @@ std::unique_ptr<SensorMessage> build_sensor_message() {
 
 int main(int argc, char *argv[])
 {
-    auto args = parseArgs(argc, argv);
+    auto args = parse_args(argc, argv);
     bool trace = args.get<bool>("trace");
     bool blocking_receive = args.get<bool>("blocking-receive");
     const std::string endpoint = args.get<std::string>("addr");
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
     while(true) {
         if (blocking_receive)
-            reply = receiveBlocking(server, trace);
+            reply = receive_blocking(server, trace);
         else
             reply = receive(server, trace);
         switch(reply->messageType()) {

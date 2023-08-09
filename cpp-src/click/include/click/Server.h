@@ -39,7 +39,7 @@ class Server
      * \param bytes Bytes to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
-    CLICK_EXPORT bool send(const std::string& bytes) const;
+    CLICK_EXPORT bool send(const std::string& bytes);
 
     /**
      * If there is a message ready then get it as a string
@@ -48,7 +48,7 @@ class Server
      *
      * \return true if message part received, false if it would have blocked or it timed out.
      */
-    CLICK_EXPORT bool receive(std::string& responseBytes) const;
+    CLICK_EXPORT bool receive_bytes(std::string& responseBytes);
 
     /**
      * Sends a message over the socket.
@@ -58,7 +58,21 @@ class Server
      * \param message The message to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
-    CLICK_EXPORT bool send(const Message& message) const;
+    CLICK_EXPORT bool send(const Message& message);
+
+    /**
+     * @brief Since caller must interleave send/recv, this convenience method reports which of send/recv can be done now.
+     * 
+     * \return true if ok to send, false otw
+     */
+    CLICK_EXPORT bool can_send();
+
+    /**
+     * @brief Since caller must interleave send/recv, this convenience method reports which of send/recv can be done now.
+     * 
+     * \return true if ok to recv, false otw
+     */
+    CLICK_EXPORT bool can_recv();
     
     /**
      * Wait for the next message
@@ -73,7 +87,7 @@ class Server
      *
      * \return the received message or empty ptr if it would have blocked.
      */
-    CLICK_EXPORT std::unique_ptr<Message> blockingReceive();
+    CLICK_EXPORT std::unique_ptr<Message> blocking_receive();
 
     /**
      * Shutdown ZMQ Sockets and Context
@@ -90,5 +104,6 @@ class Server
   private:
     std::unique_ptr<zmqpp::socket> m_socket;
     std::unique_ptr<zmqpp::context> m_context;
+    bool m_send_is_next_action = false;
   };
 }

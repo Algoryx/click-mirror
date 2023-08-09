@@ -11,6 +11,7 @@
 #pragma warning(pop)
 
 #include <memory>
+#include "Server.h"
 
 using namespace click;
 using namespace std;
@@ -29,19 +30,37 @@ void Server::bind(const std::string& endpoint) {
   m_socket->bind(endpoint);
 }
 
-bool Server::send(const std::string& bytes) const {
-  return m_socket->send(bytes);
+bool Server::send(const std::string& bytes) {
+  bool success = m_socket->send(bytes);
+  if (success)
+    m_send_is_next_action = false;
+  return success;
 }
 
-bool Server::receive(std::string& responseBytes) const{
-  return m_socket->receive(responseBytes, true);
+bool Server::receive_bytes(std::string& responseBytes) {
+  bool success = m_socket->receive(responseBytes, true);
+  if (success)
+    m_send_is_next_action = true;
+  return success;
 }
 
-bool Server::send(const Message& message) const
-{
+bool Server::send(const Message& message) {
   MessageSerializer serializer;
   string bytes = serializer.serializeToString(message);
-  return m_socket->send(bytes);
+  bool success = m_socket->send(bytes);
+  if (success)
+    m_send_is_next_action = false;
+  return success;
+}
+
+bool click::Server::can_send()
+{
+  return m_send_is_next_action;
+}
+
+bool click::Server::can_recv()
+{
+  return !m_send_is_next_action;
 }
 
 unique_ptr<Message> Server::receive(bool block)
@@ -49,13 +68,15 @@ unique_ptr<Message> Server::receive(bool block)
   MessageSerializer serializer;
   std::string bytes;
   bool status = m_socket->receive(bytes, !block);
-  if (status)
+  if (status) {
+    m_send_is_next_action = true;
     return serializer.fromBytes(bytes);
+  }
   else
     return unique_ptr<Message>();
 }
 
-unique_ptr<Message> Server::blockingReceive()
+unique_ptr<Message> Server::blocking_receive()
 {
   return this->receive(true);
 }
