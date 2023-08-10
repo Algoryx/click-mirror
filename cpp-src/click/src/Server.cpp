@@ -1,3 +1,4 @@
+#include <memory>
 #include <click/Server.h>
 #include <Messaging.pb.h>
 #include <click/Message.h>
@@ -10,8 +11,6 @@
 #include <zmqpp/zmqpp.hpp>
 #pragma warning(pop)
 
-#include <memory>
-#include "Server.h"
 
 using namespace click;
 using namespace std;
@@ -53,12 +52,12 @@ bool Server::send(const Message& message) {
   return success;
 }
 
-bool click::Server::can_send()
+bool click::Server::must_send()
 {
   return m_send_is_next_action;
 }
 
-bool click::Server::can_recv()
+bool click::Server::must_recv()
 {
   return !m_send_is_next_action;
 }

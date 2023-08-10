@@ -18,6 +18,15 @@ namespace click
   {
   public:
     /**
+     * @brief Check if object with objectname exists in control message
+     * 
+     * @param objectname name of the object
+     * @return true if the object exists
+     * @return false if the object doesn't exist
+     */
+    bool has_object(const std::string &objectname);
+
+    /**
      * Get angles, if any, for the object with name objectname
      *
      * \return a Vector of angles

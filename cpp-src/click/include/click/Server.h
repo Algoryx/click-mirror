@@ -29,7 +29,7 @@ class Server
      * 
      * \param endpoint The zmq endpoint to connect to
      */
-    CLICK_EXPORT void bind(const std::string& endpoint);
+    CLICK_EXPORT virtual void bind(const std::string& endpoint);
 
     /**
      * Sends bytes over the socket.
@@ -39,7 +39,7 @@ class Server
      * \param bytes Bytes to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
-    CLICK_EXPORT bool send(const std::string& bytes);
+    CLICK_EXPORT virtual bool send(const std::string& bytes);
 
     /**
      * If there is a message ready then get it as a string
@@ -48,7 +48,7 @@ class Server
      *
      * \return true if message part received, false if it would have blocked or it timed out.
      */
-    CLICK_EXPORT bool receive_bytes(std::string& responseBytes);
+    CLICK_EXPORT virtual bool receive_bytes(std::string& responseBytes);
 
     /**
      * Sends a message over the socket.
@@ -58,21 +58,21 @@ class Server
      * \param message The message to send.
      * \return true if signal sent, false if it would have blocked or it timed out.
      */
-    CLICK_EXPORT bool send(const Message& message);
+    CLICK_EXPORT virtual bool send(const Message& message);
 
     /**
      * @brief Since caller must interleave send/recv, this convenience method reports which of send/recv can be done now.
      * 
      * \return true if ok to send, false otw
      */
-    CLICK_EXPORT bool can_send();
+    CLICK_EXPORT virtual bool must_send();
 
     /**
      * @brief Since caller must interleave send/recv, this convenience method reports which of send/recv can be done now.
      * 
      * \return true if ok to recv, false otw
      */
-    CLICK_EXPORT bool can_recv();
+    CLICK_EXPORT virtual bool must_recv();
     
     /**
      * Wait for the next message
@@ -80,14 +80,14 @@ class Server
      * \param block Whether to block while receiving or not
      * \return the received message or empty ptr if it would have blocked.
      */
-    CLICK_EXPORT std::unique_ptr<Message> receive(bool block=false);
+    CLICK_EXPORT virtual std::unique_ptr<Message> receive(bool block=false);
 
     /**
      * Wait for the next message
      *
      * \return the received message or empty ptr if it would have blocked.
      */
-    CLICK_EXPORT std::unique_ptr<Message> blocking_receive();
+    CLICK_EXPORT virtual std::unique_ptr<Message> blocking_receive();
 
     /**
      * Shutdown ZMQ Sockets and Context
@@ -97,9 +97,9 @@ class Server
      * The reason this method is exposed is if Server is declared as static in a Windows application,
      * because if static the destructor will be called after Windows Sockets are shut down causing a "WSASTARTUP not yet performed" assertion
      */
-    CLICK_EXPORT void terminate();
+    CLICK_EXPORT virtual void terminate();
 
-    CLICK_EXPORT ~Server();
+    CLICK_EXPORT virtual ~Server();
 
   private:
     std::unique_ptr<zmqpp::socket> m_socket;

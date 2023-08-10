@@ -13,6 +13,10 @@ std::string ControlMessage::debugString() const
   return this->control_m->DebugString();
 }
 
+bool ControlMessage::has_object(const std::string &objectname) {
+  return this->control_m->objects().contains(objectname);
+}
+
 std::vector<double> ControlMessage::angles(const std::string &objectname) const {
   google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).angles();
   return std::vector<double>(arr.begin(), arr.end());
