@@ -1,3 +1,8 @@
+0.1.38
+- C++ Server supports inheritance
+- C++ Server supports must_send(), must_recv()
+- C++ ControlMessage supports has_object() and values()
+
 0.1.37
 - No changes
 
