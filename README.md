@@ -258,7 +258,7 @@ Steps:
 1. Update version in agxclick/setup.py, python-src/setup.py, README.md. Suggestion: Search and Replace old version for new.
 2. Update releaselog.txt
 3. Push to branch and do MR
-4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.1.16; git push origin 0.1.16`.
+4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.1.38; git push origin 0.1.38`.
 5. When built, binary artifacts:s are available in the [Package Registry](https://git.algoryx.se/algoryx/external/click/-/packages) and python artifacts at [pypi.org](pypi.org).
 
 ## Build pipeline dependencies - updating agxBrick version
