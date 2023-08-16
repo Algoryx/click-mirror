@@ -89,10 +89,6 @@ build-cpp-lib-linux:
     - cmake -DCMAKE_BUILD_TYPE=Debug .
     - ninja
     - ninja install
-    # TODO: Move to publish
-    - cd ../cpp-src/click
-    - conan create . algoryx/stable
-    - conan upload click/0.1.38@algoryx/stable
   artifacts:
     paths:
       - oos/install
@@ -111,6 +107,12 @@ build-shared-cpp-lib-linux:
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - oos/bin/click-tests --reporter junit --out catch2-junit.xml
+    # TODO: Move to publish
+    - cd cpp-src/click
+    - conan create . algoryx/stable
+    - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
+    - conan upload click/0.1.38@algoryx/stable
+
   artifacts:
     when: always
     reports:
