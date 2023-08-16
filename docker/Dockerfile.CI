@@ -26,3 +26,9 @@ RUN pip3 install -U conan==1.* poetry pytest
 
 # Enable conan library cache
 VOLUME [ "/root/.conan/data" ]
+
+# Setup conan remote and default profile
+RUN conan remote add algoryx https://conan.algoryx.se --insert
+RUN conan profile new --detect default
+RUN conan profile update settings.compiler.libcxx=libstdc++11 default
+
