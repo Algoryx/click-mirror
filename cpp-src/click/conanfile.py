@@ -27,8 +27,8 @@ class ClickConan(ConanFile):
         self.copy("src/*")
         self.copy("include/*")
         # For now, we copy the generated protobuf sources from oos directory - should be it's own recipe later
-        self.copy("Messaging.pb.h", src="../oos/protobuf-gen/", dst="include", keep_path=False)
-        self.copy("Messaging.pb.cc", src="../oos/protobuf-gen/", dst="src", keep_path=False)
+        self.copy("Messaging.pb.h", src="../../oos/protobuf-gen/", dst="include", keep_path=False)
+        self.copy("Messaging.pb.cc", src="../../oos/protobuf-gen/", dst="src", keep_path=False)
 
     def requirements(self):
         self.requires("protobuf/3.21.9", private=False)

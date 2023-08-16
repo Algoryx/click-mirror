@@ -81,9 +81,8 @@ build-cpp-lib-linux:
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - mkdir oos
+    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS cpp-src
     - cd oos
-    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS ../cpp-src
     - ninja
     - ninja install
     - ninja package
