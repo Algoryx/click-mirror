@@ -107,11 +107,6 @@ build-shared-cpp-lib-linux:
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - oos/bin/click-tests --reporter junit --out catch2-junit.xml
-    # TODO: Move to publish
-    - cd cpp-src/click
-    - conan create . algoryx/stable
-    - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
-    - conan upload click/0.1.38@algoryx/stable
 
   artifacts:
     when: always
@@ -144,6 +139,12 @@ test-shared-cpp-lib-linux:
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_UPLOAD_NAME}"'
+    # Publish click to conan.algoryx.se
+    - cd ../cpp-src/click
+    - conan create . algoryx/stable -pr:b=default
+    - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable
+
   only:
     - tags
 
