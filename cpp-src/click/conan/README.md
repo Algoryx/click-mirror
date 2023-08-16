@@ -9,7 +9,7 @@ conan create .
 ## Upload click to conan.io
 
 ```bash
-TBD
+conan upload click/<version>/algoryx/stable
 ```
 
 ## Install Find* for conan dependencies defined in conanfile.py
