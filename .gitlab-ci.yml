@@ -6,7 +6,7 @@ stages:
 
 .docker-vars:
   variables:
-    CI_IMAGE_TAG: 0.0.2
+    CI_IMAGE_TAG: 0.0.3
 
 .run-in-docker:
   extends: .docker-vars
@@ -81,9 +81,8 @@ build-cpp-lib-linux:
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - mkdir build
-    - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS ../cpp-src
+    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=oos/install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS cpp-src
+    - cd oos
     - ninja
     - ninja install
     - ninja package
@@ -92,9 +91,10 @@ build-cpp-lib-linux:
     - ninja install
   artifacts:
     paths:
-      - build/install
-      - build/bin
-      - build/click*Linux.deb
+      - oos/install
+      - oos/bin
+      - oos/click*Linux.deb
+      - oos/protobuf-gen/Messaging*
 
 build-shared-cpp-lib-linux:
   extends: build-cpp-lib-linux
@@ -106,7 +106,8 @@ build-shared-cpp-lib-linux:
   stage: test
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - build/bin/click-tests --reporter junit --out catch2-junit.xml
+    - oos/bin/click-tests --reporter junit --out catch2-junit.xml
+
   artifacts:
     when: always
     reports:
@@ -121,7 +122,7 @@ test-cpp-lib-linux:
 test-shared-cpp-lib-linux:
   extends: .test-cpp-lib-linux
   variables:
-    LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/build/install/lib"
+    LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/oos/install/lib"
   needs:
     - job: build-shared-cpp-lib-linux
       artifacts: true
@@ -133,11 +134,17 @@ test-shared-cpp-lib-linux:
   script:
     - PACKAGE_VERSION=$CI_COMMIT_TAG
     - grep "click VERSION $PACKAGE_VERSION" cpp-src/CMakeLists.txt
-    - cd build
+    - cd oos
     - PACKAGE_NAME=`ls click-*.deb`
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_UPLOAD_NAME}"'
+    # Publish click to conan.algoryx.se
+    - cd ../cpp-src/click
+    - conan create . algoryx/stable -pr:b=default
+    - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable
+
   only:
     - tags
 
@@ -213,8 +220,8 @@ publish-agxclick:
     # Use project specific conan directory to cache between builds but not between projects
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
-    - mkdir build
-    - cd build
+    - mkdir oos
+    - cd oos
     - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A $TARGET_ARCH $EXTRA_PARAMS ../cpp-src
     - cmake --build . --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release .
@@ -222,11 +229,11 @@ publish-agxclick:
     - bin/click-tests --reporter junit --out win-catch2-junit.xml
   artifacts:
     paths:
-      - build/install
-      - build/bin
+      - oos/install
+      - oos/bin
     when: always
     reports:
-      junit: build/win-catch2-junit.xml
+      junit: oos/win-catch2-junit.xml
 
 
 build-test-x64-cpp-lib-windows:
@@ -257,11 +264,11 @@ build-test-dynamic-Win32-cpp-lib-windows:
   stage: publish
   image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - find build
+    - find oos
     - PACKAGE_VERSION=$CI_COMMIT_TAG
     - PACKAGE_NAME=$PACKAGE_UPLOAD_NAME-$PACKAGE_VERSION.zip
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
-    - zip -r $PACKAGE_NAME build doc agxclick/examples agxclick/testdata LICENSE agxclick/README.md README.md
+    - zip -r $PACKAGE_NAME oos doc agxclick/examples agxclick/testdata LICENSE agxclick/README.md README.md
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_NAME}"'
   only:
