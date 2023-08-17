@@ -7,11 +7,11 @@ class ClickConan(ConanFile):
     version = "0.1.38"
 
     # Optional metadata
-    license = "<Put the package license here>"
-    author = "<Put your name here> <And your email here>"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of Click here>"
-    topics = ("<Put some tag here>", "<here>", "<and here>")
+    license = "Apache License Version 2.0"
+    author = "Algoryx Simulation <contact@algoryx.se>"
+    url = "https://github.com/algoryx/click-mirror"
+    description = "Click adds the low latency communication you need to let your controller control your robots in an Algoryx Dynamics simulation like if they were real robots."
+    topics = ("networking", "robotics", "simulation")
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
