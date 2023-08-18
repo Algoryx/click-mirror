@@ -10,6 +10,8 @@ class ClickTestConan(ConanFile):
     # VirtualBuildEnv and VirtualRunEnv can be avoided if "tools.env.virtualenv:auto_use" is defined
     # (it will be defined in Conan 2.0)
     generators = "CMakeDeps", "CMakeToolchain", "VirtualBuildEnv", "VirtualRunEnv"
+    options = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
     apply_env = False
     test_type = "explicit"
 
@@ -27,4 +29,4 @@ class ClickTestConan(ConanFile):
     def test(self):
         if not cross_building(self):
             cmd = os.path.join(self.cpp.build.bindirs[0], "example")
-            self.run(cmd, env="conanrun")
+            self.run(cmd)

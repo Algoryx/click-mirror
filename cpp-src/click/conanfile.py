@@ -15,6 +15,7 @@ class ClickConan(ConanFile):
 
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
+    # Should be enabled with -o:b shared=True, but it isn't - must set default_options.shared to True so skipping for now
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
@@ -24,6 +25,7 @@ class ClickConan(ConanFile):
         # Sources are located in the same place as this recipe, copy them to the recipe
         self.copy("CMakeLists.txt", src="conan", keep_path=False)
         self.copy("ClickConfig.cmake")
+        self.copy("shared_conf/*")
         self.copy("src/*")
         self.copy("include/*")
         # For now, we copy the generated protobuf sources from oos directory - should be it's own recipe later
