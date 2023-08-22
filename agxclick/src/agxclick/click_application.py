@@ -1,3 +1,5 @@
+import signal
+import sys
 from agxclick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ResetBatchListener
 from pclick import Server
 from pclick.server import SizeCollector, SizeCollectorChanges
@@ -8,6 +10,10 @@ from agxclick.graphics_throttler import GraphicsThrottler
 
 
 class ClickApplication(AgxApplication):
+
+    def signal_handler(self, sig, frame):
+        self._logger.info("Stopping from SIGINT")
+        self.on_stop()
 
     def __init__(self, args: List[str]):
         super().__init__(args)
@@ -20,6 +26,7 @@ class ClickApplication(AgxApplication):
         self._reset_batch_listener = None
         self.application_step_listeners: List[ApplicationStepListener] = []
         self.server = None
+        signal.signal(signal.SIGINT, self.signal_handler)
 
     def run(self, buildScene: Callable[[], Any]):
         """
@@ -47,6 +54,8 @@ class ClickApplication(AgxApplication):
             profile.enable()
 
         num_frames, wall_clock = self.mainloop()
+        # Release license seat - important if docker/floating license.
+        self.stop()
 
         if self.args.profile:
             profile.disable()

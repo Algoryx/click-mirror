@@ -48,6 +48,7 @@ class AgxApplication:
 
     def stop(self):
         self.app.stop()
+        agx.Runtime.instance().clear()
 
     def remote_viewer_exists(self) -> bool:
         return hasattr(self.app, "getController") and self.app.getController()
