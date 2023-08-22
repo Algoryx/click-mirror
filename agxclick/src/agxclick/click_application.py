@@ -1,4 +1,3 @@
-from agx import Runtime
 from agxclick import KeyboardListener, AgxApplication, ClickFrameListener, ApplicationStepListener, ResetBatchListener
 from pclick import Server
 from pclick.server import SizeCollector, SizeCollectorChanges
@@ -49,7 +48,7 @@ class ClickApplication(AgxApplication):
 
         num_frames, wall_clock = self.mainloop()
         # Release license seat - important if docker/floating license.
-        Runtime.instance().clear()
+        self.stop()
 
         if self.args.profile:
             profile.disable()
