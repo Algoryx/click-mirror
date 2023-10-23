@@ -143,7 +143,7 @@ test-shared-cpp-lib-linux:
     - cd ../cpp-src/click
     - conan create . algoryx/stable -pr:b=default
     - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable
+    - conan upload --all click/${PACKAGE_VERSION}@algoryx/stable
 
   only:
     - tags
