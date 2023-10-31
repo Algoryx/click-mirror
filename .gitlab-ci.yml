@@ -242,22 +242,31 @@ build-test-x64-cpp-lib-windows:
     TARGET_ARCH: "x64"
     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
-build-test-static-Win32-cpp-lib-windows:
-  tags:
-    - win32
-    - vs2019
-  extends: .build-test-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "Win32"
+# ABB No longer needs win32, so disable and remove after 2024-06
+# build-test-static-Win32-cpp-lib-windows:
+#   tags:
+#     - win32
+#     - vs2019
+#   extends: .build-test-cpp-lib-windows
+#   variables:
+#     TARGET_ARCH: "Win32"
 
-build-test-dynamic-Win32-cpp-lib-windows:
-  tags:
-    - win32
-    - vs2019
-  extends: .build-test-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "Win32"
-    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
+# build-test-dynamic-Win32-cpp-lib-windows:
+#   tags:
+#     - win32
+#     - vs2019
+#   extends: .build-test-cpp-lib-windows
+#   variables:
+#     TARGET_ARCH: "Win32"
+#     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
+
+# publish-dynamic-Win32-cpp-lib-windows:
+#   extends: .publish-cpp-lib-windows
+#   variables:
+#     PACKAGE_UPLOAD_NAME: click-win32
+#   needs:
+#     - job: build-test-dynamic-Win32-cpp-lib-windows
+#       artifacts: true
 
 .publish-cpp-lib-windows:
   extends: .run-in-docker
@@ -273,14 +282,6 @@ build-test-dynamic-Win32-cpp-lib-windows:
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_NAME}"'
   only:
     - tags
-
-publish-dynamic-Win32-cpp-lib-windows:
-  extends: .publish-cpp-lib-windows
-  variables:
-    PACKAGE_UPLOAD_NAME: click-win32
-  needs:
-    - job: build-test-dynamic-Win32-cpp-lib-windows
-      artifacts: true
 
 publish-x64-cpp-lib-windows:
   extends: .publish-cpp-lib-windows
