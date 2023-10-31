@@ -11,8 +11,8 @@ Click implements C++ and Python clients. Additional language support can be adde
 There are currently three main parts of click
 
 - [agxclick](agxclick/README.md) - a Simulation application using pclick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
-- click - C++ click library with a democlient.
-- pclick - Python click library with a demo client and demo server
+- [click](cpp-src) - C++ click library with a democlient.
+- [pclick](python-src/README.md) - Python click library with a demo client and demo server
 
 The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without agxclick, but the real benefit of Brick integration comes with agxclick.
 
