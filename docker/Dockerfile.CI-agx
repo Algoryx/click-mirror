@@ -4,10 +4,8 @@
 # Without it, the different branches will create different CI images affecting all builds.
 
 # Default args intended to be overridden
-ARG AGX_VERSION=2.35.0.3
-ARG AGXBRICK_VERSION=0.5.19
-# ARG AGX_VERSION=2.36.0.0
-# ARG AGXBRICK_VERSION=0.5.21
+ARG AGX_VERSION=2.36.1.5
+ARG AGXBRICK_VERSION=0.5.32
 ARG AGXBRICK_IMAGE_TAG=agx-${AGX_VERSION}_agxbrick-${AGXBRICK_VERSION}
 ARG IMAGE_NAME=agxbrick-minified
 FROM registry.algoryx.se/algoryx/external/agx-docker/${IMAGE_NAME}:$AGXBRICK_IMAGE_TAG

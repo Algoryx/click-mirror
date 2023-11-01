@@ -6,7 +6,7 @@ stages:
 
 .docker-vars:
   variables:
-    CI_IMAGE_TAG: 0.0.3
+    CI_IMAGE_TAG: 0.0.4
 
 .run-in-docker:
   extends: .docker-vars
