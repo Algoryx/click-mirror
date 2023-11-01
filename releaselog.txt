@@ -1,3 +1,6 @@
+0.1.41
+- Bugfix: Disable ExampleApplication graphics throttling introduced in AGX 2.36.1.5 since click_application drives graphics
+
 0.1.40
 - Bugfix: Release Docker license when stopping application
 
