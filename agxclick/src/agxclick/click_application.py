@@ -40,6 +40,8 @@ class ClickApplication(AgxApplication):
         self._realtime_sync = self.app.getRealTimeSync()
         # We must control stepping ourselves to be able to drive steps from controller, and sync realtime if wanted
         self.app.setAutoStepping(False)
+        # Since we drive the graphics from here, disable ExampleApplication graphics throttling
+        self.app.setTargetFPS(0)
 
         self._logger.info(f"Entering main loop {'with' if self.app.getViewer() else 'without'} graphics targeting {self.args.framerate} Hz")
         self._logger.info(f"Realtime sync is {self.app.getRealTimeSync()}")
@@ -117,8 +119,8 @@ class ClickApplication(AgxApplication):
                             help="Enable automatic restart of the scene after the specified number of seconds, with updated values for Brick BatchVariables and ParameterSpace variables")
         parser.add_argument('--disableClickSync', dest='disable_clicksync', action="store_true",
                             help="Do not sync each simulation step with click client - simulation will run without waiting for control messages")
-        parser.add_argument('--framerate', type=int, default=0,
-                            help="Specify target framerate in fps, default is off(0). Recommended is 30-60. Only affects agxViewer, typically no speedup in browser")
+        parser.add_argument('--framerate', type=int, default=60,
+                            help="Specify target framerate in fps. 0 means match simulation framerate. default is 60. Recommended is 30-60. Only affects agxViewer, typically no speedup in browser")
         parser.add_argument('--profile', dest='profile', action="store_true", help="CProfile main loop and print results")
         parser.add_argument('--profileFile', type=str, default="", help="Write profile data to binary file (for snakeviz) instead of stdout")
         parser.add_argument('--startPaused', dest='start_paused', action="store_true", help="Start with simulation paused")

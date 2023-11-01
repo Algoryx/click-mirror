@@ -2,7 +2,7 @@
     "cmake.sourceDirectory": "${workspaceFolder}/cpp-src",
     "python.analysis.extraPaths": [
         "./python-src/src",
-        "./agxBrick/src"
+        "./agxclick/src"
     ],
     "files.insertFinalNewline": true,
     "python.linting.pycodestyleEnabled": true,
