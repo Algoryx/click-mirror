@@ -1,4 +1,4 @@
-0.1.41
+0.1.42
 - Bugfix: Disable ExampleApplication graphics throttling introduced in AGX 2.36.1.5 since click_application drives graphics
 
 0.1.40
