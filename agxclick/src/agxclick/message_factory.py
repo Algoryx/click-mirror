@@ -1,8 +1,8 @@
-from typing import List, Any
+import math
+from typing import List
+from pclick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
 from agxclick import ClickRobot, BrickUtils
 from agxclick.click_robot import ClickObject
-from pclick import HandshakeMessage, SensorMessage, ValueType, MessageFactory as ProtoMessageFactory
-import math
 
 
 def _identity(x):

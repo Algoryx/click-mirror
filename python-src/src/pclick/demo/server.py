@@ -4,9 +4,9 @@
 #   Expects Message from client, replies with Message
 #
 
+from argparse import ArgumentParser
 from pclick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
 from pclick.server import SizeCollectorChanges
-from argparse import ArgumentParser
 
 
 def parse_args():
