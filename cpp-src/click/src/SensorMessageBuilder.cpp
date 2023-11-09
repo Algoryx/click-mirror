@@ -48,6 +48,55 @@ CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withSensor(const
     return this;
 }
 
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngle(double angle)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->set_angle(angle);
+    return this;
+}
+
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngleVelocity(double angle_velocity)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->set_anglevelocity(angle_velocity);
+    return this;
+}
+
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withTorque(double torque)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->set_torque(torque);
+    return this;
+}
+
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withPosition_(const Vec3 &vec3)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->mutable_position()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withRPY_(const Vec3 &vec3)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->mutable_rpy()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withActivated(bool activated)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->set_activated(activated);
+    return this;
+}
+
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAcceleration(const Vec3 &vec3)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->mutable_acceleration()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
 CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withForce(const Vec3 &vec3)
 {
     auto sensor = curr_sensor->add_sensor();
@@ -55,10 +104,17 @@ CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withForce(const 
     return this;
 }
 
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withDirectionalTorque(const Vec3 &vec3)
+{
+    auto sensor = curr_sensor->add_sensor();
+    sensor->mutable_directionaltorque()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
 CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngularAcceleration(const Vec3 &vec3)
 {
     auto sensor = curr_sensor->add_sensor();
-    sensor->mutable_force()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    sensor->mutable_angularacceleration()->mutable_arr()->Assign(vec3.begin(), vec3.end());
     return this;
 }
 

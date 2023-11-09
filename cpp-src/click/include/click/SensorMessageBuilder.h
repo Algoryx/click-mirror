@@ -44,7 +44,15 @@ namespace click
     class AddSensorBuilder
     {
         public:
+        CLICK_EXPORT virtual AddSensorBuilder* withAngle(double angle) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withAngleVelocity(double angle_velocity) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withTorque(double torque) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withPosition_(const Vec3& position) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withRPY_(const Vec3& rpy) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withActivated(bool activated) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withAcceleration(const Vec3& acceleration) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withForce(const Vec3& vec3) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withDirectionalTorque(const Vec3& vec3) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withAngularAcceleration(const Vec3& vec3) = 0;
         CLICK_EXPORT virtual std::unique_ptr<SensorMessage> build() = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder* object(const std::string& name) = 0;
@@ -59,8 +67,17 @@ namespace click
         CLICK_EXPORT virtual AddSensorValuesBuilder* withTorques(const std::vector<double>& torques);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withPosition(const Vec3& vec3);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withRPY(const Vec3& vec3);
+
         CLICK_EXPORT virtual AddSensorBuilder* withSensor(const std::string& name);
+        CLICK_EXPORT virtual AddSensorBuilder* withAngle(double angle);
+        CLICK_EXPORT virtual AddSensorBuilder* withAngleVelocity(double angle_velocity);
+        CLICK_EXPORT virtual AddSensorBuilder* withTorque(double torque);
+        CLICK_EXPORT virtual AddSensorBuilder* withPosition_(const Vec3& position);
+        CLICK_EXPORT virtual AddSensorBuilder* withRPY_(const Vec3& rpy);
+        CLICK_EXPORT virtual AddSensorBuilder* withActivated(bool activated);
+        CLICK_EXPORT virtual AddSensorBuilder* withAcceleration(const Vec3& acceleration);
         CLICK_EXPORT virtual AddSensorBuilder* withForce(const Vec3& vec3);
+        CLICK_EXPORT virtual AddSensorBuilder* withDirectionalTorque(const Vec3& vec3);
         CLICK_EXPORT virtual AddSensorBuilder* withAngularAcceleration(const Vec3& vec3);
         CLICK_EXPORT virtual std::unique_ptr<SensorMessage> build();
         CLICK_EXPORT virtual ~SensorMessageBuilderImpl();

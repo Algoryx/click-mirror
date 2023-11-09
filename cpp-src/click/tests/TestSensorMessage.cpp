@@ -42,15 +42,30 @@ SCENARIO("Sensormessage serialization", "[click]")
             unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
                 ->object("robot1")
                     ->withSensor("external_1")
-                        ->withForce({4, 4.1, 4.2})
+                        ->withAcceleration({3, 3.1, 3.2})
+                        ->withActivated(true)
+                        ->withAngle(1.1)
+                        ->withAngleVelocity(2.2)
                         ->withAngularAcceleration({5, 5.1, 5.2})
+                        ->withDirectionalTorque({6, 6.1, 6.2})
+                        ->withForce({4, 4.1, 4.2})
+                        ->withPosition_({7, 7.1, 7.2})
+                        ->withRPY_({8, 8.1, 8.2})
+                        ->withTorque(9)
                 ->build();
 
             THEN("it should have values")
             {
                 REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].force == Vec3{4, 4.1, 4.2});
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[1].angularAcceleration == Vec3{5, 5.1, 5.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].acceleration == Vec3{3, 3.1, 3.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[1].activated == true);
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[2].angle == 1.1);
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[3].angleVelocity == 2.2);
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[4].angularAcceleration == Vec3{5, 5.1, 5.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[5].directionalTorque == Vec3{6, 6.1, 6.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[6].force == Vec3{4, 4.1, 4.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[7].position == Vec3{7, 7.1, 7.2});
+                REQUIRE(SensorMessage->sensor("robot1", "external_1")[8].rpy == Vec3{8, 8.1, 8.2});
             }
         }
         WHEN("adding a box with position and rpy")
