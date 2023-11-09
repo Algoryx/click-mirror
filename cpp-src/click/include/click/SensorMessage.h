@@ -14,20 +14,23 @@ namespace click
 
   typedef std::array<double, 3> Vec3;
 
-  // Sensor field/type is defined in handshake
-  // TODO: But we should allow asking which anyway.
-  union Sensor
-  {
-    double angle;
-    double angleVelocity;
-    double torque;
-    Vec3 position;
-    Vec3 rpy;
-    bool activated;
-    Vec3 acceleration;
-    Vec3 force;
-    Vec3 directionalTorque;
-    Vec3 angularAcceleration;
+  union SensorValue
+    {
+      double angle;
+      double angleVelocity;
+      double torque;
+      Vec3 position;
+      Vec3 rpy;
+      bool activated;
+      Vec3 acceleration;
+      Vec3 force;
+      Vec3 directionalTorque;
+      Vec3 angularAcceleration;
+    };
+
+  struct Sensor {
+    ValueType type;
+    SensorValue value;
   };
 
   class SensorMessage : public Message

@@ -1,5 +1,7 @@
 0.2.0
 - Adds all missing types for Sensor to SensorMessageBuilder.
+- Adds type and value to Sensor to make it possible to check which part of union is present.
+- Breaks SensorMessage/Sensor backward compatibility!
 
 0.1.42
 - Bugfix: Disable ExampleApplication graphics throttling introduced in AGX 2.36.1.5 since click_application drives graphics
