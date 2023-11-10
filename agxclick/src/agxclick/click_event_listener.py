@@ -115,7 +115,7 @@ class ClickFrameListener(ApplicationStepListener):
                 self.num_controls_received += 1
                 self.control_queue.put(request)
                 if self._state == States.RECV_HANDSHAKE:
-                    self._logger.info(f"Handshake completed")
+                    self._logger.info("Handshake completed")
                 self._state = States.READ_CONTROLS
             elif request.messageType == ErrorMessageType:
                 self._logger.warning("Received Error message")
@@ -128,13 +128,13 @@ class ClickFrameListener(ApplicationStepListener):
                 self._logger.warning(f"Ignoring message: \n{request}\nSending errormessage as reply")
                 self._server.send(ProtoMessageFactory.create_errormessage())
         except Exception as ex:
-            self._logger.info(f"Exception encountered - Stopping click messaging")
+            self._logger.info("Exception encountered - Stopping click messaging")
             self._state = States.INVALID
             self._on_exception(ex)
             raise ex
 
     def _send_resetmessage(self):
-        self._logger.info(f"Sending reset message")
+        self._logger.info("Sending reset message")
         self._server.send(ProtoMessageFactory.create_resetmessage())
         self._state = States.RECV
 
@@ -142,13 +142,13 @@ class ClickFrameListener(ApplicationStepListener):
         if self._state.can_send():
             self._send_resetmessage()
         else:
-            self._logger.info(f"Sending Reset as next Response (unless Handshake encountered)")
+            self._logger.info("Sending Reset as next Response (unless Handshake encountered)")
             self._state = States.SEND_RESET
 
         try:
             self.control_queue.get(block=False)
-        except queue.Empty as ex:
-            self._logger.info(f"ControlMessage queue emptied because of Reset")
+        except queue.Empty:
+            self._logger.info("ControlMessage queue emptied because of Reset")
             assert self.control_queue.empty()
 
     def stop(self):

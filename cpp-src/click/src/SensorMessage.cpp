@@ -16,7 +16,7 @@ std::vector<double> SensorMessage::angles(const std::string &objectname) const
   return std::vector<double>(vec.begin(), vec.end());
 }
 
-std::vector<double> SensorMessage::angleVelocities(const std::string &objectname) const
+std::vector<double> SensorMessage::angularVelocities(const std::string &objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
   return std::vector<double>(vec.begin(), vec.end());
@@ -71,26 +71,46 @@ std::vector<Sensor> SensorMessage::sensor(const std::string &objectname, const s
   auto target = res.begin();
   for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
   {
-    if (sensor.has_acceleration())
-      copy_n(sensor.acceleration(), target->acceleration);
-    else if (sensor.has_activated())
-      target->activated = sensor.activated();
-    else if (sensor.has_angle())
-      target->angle = sensor.angle();
-    else if (sensor.has_anglevelocity())
-      target->angleVelocity = sensor.anglevelocity();
-    else if (sensor.has_angularacceleration())
-      copy_n(sensor.angularacceleration(), target->angularAcceleration);
-    else if (sensor.has_directionaltorque())
-      copy_n(sensor.directionaltorque(), target->directionalTorque);
-    else if (sensor.has_force())
-      copy_n(sensor.force(), target->force);
-    else if (sensor.has_position())
-      copy_n(sensor.position(), target->position);
-    else if (sensor.has_rpy())
-      copy_n(sensor.rpy(), target->rpy);
-    else if (sensor.has_torque())
-      target->torque = sensor.torque();
+    if (sensor.has_acceleration()) {
+      copy_n(sensor.acceleration(), target->value.acceleration);
+      target->type = click::ValueType::Acceleration;
+    }
+    else if (sensor.has_activated()) {
+      target->value.activated = sensor.activated();
+      target->type = click::ValueType::Activated;
+    }
+    else if (sensor.has_angle()) {
+      target->value.angle = sensor.angle();
+      target->type = click::ValueType::Angle;
+    }
+    else if (sensor.has_anglevelocity()) {
+      target->value.angularVelocity = sensor.anglevelocity();
+      target->type = click::ValueType::AngularVelocity;
+    }
+    else if (sensor.has_angularacceleration()) {
+      copy_n(sensor.angularacceleration(), target->value.angularAcceleration);
+      target->type = click::ValueType::AngularAcceleration;
+    }
+    else if (sensor.has_directionaltorque()) {
+      copy_n(sensor.directionaltorque(), target->value.directionalTorque);
+      target->type = click::ValueType::DirectionalTorque;
+    }
+    else if (sensor.has_force()) {
+      copy_n(sensor.force(), target->value.force);
+      target->type = click::ValueType::Force;
+    }
+    else if (sensor.has_position()) {
+      copy_n(sensor.position(), target->value.position);
+      target->type = click::ValueType::Position;
+    }
+    else if (sensor.has_rpy()) {
+      copy_n(sensor.rpy(), target->value.rpy);
+      target->type = click::ValueType::RPY;
+    }
+    else if (sensor.has_torque()) {
+      target->value.torque = sensor.torque();
+      target->type = click::ValueType::Torque;
+    }
     else
       throw std::runtime_error("Return not implemented for " + sensor.DebugString());
     target++;

@@ -39,7 +39,7 @@ SCENARIO("sensormessage serialization from file", "[click]")
 
             AND_THEN("robot1 should have angleVelocities")
             {
-                REQUIRE(sensorMessage->angleVelocities("robot1") == std::vector<double>{2.0, 2.1});
+                REQUIRE(sensorMessage->angularVelocities("robot1") == std::vector<double>{2.0, 2.1});
             }
 
             AND_THEN("robot1 should have torques")
@@ -50,8 +50,8 @@ SCENARIO("sensormessage serialization from file", "[click]")
             AND_THEN("robot1 should have list of external sensors")
             {
                 std::vector<Sensor> sensors = sensorMessage->sensor("robot1", "external_1");
-                REQUIRE(sensors.at(0).force == Vec3({4.0,4.1,4.2}));
-                REQUIRE(sensors.at(1).angularAcceleration == Vec3({5.0,5.1,5.2}));
+                REQUIRE(sensors.at(0).value.force == Vec3({4.0,4.1,4.2}));
+                REQUIRE(sensors.at(1).value.angularAcceleration == Vec3({5.0,5.1,5.2}));
             }
             AND_THEN("robot1 should have external sensors individually accessible")
             {

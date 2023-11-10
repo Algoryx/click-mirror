@@ -14,20 +14,23 @@ namespace click
 
   typedef std::array<double, 3> Vec3;
 
-  // Sensor field/type is defined in handshake
-  // TODO: But we should allow asking which anyway.
-  union Sensor
-  {
-    double angle;
-    double angleVelocity;
-    double torque;
-    Vec3 position;
-    Vec3 rpy;
-    bool activated;
-    Vec3 acceleration;
-    Vec3 force;
-    Vec3 directionalTorque;
-    Vec3 angularAcceleration;
+  union SensorValue
+    {
+      double angle;
+      double angularVelocity;
+      double torque;
+      Vec3 position;
+      Vec3 rpy;
+      bool activated;
+      Vec3 acceleration;
+      Vec3 force;
+      Vec3 directionalTorque;
+      Vec3 angularAcceleration;
+    };
+
+  struct Sensor {
+    ValueType type;
+    SensorValue value;
   };
 
   class SensorMessage : public Message
@@ -40,11 +43,11 @@ namespace click
      */
     CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
     /**
-     * Get anglevelocities, if any, for the object with name objectname
+     * Get angular velocities, if any, for the object with name objectname
      *
      * \return a Vector of angle velocitities
      */
-    CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> angularVelocities(const std::string &objectname) const;
     
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT MessageType messageType() const;
