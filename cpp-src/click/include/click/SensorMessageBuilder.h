@@ -45,7 +45,7 @@ namespace click
     {
         public:
         CLICK_EXPORT virtual AddSensorBuilder* withAngle(double angle) = 0;
-        CLICK_EXPORT virtual AddSensorBuilder* withAngularVelocity(double angle_velocity) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withAngularVelocity(double angular_velocity) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withTorque(double torque) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withPosition_(const Vec3& position) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withRPY_(const Vec3& rpy) = 0;
@@ -70,7 +70,7 @@ namespace click
 
         CLICK_EXPORT virtual AddSensorBuilder* withSensor(const std::string& name);
         CLICK_EXPORT virtual AddSensorBuilder* withAngle(double angle);
-        CLICK_EXPORT virtual AddSensorBuilder* withAngularVelocity(double angle_velocity);
+        CLICK_EXPORT virtual AddSensorBuilder* withAngularVelocity(double angular_velocity);
         CLICK_EXPORT virtual AddSensorBuilder* withTorque(double torque);
         CLICK_EXPORT virtual AddSensorBuilder* withPosition_(const Vec3& position);
         CLICK_EXPORT virtual AddSensorBuilder* withRPY_(const Vec3& rpy);

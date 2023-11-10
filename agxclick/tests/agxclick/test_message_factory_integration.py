@@ -1,14 +1,13 @@
-from pclick.Messaging_pb2 import Force
-import pytest
-from agxclick import MessageFactory, update_robots_from_message, find_robots_in_scene, get_click_configuration, ClickRobot, ClickObject
-from pclick import ValueType, MessageFactory as ProtoMessageFactory
 from typing import List
 from os import chdir
+import pytest
 from pytest import approx
+from pclick import ValueType, MessageFactory as ProtoMessageFactory, ControlMessage
+from agxclick import MessageFactory, update_robots_from_message, find_robots_in_scene, get_click_configuration, ClickRobot
 
 
 # Kept for backward compatibility test
-def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=True):
+def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=True) -> ControlMessage:
     """
     add_control_event, if True an event will be added with False for first robot, True for rest
     """
@@ -24,7 +23,7 @@ def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=
             control.torques.extend([x * 3.0 for x in range(1, robot.num_joints + 1)])
         else:
             raise Exception(f"Faking {robot.controlType()} has not been implemented")
-        if (add_control_event):
+        if add_control_event:
             for name in robot.control_events().keys():
                 control.controlEvents[name] = i
     return control_m
