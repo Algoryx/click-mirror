@@ -57,24 +57,25 @@ SCENARIO("Sensormessage serialization", "[click]")
             THEN("it should have values")
             {
                 REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::Acceleration);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].value.acceleration == Vec3{3, 3.1, 3.2});
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::Activated);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[1].value.activated == true);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::Angle);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[2].value.angle == 1.1);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::AngleVelocity);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[3].value.angleVelocity == 2.2);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::AngularAcceleration);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[4].value.angularAcceleration == Vec3{5, 5.1, 5.2});
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::DirectionalTorque);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[5].value.directionalTorque == Vec3{6, 6.1, 6.2});
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::Force);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[6].value.force == Vec3{4, 4.1, 4.2});
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::Position);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[7].value.position == Vec3{7, 7.1, 7.2});
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[0].type == click::ValueType::RPY);
-                REQUIRE(SensorMessage->sensor("robot1", "external_1")[8].value.rpy == Vec3{8, 8.1, 8.2});
+                auto sensor_vals = SensorMessage->sensor("robot1", "external_1");
+                REQUIRE(sensor_vals[0].type == click::ValueType::Acceleration);
+                REQUIRE(sensor_vals[0].value.acceleration == Vec3{3, 3.1, 3.2});
+                REQUIRE(sensor_vals[1].type == click::ValueType::Activated);
+                REQUIRE(sensor_vals[1].value.activated == true);
+                REQUIRE(sensor_vals[2].type == click::ValueType::Angle);
+                REQUIRE(sensor_vals[2].value.angle == 1.1);
+                REQUIRE(sensor_vals[3].type == click::ValueType::AngleVelocity);
+                REQUIRE(sensor_vals[3].value.angleVelocity == 2.2);
+                REQUIRE(sensor_vals[4].type == click::ValueType::AngularAcceleration);
+                REQUIRE(sensor_vals[4].value.angularAcceleration == Vec3{5, 5.1, 5.2});
+                REQUIRE(sensor_vals[5].type == click::ValueType::DirectionalTorque);
+                REQUIRE(sensor_vals[5].value.directionalTorque == Vec3{6, 6.1, 6.2});
+                REQUIRE(sensor_vals[6].type == click::ValueType::Force);
+                REQUIRE(sensor_vals[6].value.force == Vec3{4, 4.1, 4.2});
+                REQUIRE(sensor_vals[7].type == click::ValueType::Position);
+                REQUIRE(sensor_vals[7].value.position == Vec3{7, 7.1, 7.2});
+                REQUIRE(sensor_vals[8].type == click::ValueType::RPY);
+                REQUIRE(sensor_vals[8].value.rpy == Vec3{8, 8.1, 8.2});
             }
         }
         WHEN("adding a box with position and rpy")
