@@ -55,7 +55,7 @@ CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngle(double
     return this;
 }
 
-CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngleVelocity(double angle_velocity)
+CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngularVelocity(double angle_velocity)
 {
     auto sensor = curr_sensor->add_sensor();
     sensor->set_anglevelocity(angle_velocity);
@@ -118,7 +118,7 @@ CLICK_EXPORT AddSensorBuilder *click::SensorMessageBuilderImpl::withAngularAccel
     return this;
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngleVelocities(const vector<double> &angles)
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngularVelocities(const vector<double> &angles)
 {
     currObject->mutable_anglevelocitysensors()->Assign(angles.begin(), angles.end());
     return this;

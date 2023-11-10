@@ -39,7 +39,7 @@ SCENARIO("sensormessage serialization from file", "[click]")
 
             AND_THEN("robot1 should have angleVelocities")
             {
-                REQUIRE(sensorMessage->angleVelocities("robot1") == std::vector<double>{2.0, 2.1});
+                REQUIRE(sensorMessage->angularVelocities("robot1") == std::vector<double>{2.0, 2.1});
             }
 
             AND_THEN("robot1 should have torques")

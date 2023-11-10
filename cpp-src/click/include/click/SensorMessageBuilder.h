@@ -32,7 +32,7 @@ namespace click
     public:
         CLICK_EXPORT virtual AddSensorValuesBuilder* object(const std::string& name) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder* withAngles(const std::vector<double>& angles) = 0;
-        CLICK_EXPORT virtual AddSensorValuesBuilder* withAngleVelocities(const std::vector<double>& angles) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder* withAngularVelocities(const std::vector<double>& angles) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder* withTorques(const std::vector<double>& torques) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder* withPosition(const Vec3& vec3) = 0;
         CLICK_EXPORT virtual AddSensorValuesBuilder* withRPY(const Vec3& vec3) = 0;
@@ -45,7 +45,7 @@ namespace click
     {
         public:
         CLICK_EXPORT virtual AddSensorBuilder* withAngle(double angle) = 0;
-        CLICK_EXPORT virtual AddSensorBuilder* withAngleVelocity(double angle_velocity) = 0;
+        CLICK_EXPORT virtual AddSensorBuilder* withAngularVelocity(double angle_velocity) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withTorque(double torque) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withPosition_(const Vec3& position) = 0;
         CLICK_EXPORT virtual AddSensorBuilder* withRPY_(const Vec3& rpy) = 0;
@@ -63,14 +63,14 @@ namespace click
     public:
         CLICK_EXPORT virtual AddSensorValuesBuilder* object(const std::string& name);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withAngles(const std::vector<double>& angles);
-        CLICK_EXPORT virtual AddSensorValuesBuilder* withAngleVelocities(const std::vector<double>& angles);
+        CLICK_EXPORT virtual AddSensorValuesBuilder* withAngularVelocities(const std::vector<double>& angles);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withTorques(const std::vector<double>& torques);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withPosition(const Vec3& vec3);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withRPY(const Vec3& vec3);
 
         CLICK_EXPORT virtual AddSensorBuilder* withSensor(const std::string& name);
         CLICK_EXPORT virtual AddSensorBuilder* withAngle(double angle);
-        CLICK_EXPORT virtual AddSensorBuilder* withAngleVelocity(double angle_velocity);
+        CLICK_EXPORT virtual AddSensorBuilder* withAngularVelocity(double angle_velocity);
         CLICK_EXPORT virtual AddSensorBuilder* withTorque(double torque);
         CLICK_EXPORT virtual AddSensorBuilder* withPosition_(const Vec3& position);
         CLICK_EXPORT virtual AddSensorBuilder* withRPY_(const Vec3& rpy);

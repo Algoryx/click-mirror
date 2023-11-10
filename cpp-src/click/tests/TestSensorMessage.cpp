@@ -18,7 +18,7 @@ SCENARIO("Sensormessage serialization", "[click]")
     GIVEN("A Sensormessage")
     {
         vector<double> angles = double_vector_from({1, 2, 3, 4, 5});
-        vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
+        vector<double> angularVelocities = double_vector_from({2, 3, 4, 5, 6});
         vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
         vector<double> values = double_vector_from({4, 5, 6, 7, 8});
 
@@ -27,7 +27,7 @@ SCENARIO("Sensormessage serialization", "[click]")
             unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
                 ->object("robot1")
                     ->withAngles(angles)
-                    ->withAngleVelocities(angleVelocities)
+                    ->withAngularVelocities(angularVelocities)
                     ->withTorques(torques)
                 ->build();
 
@@ -45,7 +45,7 @@ SCENARIO("Sensormessage serialization", "[click]")
                         ->withAcceleration({3, 3.1, 3.2})
                         ->withActivated(true)
                         ->withAngle(1.1)
-                        ->withAngleVelocity(2.2)
+                        ->withAngularVelocity(2.2)
                         ->withAngularAcceleration({5, 5.1, 5.2})
                         ->withDirectionalTorque({6, 6.1, 6.2})
                         ->withForce({4, 4.1, 4.2})
@@ -64,8 +64,8 @@ SCENARIO("Sensormessage serialization", "[click]")
                 REQUIRE(sensor_vals[1].value.activated == true);
                 REQUIRE(sensor_vals[2].type == click::ValueType::Angle);
                 REQUIRE(sensor_vals[2].value.angle == 1.1);
-                REQUIRE(sensor_vals[3].type == click::ValueType::AngleVelocity);
-                REQUIRE(sensor_vals[3].value.angleVelocity == 2.2);
+                REQUIRE(sensor_vals[3].type == click::ValueType::AngularVelocity);
+                REQUIRE(sensor_vals[3].value.angularVelocity == 2.2);
                 REQUIRE(sensor_vals[4].type == click::ValueType::AngularAcceleration);
                 REQUIRE(sensor_vals[4].value.angularAcceleration == Vec3{5, 5.1, 5.2});
                 REQUIRE(sensor_vals[5].type == click::ValueType::DirectionalTorque);
@@ -98,7 +98,7 @@ SCENARIO("Sensormessage serialization", "[click]")
                 ->object("robot1")
                     ->withAngles(angles)
                 ->object("robot2")
-                    ->withAngleVelocities(angleVelocities)
+                    ->withAngularVelocities(angularVelocities)
                 ->object("robot3")
                     ->withTorques(torques)
                 ->object("box")
@@ -109,7 +109,7 @@ SCENARIO("Sensormessage serialization", "[click]")
             {
                 REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
                 REQUIRE_THAT(SensorMessage->angles("robot1"), Equals(angles));
-                REQUIRE_THAT(SensorMessage->angleVelocities("robot2"), Equals(angleVelocities));
+                REQUIRE_THAT(SensorMessage->angularVelocities("robot2"), Equals(angularVelocities));
                 REQUIRE_THAT(SensorMessage->torques("robot3"), Equals(torques));
 
                 string control_facit =

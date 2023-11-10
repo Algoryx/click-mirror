@@ -17,7 +17,7 @@ namespace click {
 
   enum class ValueType {
     Angle = 0,                     // radians
-    AngleVelocity = 1,             // radians/sec
+    AngularVelocity = 1,           // radians/sec
     Torque = 2,                    // Nm
     Position = 3,                  // meters vec3
     RPY = 4,                       // radians

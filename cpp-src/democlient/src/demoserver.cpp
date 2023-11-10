@@ -92,7 +92,7 @@ std::unique_ptr<SensorMessage> build_sensor_message() {
     return SensorMessageBuilderImpl::builder()
         ->object("robot1")
             ->withAngles(values)
-            ->withAngleVelocities(values)
+            ->withAngularVelocities(values)
             ->withTorques(values)
             ->withSensor("external_1")
                 ->withForce({4, 4.1, 4.2})

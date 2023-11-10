@@ -17,7 +17,7 @@ namespace click
   union SensorValue
     {
       double angle;
-      double angleVelocity;
+      double angularVelocity;
       double torque;
       Vec3 position;
       Vec3 rpy;
@@ -43,11 +43,11 @@ namespace click
      */
     CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
     /**
-     * Get anglevelocities, if any, for the object with name objectname
+     * Get angular velocities, if any, for the object with name objectname
      *
      * \return a Vector of angle velocitities
      */
-    CLICK_EXPORT std::vector<double> angleVelocities(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> angularVelocities(const std::string &objectname) const;
     
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT MessageType messageType() const;

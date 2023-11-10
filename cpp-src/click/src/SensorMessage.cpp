@@ -16,7 +16,7 @@ std::vector<double> SensorMessage::angles(const std::string &objectname) const
   return std::vector<double>(vec.begin(), vec.end());
 }
 
-std::vector<double> SensorMessage::angleVelocities(const std::string &objectname) const
+std::vector<double> SensorMessage::angularVelocities(const std::string &objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
   return std::vector<double>(vec.begin(), vec.end());
@@ -84,8 +84,8 @@ std::vector<Sensor> SensorMessage::sensor(const std::string &objectname, const s
       target->type = click::ValueType::Angle;
     }
     else if (sensor.has_anglevelocity()) {
-      target->value.angleVelocity = sensor.anglevelocity();
-      target->type = click::ValueType::AngleVelocity;
+      target->value.angularVelocity = sensor.anglevelocity();
+      target->type = click::ValueType::AngularVelocity;
     }
     else if (sensor.has_angularacceleration()) {
       copy_n(sensor.angularacceleration(), target->value.angularAcceleration);
