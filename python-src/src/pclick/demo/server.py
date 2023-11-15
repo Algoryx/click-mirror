@@ -4,6 +4,8 @@
 #   Expects Message from client, replies with Message
 #
 
+import os
+import signal
 from argparse import ArgumentParser
 from pclick import Server, MessageFactory, ControlMessageType, HandshakeInitMessageType, ValueType
 from pclick.server import SizeCollectorChanges
@@ -23,8 +25,11 @@ def parse_args():
                         help=f'print size of what is sent/received')
     return parser.parse_args()
 
+def handler(signum, frame):
+    os._exit(0)
 
 def main():
+    signal.signal(signal.SIGINT, handler)
     args = parse_args()
     addr = f"tcp://{args.host}:{args.port}"
     if args.addr:
