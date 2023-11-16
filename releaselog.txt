@@ -1,3 +1,6 @@
+0.2.1
+- No error when doing ctrl-c from cmdline on client.py and server.py
+
 0.2.0
 - Adds all missing types for Sensor to SensorMessageBuilder.
 - Adds type and value to Sensor to make it possible to check which part of union is present.
