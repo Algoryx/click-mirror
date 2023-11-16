@@ -4,12 +4,13 @@
 #   Sends "HandshakeInit" to server, expects "Handshake" back
 #
 
+from argparse import ArgumentParser
+from time import time
+import os
+import signal
 from pclick import Client
 from pclick import MessageFactory
-from argparse import ArgumentParser
-
-from pclick.Messaging_pb2 import SensorMessageType
-from time import time
+from pclick.Messaging_pb2 import SensorMessageType, ResetMessageType
 
 def parse_args():
     parser = ArgumentParser(description='Demo client connecting to click server')
@@ -40,10 +41,13 @@ def parse_args():
 
 def send_errormessage(socket):
     message = MessageFactory.create_errormessage()
-    print(f"Sending errormessage")
+    print("Sending errormessage")
     socket.send(message)
 
+def handler(signum, frame):
+    os._exit(0)
 
+signal.signal(signal.SIGINT, handler)
 args = parse_args()
 addr = f"tcp://{args.host}:{args.port}"
 if args.addr:
@@ -77,17 +81,17 @@ if args.controlmessage:
     client.send(message)
 elif args.resetmessage:
     message = MessageFactory.create_resetmessage()
-    print(f"Sending resetmessage")
+    print("Sending resetmessage")
     client.send(message)
 elif args.sensorrequest:
     message = MessageFactory.create_sensorrequestmessage()
-    print(f"Sending sensor request message")
+    print("Sending sensor request message")
     client.send(message)
 elif args.errormessage:
     send_errormessage(client)
 else:
     message = MessageFactory.create_handshake_init()
-    print(f"Sending initiate handshake")
+    print("Sending initiate handshake")
     client.send(message)
 
 response = client.recv()
@@ -96,6 +100,9 @@ print(f"Received response {response}")
 for i in range(0, args.range):
     client.send(message)
     response = client.recv()
+    if (response.messageType == ResetMessageType):
+        print("Received ResetMessage")
+
 wall_time = time() - start_time
 freq = (args.range + 1) / wall_time
 print(f"Sent/received {args.range + 1} messages in {wall_time:.2f} seconds, ie {freq:.0f} Hz")
