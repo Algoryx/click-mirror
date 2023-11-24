@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
             case MessageType::HandshakeInitMessageType:
                 if(trace)
                     std::cerr <<  "Got handshakeinit message: " << std::endl;
-                server.send(*HandshakeMessageBuilder::builder()->build());
+                server.send(*HandshakeMessageBuilderImpl::builder()->build());
                 break;
             case MessageType::ControlMessageType: {
                 if(trace)

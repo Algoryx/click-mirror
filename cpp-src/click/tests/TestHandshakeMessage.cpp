@@ -21,7 +21,80 @@ SCENARIO("handshake serialization", "[click]")
     {
        WHEN("it has been constructed")
         {
-            unique_ptr<HandshakeMessage> message = HandshakeMessageBuilder::builder()->build();
+            std::vector<std::string> controls_in_order = {"joint1", "joint2"};
+            std::vector<click::ValueType> control_types_in_order = {click::ValueType::Angle, click::ValueType::AngularVelocity};
+            unique_ptr<HandshakeMessage> message = 
+                HandshakeMessageBuilderImpl::builder()
+                ->withSimulationSettings({1.0})
+                ->withControlType(click::ValueType::Multiple)
+                ->withRobot("robot1")
+                    ->withControlsInOrder(controls_in_order)
+                    ->withControlTypesInOrder(control_types_in_order)
+                    ->withJointSensorsInOrder(controls_in_order)
+                    ->withJointSensors(control_types_in_order)
+                    ->withSensor("sensor1")
+                        ->withTypesInOrder(control_types_in_order)
+                    ->withSensor("sensor2")
+                        ->withTypesInOrder(control_types_in_order)
+                    ->withControlEvent("gripper1", click::ValueType::Activated)
+                    ->withControlEvent("gripper2", click::ValueType::Activated)
+                    ->withObjectSensors(control_types_in_order)
+                ->withRobot("robot2")
+                ->build();
+            
+            THEN("it should match facit")
+            {
+                std::string handshake_facit = R"(messageType: HandshakeMessageType
+version: CURRENT_VERSION
+controlType: Multiple
+objects {
+  key: "robot1"
+  value {
+    controlsInOrder: "joint1"
+    controlsInOrder: "joint2"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    controlEvents {
+      key: "gripper1"
+      value: Activated
+    }
+    controlEvents {
+      key: "gripper2"
+      value: Activated
+    }
+    sensors {
+      key: "sensor1"
+      value {
+        types: Angle
+        types: AngleVelocity
+      }
+    }
+    sensors {
+      key: "sensor2"
+      value {
+        types: Angle
+        types: AngleVelocity
+      }
+    }
+    objectSensors: Angle
+    objectSensors: AngleVelocity
+    jointSensorsInOrder: "joint1"
+    jointSensorsInOrder: "joint2"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: AngleVelocity
+  }
+}
+objects {
+  key: "robot2"
+  value {
+  }
+}
+simSettings {
+  timeStep: 1
+}
+)";
+                REQUIRE(message->debugString() == handshake_facit);
+            }
 
             THEN("it should contain type")
             {

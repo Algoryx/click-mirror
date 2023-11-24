@@ -42,7 +42,7 @@ namespace click
     std::unique_ptr<protobuf::HandshakeMessage> pm;
 
     friend class MessageSerializer;
-    friend class HandshakeMessageBuilder;
+    friend class HandshakeMessageBuilderImpl;
   };
 
   CLICK_EXPORT std::unique_ptr<HandshakeMessage> toHandshakeMessage(std::unique_ptr<Message> message);
