@@ -22,7 +22,7 @@ std::chrono::microseconds recv_total;
 std::chrono::microseconds idling_total;
 
 
-unique_ptr<Message> sendReceiveBlocking(Client &client, const Message & message, bool trace = false)
+unique_ptr<Message> sendReceiveBlocking(Client& client, const Message&  message, bool trace = false)
 {
     if (trace) {
         cout << "Sending " << message.debugString() << endl;
@@ -36,7 +36,7 @@ unique_ptr<Message> sendReceiveBlocking(Client &client, const Message & message,
     return response;
 }
 
-unique_ptr<Message> sendReceive(Client &client, const Message & message, bool trace = false)
+unique_ptr<Message> sendReceive(Client& client, const Message&  message, bool trace = false)
 {
     if (trace) {
         cout << "Sending " << message.debugString() << endl;

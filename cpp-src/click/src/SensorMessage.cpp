@@ -9,14 +9,14 @@ SensorMessage::SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMess
   this->sensorMess = std::move(sensorMessage);
 };
 
-std::vector<double> SensorMessage::angles(const std::string &objectname) const
+std::vector<double> SensorMessage::angles(const std::string& objectname) const
 {
 
   auto vec = this->sensorMess->objects().at(objectname).anglesensors();
   return std::vector<double>(vec.begin(), vec.end());
 }
 
-std::vector<double> SensorMessage::angularVelocities(const std::string &objectname) const
+std::vector<double> SensorMessage::angularVelocities(const std::string& objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
   return std::vector<double>(vec.begin(), vec.end());
@@ -32,9 +32,9 @@ MessageType SensorMessage::messageType() const
   return static_cast<MessageType>(sensorMess->messagetype());
 }
 
-Vec3 SensorMessage::objectRPY(const std::string &objectname) const
+Vec3 SensorMessage::objectRPY(const std::string& objectname) const
 {
-  for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
+  for (auto& sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_rpy())
     {
       auto vec = sensor.rpy();
@@ -44,9 +44,9 @@ Vec3 SensorMessage::objectRPY(const std::string &objectname) const
 }
 
 // Vec3 will RVO:d according to https://stackoverflow.com/questions/27368236/return-value-or-rvalue-reference
-Vec3 SensorMessage::objectPosition(const std::string &objectname) const
+Vec3 SensorMessage::objectPosition(const std::string& objectname) const
 {
-  for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
+  for (auto& sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position())
     {
       auto vec3 = sensor.position();
@@ -55,21 +55,21 @@ Vec3 SensorMessage::objectPosition(const std::string &objectname) const
   throw std::runtime_error("Position not found in " + this->debugString());
 }
 
-inline void copy_n(const protobuf::SensorMessage_Vec3 &src, Vec3 &trg)
+inline void copy_n(const protobuf::SensorMessage_Vec3& src, Vec3& trg)
 {
   std::copy_n(src.arr().begin(), 3, trg.begin());
 }
 
-inline Vec3 createFrom(const protobuf::SensorMessage_Vec3 &src)
+inline Vec3 createFrom(const protobuf::SensorMessage_Vec3& src)
 {
   return Vec3{src.arr().at(0), src.arr().at(1), src.arr().at(2)};
 }
 
-std::vector<Sensor> SensorMessage::sensor(const std::string &objectname, const std::string &sensorname) const
+std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const std::string& sensorname) const
 {
   std::vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
   auto target = res.begin();
-  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
+  for (auto& sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
   {
     if (sensor.has_acceleration()) {
       copy_n(sensor.acceleration(), target->value.acceleration);
@@ -118,9 +118,9 @@ std::vector<Sensor> SensorMessage::sensor(const std::string &objectname, const s
   return res;
 }
 
-Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const
+Vec3 SensorMessage::sensorVec3(const std::string& objectname, const std::string& sensorname, int idx) const
 {
-  auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+  auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_acceleration())
     return createFrom(sensor.acceleration());
   else if (sensor.has_angularacceleration())
@@ -137,9 +137,9 @@ Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string 
     throw std::runtime_error("Not a Vec3: " + sensor.DebugString());
 }
 
-double SensorMessage::sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const
+double SensorMessage::sensorDouble(const std::string& objectname, const std::string& sensorname, int idx) const
 {
-  auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+  auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_angle())
     return sensor.angle();
   else if (sensor.has_anglevelocity())
@@ -150,9 +150,9 @@ double SensorMessage::sensorDouble(const std::string &objectname, const std::str
     throw std::runtime_error("Not a double: " + sensor.DebugString());
 }
 
-bool SensorMessage::sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const
+bool SensorMessage::sensorBool(const std::string& objectname, const std::string& sensorname, int idx) const
 {
-  auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+  auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_activated())
     return sensor.activated();
   else
@@ -164,7 +164,7 @@ double SensorMessage::simulatedTime() const
   return this->sensorMess->simvars().simulatedtime();
 }
 
-std::vector<double> SensorMessage::torques(const std::string &objectname) const
+std::vector<double> SensorMessage::torques(const std::string& objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).torquesensors();
   return std::vector<double>(vec.begin(), vec.end());

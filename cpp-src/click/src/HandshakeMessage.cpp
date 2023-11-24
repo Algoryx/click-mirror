@@ -8,61 +8,61 @@ using namespace std;
 vector<string> HandshakeMessage::objects() const {
   vector<string> objects;
 
-  for (auto &pair : this->pm->objects())
+  for (auto& pair : this->pm->objects())
     objects.push_back(pair.first);
   return objects;
 }
 
-vector<string> HandshakeMessage::controlsInOrder(const std::string &objectname) const{
+vector<string> HandshakeMessage::controlsInOrder(const std::string& objectname) const{
   auto vec = this->pm->objects().at(objectname).controlsinorder();
   return vector<string>(vec.begin(), vec.end());
 }
 
-vector<ValueType> HandshakeMessage::controlTypesInOrder(const std::string &objectname) const{
+vector<ValueType> HandshakeMessage::controlTypesInOrder(const std::string& objectname) const{
   vector<ValueType> controlTypes;
-  for (auto &sensor : this->pm->objects().at(objectname).controltypesinorder())
+  for (auto& sensor : this->pm->objects().at(objectname).controltypesinorder())
     controlTypes.push_back(static_cast<ValueType>(sensor));
   return controlTypes;
 }
 
-vector<string> HandshakeMessage::jointSensorsInOrder(const std::string &objectname) const{
+vector<string> HandshakeMessage::jointSensorsInOrder(const std::string& objectname) const{
   auto vec = this->pm->objects().at(objectname).jointsensorsinorder();
   return vector<string>(vec.begin(), vec.end());
 }
 
-vector<ValueType> HandshakeMessage::jointSensors(const std::string &objectname) const
+vector<ValueType> HandshakeMessage::jointSensors(const std::string& objectname) const
 {
   vector<ValueType> sensors;
-  for (auto &sensor : this->pm->objects().at(objectname).jointsensors())
+  for (auto& sensor : this->pm->objects().at(objectname).jointsensors())
     sensors.push_back(static_cast<ValueType>(sensor));
   return sensors;
 }
 
-vector<ValueType> HandshakeMessage::sensors(const std::string &objectname, const std::string &sensorname) const
+vector<ValueType> HandshakeMessage::sensors(const std::string& objectname, const std::string& sensorname) const
 {
   vector<ValueType> sensors;
-  for (auto &sensor : this->pm->objects().at(objectname).sensors().at(sensorname).types())
+  for (auto& sensor : this->pm->objects().at(objectname).sensors().at(sensorname).types())
     sensors.push_back(static_cast<ValueType>(sensor));
   return sensors;
 }
 
-vector<ValueType> HandshakeMessage::objectSensors(const std::string &objectname) const
+vector<ValueType> HandshakeMessage::objectSensors(const std::string& objectname) const
 {
   vector<ValueType> sensors;
-  for (auto &sensor : this->pm->objects().at(objectname).objectsensors())
+  for (auto& sensor : this->pm->objects().at(objectname).objectsensors())
       sensors.push_back(static_cast<ValueType>(sensor));
   return sensors;
 }
 
-vector<string> HandshakeMessage::controlEvents(const std::string &objectname) const
+vector<string> HandshakeMessage::controlEvents(const std::string& objectname) const
 {
   vector<string> sensors;
-  for (auto &pair : this->pm->objects().at(objectname).controlevents())
+  for (auto& pair : this->pm->objects().at(objectname).controlevents())
       sensors.push_back(pair.first);
   return sensors;
 }
 
-ValueType HandshakeMessage::controlEvent(const std::string &objectname, const std::string &eventname) const
+ValueType HandshakeMessage::controlEvent(const std::string& objectname, const std::string& eventname) const
 {
   auto sensor = this->pm->objects().at(objectname).controlevents().at(eventname);
   return static_cast<ValueType>(sensor);

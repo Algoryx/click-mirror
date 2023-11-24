@@ -41,13 +41,13 @@ namespace click
      *
      * \return a Vector of angles
      */
-    CLICK_EXPORT std::vector<double> angles(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> angles(const std::string& objectname) const;
     /**
      * Get angular velocities, if any, for the object with name objectname
      *
      * \return a Vector of angle velocitities
      */
-    CLICK_EXPORT std::vector<double> angularVelocities(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> angularVelocities(const std::string& objectname) const;
     
     CLICK_EXPORT std::string debugString() const;
     CLICK_EXPORT MessageType messageType() const;
@@ -57,23 +57,23 @@ namespace click
      *
      * \return a Vec3 with roll, pitch, yaw
      */
-    CLICK_EXPORT Vec3 objectRPY(const std::string &objectname) const;
+    CLICK_EXPORT Vec3 objectRPY(const std::string& objectname) const;
     /**
      * Get position for the object with name objectname
      *
      * \return a Vec3 with x, y, z
      */
-    CLICK_EXPORT Vec3 objectPosition(const std::string &objectname) const;
+    CLICK_EXPORT Vec3 objectPosition(const std::string& objectname) const;
 
     /**
      * Get sensor list for sensor with sensorname for object with name objectname
      *
      * \return a Vector of Sensors
      */
-    CLICK_EXPORT std::vector<Sensor> sensor(const std::string &objectname, const std::string &sensorname) const;
-    CLICK_EXPORT Vec3 sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const;
-    CLICK_EXPORT double sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const;
-    CLICK_EXPORT bool sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const;
+    CLICK_EXPORT std::vector<Sensor> sensor(const std::string& objectname, const std::string& sensorname) const;
+    CLICK_EXPORT Vec3 sensorVec3(const std::string& objectname, const std::string& sensorname, int idx) const;
+    CLICK_EXPORT double sensorDouble(const std::string& objectname, const std::string& sensorname, int idx) const;
+    CLICK_EXPORT bool sensorBool(const std::string& objectname, const std::string& sensorname, int idx) const;
     CLICK_EXPORT double simulatedTime() const;
 
     /**
@@ -81,7 +81,7 @@ namespace click
      *
      * \return a Vector of torques
      */
-    CLICK_EXPORT std::vector<double> torques(const std::string &objectname) const;
+    CLICK_EXPORT std::vector<double> torques(const std::string& objectname) const;
 
     CLICK_EXPORT ~SensorMessage();
 
