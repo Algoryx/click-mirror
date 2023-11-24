@@ -38,7 +38,7 @@ SCENARIO("protobuf controlmessage serialization", "[click]" ) {
         ControlMessage control_m = MessageFactory::createControlMessage();
 
         WHEN("adding robot controls") {
-            google::protobuf::Map<string, ControlMessage_Object> * map = control_m.mutable_objects();
+            google::protobuf::Map<string, ControlMessage_Object>* map = control_m.mutable_objects();
             (*map)["robot1"] = ControlMessage_Object();
             vector<double> angles = vector<double>({ 1, 2, 3, 4, 5 });
             (*map)["robot1"].mutable_angles()->Assign(angles.begin(), angles.end());

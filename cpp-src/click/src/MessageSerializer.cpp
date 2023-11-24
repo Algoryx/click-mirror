@@ -11,7 +11,7 @@
 using namespace click;
 using namespace std;
 
-string MessageSerializer::serializeToString(const Message &message)
+string MessageSerializer::serializeToString(const Message& message)
 {
   return message.serializeToBytes();
 }
@@ -32,7 +32,7 @@ unique_ptr<Message> MessageSerializer::handshakeMessageFromIStream(istream *inpu
   return unique_ptr<HandshakeMessage>(new HandshakeMessage(std::move(pm)));
 }
 
-unique_ptr<Message> MessageSerializer::fromBytes(const string &bytes)
+unique_ptr<Message> MessageSerializer::fromBytes(const string& bytes)
 {
   protobuf::Message pm;
   pm.ParseFromString(bytes);

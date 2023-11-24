@@ -10,7 +10,7 @@ ErrorMessageBuilder::ErrorMessageBuilder(unique_ptr<protobuf::ErrorMessage> pm)
     this->message = std::move(pm);
 }
 
-CLICK_EXPORT ErrorMessageBuilder * ErrorMessageBuilder::withMessage(const std::string &errormessage){
+CLICK_EXPORT ErrorMessageBuilder* ErrorMessageBuilder::withMessage(const std::string& errormessage){
     this->message->set_errormessage(errormessage);
     return this;
 }
