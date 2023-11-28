@@ -2,12 +2,14 @@ find_package(cppzmq REQUIRED)
 
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
+    include/click/Server.h
     include/click/ControlMessage.h
     include/click/ControlMessageBuilder.h
     include/click/DllExport.h
     include/click/ErrorMessage.h
     include/click/ErrorMessageBuilder.h
     include/click/HandshakeMessage.h
+    include/click/HandshakeMessageBuilder.h
     include/click/HandshakeInitMessage.h
     include/click/HandshakeInitMessageBuilder.h
     include/click/Message.h
@@ -15,6 +17,7 @@ set(PUBLIC_INCLUDE_SOURCES
     include/click/ResetMessage.h
     include/click/ResetMessageBuilder.h
     include/click/SensorMessage.h
+    include/click/SensorMessageBuilder.h
     include/click/SensorRequestMessage.h
     include/click/SensorRequestMessageBuilder.h
 )
@@ -25,9 +28,11 @@ target_sources(click
         src/ErrorMessage.cpp
         src/ErrorMessageBuilder.cpp
         src/Client.cpp
+        src/Server.cpp
         src/ControlMessage.cpp
         src/ControlMessageBuilder.cpp
         src/HandshakeMessage.cpp
+        src/HandshakeMessageBuilder.cpp
         src/HandshakeInitMessage.cpp
         src/HandshakeInitMessageBuilder.cpp
         src/Message.cpp
@@ -38,6 +43,7 @@ target_sources(click
         src/SensorRequestMessage.cpp
         src/SensorRequestMessageBuilder.cpp
         src/SensorMessage.cpp
+        src/SensorMessageBuilder.cpp
         ${PUBLIC_INCLUDE_SOURCES}
         include/click/MessageFactory.h
  )

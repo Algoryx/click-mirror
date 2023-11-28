@@ -2,22 +2,37 @@
 # Performance
 
 ```bash
-python3 -m pClick.demo.server
+python3.9 -m pclick.demo.server --trace-sizes
 # client.cpp
-time bin/democlient > apa
-# Get block average:
-grep "Would have blocked" apa |sort -n|awk '{print $4}'|awk '{s+=$1} END {print s/10000.0}'
-# client.py
-python3 -m pClick.demo.client --controlmessage  --controltype Angle --range   0.56s user 0.40s system 42% cpu 2.237 total
-
-## profile
-
-/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --framerate 30 --trace-sizes --profile --profileFile waspwara.profile -- -p
+```bash
+time bin/democlient --range 10000 --timings
+Sending 10000 messages
+Receive took 0.336687 secs in total 3.36687e-05 per roundtrip
+Idled betweeen send-recv for 1.51219 secs in total 0.000151219 per roundtrip
+Total time for 10000 messages: 1.94437 secs
+bin/democlient --range 10000 --timings
+0.37s user 0.67s system 53% cpu 1.953 total
 ```
 
-This
+## client.py
 
-- client.cpp sends ControlMessages payload of 160 bytes
+```bash
+time python3.9 -m pclick.demo.client --controlmessage "panda_tool:1,1,1,1,1,1,1;panda_2:1,1,1,1,1,1,1" --controltype Angle --range 9999
+0.58s user 0.41s system 42% cpu 2.325 total
+```
+
+### profile
+
+```bash
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --disableClickSync --profile --profileFile nosync.profile
+
+time bin/democlient --timings --range 993
+/usr/local/bin/python3.9 scripts/click_application.py --model models/RobotLabScenes.yml:MYuMiInLab --decorate --trace-sizes  --timeStep 0.004032 --framerate 30 --stopAfter 4  --realTime 0 --profile --profileFile sync.profile
+```
+
+Payloads:
+
+- client.cpp sends ControlMessages payload of 210 bytes, recv 890 bytes
 - client.py sends ControlMessages payload of 155 bytes
 - recv SensorMessage payload of 215 bytes
 

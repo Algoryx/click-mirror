@@ -23,7 +23,7 @@ public:
      *
      * \return a Builder
      */
-    CLICK_EXPORT ErrorMessageBuilder * withMessage(const std::string &);
+    CLICK_EXPORT ErrorMessageBuilder * withMessage(const std::string& );
     CLICK_EXPORT virtual ~ErrorMessageBuilder();
 
 private:

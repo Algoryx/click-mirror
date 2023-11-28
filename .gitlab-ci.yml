@@ -4,7 +4,12 @@ stages:
   - test
   - publish
 
+.docker-vars:
+  variables:
+    CI_IMAGE_TAG: 0.0.4
+
 .run-in-docker:
+  extends: .docker-vars
   tags:
     - linux
     - docker
@@ -13,12 +18,13 @@ stages:
 #    - docker:dind
 
 .build-docker:
+  extends: .docker-vars
   tags:
     - linux
     - docker-host
   before_script:
     - echo $CI_PIPELINE_SOURCE $CI ${CI_COMMIT_REF_SLUG} $CI_REGISTRY_IMAGE
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
 
 .build_and_push: &build-and-push
@@ -36,12 +42,27 @@ build-docker-ci:
     - cd docker
     - export DOCKER_FILE=Dockerfile.CI
     - export IMAGE_NAME=docker-ci
-    - export DOCKER_IMAGE_TAG=latest
+    - export DOCKER_IMAGE_TAG=${CI_IMAGE_TAG}
     - *build-and-push
   only:
     changes:
       - .gitlab-ci.yml
       - docker/Dockerfile.CI
+
+build-docker-ci-agx:
+  extends: .build-docker
+  image: docker:latest
+  stage: prebuild
+  script:
+    - cd docker
+    - export DOCKER_FILE=Dockerfile.CI-agx
+    - export IMAGE_NAME=docker-ci-agx
+    - export DOCKER_IMAGE_TAG=${CI_IMAGE_TAG}
+    - *build-and-push
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - docker/Dockerfile.CI-agx
 
 
 # The license is copied from https://git.algoryx.se/algoryx/agx/-/blob/master/data/cfg/agx.lic to secret build variable agx_lic
@@ -58,11 +79,10 @@ test-license:
 build-cpp-lib-linux:
   extends: .run-in-docker
   stage: build
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - mkdir build
-    - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=./install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS ../cpp-src
+    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=oos/install -DCMAKE_GENERATOR=Ninja -DCPACK_GENERATOR=DEB $EXTRA_PARAMS cpp-src
+    - cd oos
     - ninja
     - ninja install
     - ninja package
@@ -71,9 +91,10 @@ build-cpp-lib-linux:
     - ninja install
   artifacts:
     paths:
-      - build/install
-      - build/bin
-      - build/click*Linux.deb
+      - oos/install
+      - oos/bin
+      - oos/click*Linux.deb
+      - oos/protobuf-gen/Messaging*
 
 build-shared-cpp-lib-linux:
   extends: build-cpp-lib-linux
@@ -83,9 +104,10 @@ build-shared-cpp-lib-linux:
 .test-cpp-lib-linux:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - build/bin/click-tests --reporter junit --out catch2-junit.xml
+    - oos/bin/click-tests --reporter junit --out catch2-junit.xml
+
   artifacts:
     when: always
     reports:
@@ -100,7 +122,7 @@ test-cpp-lib-linux:
 test-shared-cpp-lib-linux:
   extends: .test-cpp-lib-linux
   variables:
-    LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/build/install/lib"
+    LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/oos/install/lib"
   needs:
     - job: build-shared-cpp-lib-linux
       artifacts: true
@@ -108,15 +130,21 @@ test-shared-cpp-lib-linux:
 .publish-cpp-lib-linux:
   extends: .run-in-docker
   stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - PACKAGE_VERSION=$CI_COMMIT_TAG
     - grep "click VERSION $PACKAGE_VERSION" cpp-src/CMakeLists.txt
-    - cd build
+    - cd oos
     - PACKAGE_NAME=`ls click-*.deb`
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_UPLOAD_NAME}"'
+    # Publish click to conan.algoryx.se
+    - cd ../cpp-src/click
+    - conan create . algoryx/stable -pr:b=default
+    - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
+    - conan upload --all click/${PACKAGE_VERSION}@algoryx/stable
+
   only:
     - tags
 
@@ -136,106 +164,64 @@ publish-shared-cpp-lib-linux:
     - job: build-shared-cpp-lib-linux
       artifacts: true
 
-.build-python:
-  extends: .run-in-docker
-  stage: build
-  image: $CI_REGISTRY_IMAGE/docker-ci
-  script:
-    - cd $PYTHONDIR
-    - pip3 install -r requirements-publish.txt
-    - python3 setup.py sdist bdist_wheel
-  artifacts:
-    paths:
-      - $PYTHONDIR/dist/
-
-build-python-lib:
-  extends: .build-python
-  variables:
-    PYTHONDIR: python-src
-  
-build-agxClick:
-  extends: .build-python
-  variables:
-    PYTHONDIR: agxClick
-
 test-python-lib:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY_IMAGE/docker-ci
-  needs:
-    - job: build-python-lib
-      artifacts: true
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - pip3 install -r python-src/requirements-test.txt
-    - pip3 install python-src/dist/pClick*whl
-    - pytest python-src --junitxml=pClick-junit.xml
+    - cd python-src
+    - (poetry install && poetry run pytest --junitxml=pclick-junit.xml)
   artifacts:
     when: always
     reports:
-      junit: pClick-junit.xml
+      junit: pclick-junit.xml
 
-test-agxClick:
+test-agxclick:
   extends: .run-in-docker
   stage: test
-  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:agx-2.32.1.0_agxbrick-0.5.7
-  needs:
-    - job: build-python-lib
-      artifacts: true
-    - job: build-agxClick
-      artifacts: true
+  image: $CI_REGISTRY_IMAGE/docker-ci-agx:${CI_IMAGE_TAG}
   script:
     - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
-    - pip3 install -r python-src/requirements-test.txt
-    - pip3 install python-src/dist/pClick*whl
-    - pip3 install agxClick/dist/agxClick*whl
-    - pytest agxClick --junitxml=agxClick-junit.xml
+    - cd agxclick
+    - (poetry add ../python-src && poetry install)
+    - poetry run pytest --junitxml=agxclick-junit.xml
   artifacts:
     when: always
     reports:
-      junit: agxClick-junit.xml
+      junit: agxclick/agxclick-junit.xml
 
 .publish-python-lib:
   extends: .run-in-docker
   stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
     - cd $PYTHONDIR
-    - pip3 install -r requirements-publish.txt
-    - PACKAGE_VERSION=$CI_COMMIT_TAG
-    - grep 'version="'${PACKAGE_VERSION}'"' setup.py
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python3 -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*${PACKAGE_VERSION}*
+    - poetry publish --build --username=__token__ --password=${pypi_password}
   only:
     - tags
 
-publish-pClick:
+publish-pclick:
   extends: .publish-python-lib
   variables:
     PYTHONDIR: python-src
-  needs:
-    - job: build-python-lib
-      artifacts: true
-    - job: test-python-lib
 
-publish-agxClick:
+publish-agxclick:
   extends: .publish-python-lib
   variables:
-    PYTHONDIR: agxClick
-  needs:
-    - job: build-agxClick
-      artifacts: true
-    - job: test-agxClick
+    PYTHONDIR: agxclick
 
 .build-test-cpp-lib-windows:
   stage: build
   tags:
     - windows
+    - x64
     - vs2019
   variables: 
     # Use project specific conan directory to cache between builds but not between projects
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
-    - mkdir build
-    - cd build
+    - mkdir oos
+    - cd oos
     - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A $TARGET_ARCH $EXTRA_PARAMS ../cpp-src
     - cmake --build . --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release .
@@ -243,11 +229,11 @@ publish-agxClick:
     - bin/click-tests --reporter junit --out win-catch2-junit.xml
   artifacts:
     paths:
-      - build/install
-      - build/bin
+      - oos/install
+      - oos/bin
     when: always
     reports:
-      junit: build/win-catch2-junit.xml
+      junit: oos/win-catch2-junit.xml
 
 
 build-test-x64-cpp-lib-windows:
@@ -256,39 +242,46 @@ build-test-x64-cpp-lib-windows:
     TARGET_ARCH: "x64"
     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
-build-test-static-Win32-cpp-lib-windows:
-  extends: .build-test-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "Win32"
+# ABB No longer needs win32, so disable and remove after 2024-06
+# build-test-static-Win32-cpp-lib-windows:
+#   tags:
+#     - win32
+#     - vs2019
+#   extends: .build-test-cpp-lib-windows
+#   variables:
+#     TARGET_ARCH: "Win32"
 
-build-test-dynamic-Win32-cpp-lib-windows:
-  extends: .build-test-cpp-lib-windows
-  variables:
-    TARGET_ARCH: "Win32"
-    EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
+# build-test-dynamic-Win32-cpp-lib-windows:
+#   tags:
+#     - win32
+#     - vs2019
+#   extends: .build-test-cpp-lib-windows
+#   variables:
+#     TARGET_ARCH: "Win32"
+#     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
+
+# publish-dynamic-Win32-cpp-lib-windows:
+#   extends: .publish-cpp-lib-windows
+#   variables:
+#     PACKAGE_UPLOAD_NAME: click-win32
+#   needs:
+#     - job: build-test-dynamic-Win32-cpp-lib-windows
+#       artifacts: true
 
 .publish-cpp-lib-windows:
   extends: .run-in-docker
   stage: publish
-  image: $CI_REGISTRY_IMAGE/docker-ci
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
   script:
-    - find build
+    - find oos
     - PACKAGE_VERSION=$CI_COMMIT_TAG
     - PACKAGE_NAME=$PACKAGE_UPLOAD_NAME-$PACKAGE_VERSION.zip
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
-    - zip -r $PACKAGE_NAME build doc agxClick/examples agxClick/testdata LICENSE agxClick/README.md README.md
+    - zip -r $PACKAGE_NAME oos doc agxclick/examples agxclick/testdata LICENSE agxclick/README.md README.md
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_NAME}"'
   only:
     - tags
-
-publish-dynamic-Win32-cpp-lib-windows:
-  extends: .publish-cpp-lib-windows
-  variables:
-    PACKAGE_UPLOAD_NAME: click-win32
-  needs:
-    - job: build-test-dynamic-Win32-cpp-lib-windows
-      artifacts: true
 
 publish-x64-cpp-lib-windows:
   extends: .publish-cpp-lib-windows
@@ -297,3 +290,31 @@ publish-x64-cpp-lib-windows:
   needs:
     - job: build-test-x64-cpp-lib-windows
       artifacts: true
+
+push-main-to-github:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
+  script:
+    - git remote add mirror git@github.com:Algoryx/click-mirror.git || echo remote mirror already exists.
+    - eval "$(ssh-agent -s)"
+    - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
+    - ssh-add ${click_github_push_key}
+    # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
+    - git push mirror refs/remotes/origin/${CI_COMMIT_REF_NAME}:refs/heads/${CI_COMMIT_REF_NAME}
+  only:
+    - main
+
+push-tag-to-github:
+  extends: .run-in-docker
+  stage: build
+  image: $CI_REGISTRY_IMAGE/docker-ci:${CI_IMAGE_TAG}
+  script:
+    - git remote add mirror git@github.com:Algoryx/click-mirror.git || echo remote mirror already exists.
+    - eval "$(ssh-agent -s)"
+    - chmod 0600 ${click_github_push_key} # Must be protected to add (and end with a newline)
+    - ssh-add ${click_github_push_key}
+    # CI_COMMIT_REF_NAME - The branch or tag name for which project is built
+    - git push mirror ${CI_COMMIT_REF_NAME}
+  only:
+    - tags

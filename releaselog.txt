@@ -1,5 +1,45 @@
-0.1.34
+0.2.2
+- Adds HandshakeBuilder for C++
+
+0.2.1
+- No error when doing ctrl-c from cmdline on client.py and server.py
+
+0.2.0
+- Adds all missing types for Sensor to SensorMessageBuilder.
+- Adds type and value to Sensor to make it possible to check which part of union is present.
+- Renames AngleVelocity to AngularVelocity in C++ API: Message, SensorMessage, SensorMessageBuilder
+- Breaks SensorMessage/Sensor backward compatibility!
+
+0.1.42
+- Bugfix: Disable ExampleApplication graphics throttling introduced in AGX 2.36.1.5 since click_application drives graphics
+
+0.1.40
+- Bugfix: Release Docker license when stopping application
+
+0.1.39
+- Conan packages created and uploaded in CI
+
+0.1.38
+- C++ Server supports inheritance
+- C++ Server supports must_send(), must_recv()
+- C++ ControlMessage supports has_object() and values()
+
+0.1.37
+- No changes
+
+0.1.36
+- Add C++ demoserver
+- Rename packages and modules according to PEP8, i.e pClick is now pclick. agxClick is now agxclick.
+- First version to be available from http://pypi.org
+
+0.1.35
 - Remove sleep in democlient.cpp for windows builds to increase speed a lot on Windows which has low resolution sleep (~10 ms) only.
+- Specify units for control signals in the demo client.
+- Performance audit: Add --trace-sizes to click_application that prints package sizes whenever they change
+- Performance audit: Add cmdline parameters to democlient.cpp, --trace, --timings, --addr, --range, --blocking-receive added.
+- Update protobuf version to 3.21.9
+- Clear error message on server when client sends unknown robot name
+- Still using AGXBrick 0.5.7 or later
 
 0.1.34
 - Add terminate() to Client and documentation for when "WSASTARTUP not yet performed" assertion occurs.
@@ -18,13 +58,13 @@
 
 0.1.30
 - Require AGXBrick 0.5.7 or later
-- agxClick support Brick.Signals ComponentBoolInput and ComponentBoolOutput
+- agxclick support Brick.Signals ComponentBoolInput and ComponentBoolOutput
 
 0.1.29
 - Require AGXBrick 0.5.4 or later.
-- agxClick support Brick.Signals RotatingBodyAngleOutput, RotatingBodyVelocityOutput and FixedVelocityEngineTorqueOutput.
-- Client input events come in to agxClick as early as possible.
-- agxClick output events come in as late as possible.
+- agxclick support Brick.Signals RotatingBodyAngleOutput, RotatingBodyVelocityOutput and FixedVelocityEngineTorqueOutput.
+- Client input events come in to agxclick as early as possible.
+- agxclick output events come in as late as possible.
 
 0.1.28
 - Add controlType retrieval to C++ HandshakeMessage API
@@ -35,7 +75,7 @@
 
 0.1.26
 - Reset from Keybaord will send ResetMessage immediately if possible to prevent recv fail
-- --batch <seconds> will restart simulation from the initial position(s) continously. See agxClick/README.md.
+- --batch <seconds> will restart simulation from the initial position(s) continously. See agxclick/README.md.
 
 0.1.25
 - Bugfix: Sends ResetMessage before SimulationStep, i.e. fixes the "bug" that stepped once between Reset and sending ResetMessage
@@ -44,7 +84,7 @@
 
 0.1.24
 - Implemented separate simulation and graphics frequency to improve performance in agxViewer. Enable with --framerate
-- Added performance and profiling sections to agxClick README.
+- Added performance and profiling sections to agxclick README.
 
 0.1.23
 - Enabled profiling with --profile
@@ -63,14 +103,14 @@
 - C++ API supports SimulationSettings in HandshakeMessage
 
 0.1.19
-- agxClick supports grouping several signals into one sensor if they have the same protocolReference.
+- agxclick supports grouping several signals into one sensor if they have the same protocolReference.
 
 0.1.18
-- agxClick support Brick.Physics.DriveTrain Signals.
+- agxclick support Brick.Physics.DriveTrain Signals.
 - Minimum version of agxBrick required is 0.4.68.
 
 0.1.17
-- agxClick uses Sensor name as Click identifier, see agxClick/README.md
+- agxclick uses Sensor name as Click identifier, see agxclick/README.md
 
 0.1.16
-- agxClick finds one JointForce3DSensor and one JointTorque3DSensor per robot, and adds them to HandshakeMessage and SensorMessage
+- agxclick finds one JointForce3DSensor and one JointTorque3DSensor per robot, and adds them to HandshakeMessage and SensorMessage

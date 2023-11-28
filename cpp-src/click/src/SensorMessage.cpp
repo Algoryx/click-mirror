@@ -3,27 +3,26 @@
 #include <iostream>
 
 using namespace click;
-using namespace std;
 
-SensorMessage::SensorMessage(unique_ptr<protobuf::SensorMessage> sensorMessage)
+SensorMessage::SensorMessage(std::unique_ptr<protobuf::SensorMessage> sensorMessage)
 {
-  this->sensorMess = move(sensorMessage);
+  this->sensorMess = std::move(sensorMessage);
 };
 
-vector<double> SensorMessage::angles(const string &objectname) const
+std::vector<double> SensorMessage::angles(const std::string& objectname) const
 {
 
   auto vec = this->sensorMess->objects().at(objectname).anglesensors();
-  return vector<double>(vec.begin(), vec.end());
+  return std::vector<double>(vec.begin(), vec.end());
 }
 
-vector<double> SensorMessage::angleVelocities(const string &objectname) const
+std::vector<double> SensorMessage::angularVelocities(const std::string& objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
-  return vector<double>(vec.begin(), vec.end());
+  return std::vector<double>(vec.begin(), vec.end());
 }
 
-string SensorMessage::debugString() const
+std::string SensorMessage::debugString() const
 {
   return this->sensorMess->DebugString();
 }
@@ -33,75 +32,95 @@ MessageType SensorMessage::messageType() const
   return static_cast<MessageType>(sensorMess->messagetype());
 }
 
-Vec3 SensorMessage::objectRPY(const string &objectname) const
+Vec3 SensorMessage::objectRPY(const std::string& objectname) const
 {
-  for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
+  for (auto& sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_rpy())
     {
       auto vec = sensor.rpy();
       return Vec3{vec.arr().at(0), vec.arr().at(1), vec.arr().at(2)};
     }
-  throw runtime_error("RPY not found in " + this->debugString());
+  throw std::runtime_error("RPY not found in " + this->debugString());
 }
 
 // Vec3 will RVO:d according to https://stackoverflow.com/questions/27368236/return-value-or-rvalue-reference
-Vec3 SensorMessage::objectPosition(const string &objectname) const
+Vec3 SensorMessage::objectPosition(const std::string& objectname) const
 {
-  for (auto &sensor : this->sensorMess->objects().at(objectname).objectsensors())
+  for (auto& sensor : this->sensorMess->objects().at(objectname).objectsensors())
     if (sensor.has_position())
     {
       auto vec3 = sensor.position();
-      return move(Vec3{vec3.arr().at(0), vec3.arr().at(1), vec3.arr().at(2)});
+      return std::move(Vec3{vec3.arr().at(0), vec3.arr().at(1), vec3.arr().at(2)});
     }
-  throw runtime_error("Position not found in " + this->debugString());
+  throw std::runtime_error("Position not found in " + this->debugString());
 }
 
-inline void copy_n(const protobuf::SensorMessage_Vec3 &src, Vec3 &trg)
+inline void copy_n(const protobuf::SensorMessage_Vec3& src, Vec3& trg)
 {
-  copy_n(src.arr().begin(), 3, trg.begin());
+  std::copy_n(src.arr().begin(), 3, trg.begin());
 }
 
-inline Vec3 createFrom(const protobuf::SensorMessage_Vec3 &src)
+inline Vec3 createFrom(const protobuf::SensorMessage_Vec3& src)
 {
   return Vec3{src.arr().at(0), src.arr().at(1), src.arr().at(2)};
 }
 
-vector<Sensor> SensorMessage::sensor(const string &objectname, const string &sensorname) const
+std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const std::string& sensorname) const
 {
-  vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
+  std::vector<Sensor> res(this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().size());
   auto target = res.begin();
-  for (auto &sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
+  for (auto& sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
   {
-    if (sensor.has_acceleration())
-      copy_n(sensor.acceleration(), target->acceleration);
-    else if (sensor.has_activated())
-      target->activated = sensor.activated();
-    else if (sensor.has_angle())
-      target->angle = sensor.angle();
-    else if (sensor.has_anglevelocity())
-      target->angleVelocity = sensor.anglevelocity();
-    else if (sensor.has_angularacceleration())
-      copy_n(sensor.angularacceleration(), target->angularAcceleration);
-    else if (sensor.has_directionaltorque())
-      copy_n(sensor.directionaltorque(), target->directionalTorque);
-    else if (sensor.has_force())
-      copy_n(sensor.force(), target->force);
-    else if (sensor.has_position())
-      copy_n(sensor.position(), target->position);
-    else if (sensor.has_rpy())
-      copy_n(sensor.rpy(), target->rpy);
-    else if (sensor.has_torque())
-      target->torque = sensor.torque();
+    if (sensor.has_acceleration()) {
+      copy_n(sensor.acceleration(), target->value.acceleration);
+      target->type = click::ValueType::Acceleration;
+    }
+    else if (sensor.has_activated()) {
+      target->value.activated = sensor.activated();
+      target->type = click::ValueType::Activated;
+    }
+    else if (sensor.has_angle()) {
+      target->value.angle = sensor.angle();
+      target->type = click::ValueType::Angle;
+    }
+    else if (sensor.has_anglevelocity()) {
+      target->value.angularVelocity = sensor.anglevelocity();
+      target->type = click::ValueType::AngularVelocity;
+    }
+    else if (sensor.has_angularacceleration()) {
+      copy_n(sensor.angularacceleration(), target->value.angularAcceleration);
+      target->type = click::ValueType::AngularAcceleration;
+    }
+    else if (sensor.has_directionaltorque()) {
+      copy_n(sensor.directionaltorque(), target->value.directionalTorque);
+      target->type = click::ValueType::DirectionalTorque;
+    }
+    else if (sensor.has_force()) {
+      copy_n(sensor.force(), target->value.force);
+      target->type = click::ValueType::Force;
+    }
+    else if (sensor.has_position()) {
+      copy_n(sensor.position(), target->value.position);
+      target->type = click::ValueType::Position;
+    }
+    else if (sensor.has_rpy()) {
+      copy_n(sensor.rpy(), target->value.rpy);
+      target->type = click::ValueType::RPY;
+    }
+    else if (sensor.has_torque()) {
+      target->value.torque = sensor.torque();
+      target->type = click::ValueType::Torque;
+    }
     else
-      throw runtime_error("Return not implemented for " + sensor.DebugString());
+      throw std::runtime_error("Return not implemented for " + sensor.DebugString());
     target++;
   }
   return res;
 }
 
-Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string &sensorname, int idx) const
+Vec3 SensorMessage::sensorVec3(const std::string& objectname, const std::string& sensorname, int idx) const
 {
-  auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+  auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_acceleration())
     return createFrom(sensor.acceleration());
   else if (sensor.has_angularacceleration())
@@ -115,12 +134,12 @@ Vec3 SensorMessage::sensorVec3(const std::string &objectname, const std::string 
   else if (sensor.has_rpy())
     return createFrom(sensor.rpy());
   else
-    throw runtime_error("Not a Vec3: " + sensor.DebugString());
+    throw std::runtime_error("Not a Vec3: " + sensor.DebugString());
 }
 
-double SensorMessage::sensorDouble(const std::string &objectname, const std::string &sensorname, int idx) const
+double SensorMessage::sensorDouble(const std::string& objectname, const std::string& sensorname, int idx) const
 {
-  auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+  auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_angle())
     return sensor.angle();
   else if (sensor.has_anglevelocity())
@@ -128,16 +147,16 @@ double SensorMessage::sensorDouble(const std::string &objectname, const std::str
   else if (sensor.has_torque())
     return sensor.torque();
   else
-    throw runtime_error("Not a double: " + sensor.DebugString());
+    throw std::runtime_error("Not a double: " + sensor.DebugString());
 }
 
-bool SensorMessage::sensorBool(const std::string &objectname, const std::string &sensorname, int idx) const
+bool SensorMessage::sensorBool(const std::string& objectname, const std::string& sensorname, int idx) const
 {
-  auto &sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
+  auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_activated())
     return sensor.activated();
   else
-    throw runtime_error("Not a bool: " + sensor.DebugString());
+    throw std::runtime_error("Not a bool: " + sensor.DebugString());
 }
 
 double SensorMessage::simulatedTime() const
@@ -145,25 +164,25 @@ double SensorMessage::simulatedTime() const
   return this->sensorMess->simvars().simulatedtime();
 }
 
-vector<double> SensorMessage::torques(const string &objectname) const
+std::vector<double> SensorMessage::torques(const std::string& objectname) const
 {
   auto vec = this->sensorMess->objects().at(objectname).torquesensors();
-  return vector<double>(vec.begin(), vec.end());
+  return std::vector<double>(vec.begin(), vec.end());
 }
 
 /*
  * Privates
  */
 
-string SensorMessage::serializeToBytes() const
+std::string SensorMessage::serializeToBytes() const
 {
   return this->sensorMess->SerializeAsString();
 }
 
 SensorMessage::~SensorMessage() = default;
 
-unique_ptr<SensorMessage> click::toSensorMessage(unique_ptr<Message> message)
+std::unique_ptr<SensorMessage> click::toSensorMessage(std::unique_ptr<Message> message)
 {
-  return unique_ptr<SensorMessage>(static_cast<SensorMessage *>(message.release()));
+  return std::unique_ptr<SensorMessage>(static_cast<SensorMessage *>(message.release()));
 }
 

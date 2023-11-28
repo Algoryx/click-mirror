@@ -29,7 +29,7 @@ SCENARIO("ErrorMessage serialization", "[click]")
                 REQUIRE(message->messageType() == MessageType::ErrorMessageType);
             }
 
-            THEN("it should have debugstring without type since it is the default")
+            THEN("it should have debugstring with correct type")
             {
                 REQUIRE_THAT(message->debugString(), StartsWith("messageType: ErrorMessageType"));
             }

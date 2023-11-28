@@ -8,7 +8,7 @@ using namespace std;
 
 ControlMessageBuilderImpl::ControlMessageBuilderImpl(unique_ptr<protobuf::ControlMessage> control_m)
 {
-    this->message = move(control_m);
+    this->message = std::move(control_m);
 }
 
 AddControlBuilder *ControlMessageBuilderImpl::object(string name)
@@ -46,14 +46,14 @@ AddControlEventBuilder *ControlMessageBuilderImpl::withControlEvent(string name,
 }
 unique_ptr<ControlMessage> ControlMessageBuilderImpl::build()
 {
-    return unique_ptr<ControlMessage>(new ControlMessage(move(message)));
+    return unique_ptr<ControlMessage>(new ControlMessage(std::move(message)));
 }
 
 unique_ptr<ControlMessageBuilder> ControlMessageBuilderImpl::builder()
 {
     unique_ptr<protobuf::ControlMessage> control_m = make_unique<protobuf::ControlMessage>();
     control_m->set_messagetype(protobuf::ControlMessageType);
-    return unique_ptr<ControlMessageBuilder>(new ControlMessageBuilderImpl(move(control_m)));
+    return unique_ptr<ControlMessageBuilder>(new ControlMessageBuilderImpl(std::move(control_m)));
 }
 
 ControlMessageBuilder::~ControlMessageBuilder() = default;
