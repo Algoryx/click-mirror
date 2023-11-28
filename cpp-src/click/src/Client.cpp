@@ -1,13 +1,11 @@
+#include <memory>
+#include <zmq.hpp>
 #include <click/Client.h>
 #include <Messaging.pb.h>
 #include <click/Message.h>
 #include <click/ControlMessage.h>
 #include <click/SensorMessage.h>
 #include <click/MessageSerializer.h>
-
-#include <zmq.hpp>
-
-#include <memory>
 
 using namespace click;
 using namespace std;

@@ -34,7 +34,7 @@ endif()
 conan_cmake_configure(
   REQUIRES 
     protobuf/3.21.9
-    cppzmq/4.8.1
+    cppzmq/4.10.0
     argparse/2.9
   BUILD_REQUIRES
     protobuf/3.21.9
