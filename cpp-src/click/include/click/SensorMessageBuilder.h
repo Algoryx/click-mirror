@@ -24,6 +24,7 @@ namespace click
          * \return a Builder
          */
         CLICK_EXPORT virtual AddSensorValuesBuilder *object(const std::string& name) = 0;
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withSimulatedTime(double time) = 0;
         CLICK_EXPORT virtual ~SensorMessageBuilder();
     };
 
@@ -62,6 +63,7 @@ namespace click
     {
     public:
         CLICK_EXPORT virtual AddSensorValuesBuilder* object(const std::string& name);
+        CLICK_EXPORT virtual AddSensorValuesBuilder *withSimulatedTime(double time);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withAngles(const std::vector<double>& angles);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withAngularVelocities(const std::vector<double>& angles);
         CLICK_EXPORT virtual AddSensorValuesBuilder* withTorques(const std::vector<double>& torques);
@@ -90,8 +92,8 @@ namespace click
 
     private:
         SensorMessageBuilderImpl(std::unique_ptr<protobuf::SensorMessage> control_m);
-        std::unique_ptr<protobuf::SensorMessage> message;
-        protobuf::SensorMessage_Object *currObject;
-        protobuf::SensorMessage_Sensors *curr_sensor;
+        std::unique_ptr<protobuf::SensorMessage> m_message;
+        protobuf::SensorMessage_Object *m_curr_object;
+        protobuf::SensorMessage_Sensors *m_curr_sensor;
     };
 }

@@ -28,8 +28,10 @@ SCENARIO("handshake serialization", "[click]")
                 ->withSimulationSettings({1.0})
                 ->withControlType(click::ValueType::Multiple)
                 ->withRobot("robot1")
+                    // Inputs/Outputs:
                     ->withControlsInOrder(controls_in_order)
                     ->withControlTypesInOrder(control_types_in_order)
+                    // Outputs:
                     ->withJointSensorsInOrder(controls_in_order)
                     ->withJointSensors(control_types_in_order)
                     ->withSensor("sensor1")
