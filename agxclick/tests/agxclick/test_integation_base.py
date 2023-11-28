@@ -14,14 +14,17 @@ def send(client: Client, message):
 def send_receive(client: Client, message):
     send(client, message)
 
-    tries = 10
+    tries = 1000
     for i in range(tries):
         try:
-            return MessageSerializer.from_bytes(client.socket.recv(flags=zmq.NOBLOCK))
-        except zmq.Again as ex:
-            sleep(1)
-            print(f"(Waited {i} seconds)")
-    raise Exception(f"Nothing to receive, even after {tries} tries")
+            res = MessageSerializer.from_bytes(client.socket.recv(flags=zmq.NOBLOCK))
+            print(f"(Waited {i/100} seconds)")
+            return res
+        except zmq.Again:
+            sleep(0.01)
+            # if (i % 100) == 0:
+            #     print(f"(Waited {i/100} seconds)")
+    raise TimeoutError(f"Nothing to receive, even after {tries} tries")
 
 
 @pytest.mark.integrationtest
