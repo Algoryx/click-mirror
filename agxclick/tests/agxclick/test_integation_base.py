@@ -1,10 +1,9 @@
-import pytest
-from pytest import approx
-from subprocess import Popen, PIPE
-from pclick import Client, MessageFactory, HandshakeMessageType, SensorMessageType, MessageSerializer
-import zmq
 from time import sleep
 import sys
+from subprocess import Popen, PIPE
+import pytest
+import zmq
+from pclick import Client, MessageFactory, HandshakeMessageType, SensorMessageType, MessageSerializer
 
 
 def send(client: Client, message):

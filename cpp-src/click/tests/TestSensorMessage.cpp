@@ -24,7 +24,8 @@ SCENARIO("Sensormessage serialization", "[click]")
 
         WHEN("adding a robot with angle controls")
         {
-            unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
+            unique_ptr<SensorMessage> ensor_message = SensorMessageBuilderImpl::builder()
+                ->withSimulatedTime(1.2)
                 ->object("robot1")
                     ->withAngles(angles)
                     ->withAngularVelocities(angularVelocities)
@@ -33,13 +34,14 @@ SCENARIO("Sensormessage serialization", "[click]")
 
             THEN("it should have values")
             {
-                REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
-                REQUIRE(SensorMessage->angles("robot1").size() == 5);
+                REQUIRE(ensor_message->messageType() == MessageType::SensorMessageType);
+                REQUIRE(ensor_message->simulatedTime() == 1.2);
+                REQUIRE(ensor_message->angles("robot1").size() == 5);
             }
         }
         WHEN("adding a robot with external sensors")
         {
-            unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
+            unique_ptr<SensorMessage> sensor_message = SensorMessageBuilderImpl::builder()
                 ->object("robot1")
                     ->withSensor("external_1")
                         ->withAcceleration({3, 3.1, 3.2})
@@ -56,8 +58,8 @@ SCENARIO("Sensormessage serialization", "[click]")
 
             THEN("it should have values")
             {
-                REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
-                auto sensor_vals = SensorMessage->sensor("robot1", "external_1");
+                REQUIRE(sensor_message->messageType() == MessageType::SensorMessageType);
+                auto sensor_vals = sensor_message->sensor("robot1", "external_1");
                 REQUIRE(sensor_vals[0].type == click::ValueType::Acceleration);
                 REQUIRE(sensor_vals[0].value.acceleration == Vec3{3, 3.1, 3.2});
                 REQUIRE(sensor_vals[1].type == click::ValueType::Activated);
@@ -80,7 +82,7 @@ SCENARIO("Sensormessage serialization", "[click]")
         }
         WHEN("adding a box with position and rpy")
         {
-            unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
+            unique_ptr<SensorMessage> sensor_message = SensorMessageBuilderImpl::builder()
                 ->object("box")
                     ->withPosition({1, 2, 3})
                     ->withRPY({4, 5, 6})
@@ -88,13 +90,14 @@ SCENARIO("Sensormessage serialization", "[click]")
 
             THEN("it should have values")
             {
-                REQUIRE(SensorMessage->objectPosition("box") == Vec3{1, 2, 3});
-                REQUIRE(SensorMessage->objectRPY("box") == Vec3{4, 5, 6});
+                REQUIRE(sensor_message->objectPosition("box") == Vec3{1, 2, 3});
+                REQUIRE(sensor_message->objectRPY("box") == Vec3{4, 5, 6});
             }
         }
         WHEN("adding three robots with different controls")
         {
-            unique_ptr<SensorMessage> SensorMessage = SensorMessageBuilderImpl::builder()
+            unique_ptr<SensorMessage> sensor_message = SensorMessageBuilderImpl::builder()
+                ->withSimulatedTime(1.3)
                 ->object("robot1")
                     ->withAngles(angles)
                 ->object("robot2")
@@ -107,12 +110,12 @@ SCENARIO("Sensormessage serialization", "[click]")
 
             THEN("it should contain the control values")
             {
-                REQUIRE(SensorMessage->messageType() == MessageType::SensorMessageType);
-                REQUIRE_THAT(SensorMessage->angles("robot1"), Equals(angles));
-                REQUIRE_THAT(SensorMessage->angularVelocities("robot2"), Equals(angularVelocities));
-                REQUIRE_THAT(SensorMessage->torques("robot3"), Equals(torques));
+                REQUIRE(sensor_message->messageType() == MessageType::SensorMessageType);
+                REQUIRE_THAT(sensor_message->angles("robot1"), Equals(angles));
+                REQUIRE_THAT(sensor_message->angularVelocities("robot2"), Equals(angularVelocities));
+                REQUIRE_THAT(sensor_message->torques("robot3"), Equals(torques));
 
-                string control_facit =
+                string control_facit = 
                     "messageType: SensorMessageType\n"
                     "objects {\n"
                     "  key: \"box\"\n"
@@ -155,25 +158,28 @@ SCENARIO("Sensormessage serialization", "[click]")
                     "    torqueSensors: 6\n"
                     "    torqueSensors: 7\n"
                     "  }\n"
+                    "}\n"
+                    "simVars {\n"
+                    "  simulatedTime: 1.3\n"
                     "}\n";
 
-                REQUIRE_THAT(SensorMessage->debugString(), Equals(control_facit));
+                REQUIRE_THAT(sensor_message->debugString(), Equals(control_facit));
             }
 
             THEN("it should serialize to string")
             {
                 MessageSerializer serializer;
-                REQUIRE(serializer.serializeToString(*SensorMessage).length() > 10);
+                REQUIRE(serializer.serializeToString(*sensor_message).length() > 10);
             }
 
             THEN("it should be deserialized from string")
             {
                 MessageSerializer serializer;
-                string bytes = serializer.serializeToString(*SensorMessage);
+                string bytes = serializer.serializeToString(*sensor_message);
 
                 unique_ptr<Message> message = serializer.fromBytes(bytes);
                 REQUIRE(message->messageType() == MessageType::SensorMessageType);
-                REQUIRE_THAT(message->debugString(), Equals(SensorMessage->debugString()));
+                REQUIRE_THAT(message->debugString(), Equals(sensor_message->debugString()));
             }
         }
     }
