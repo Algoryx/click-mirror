@@ -1,3 +1,6 @@
+0.2.4
+- Python democlient does not wait for reply after sending errormessage.
+
 0.2.3
 - Adds simulated time to C++ SensorMessageBuilder
 - Opens upper version for pclick

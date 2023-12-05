@@ -39,10 +39,10 @@ def parse_args():
     return parser.parse_args()
 
 
-def send_errormessage(socket):
+def send_errormessage(client: Client):
     message = MessageFactory.create_errormessage()
     print("Sending errormessage")
-    socket.send(message)
+    client.send(message)
 
 def handler(signum, frame):
     os._exit(0)
@@ -89,6 +89,7 @@ elif args.sensorrequest:
     client.send(message)
 elif args.errormessage:
     send_errormessage(client)
+    os._exit(0)
 else:
     message = MessageFactory.create_handshake_init()
     print("Sending initiate handshake")
