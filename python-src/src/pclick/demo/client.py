@@ -89,6 +89,7 @@ elif args.sensorrequest:
     client.send(message)
 elif args.errormessage:
     send_errormessage(client)
+    client.stop()
     os._exit(0)
 else:
     message = MessageFactory.create_handshake_init()
