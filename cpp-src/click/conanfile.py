@@ -4,7 +4,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.2.4"
+    version = "0.2.5"
 
     # Optional metadata
     license = "Apache License Version 2.0"
