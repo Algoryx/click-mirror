@@ -37,12 +37,24 @@ class TestClickIntegration:
         yield
         try:
             self.send_stop_simulation(self.client)
-        except Exception as ex:
+        except Exception:
             pass
-        self.process.kill
-        stdout, stderr = self.process.communicate(timeout=1)
-        print(stderr.decode("UTF-8"))
-        print(stdout.decode("UTF-8"))
+        try:
+            print("Waiting for brickview to exit")
+            stdout, stderr = self.process.communicate(timeout=10)
+            print(f"brickview stdout/stderr:")
+            print(stderr.decode("UTF-8"))
+            print(stdout.decode("UTF-8"))
+        finally:
+            try:
+                # Make sure the process is killed so that next test is not blocked
+                self.process.kill()
+            finally:
+                try:
+                    # Really, make sure the process is killed so that next test is not blocked
+                    os.kill(self.process.pid, 9)
+                except Exception as ex:
+                    pass
 
     def send_control_message(self, client):
         message = self.create_controlmessage()
