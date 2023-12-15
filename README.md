@@ -125,12 +125,12 @@ pip install pclick
 - Linux Ubuntu 20.04 C++ libraries and binaries (only available to registered users at git.algoryx.se for now):
 
 ```bash
-wget --header "DEPLOY-TOKEN: <SECRET>" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.2.4/click-shared-focal-amd64.deb"
+wget --header "DEPLOY-TOKEN: <SECRET>" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.2.5/click-shared-focal-amd64.deb"
 apt-get install -yf /tmp/click-shared-focal-amd64.deb
 ```
 
 - Windows C++ libraries and binaries (only available to registered users at git.algoryx.se for now)
-  - [Download x64 zip](https://git.algoryx.se/api/v4/projects/262/packages/generic/click/0.2.4/click-x64-0.2.4.zip)
+  - [Download x64 zip](https://git.algoryx.se/api/v4/projects/262/packages/generic/click/0.2.5/click-x64-0.2.5.zip)
 
 ## Running Click democlient and demoserver
 
@@ -254,10 +254,18 @@ Release tags are semver only, eg 0.1.2.
 
 Steps:
 
-1. Update version in agxclick/setup.py, python-src/setup.py, README.md. Suggestion: Search and Replace old version for new.
+1. Update version in files below. Suggestion: Search and Replace old version for new.
+    - README.md
+    - agxclick/pyproject.toml
+    - agxclick/README.md
+    - agxclick/README-pypi.md
+    - cpp-src/CMakeLists.txt
+    - cpp-src/conanfile.py
+    - cpp-src/click/conan/CMakeLists.txt
+    - python-src/pyproject.toml
 2. Update releaselog.txt
 3. Push to branch and do MR
-4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.2.4; git push origin 0.2.4`.
+4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.2.5; git push origin 0.2.5`.
 5. When built, binary artifacts:s are available in the [Package Registry](https://git.algoryx.se/algoryx/external/click/-/packages) and python artifacts at [pypi.org](pypi.org).
 
 ## Build pipeline dependencies - updating agxBrick version
