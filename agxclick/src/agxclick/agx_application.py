@@ -22,6 +22,7 @@ class AgxApplication:
         assert BrickSimulation.Default, "Could not find brick simulation Default via c# attribute"
         # create_or_set_script_context line makes environment.application() and simulation() work
         create_or_set_script_context(self.sim, self.app, None)
+        self.m_timer = agx.HighAccuracyTimer(True)
         self.have_graphics = None
 
     def stepApplication(self):
@@ -35,7 +36,7 @@ class AgxApplication:
         if self.have_graphics is None:
             self.have_graphics = self.app.getViewer()
         if self.have_graphics:
-            self.app.executeOneStepWithGraphics()
+            self.app.executeOneStepWithGraphics(self.m_timer)
         else:
             self.app.executeOneStepWithoutGraphics()
 
