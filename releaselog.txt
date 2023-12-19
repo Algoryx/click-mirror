@@ -1,4 +1,4 @@
-0.2.6
+0.3.0
 - depends on agxBrick 0.6.0 and therefore AGX 2.37.1.0
 
 0.2.5
