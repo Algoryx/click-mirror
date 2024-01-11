@@ -3,7 +3,7 @@
 version: "3"
 services:
   pytest:
-    image: registry.algoryx.se/algoryx/external/click/docker-ci-agx:0.0.2
+    image: registry.algoryx.se/algoryx/external/click/docker-ci-agx:0.0.4
     build:  
       dockerfile: Dockerfile.CI-agx
     working_dir: "/click"
