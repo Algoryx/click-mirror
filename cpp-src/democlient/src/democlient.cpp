@@ -112,13 +112,14 @@ int main(int argc, char *argv[])
     reply = sendReceiveBlocking(client, *message);
 
     // Controlmessage
-    message = ControlMessageBuilderImpl::builder()
+    auto builder = ControlMessageBuilderImpl::builder();
+    click::AddControlEventBuilder * partial_builder = builder
         ->object("robot1")
             ->withAngles(angles)
-            ->withControlEvent("gripper", true)
-        ->object("robot2")
-            ->withAngles(angles)
-        ->build();
+            ->withControlEvent("gripper", true);
+    partial_builder = partial_builder->object("robot2")
+            ->withAngles(angles);
+    message = partial_builder->build();
 
     cout << "Sending "<< n << " messages" << endl;
     auto start = std::chrono::system_clock::now();
