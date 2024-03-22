@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/SensorRequestMessage.h>
 #include <click/SensorRequestMessageBuilder.h>
 #include <click/MessageSerializer.h>

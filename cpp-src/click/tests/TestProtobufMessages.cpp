@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <Messaging.pb.h>
 #include <click/MessageFactory.h>
 
@@ -52,7 +52,7 @@ SCENARIO("protobuf controlmessage serialization", "[click]" ) {
             THEN("it should contain the control values") {
 
 
-                string control_facit = 
+                string control_facit =
                     "messageType: ControlMessageType\n"
                     "objects {\n"
                     "  key: \"robot1\"\n"

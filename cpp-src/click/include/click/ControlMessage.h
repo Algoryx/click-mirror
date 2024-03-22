@@ -14,12 +14,12 @@ namespace click
   }
   class ControlMessageBuilder;
 
-  class ControlMessage : public Message
+  class CLICK_EXPORT ControlMessage : public Message
   {
   public:
     /**
      * @brief Check if object with objectname exists in control message
-     * 
+     *
      * @param objectname name of the object
      * @return true if the object exists
      * @return false if the object doesn't exist
@@ -32,36 +32,42 @@ namespace click
      * \return a Vector of angles
      */
     std::vector<double> values(const std::string& objectname) const;
-    
+
     /**
      * Get angles, if any, for the object with name objectname
      *
      * \return a Vector of angles
      */
-    CLICK_EXPORT std::vector<double> angles(const std::string& objectname) const;
+    std::vector<double> angles(const std::string& objectname) const;
     /**
      * Get anglevelocities, if any, for the object with name objectname
      *
      * \return a Vector of angle velocitities
      */
-    CLICK_EXPORT std::vector<double> angleVelocities(const std::string& objectname) const;
+    std::vector<double> angleVelocities(const std::string& objectname) const;
     /**
      * Get torques, if any, for the object with name objectname
      *
      * \return a Vector of torques
      */
-    CLICK_EXPORT std::vector<double> torques(const std::string& objectname) const;
+    std::vector<double> torques(const std::string& objectname) const;
     // TODO: Must implement hasControlEvent, will throw exception if missing!
     /**
-     * Get controlEvent, if any, for the control controlname in object objectname
+     * Get controlEvent for the control controlname in object objectname
      *
      * \return value of controlEvent
      */
-    CLICK_EXPORT bool controlEvent(const std::string& objectname, std::string controlname) const;
-    CLICK_EXPORT MessageType messageType() const;
-    CLICK_EXPORT std::string debugString() const;
+    bool controlEvent(const std::string& objectname, std::string controlname) const;
+    /**
+     * Check if controlEvent is present
+     *
+     * \return true if present, false if not.
+     */
+    bool hasControlEvent(const std::string& objectname, std::string controlname) const;
+    MessageType messageType() const;
+    std::string debugString() const;
 
-    CLICK_EXPORT ~ControlMessage();
+    ~ControlMessage();
 
   private:
     ControlMessage(std::unique_ptr<protobuf::ControlMessage> control_m);

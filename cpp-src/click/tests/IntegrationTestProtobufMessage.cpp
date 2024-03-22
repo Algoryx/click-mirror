@@ -1,12 +1,11 @@
 #include <fstream>
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <Messaging.pb.h>
 #include "TestPaths.h"
 
 using namespace std;
 using namespace click::protobuf;
-using Catch::Matchers::Contains;
-using Catch::Matchers::Equals;
+using Catch::Matchers::ContainsSubstring;
 using google::protobuf::Map;
 
 SCENARIO("Protobuf sensormessage serialization from file", "[click]" ) {
@@ -25,8 +24,7 @@ SCENARIO("Protobuf sensormessage serialization from file", "[click]" ) {
                 REQUIRE(sensorMessage.objects().at("robot1").anglesensors().at(0) == 1.0);
                 REQUIRE(sensorMessage.objects().at("robot1").anglevelocitysensors().at(0) == 2.0);
                 REQUIRE(sensorMessage.objects().at("robot1").torquesensors().at(0) == 3.0);
-                REQUIRE_THAT(sensorMessage.DebugString(), Contains("messageType: SensorMessageType"));
-//                REQUIRE_THAT(sensorMessage.DebugString(), Equals("SensorMessageType"));
+                REQUIRE_THAT(sensorMessage.DebugString(), ContainsSubstring("messageType: SensorMessageType"));
             }
 
             THEN("it should contain box rpy") {

@@ -42,6 +42,11 @@ bool ControlMessage::controlEvent(const std::string& objectname, std::string con
 }
 
 
+bool ControlMessage::hasControlEvent(const std::string & objectname, std::string controlname) const {
+  return this->control_m->objects().find(objectname) != this->control_m->objects().end()
+    && this->control_m->objects().at(objectname).controlevents().find(controlname) != this->control_m->objects().at(objectname).controlevents().end();
+}
+
 MessageType ControlMessage::messageType() const {
   return static_cast<MessageType>(control_m->messagetype());
 }

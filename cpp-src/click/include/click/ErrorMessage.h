@@ -19,14 +19,14 @@ namespace click
 
   class ErrorMessageBuilder;
 
-  class ErrorMessage : public Message
+  class CLICK_EXPORT ErrorMessage : public Message
   {
   public:
-    CLICK_EXPORT MessageType messageType() const;
-    CLICK_EXPORT std::string message() const;
-    CLICK_EXPORT std::string debugString() const;
+    MessageType messageType() const;
+    std::string message() const;
+    std::string debugString() const;
 
-    CLICK_EXPORT ~ErrorMessage();
+    ~ErrorMessage();
 
   private:
     ErrorMessage(std::unique_ptr<protobuf::ErrorMessage>);
