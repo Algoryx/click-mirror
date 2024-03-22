@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.3.0
+project(click VERSION 0.3.1
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using Brick"
     LANGUAGES CXX)
 
@@ -67,24 +67,24 @@ if (BUILD_SHARED_LIBS)
     target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
 endif()
 target_compile_features(click PRIVATE cxx_std_17)
-  
+
 target_link_libraries(click
     PRIVATE
         zmqpp::zmqpp
         protobuf::protobuf
     )
-target_include_directories(click 
+target_include_directories(click
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/click>
 )
 
 
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
-install(TARGETS 
+install(TARGETS
         click
         ${CLICKPROTOBUF}
-    EXPORT ClickTargets    
+    EXPORT ClickTargets
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
     RUNTIME DESTINATION bin
@@ -97,7 +97,7 @@ install(EXPORT ClickTargets
     DESTINATION lib/cmake/click
 )
 
-install(FILES 
+install(FILES
     ${PUBLIC_INCLUDE_SOURCES}
     DESTINATION include/click
 )
