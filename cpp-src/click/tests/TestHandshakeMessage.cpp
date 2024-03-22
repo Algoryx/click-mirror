@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/HandshakeMessage.h>
 #include <click/HandshakeMessageBuilder.h>
 #include <click/MessageSerializer.h>
@@ -23,7 +23,7 @@ SCENARIO("handshake serialization", "[click]")
         {
             std::vector<std::string> controls_in_order = {"joint1", "joint2"};
             std::vector<click::ValueType> control_types_in_order = {click::ValueType::Angle, click::ValueType::AngularVelocity};
-            unique_ptr<HandshakeMessage> message = 
+            unique_ptr<HandshakeMessage> message =
                 HandshakeMessageBuilderImpl::builder()
                 ->withSimulationSettings({1.0})
                 ->withControlType(click::ValueType::Multiple)
@@ -43,7 +43,7 @@ SCENARIO("handshake serialization", "[click]")
                     ->withObjectSensors(control_types_in_order)
                 ->withRobot("robot2")
                 ->build();
-            
+
             THEN("it should match facit")
             {
                 std::string handshake_facit = R"(messageType: HandshakeMessageType

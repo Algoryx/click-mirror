@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/SensorMessage.h>
 #include <click/SensorMessageBuilder.h>
 #include <click/MessageSerializer.h>
@@ -115,7 +115,7 @@ SCENARIO("Sensormessage serialization", "[click]")
                 REQUIRE_THAT(sensor_message->angularVelocities("robot2"), Equals(angularVelocities));
                 REQUIRE_THAT(sensor_message->torques("robot3"), Equals(torques));
 
-                string control_facit = 
+                string control_facit =
                     "messageType: SensorMessageType\n"
                     "objects {\n"
                     "  key: \"box\"\n"

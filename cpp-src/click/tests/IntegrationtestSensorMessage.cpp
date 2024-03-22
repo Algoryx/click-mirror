@@ -1,10 +1,10 @@
 #include <fstream>
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/MessageSerializer.h>
 #include <click/SensorMessage.h>
 #include "TestPaths.h"
 using namespace click;
-using Catch::Matchers::Contains;
+using Catch::Matchers::ContainsSubstring;
 using Catch::Matchers::Equals;
 
 SCENARIO("sensormessage serialization from file", "[click]")
@@ -24,7 +24,7 @@ SCENARIO("sensormessage serialization from file", "[click]")
 
             THEN("it should have debugstring")
             {
-                REQUIRE_THAT(sensorMessage->debugString(), Contains("messageType: SensorMessageType"));
+                REQUIRE_THAT(sensorMessage->debugString(), ContainsSubstring("messageType: SensorMessageType"));
             }
 
             THEN("it should contain simulated time")

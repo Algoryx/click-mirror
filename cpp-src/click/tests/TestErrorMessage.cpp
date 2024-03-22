@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/ErrorMessage.h>
 #include <click/ErrorMessageBuilder.h>
 #include <click/MessageSerializer.h>

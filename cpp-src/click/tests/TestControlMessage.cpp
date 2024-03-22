@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/ControlMessage.h>
 #include <click/ControlMessageBuilder.h>
 #include <click/MessageSerializer.h>
@@ -31,6 +31,16 @@ SCENARIO("controlmessage serialization", "[click]")
                     ->withControlEvent("gripper2", false)
                 ->build();
 
+            THEN("it should have gripper and gripper2, not gripper 3")
+            {
+                REQUIRE(controlMessage->hasControlEvent("robot1", "gripper") == true);
+                REQUIRE(controlMessage->hasControlEvent("robot1", "gripper2") == true);
+                REQUIRE(controlMessage->hasControlEvent("robot1", "gripper3") == false);
+            }
+            THEN("it should not have robot2")
+            {
+                REQUIRE(controlMessage->hasControlEvent("robot2", "gripper") == false);
+            }
             THEN("it should have two grippers one activated and one not activated")
             {
                 REQUIRE(controlMessage->messageType() == MessageType::ControlMessageType);

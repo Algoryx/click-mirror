@@ -27,13 +27,13 @@ endif()
 include(${CONAN_CMAKE_LOCAL_FILE})
 
 conan_cmake_configure(
-  REQUIRES 
-    protobuf/3.21.9
+  REQUIRES
+    protobuf/3.21.12
     zmqpp/4.2.0
     argparse/2.9
   BUILD_REQUIRES
-    protobuf/3.21.9
-    catch2/2.13.7
+    protobuf/3.21.12
+    catch2/3.5.3
   GENERATORS
     cmake
     cmake_find_package
@@ -47,7 +47,7 @@ conan_cmake_install(PATH_OR_REFERENCE .
                       BUILD missing
                       SETTINGS ${settings})
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake) 
-conan_basic_setup(TARGETS) 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")

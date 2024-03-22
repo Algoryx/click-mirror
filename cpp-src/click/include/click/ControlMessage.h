@@ -53,11 +53,17 @@ namespace click
     std::vector<double> torques(const std::string& objectname) const;
     // TODO: Must implement hasControlEvent, will throw exception if missing!
     /**
-     * Get controlEvent, if any, for the control controlname in object objectname
+     * Get controlEvent for the control controlname in object objectname
      *
      * \return value of controlEvent
      */
     bool controlEvent(const std::string& objectname, std::string controlname) const;
+    /**
+     * Check if controlEvent is present
+     *
+     * \return true if present, false if not.
+     */
+    bool hasControlEvent(const std::string& objectname, std::string controlname) const;
     MessageType messageType() const;
     std::string debugString() const;
 
