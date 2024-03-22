@@ -3,7 +3,7 @@
 #include<memory>
 #include <click/HandshakeInitMessage.h>
 
-class click::HandshakeInitMessageBuilder {
+class CLICK_EXPORT click::HandshakeInitMessageBuilder {
 
 public:
     /**
@@ -11,14 +11,14 @@ public:
      *
      * \return a HandshakeInitMessage
      */
-    CLICK_EXPORT std::unique_ptr<HandshakeInitMessage> build();
+    std::unique_ptr<HandshakeInitMessage> build();
     /**
      * Create a builder that creates a Message
      *
      * \return a Builder
      */
-    CLICK_EXPORT static std::unique_ptr<HandshakeInitMessageBuilder> builder();
-    CLICK_EXPORT virtual ~HandshakeInitMessageBuilder();
+    static std::unique_ptr<HandshakeInitMessageBuilder> builder();
+    virtual ~HandshakeInitMessageBuilder();
 
 private:
     HandshakeInitMessageBuilder(std::unique_ptr<protobuf::HandshakeInitMessage> control_m);

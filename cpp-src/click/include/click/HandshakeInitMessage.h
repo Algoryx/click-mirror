@@ -19,13 +19,13 @@ namespace click
 
   class HandshakeInitMessageBuilder;
 
-  class HandshakeInitMessage : public Message
+  class CLICK_EXPORT HandshakeInitMessage : public Message
   {
   public:
-    CLICK_EXPORT MessageType messageType() const;
-    CLICK_EXPORT std::string debugString() const;
+    MessageType messageType() const;
+    std::string debugString() const;
 
-    CLICK_EXPORT ~HandshakeInitMessage();
+    ~HandshakeInitMessage();
 
   private:
     HandshakeInitMessage(std::unique_ptr<protobuf::HandshakeInitMessage>);

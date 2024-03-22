@@ -5,12 +5,12 @@
 
 namespace click { namespace protobuf {
 
-    class MessageFactory {
+    class CLICK_EXPORT MessageFactory {
 
         public:
-            CLICK_EXPORT static ControlMessage createControlMessage();
-            CLICK_EXPORT static HandshakeInitMessage createHandshakeInitMessage();
-            CLICK_EXPORT static SensorRequestMessage createSensorRequestMessage();
+            static ControlMessage createControlMessage();
+            static HandshakeInitMessage createHandshakeInitMessage();
+            static SensorRequestMessage createSensorRequestMessage();
     };
 
 }}

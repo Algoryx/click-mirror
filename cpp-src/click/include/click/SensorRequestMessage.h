@@ -19,13 +19,13 @@ namespace click
 
   class SensorRequestMessageBuilder;
 
-  class SensorRequestMessage : public Message
+  class CLICK_EXPORT SensorRequestMessage : public Message
   {
   public:
-    CLICK_EXPORT MessageType messageType() const;
-    CLICK_EXPORT std::string debugString() const;
+    MessageType messageType() const;
+    std::string debugString() const;
 
-    CLICK_EXPORT ~SensorRequestMessage();
+    ~SensorRequestMessage();
 
   private:
     SensorRequestMessage(std::unique_ptr<protobuf::SensorRequestMessage>);
