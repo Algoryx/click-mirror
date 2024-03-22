@@ -51,7 +51,6 @@ namespace click
      * \return a Vector of torques
      */
     std::vector<double> torques(const std::string& objectname) const;
-    // TODO: Must implement hasControlEvent, will throw exception if missing!
     /**
      * Get controlEvent for the control controlname in object objectname
      *

@@ -25,7 +25,7 @@ Prerequisites: AGX and agxBrick
 # Latest version
 pip install agxclick -U
 # Specific version
-pip install agxclick==0.3.0
+pip install agxclick==0.3.1
 ```
 
 ## Usage Examples

@@ -14,7 +14,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-// TODO: Implement this fully, only build() supported yet
+
 SCENARIO("handshake serialization", "[click]")
 {
     GIVEN("A handshake message")
