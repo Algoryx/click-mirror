@@ -118,6 +118,7 @@
         "forward_list": "cpp",
         "numbers": "cpp",
         "span": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "__memory": "cpp"
     }
 }

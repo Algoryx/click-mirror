@@ -92,6 +92,14 @@ SCENARIO("message declarations")
             {
                 assertEqual(ValueType::AngularAcceleration, protobuf::AngularAcceleration);
             }
+            THEN("DirectionalVelocity")
+            {
+                assertEqual(ValueType::DirectionalVelocity, protobuf::DirectionalVelocity);
+            }
+            THEN("DirectionalAngularVelocity")
+            {
+                assertEqual(ValueType::DirectionalAngularVelocity, protobuf::DirectionalAngularVelocity);
+            }
             THEN("Multiple")
             {
                 assertEqual(ValueType::Multiple, protobuf::Multiple);

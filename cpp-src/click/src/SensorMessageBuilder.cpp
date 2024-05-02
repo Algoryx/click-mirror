@@ -125,7 +125,21 @@ AddSensorBuilder *click::SensorMessageBuilderImpl::withAngularAcceleration(const
     return this;
 }
 
-AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngularVelocities(const vector<double>& angles)
+AddSensorBuilder *click::SensorMessageBuilderImpl::withDirectionalVelocity(const Vec3 &vec3)
+{
+    auto sensor = m_curr_sensor->add_sensor();
+    sensor->mutable_directionalvelocity()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
+AddSensorBuilder *click::SensorMessageBuilderImpl::withDirectionalAngularVelocity(const Vec3 &vec3)
+{
+    auto sensor = m_curr_sensor->add_sensor();
+    sensor->mutable_directionalangularvelocity()->mutable_arr()->Assign(vec3.begin(), vec3.end());
+    return this;
+}
+
+AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngularVelocities(const vector<double> &angles)
 {
     m_curr_object->mutable_anglevelocitysensors()->Assign(angles.begin(), angles.end());
     return this;

@@ -13,17 +13,19 @@ enum MessageType {
 }
 
 enum ValueType {
-  Angle = 0;               // radians
-  AngleVelocity = 1;       // radians/sec
-  Torque = 2;              // Nm
-  Position = 3;            // meters vec3
-  RPY = 4;                 // radians vec3
-  Activated = 5;           // True/False
-  Acceleration = 6;        // m/s2   vec3
-  Force = 7;               // Newton vec3
-  DirectionalTorque = 8;   // Nm     vec3
-  AngularAcceleration = 9; // rad/s2 vec3
-  Multiple = 15;           // Multiple ValueType:s
+  Angle = 0;                       // radians
+  AngleVelocity = 1;               // radians/sec
+  Torque = 2;                      // Nm
+  Position = 3;                    // meters vec3
+  RPY = 4;                         // radians vec3
+  Activated = 5;                   // True/False
+  Acceleration = 6;                // m/s2   vec3
+  Force = 7;                       // Newton vec3
+  DirectionalTorque = 8;           // Nm     vec3
+  AngularAcceleration = 9;         // rad/s2 vec3
+  DirectionalVelocity = 10;        // m/s    vec3
+  DirectionalAngularVelocity = 11; // rad/s2 vec3
+  Multiple = 15;                   // Multiple ValueType:s
 }
 
 message Message {
@@ -64,8 +66,8 @@ message SensorRequestMessage {
       - jointSensors: Angle, Velocity, Torque
       - controlEvents:
         - gripper -> Activated
-      - Sensors: 
-        - external --> 
+      - Sensors:
+        - external -->
           - Sensors: Force, AngularAcceleration
   - panda_tool
     ...
@@ -81,7 +83,7 @@ message HandshakeMessage {
   message Sensors {
     repeated ValueType types = 1;
   }
-    
+
   message Object {
     repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
     repeated ValueType controlTypesInOrder = 8;   // The controlTypes of each control in controlsInorder in the same order
@@ -97,7 +99,7 @@ message HandshakeMessage {
   message SimulationSettings {
     double timeStep = 1;                       // Timestep of the simulation
   };
-  
+
   ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques. Deprecated - use controlTypesInOrder
   map<string, Object> objects = 4;            // Key is name of object/robot
   SimulationSettings simSettings = 5;
@@ -115,9 +117,9 @@ message HandshakeMessage {
 */
 
 message ControlMessage {
-  MessageType messageType = 1;  
+  MessageType messageType = 1;
 
-  message Object { 
+  message Object {
     // - not clear by spec that is mutually exclusive
     // - needs controlEvent type anyway probably(?)
     // + can copy vectors more effectively, ie together with extend instead of individually
@@ -163,7 +165,7 @@ message SensorMessage {
   message Vec3 {
     repeated double arr = 1;
   }
-  
+
   // This is 1 byte longer than Vec3
   // message XYZ {
   //   double x = 1;
@@ -183,13 +185,15 @@ message SensorMessage {
       Vec3 force = 8;
       Vec3 directionalTorque = 9;
       Vec3 angularAcceleration = 10;
+      Vec3 directionalVelocity = 12;
+      Vec3 directionalAngularVelocity = 13;
     }
   };
 
   message Sensors {
     repeated Sensor sensor = 1;
   }
-  
+
   message Object {
     // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
     repeated double angleSensors = 1;

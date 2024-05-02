@@ -111,6 +111,14 @@ std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const s
       target->value.torque = sensor.torque();
       target->type = click::ValueType::Torque;
     }
+    else if (sensor.has_directionalvelocity()) {
+      copy_n(sensor.directionalvelocity(), target->value.directionalVelocity);
+      target->type = click::ValueType::DirectionalVelocity;
+    }
+    else if (sensor.has_directionalangularvelocity()) {
+      copy_n(sensor.directionalangularvelocity(), target->value.directionalAngularVelocity);
+      target->type = click::ValueType::DirectionalAngularVelocity;
+    }
     else
       throw std::runtime_error("Return not implemented for " + sensor.DebugString());
     target++;
