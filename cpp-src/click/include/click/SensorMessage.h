@@ -26,6 +26,8 @@ namespace click
       Vec3 force;
       Vec3 directionalTorque;
       Vec3 angularAcceleration;
+      Vec3 directionalVelocity;
+      Vec3 directionalAngularVelocity;
     };
 
   struct Sensor {

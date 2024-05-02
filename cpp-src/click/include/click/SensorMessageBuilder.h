@@ -55,6 +55,8 @@ namespace click
         virtual AddSensorBuilder* withForce(const Vec3& vec3) = 0;
         virtual AddSensorBuilder* withDirectionalTorque(const Vec3& vec3) = 0;
         virtual AddSensorBuilder* withAngularAcceleration(const Vec3& vec3) = 0;
+        virtual AddSensorBuilder* withDirectionalVelocity(const Vec3& vec3) = 0;
+        virtual AddSensorBuilder* withDirectionalAngularVelocity(const Vec3& vec3) = 0;
         virtual std::unique_ptr<SensorMessage> build() = 0;
         virtual AddSensorValuesBuilder* object(const std::string& name) = 0;
     };
@@ -81,6 +83,8 @@ namespace click
         virtual AddSensorBuilder* withForce(const Vec3& vec3);
         virtual AddSensorBuilder* withDirectionalTorque(const Vec3& vec3);
         virtual AddSensorBuilder* withAngularAcceleration(const Vec3& vec3);
+        virtual AddSensorBuilder* withDirectionalVelocity(const Vec3& vec3);
+        virtual AddSensorBuilder* withDirectionalAngularVelocity(const Vec3& vec3);
         virtual std::unique_ptr<SensorMessage> build();
         virtual ~SensorMessageBuilderImpl();
         /**
