@@ -74,6 +74,10 @@ objects {
   value {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Torque
+    jointSensorsInOrder: "joint1"
+    jointSensorsInOrder: "joint2"
     jointSensors: Angle
     jointSensors: AngleVelocity
     jointSensors: Torque
@@ -89,10 +93,6 @@ objects {
       }
     }
     objectSensors: Position
-    jointSensorsInOrder: "joint1"
-    jointSensorsInOrder: "joint2"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: Torque
   }
 }
 """
@@ -131,8 +131,8 @@ def test_that_ControlMessage_serializes():
 objects {
   key: "robot1"
   value {
-    angles: 1.0
-    angles: 2.0
+    angles: 1
+    angles: 2
     controlEvents {
       key: "gripper"
       value: true
@@ -190,50 +190,50 @@ def test_that_SensorMessage_serializes():
     print(str(message))
     assert str(message) == """messageType: SensorMessageType
 objects {
-  key: "box"
-  value {
-    objectSensors {
-      position {
-        arr: 1.0
-        arr: 2.0
-        arr: 3.0
-      }
-    }
-    objectSensors {
-      rpy {
-        arr: 4.0
-        arr: 5.0
-        arr: 6.0
-      }
-    }
-  }
-}
-objects {
   key: "robot1"
   value {
-    angleSensors: 1.0
+    angleSensors: 1
     angleSensors: 1.1
-    angleVelocitySensors: 2.0
+    angleVelocitySensors: 2
     angleVelocitySensors: 2.1
-    torqueSensors: 3.0
+    torqueSensors: 3
     torqueSensors: 3.1
     sensors {
       key: "external_1"
       value {
         sensor {
           force {
-            arr: 4.0
+            arr: 4
             arr: 4.1
             arr: 4.2
           }
         }
         sensor {
           angularAcceleration {
-            arr: 5.0
+            arr: 5
             arr: 5.1
             arr: 5.2
           }
         }
+      }
+    }
+  }
+}
+objects {
+  key: "box"
+  value {
+    objectSensors {
+      position {
+        arr: 1
+        arr: 2
+        arr: 3
+      }
+    }
+    objectSensors {
+      rpy {
+        arr: 4
+        arr: 5
+        arr: 6
       }
     }
   }

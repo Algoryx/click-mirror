@@ -127,13 +127,6 @@ objects {
     controlsInOrder: "joint5"
     controlsInOrder: "joint6"
     controlsInOrder: "joint7"
-    jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Force
-    controlEvents {
-      key: "gripper"
-      value: Activated
-    }
     jointSensorsInOrder: "joint1"
     jointSensorsInOrder: "joint2"
     jointSensorsInOrder: "joint3"
@@ -141,6 +134,13 @@ objects {
     jointSensorsInOrder: "joint5"
     jointSensorsInOrder: "joint6"
     jointSensorsInOrder: "joint7"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Force
+    controlEvents {
+      key: "gripper"
+      value: Activated
+    }
   }
 }
 """
@@ -149,13 +149,13 @@ control_facit = """messageType: ControlMessageType
 objects {
   key: "robot1"
   value {
-    angleVelocities: 1.0
-    angleVelocities: 2.0
-    angleVelocities: 3.0
-    angleVelocities: 4.0
-    angleVelocities: 5.0
-    angleVelocities: 6.0
-    angleVelocities: 7.0
+    angleVelocities: 1
+    angleVelocities: 2
+    angleVelocities: 3
+    angleVelocities: 4
+    angleVelocities: 5
+    angleVelocities: 6
+    angleVelocities: 7
     controlEvents {
       key: "gripper"
       value: true
@@ -166,41 +166,41 @@ objects {
 
 sensor_facit = """messageType: SensorMessageType
 objects {
+  key: "robot1"
+  value {
+    angleSensors: 0
+    angleSensors: 1
+    angleSensors: 2
+    angleSensors: 3
+    angleSensors: 4
+    angleSensors: 5
+    angleSensors: 6
+    angleVelocitySensors: 0
+    angleVelocitySensors: 1
+    angleVelocitySensors: 2
+    angleVelocitySensors: 3
+    angleVelocitySensors: 4
+    angleVelocitySensors: 5
+    angleVelocitySensors: 6
+    torqueSensors: 0
+    torqueSensors: 1
+    torqueSensors: 2
+    torqueSensors: 3
+    torqueSensors: 4
+    torqueSensors: 5
+    torqueSensors: 6
+  }
+}
+objects {
   key: "box"
   value {
     objectSensors {
       rpy {
-        arr: 1.0
-        arr: 2.0
-        arr: 3.0
+        arr: 1
+        arr: 2
+        arr: 3
       }
     }
-  }
-}
-objects {
-  key: "robot1"
-  value {
-    angleSensors: 0.0
-    angleSensors: 1.0
-    angleSensors: 2.0
-    angleSensors: 3.0
-    angleSensors: 4.0
-    angleSensors: 5.0
-    angleSensors: 6.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 1.0
-    angleVelocitySensors: 2.0
-    angleVelocitySensors: 3.0
-    angleVelocitySensors: 4.0
-    angleVelocitySensors: 5.0
-    angleVelocitySensors: 6.0
-    torqueSensors: 0.0
-    torqueSensors: 1.0
-    torqueSensors: 2.0
-    torqueSensors: 3.0
-    torqueSensors: 4.0
-    torqueSensors: 5.0
-    torqueSensors: 6.0
   }
 }
 """
