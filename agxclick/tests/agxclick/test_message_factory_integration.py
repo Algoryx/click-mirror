@@ -226,30 +226,14 @@ class Test_sensor_message_from_objects:
 _handshake_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION
 objects {
-  key: "robot1"
-  value {
-    controlsInOrder: "robot1_joint0"
-    controlsInOrder: "robot1_joint1"
-    jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Torque
-    controlEvents {
-      key: "gripper"
-      value: Activated
-    }
-    objectSensors: Position
-    objectSensors: RPY
-    jointSensorsInOrder: "robot1_joint0"
-    jointSensorsInOrder: "robot1_joint1"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: Angle
-  }
-}
-objects {
   key: "robot2"
   value {
     controlsInOrder: "robot2_joint0"
     controlsInOrder: "robot2_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Angle
+    jointSensorsInOrder: "robot2_joint0"
+    jointSensorsInOrder: "robot2_joint1"
     jointSensors: Angle
     jointSensors: AngleVelocity
     jointSensors: Torque
@@ -259,10 +243,26 @@ objects {
     }
     objectSensors: Position
     objectSensors: RPY
-    jointSensorsInOrder: "robot2_joint0"
-    jointSensorsInOrder: "robot2_joint1"
+  }
+}
+objects {
+  key: "robot1"
+  value {
+    controlsInOrder: "robot1_joint0"
+    controlsInOrder: "robot1_joint1"
     controlTypesInOrder: Angle
     controlTypesInOrder: Angle
+    jointSensorsInOrder: "robot1_joint0"
+    jointSensorsInOrder: "robot1_joint1"
+    jointSensors: Angle
+    jointSensors: AngleVelocity
+    jointSensors: Torque
+    controlEvents {
+      key: "gripper"
+      value: Activated
+    }
+    objectSensors: Position
+    objectSensors: RPY
   }
 }
 simSettings {
@@ -273,14 +273,39 @@ simSettings {
 
 _sensor_facit = """messageType: SensorMessageType
 objects {
+  key: "robot2"
+  value {
+    angleSensors: 0
+    angleSensors: 0
+    angleVelocitySensors: 0
+    angleVelocitySensors: 0
+    torqueSensors: 0
+    torqueSensors: 0
+    objectSensors {
+      position {
+        arr: 0
+        arr: -0.45
+        arr: 0.45
+      }
+    }
+    objectSensors {
+      rpy {
+        arr: 0
+        arr: 0
+        arr: -0.75
+      }
+    }
+  }
+}
+objects {
   key: "robot1"
   value {
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
+    angleSensors: 0
+    angleSensors: 0
+    angleVelocitySensors: 0
+    angleVelocitySensors: 0
+    torqueSensors: 0
+    torqueSensors: 0
     objectSensors {
       position {
         arr: -0.25
@@ -290,40 +315,15 @@ objects {
     }
     objectSensors {
       rpy {
-        arr: 0.0
-        arr: 0.0
+        arr: 0
+        arr: 0
         arr: 2.35
       }
     }
   }
 }
-objects {
-  key: "robot2"
-  value {
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
-    objectSensors {
-      position {
-        arr: 0.0
-        arr: -0.45
-        arr: 0.45
-      }
-    }
-    objectSensors {
-      rpy {
-        arr: 0.0
-        arr: 0.0
-        arr: -0.75
-      }
-    }
-  }
-}
 simVars {
-  simulatedTime: 1.0
+  simulatedTime: 1
 }
 """
 
@@ -331,34 +331,34 @@ _drive_train_facit = """messageType: SensorMessageType
 objects {
   key: "robot"
   value {
-    angleSensors: 0.0
-    angleSensors: 0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
-    torqueSensors: 0.0
-    torqueSensors: 0.0
+    angleSensors: 0
+    angleSensors: 0
+    angleVelocitySensors: 0
+    angleVelocitySensors: 0
+    torqueSensors: 0
+    torqueSensors: 0
     objectSensors {
       position {
-        arr: 0.0
-        arr: 0.0
-        arr: 0.0
+        arr: 0
+        arr: 0
+        arr: 0
       }
     }
     objectSensors {
       rpy {
-        arr: 0.0
-        arr: 0.0
-        arr: 0.0
+        arr: 0
+        arr: 0
+        arr: 0
       }
     }
     sensors {
-      key: "engineAngle"
+      key: "engineVelocity"
       value {
         sensor {
-          angle: 0.0
+          angleVelocity: 0
         }
         sensor {
-          angle: 0.0
+          angleVelocity: 0
         }
       }
     }
@@ -366,28 +366,28 @@ objects {
       key: "engineTorque"
       value {
         sensor {
-          torque: 0.0
+          torque: 0
         }
         sensor {
-          torque: 0.0
+          torque: 0
         }
       }
     }
     sensors {
-      key: "engineVelocity"
+      key: "engineAngle"
       value {
         sensor {
-          angleVelocity: 0.0
+          angle: 0
         }
         sensor {
-          angleVelocity: 0.0
+          angle: 0
         }
       }
     }
   }
 }
 simVars {
-  simulatedTime: 1.0
+  simulatedTime: 1
 }
 """
 
