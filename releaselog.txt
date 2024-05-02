@@ -1,5 +1,6 @@
 0.3.2
 - Bump Python protobuf to 5.26.1
+- Add support for DirectionalVelocity and DirectionalAngularVelocity
 
 0.3.1
 - Introduce ControlMessage::hasControlEvent
