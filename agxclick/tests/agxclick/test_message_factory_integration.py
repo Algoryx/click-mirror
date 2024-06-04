@@ -17,8 +17,8 @@ def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=
         controltype = MessageFactory.to_click_control_type(robot.controlType())
         if controltype == ValueType.Angle:
             control.angles.extend([x * 1.0 for x in range(1, robot.num_joints + 1)])
-        elif controltype == ValueType.AngleVelocity:
-            control.angleVelocities.extend([x * 2.0 for x in range(1, robot.num_joints + 1)])
+        elif controltype == ValueType.AngularVelocity:
+            control.angularVelocities.extend([x * 2.0 for x in range(1, robot.num_joints + 1)])
         elif controltype == ValueType.Torque:
             control.torques.extend([x * 3.0 for x in range(1, robot.num_joints + 1)])
         else:
@@ -68,7 +68,7 @@ class Test_handshake_message_from_objects:
     def test_that_generating_handshake_creates_correct_handshake_velocity_input(self, scene_velocityinput):
         robots = find_robots_in_scene(scene_velocityinput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        assert message.controlType == ValueType.AngleVelocity
+        assert message.controlType == ValueType.AngularVelocity
 
     def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_forceinput):
         robots = find_robots_in_scene(scene_forceinput)
@@ -79,7 +79,7 @@ class Test_handshake_message_from_objects:
         robots = find_robots_in_scene(scene_position_velocity_force_input)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.objects["robot1"].controlTypesInOrder[0] == ValueType.Angle
-        assert message.objects["robot1"].controlTypesInOrder[1] == ValueType.AngleVelocity
+        assert message.objects["robot1"].controlTypesInOrder[1] == ValueType.AngularVelocity
         assert message.objects["robot2"].controlTypesInOrder[0] == ValueType.Angle
         assert message.objects["robot2"].controlTypesInOrder[1] == ValueType.Torque
 
@@ -220,7 +220,7 @@ class Test_sensor_message_from_objects:
 
         assert message.objects["robot"].sensors["engineAngle"].sensor[0].angle == 0.0
         assert message.objects["robot"].sensors["engineTorque"].sensor[0].torque == 0.0
-        assert message.objects["robot"].sensors["engineVelocity"].sensor[0].angleVelocity == 0.0
+        assert message.objects["robot"].sensors["engineVelocity"].sensor[0].angularVelocity == 0.0
 
 
 _handshake_facit = """messageType: HandshakeMessageType
@@ -235,7 +235,7 @@ objects {
     jointSensorsInOrder: "robot2_joint0"
     jointSensorsInOrder: "robot2_joint1"
     jointSensors: Angle
-    jointSensors: AngleVelocity
+    jointSensors: AngularVelocity
     jointSensors: Torque
     controlEvents {
       key: "gripper"
@@ -255,7 +255,7 @@ objects {
     jointSensorsInOrder: "robot1_joint0"
     jointSensorsInOrder: "robot1_joint1"
     jointSensors: Angle
-    jointSensors: AngleVelocity
+    jointSensors: AngularVelocity
     jointSensors: Torque
     controlEvents {
       key: "gripper"
@@ -277,8 +277,8 @@ objects {
   value {
     angleSensors: 0
     angleSensors: 0
-    angleVelocitySensors: 0
-    angleVelocitySensors: 0
+    angularVelocitySensors: 0
+    angularVelocitySensors: 0
     torqueSensors: 0
     torqueSensors: 0
     objectSensors {
@@ -302,8 +302,8 @@ objects {
   value {
     angleSensors: 0
     angleSensors: 0
-    angleVelocitySensors: 0
-    angleVelocitySensors: 0
+    angularVelocitySensors: 0
+    angularVelocitySensors: 0
     torqueSensors: 0
     torqueSensors: 0
     objectSensors {
@@ -333,8 +333,8 @@ objects {
   value {
     angleSensors: 0
     angleSensors: 0
-    angleVelocitySensors: 0
-    angleVelocitySensors: 0
+    angularVelocitySensors: 0
+    angularVelocitySensors: 0
     torqueSensors: 0
     torqueSensors: 0
     objectSensors {
@@ -355,10 +355,10 @@ objects {
       key: "engineVelocity"
       value {
         sensor {
-          angleVelocity: 0
+          angularVelocity: 0
         }
         sensor {
-          angleVelocity: 0
+          angularVelocity: 0
         }
       }
     }

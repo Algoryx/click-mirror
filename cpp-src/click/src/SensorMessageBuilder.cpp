@@ -141,7 +141,7 @@ AddSensorBuilder *click::SensorMessageBuilderImpl::withAngularVelocity3d(const V
 
 AddSensorValuesBuilder *SensorMessageBuilderImpl::withAngularVelocities(const vector<double> &angles)
 {
-    m_curr_object->mutable_anglevelocitysensors()->Assign(angles.begin(), angles.end());
+    m_curr_object->mutable_angularvelocitysensors()->Assign(angles.begin(), angles.end());
     return this;
 }
 

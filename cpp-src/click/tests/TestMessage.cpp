@@ -56,7 +56,7 @@ SCENARIO("message declarations")
             {
                 assertEqual(ValueType::Angle, protobuf::Angle);
             }
-            THEN("AngleVelocity1D")
+            THEN("AngularVelocity1D")
             {
                 assertEqual(ValueType::AngularVelocity1D, protobuf::AngularVelocity1D);
             }

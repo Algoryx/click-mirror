@@ -127,7 +127,7 @@ message ControlMessage {
     // + fewer bytes in message
     // NOTE: Next four repeats are mutually exclusive!
     repeated double angles = 1;            // Present in every ControlMessage. Deprecated - use values.
-    repeated double angleVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
+    repeated double angularVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
     repeated double torques = 3;           // Present in every ControlMessage. Deprecated - use values.
     repeated double values = 5;            // Present in every ControlMessage. Must be correct type according to handshake.
     map<string, bool> controlEvents = 4;   // Optionals, if missing, keep same value as before
@@ -141,7 +141,7 @@ SensorMessage example:
 
 - panda_2
   - angleSensors [1,2,3,4] size = #joints
-  - angleVelocitySensors ...
+  - angularVelocitySensors ...
   - torqueSensors ...
   ...
 
@@ -199,7 +199,7 @@ message SensorMessage {
   message Object {
     // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
     repeated double angleSensors = 1;
-    repeated double angleVelocitySensors = 2;
+    repeated double angularVelocitySensors = 2;
     repeated double torqueSensors = 3;
     repeated Vec3 forceSensors = 5;
     // Sensors on the object, order of ValueType defined in handshake.

@@ -18,7 +18,7 @@ std::vector<double> SensorMessage::angles(const std::string& objectname) const
 
 std::vector<double> SensorMessage::angularVelocities(const std::string& objectname) const
 {
-  auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
+  auto vec = this->sensorMess->objects().at(objectname).angularvelocitysensors();
   return std::vector<double>(vec.begin(), vec.end());
 }
 

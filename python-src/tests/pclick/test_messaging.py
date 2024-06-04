@@ -163,7 +163,7 @@ def sensor_message():
     robot = sensor_m.objects["robot1"]
 
     robot.angleSensors.extend([1.0, 1.1])
-    robot.angleVelocitySensors.extend([2.0, 2.1])
+    robot.angularVelocitySensors.extend([2.0, 2.1])
     robot.torqueSensors.extend([3.0, 3.1])
     # robot.sensors["external_1"].sensor.extend([[4.0, 4.1, 4.2], [5.1, 5.2, 5.3]])
     val = robot.sensors["external_1"].sensor.add()
@@ -194,8 +194,8 @@ objects {
   value {
     angleSensors: 1
     angleSensors: 1.1
-    angleVelocitySensors: 2
-    angleVelocitySensors: 2.1
+    angularVelocitySensors: 2
+    angularVelocitySensors: 2.1
     torqueSensors: 3
     torqueSensors: 3.1
     sensors {

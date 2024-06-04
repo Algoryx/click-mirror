@@ -14,7 +14,7 @@ class ClickRobot():
     # Number of input signals == number of output signals
     num_motors = 0
     name = None
-    control = ValueType.AngleVelocity
+    control = ValueType.AngularVelocity
     jointnames: List[str] = []
     grippername: str = ""
 
@@ -42,9 +42,9 @@ def test_create_handshake_from_robot():
         if len(robot.angle_sensors) > 0:
             jointsensors.append(ValueType.Angle)
         if len(robot.velocity_sensors) > 0:
-            jointsensors.append(ValueType.AngleVelocity)
+            jointsensors.append(ValueType.AngularVelocity)
         if len(robot.torque_sensors) > 0:
-            jointsensors.append(ValueType.Force)
+            jointsensors.append(ValueType.Force3D)
         object.jointSensors.extend(jointsensors)
         object.controlEvents[robot.grippername] = ValueType.Activated
     assert len(handshake.SerializeToString()) == 150
@@ -57,8 +57,8 @@ def create_control_fake_for(robots: List[ClickRobot]):
         control = control_m.objects[robot.name]
         if robot.control == ValueType.Angle:
             control.angles.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
-        elif robot.control == ValueType.AngleVelocity:
-            control.angleVelocities.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
+        elif robot.control == ValueType.AngularVelocity:
+            control.angularVelocities.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
         else:
             control.torques.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
         control.controlEvents[robot.grippername] = True
@@ -80,8 +80,8 @@ def test_update_robots_from_controlmessage():
         control = control_m.objects[robot.name]
         if robot.control == ValueType.Angle:
             set_from(robot.input_signals, control.angles)
-        elif robot.control == ValueType.AngleVelocity:
-            set_from(robot.input_signals, control.angleVelocities)
+        elif robot.control == ValueType.AngularVelocity:
+            set_from(robot.input_signals, control.angularVelocities)
         else:
             set_from(robot.input_signals, control.torques)
         robot.suction_cup_signal = control.controlEvents[robot.grippername]
@@ -93,7 +93,7 @@ def test_create_SensorMessage_from_robots():
     for robot in robots:
         sensors = sensor_m.objects[robot.name]
         sensors.angleSensors.extend(robot.angle_sensors)
-        sensors.angleVelocitySensors.extend(robot.velocity_sensors)
+        sensors.angularVelocitySensors.extend(robot.velocity_sensors)
         sensors.torqueSensors.extend(robot.torque_sensors)
 
     box = {
@@ -116,7 +116,7 @@ def test_create_SensorMessage_from_robots():
 
 handshake_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION
-controlType: AngleVelocity
+controlType: AngularVelocity
 objects {
   key: "robot1"
   value {
@@ -135,8 +135,8 @@ objects {
     jointSensorsInOrder: "joint6"
     jointSensorsInOrder: "joint7"
     jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Force
+    jointSensors: AngularVelocity
+    jointSensors: Force3D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -149,13 +149,13 @@ control_facit = """messageType: ControlMessageType
 objects {
   key: "robot1"
   value {
-    angleVelocities: 1
-    angleVelocities: 2
-    angleVelocities: 3
-    angleVelocities: 4
-    angleVelocities: 5
-    angleVelocities: 6
-    angleVelocities: 7
+    angularVelocities: 1
+    angularVelocities: 2
+    angularVelocities: 3
+    angularVelocities: 4
+    angularVelocities: 5
+    angularVelocities: 6
+    angularVelocities: 7
     controlEvents {
       key: "gripper"
       value: true
@@ -175,13 +175,13 @@ objects {
     angleSensors: 4
     angleSensors: 5
     angleSensors: 6
-    angleVelocitySensors: 0
-    angleVelocitySensors: 1
-    angleVelocitySensors: 2
-    angleVelocitySensors: 3
-    angleVelocitySensors: 4
-    angleVelocitySensors: 5
-    angleVelocitySensors: 6
+    angularVelocitySensors: 0
+    angularVelocitySensors: 1
+    angularVelocitySensors: 2
+    angularVelocitySensors: 3
+    angularVelocitySensors: 4
+    angularVelocitySensors: 5
+    angularVelocitySensors: 6
     torqueSensors: 0
     torqueSensors: 1
     torqueSensors: 2

@@ -27,8 +27,8 @@ std::vector<double> ControlMessage::values(const std::string& objectname) const 
   return std::vector<double>(arr.begin(), arr.end());
 }
 
-std::vector<double> ControlMessage::angleVelocities(const std::string& objectname) const {
-  google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).anglevelocities();
+std::vector<double> ControlMessage::angularVelocities(const std::string& objectname) const {
+  google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).angularvelocities();
   return std::vector<double>(arr.begin(), arr.end());
 }
 

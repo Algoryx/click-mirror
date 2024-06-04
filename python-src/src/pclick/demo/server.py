@@ -64,16 +64,16 @@ def main():
 
 def handshake_message():
     handshake = MessageFactory.create_handshake()
-    handshake.controlType = ValueType.Force
+    handshake.controlType = ValueType.Force3D
     object = handshake.objects["robot"]
 
     object.controlsInOrder.extend(["joint1", "joint2"])
     object.controlTypesInOrder.extend([ValueType.Angle, ValueType.Angle])
     object.jointSensorsInOrder.extend(["joint1", "joint2"])
     object.controlEvents["gripper"] = ValueType.Activated
-    object.jointSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.jointSensors.extend([ValueType.Angle, ValueType.AngularVelocity1D, ValueType.Torque1D])
     object.objectSensors.append(ValueType.Position)
-    object.sensors["external_1"].types.extend([ValueType.Force, ValueType.AngularAcceleration])
+    object.sensors["external_1"].types.extend([ValueType.Force3D, ValueType.AngularAcceleration3D])
     return handshake
 
 
@@ -83,7 +83,7 @@ def sensor_message():
 
     size = 2
     robot.angleSensors.extend([1.0] * size)
-    robot.angleVelocitySensors.extend([2.0] * size)
+    robot.angularVelocitySensors.extend([2.0] * size)
     robot.torqueSensors.extend([3.0] * size)
 
     box = sensor_m.objects["box"]
@@ -92,9 +92,9 @@ def sensor_message():
     sensor = box.objectSensors.add()
     sensor.rpy.arr.extend([4.0, 5.0, 6.0])
     val = robot.sensors["external_1"].sensor.add()
-    val.force.arr.extend([4.0, 4.1, 4.2])
+    val.force3d.arr.extend([4.0, 4.1, 4.2])
     val = robot.sensors["external_1"].sensor.add()
-    val.angularAcceleration.arr.extend([5.0, 5.1, 5.2])
+    val.angularAcceleration3d.arr.extend([5.0, 5.1, 5.2])
 
     return sensor_m
 

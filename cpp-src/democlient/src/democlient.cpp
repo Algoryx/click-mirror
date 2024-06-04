@@ -15,7 +15,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
 }
 
 inline vector<double> angles = double_vector_from({1, 2});
-inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
+inline vector<double> angularVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
 std::chrono::microseconds recv_total;
