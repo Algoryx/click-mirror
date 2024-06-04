@@ -28,7 +28,7 @@ def test_understanding_of_protoc_classes():
     assert str(type(hobject)) == "<class 'Messaging_pb2.Object'>"
 
     # Enum values are int, not the enum
-    assert type(ValueType.Torque) == int
+    assert type(ValueType.Torque1D) == int
 
 
 def test_that_Handshake_init_serializes():
@@ -65,7 +65,7 @@ def test_that_Handshake_props_are_set():
     assert message.controlType == ValueType.Multiple
     assert message.objects["robot"].controlsInOrder[1] == "joint2"
     assert message.objects["robot"].jointSensors[0] is ValueType.Angle
-    assert message.objects["robot"].jointSensors[2] is ValueType.Torque
+    assert message.objects["robot"].jointSensors[2] is ValueType.Torque1D
     assert str(message) == """messageType: HandshakeMessageType
 version: CURRENT_VERSION
 controlType: Multiple
@@ -75,12 +75,12 @@ objects {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
     controlTypesInOrder: Angle
-    controlTypesInOrder: Torque
+    controlTypesInOrder: Torque1D
     jointSensorsInOrder: "joint1"
     jointSensorsInOrder: "joint2"
     jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Torque
+    jointSensors: AngularVelocity1D
+    jointSensors: Torque1D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -88,8 +88,8 @@ objects {
     sensors {
       key: "external_1"
       value {
-        types: Force
-        types: AngularAcceleration
+        types: Force3D
+        types: AngularAcceleration3D
       }
     }
     objectSensors: Position
@@ -105,10 +105,10 @@ def handshake_message():
 
     object.controlsInOrder.extend(["joint1", "joint2"])
     object.jointSensorsInOrder.extend(["joint1", "joint2"])
-    object.controlTypesInOrder.extend([ValueType.Angle, ValueType.Torque])
+    object.controlTypesInOrder.extend([ValueType.Angle, ValueType.Torque1D])
     object.controlEvents["gripper"] = ValueType.Activated
-    object.sensors["external_1"].types.extend([ValueType.Force, ValueType.AngularAcceleration])
-    object.jointSensors.extend([ValueType.Angle, ValueType.AngleVelocity, ValueType.Torque])
+    object.sensors["external_1"].types.extend([ValueType.Force3D, ValueType.AngularAcceleration3D])
+    object.jointSensors.extend([ValueType.Angle, ValueType.AngularVelocity1D, ValueType.Torque1D])
     object.objectSensors.append(ValueType.Position)
     return handshake
 
@@ -167,9 +167,9 @@ def sensor_message():
     robot.torqueSensors.extend([3.0, 3.1])
     # robot.sensors["external_1"].sensor.extend([[4.0, 4.1, 4.2], [5.1, 5.2, 5.3]])
     val = robot.sensors["external_1"].sensor.add()
-    val.force.arr.extend([4.0, 4.1, 4.2])
+    val.force3d.arr.extend([4.0, 4.1, 4.2])
     val = robot.sensors["external_1"].sensor.add()
-    val.angularAcceleration.arr.extend([5.0, 5.1, 5.2])
+    val.angularAcceleration3d.arr.extend([5.0, 5.1, 5.2])
 
     box = sensor_m.objects["box"]
     sensor = box.objectSensors.add()
@@ -202,14 +202,14 @@ objects {
       key: "external_1"
       value {
         sensor {
-          force {
+          force3d {
             arr: 4
             arr: 4.1
             arr: 4.2
           }
         }
         sensor {
-          angularAcceleration {
+          angularAcceleration3d {
             arr: 5
             arr: 5.1
             arr: 5.2
