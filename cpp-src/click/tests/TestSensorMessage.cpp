@@ -44,48 +44,48 @@ SCENARIO("Sensormessage serialization", "[click]")
             unique_ptr<SensorMessage> sensor_message = SensorMessageBuilderImpl::builder()
                 ->object("robot1")
                     ->withSensor("external_1")
-                        ->withAcceleration({3, 3.1, 3.2})
+                        ->withAcceleration3d({3, 3.1, 3.2})
                         ->withActivated(true)
                         ->withAngle(1.1)
-                        ->withAngularVelocity(2.2)
-                        ->withAngularAcceleration({5, 5.1, 5.2})
-                        ->withDirectionalTorque({6, 6.1, 6.2})
-                        ->withForce({4, 4.1, 4.2})
+                        ->withAngularVelocity1d(2.2)
+                        ->withAngularAcceleration3d({5, 5.1, 5.2})
+                        ->withTorque3d({6, 6.1, 6.2})
+                        ->withForce3d({4, 4.1, 4.2})
                         ->withPosition_({7, 7.1, 7.2})
                         ->withRPY_({8, 8.1, 8.2})
-                        ->withTorque(9)
-                        ->withDirectionalVelocity({10, 10.1, 10.2})
-                        ->withDirectionalAngularVelocity({11, 11.1, 11.2})
+                        ->withTorque1d(9)
+                        ->withVelocity3d({10, 10.1, 10.2})
+                        ->withAngularVelocity3d({11, 11.1, 11.2})
                 ->build();
 
             THEN("it should have values")
             {
                 REQUIRE(sensor_message->messageType() == MessageType::SensorMessageType);
                 auto sensor_vals = sensor_message->sensor("robot1", "external_1");
-                REQUIRE(sensor_vals[0].type == click::ValueType::Acceleration);
-                REQUIRE(sensor_vals[0].value.acceleration == Vec3{3, 3.1, 3.2});
+                REQUIRE(sensor_vals[0].type == click::ValueType::Acceleration3D);
+                REQUIRE(sensor_vals[0].value.acceleration3d == Vec3{3, 3.1, 3.2});
                 REQUIRE(sensor_vals[1].type == click::ValueType::Activated);
                 REQUIRE(sensor_vals[1].value.activated == true);
                 REQUIRE(sensor_vals[2].type == click::ValueType::Angle);
                 REQUIRE(sensor_vals[2].value.angle == 1.1);
-                REQUIRE(sensor_vals[3].type == click::ValueType::AngularVelocity);
-                REQUIRE(sensor_vals[3].value.angularVelocity == 2.2);
-                REQUIRE(sensor_vals[4].type == click::ValueType::AngularAcceleration);
-                REQUIRE(sensor_vals[4].value.angularAcceleration == Vec3{5, 5.1, 5.2});
-                REQUIRE(sensor_vals[5].type == click::ValueType::DirectionalTorque);
-                REQUIRE(sensor_vals[5].value.directionalTorque == Vec3{6, 6.1, 6.2});
-                REQUIRE(sensor_vals[6].type == click::ValueType::Force);
-                REQUIRE(sensor_vals[6].value.force == Vec3{4, 4.1, 4.2});
+                REQUIRE(sensor_vals[3].type == click::ValueType::AngularVelocity1D);
+                REQUIRE(sensor_vals[3].value.angularVelocity1d == 2.2);
+                REQUIRE(sensor_vals[4].type == click::ValueType::AngularAcceleration3D);
+                REQUIRE(sensor_vals[4].value.angularAcceleration3d == Vec3{5, 5.1, 5.2});
+                REQUIRE(sensor_vals[5].type == click::ValueType::Torque3D);
+                REQUIRE(sensor_vals[5].value.torque3d == Vec3{6, 6.1, 6.2});
+                REQUIRE(sensor_vals[6].type == click::ValueType::Force3D);
+                REQUIRE(sensor_vals[6].value.force3d == Vec3{4, 4.1, 4.2});
                 REQUIRE(sensor_vals[7].type == click::ValueType::Position);
                 REQUIRE(sensor_vals[7].value.position == Vec3{7, 7.1, 7.2});
                 REQUIRE(sensor_vals[8].type == click::ValueType::RPY);
                 REQUIRE(sensor_vals[8].value.rpy == Vec3{8, 8.1, 8.2});
-                REQUIRE(sensor_vals[9].type == click::ValueType::Torque);
-                REQUIRE(sensor_vals[9].value.torque == 9);
-                REQUIRE(sensor_vals[10].type == click::ValueType::DirectionalVelocity);
-                REQUIRE(sensor_vals[10].value.directionalVelocity == Vec3{10, 10.1, 10.2});
-                REQUIRE(sensor_vals[11].type == click::ValueType::DirectionalAngularVelocity);
-                REQUIRE(sensor_vals[11].value.directionalAngularVelocity == Vec3{11, 11.1, 11.2});
+                REQUIRE(sensor_vals[9].type == click::ValueType::Torque1D);
+                REQUIRE(sensor_vals[9].value.torque1d == 9);
+                REQUIRE(sensor_vals[10].type == click::ValueType::Velocity3D);
+                REQUIRE(sensor_vals[10].value.velocity3d == Vec3{10, 10.1, 10.2});
+                REQUIRE(sensor_vals[11].type == click::ValueType::AngularVelocity3D);
+                REQUIRE(sensor_vals[11].value.angularVelocity3d == Vec3{11, 11.1, 11.2});
             }
         }
         WHEN("adding a box with position and rpy")

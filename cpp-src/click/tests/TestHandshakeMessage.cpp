@@ -22,7 +22,7 @@ SCENARIO("handshake serialization", "[click]")
        WHEN("it has been constructed")
         {
             std::vector<std::string> controls_in_order = {"joint1", "joint2"};
-            std::vector<click::ValueType> control_types_in_order = {click::ValueType::Angle, click::ValueType::AngularVelocity};
+            std::vector<click::ValueType> control_types_in_order = {click::ValueType::Angle, click::ValueType::AngularVelocity1D};
             unique_ptr<HandshakeMessage> message =
                 HandshakeMessageBuilderImpl::builder()
                 ->withSimulationSettings({1.0})
@@ -55,7 +55,7 @@ objects {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
     jointSensors: Angle
-    jointSensors: AngleVelocity
+    jointSensors: AngularVelocity1D
     controlEvents {
       key: "gripper1"
       value: Activated
@@ -68,22 +68,22 @@ objects {
       key: "sensor1"
       value {
         types: Angle
-        types: AngleVelocity
+        types: AngularVelocity1D
       }
     }
     sensors {
       key: "sensor2"
       value {
         types: Angle
-        types: AngleVelocity
+        types: AngularVelocity1D
       }
     }
     objectSensors: Angle
-    objectSensors: AngleVelocity
+    objectSensors: AngularVelocity1D
     jointSensorsInOrder: "joint1"
     jointSensorsInOrder: "joint2"
     controlTypesInOrder: Angle
-    controlTypesInOrder: AngleVelocity
+    controlTypesInOrder: AngularVelocity1D
   }
 }
 objects {

@@ -119,6 +119,7 @@
         "numbers": "cpp",
         "span": "cpp",
         "typeindex": "cpp",
-        "__memory": "cpp"
+        "__memory": "cpp",
+        "format": "cpp"
     }
 }

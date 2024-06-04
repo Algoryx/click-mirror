@@ -56,13 +56,13 @@ SCENARIO("message declarations")
             {
                 assertEqual(ValueType::Angle, protobuf::Angle);
             }
-            THEN("AngleVelocity")
+            THEN("AngleVelocity1D")
             {
-                assertEqual(ValueType::AngularVelocity, protobuf::AngleVelocity);
+                assertEqual(ValueType::AngularVelocity1D, protobuf::AngularVelocity1D);
             }
-            THEN("Torque")
+            THEN("Torque1D")
             {
-                assertEqual(ValueType::Torque, protobuf::Torque);
+                assertEqual(ValueType::Torque1D, protobuf::Torque1D);
             }
             THEN("Position")
             {
@@ -76,29 +76,33 @@ SCENARIO("message declarations")
             {
                 assertEqual(ValueType::Activated, protobuf::Activated);
             }
-            THEN("Acceleration")
+            THEN("Acceleration3D")
             {
-                assertEqual(ValueType::Acceleration, protobuf::Acceleration);
+                assertEqual(ValueType::Acceleration3D, protobuf::Acceleration3D);
             }
-            THEN("Force")
+            THEN("Force1D")
             {
-                assertEqual(ValueType::Force, protobuf::Force);
+                assertEqual(ValueType::Force1D, protobuf::Force1D);
             }
-            THEN("DirectionalTorque")
+            THEN("Force3D")
             {
-                assertEqual(ValueType::DirectionalTorque, protobuf::DirectionalTorque);
+                assertEqual(ValueType::Force3D, protobuf::Force3D);
             }
-            THEN("AngularAcceleration")
+            THEN("Torque3D")
             {
-                assertEqual(ValueType::AngularAcceleration, protobuf::AngularAcceleration);
+                assertEqual(ValueType::Torque3D, protobuf::Torque3D);
             }
-            THEN("DirectionalVelocity")
+            THEN("AngularAcceleration3D")
             {
-                assertEqual(ValueType::DirectionalVelocity, protobuf::DirectionalVelocity);
+                assertEqual(ValueType::AngularAcceleration3D, protobuf::AngularAcceleration3D);
             }
-            THEN("DirectionalAngularVelocity")
+            THEN("Velocity3D")
             {
-                assertEqual(ValueType::DirectionalAngularVelocity, protobuf::DirectionalAngularVelocity);
+                assertEqual(ValueType::Velocity3D, protobuf::Velocity3D);
+            }
+            THEN("AngularVelocity3D")
+            {
+                assertEqual(ValueType::AngularVelocity3D, protobuf::AngularVelocity3D);
             }
             THEN("Multiple")
             {

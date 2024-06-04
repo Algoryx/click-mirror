@@ -50,8 +50,8 @@ SCENARIO("sensormessage serialization from file", "[click]")
             AND_THEN("robot1 should have list of external sensors")
             {
                 std::vector<Sensor> sensors = sensorMessage->sensor("robot1", "external_1");
-                REQUIRE(sensors.at(0).value.force == Vec3({4.0,4.1,4.2}));
-                REQUIRE(sensors.at(1).value.angularAcceleration == Vec3({5.0,5.1,5.2}));
+                REQUIRE(sensors.at(0).value.force3d == Vec3({4.0,4.1,4.2}));
+                REQUIRE(sensors.at(1).value.angularAcceleration3d == Vec3({5.0,5.1,5.2}));
             }
             AND_THEN("robot1 should have external sensors individually accessible")
             {
