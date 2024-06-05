@@ -92,7 +92,7 @@ class Test_handshake_message_from_objects:
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        assert ValueType.Force in message.objects["robot"].sensors["forceTorqueSensor"].types
+        assert ValueType.Force3D in message.objects["robot"].sensors["forceTorqueSensor"].types
         assert ValueType.Torque3D in message.objects["robot"].sensors["forceTorqueSensor"].types
 
     def test_that_click_box_is_included_in_handshake(self, click_scene):
@@ -210,7 +210,7 @@ class Test_sensor_message_from_objects:
 
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
 
-        assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[0].force.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[0].force3d.arr == [0, 0, 0]
         assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[1].torque3d.arr == [0, 0, 0]
 
     def test_that_drive_train_sensors_are_included_in_sensormessage(self, drive_train_scene):
@@ -236,7 +236,7 @@ objects {
     jointSensorsInOrder: "robot2_joint1"
     jointSensors: Angle
     jointSensors: AngularVelocity1D
-    jointSensors: Torque
+    jointSensors: Torque1D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -256,7 +256,7 @@ objects {
     jointSensorsInOrder: "robot1_joint1"
     jointSensors: Angle
     jointSensors: AngularVelocity1D
-    jointSensors: Torque
+    jointSensors: Torque1D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -366,10 +366,10 @@ objects {
       key: "engineTorque"
       value {
         sensor {
-          torque: 0
+          torque1d: 0
         }
         sensor {
-          torque: 0
+          torque1d: 0
         }
       }
     }

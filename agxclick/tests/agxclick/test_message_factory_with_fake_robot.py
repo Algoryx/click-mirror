@@ -116,7 +116,7 @@ def test_create_SensorMessage_from_robots():
 
 handshake_facit = """messageType: HandshakeMessageType
 version: CURRENT_VERSION
-controlType: AngularVelocity
+controlType: AngularVelocity1D
 objects {
   key: "robot1"
   value {

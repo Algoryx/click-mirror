@@ -42,10 +42,10 @@ def update_robots_from_message(robots: List[ClickRobot], controlmessage):
             if control_type == ValueType.Angle:
                 validate_message(controlmessage, robot, control.angles)
                 _set_converted_signal_value(robot.input_signals, control.angles)
-            elif control_type == ValueType.AngularVelocity:
+            elif control_type == ValueType.AngularVelocity1D:
                 validate_message(controlmessage, robot, control.angularVelocities)
                 _set_converted_signal_value(robot.input_signals, control.angularVelocities)
-            elif control_type == ValueType.Torque:
+            elif control_type == ValueType.Torque1D:
                 validate_message(controlmessage, robot, control.torques)
                 _set_converted_signal_value(robot.input_signals, control.torques)
             else:
@@ -77,19 +77,19 @@ class MessageFactory:
             Brick = BrickUtils.import_Brick()
             cls.typemap = {
                 Brick.Signal.LockPositionInput: ValueType.Angle,
-                Brick.Signal.VelocityInput: ValueType.AngularVelocity,
-                Brick.Signal.ForceInput: ValueType.Torque,
-                Brick.Signal.MotorVelocityInput: ValueType.AngularVelocity,
-                Brick.Signal.FixedVelocityEngineInput: ValueType.AngularVelocity,
-                Brick.Signal.EngineTorqueInput: ValueType.Torque,
-                Brick.Signal.MotorForceInput: ValueType.Torque,
+                Brick.Signal.VelocityInput: ValueType.AngularVelocity1D,
+                Brick.Signal.ForceInput: ValueType.Torque1D,
+                Brick.Signal.MotorVelocityInput: ValueType.AngularVelocity1D,
+                Brick.Signal.FixedVelocityEngineInput: ValueType.AngularVelocity1D,
+                Brick.Signal.EngineTorqueInput: ValueType.Torque1D,
+                Brick.Signal.MotorForceInput: ValueType.Torque1D,
                 # NOTE: AdhesiveForceInput is mapped to Activated to support suction cup, should be more generic, ie might not always want to map Adhesive to bool
                 Brick.Signal.AdhesiveForceInput: ValueType.Activated,
-                Brick.Signal.ForceVectorOutput: ValueType.Force,
+                Brick.Signal.ForceVectorOutput: ValueType.Force3D,
                 Brick.Signal.TorqueVectorOutput: ValueType.Torque3D,
                 Brick.Signal.RotatingBodyAngleOutput: ValueType.Angle,
-                Brick.Signal.RotatingBodyVelocityOutput: ValueType.AngularVelocity,
-                Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque,
+                Brick.Signal.RotatingBodyVelocityOutput: ValueType.AngularVelocity1D,
+                Brick.Signal.FixedVelocityEngineTorqueOutput: ValueType.Torque1D,
                 Brick.Signal.ComponentBoolInput: ValueType.Activated,
                 Brick.Signal.ComponentBoolOutput: ValueType.Activated,
             }
@@ -140,9 +140,9 @@ class MessageFactory:
                 if len(robot.angle_sensors) > 0:
                     jointsensors.append(ValueType.Angle)
                 if len(robot.velocity_sensors) > 0:
-                    jointsensors.append(ValueType.AngularVelocity)
+                    jointsensors.append(ValueType.AngularVelocity1D)
                 if len(robot.torque_sensors) > 0:
-                    jointsensors.append(ValueType.Torque)
+                    jointsensors.append(ValueType.Torque1D)
                 object.jointSensors.extend(jointsensors)
                 for name, event in robot.control_events().items():
                     object.controlEvents[name] = cls.to_click_control_type(event.__class__)
@@ -196,10 +196,10 @@ class MessageFactory:
                 value_type = cls.to_click_control_type(signal.__class__)
                 if value_type == ValueType.Angle:
                     sensor.angle = signal.GetData()
-                elif value_type == ValueType.Torque:
-                    sensor.torque = signal.GetData()
-                elif value_type == ValueType.AngularVelocity:
-                    sensor.angVelocity = signal.GetData()
+                elif value_type == ValueType.Torque1D:
+                    sensor.torque1d = signal.GetData()
+                elif value_type == ValueType.AngularVelocity1D:
+                    sensor.angularVelocity1d = signal.GetData()
                 else:
                     arr = cls.array_to_populate(signal, value_type, sensor, robot.name)
                     arr.extend(cls._signal_to_floats(signal))
@@ -208,8 +208,8 @@ class MessageFactory:
     def array_to_populate(cls, signal, value_type, sensor, robotname):
         if value_type == ValueType.Force3D:
             return sensor.force3d.arr
-        elif value_type == ValueType.DirectionalTorque:
-            return sensor.directionalTorque.arr
+        elif value_type == ValueType.Torque3D:
+            return sensor.torque3d.arr
         elif value_type == ValueType.Angle:
             return sensor.angle
         else:
