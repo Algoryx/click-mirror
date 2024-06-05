@@ -14,7 +14,7 @@ class ClickRobot():
     # Number of input signals == number of output signals
     num_motors = 0
     name = None
-    control = ValueType.AngularVelocity
+    control = ValueType.AngularVelocity1D
     jointnames: List[str] = []
     grippername: str = ""
 
