@@ -61,7 +61,7 @@ class TestVelocityControlMessage(TestClickIntegration):
     def create_controlmessage(self):
         message = MessageFactory.create_controlmessage()
         robot = message.objects["robot"]
-        robot.angleVelocities.extend([1, 1])
+        robot.angularVelocities.extend([1, 1])
         print(robot)
         return message
 

@@ -17,17 +17,18 @@ namespace click
   union SensorValue
     {
       double angle;
-      double angularVelocity;
-      double torque;
+      double angularVelocity1d;
+      double torque1d;
       Vec3 position;
       Vec3 rpy;
       bool activated;
-      Vec3 acceleration;
-      Vec3 force;
-      Vec3 directionalTorque;
-      Vec3 angularAcceleration;
-      Vec3 directionalVelocity;
-      Vec3 directionalAngularVelocity;
+      Vec3 acceleration3d;
+      Vec3 force1d;
+      Vec3 force3d;
+      Vec3 torque3d;
+      Vec3 angularAcceleration3d;
+      Vec3 velocity3d;
+      Vec3 angularVelocity3d;
     };
 
   struct Sensor {

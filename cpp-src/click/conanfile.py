@@ -33,7 +33,7 @@ class ClickConan(ConanFile):
         self.copy("Messaging.pb.cc", src="../../oos/protobuf-gen/", dst="src", keep_path=False)
 
     def requirements(self):
-        self.requires("protobuf/3.21.12", private=False)
+        self.requires("protobuf/4.25.3", private=False)
         self.requires("zmqpp/4.2.0", private=False)
 
     def config_options(self):

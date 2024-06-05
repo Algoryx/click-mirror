@@ -14,17 +14,18 @@ enum MessageType {
 
 enum ValueType {
   Angle = 0;                       // radians
-  AngleVelocity = 1;               // radians/sec
-  Torque = 2;                      // Nm
+  AngularVelocity1D = 1;           // radians/sec
+  Torque1D = 2;                    // Nm
   Position = 3;                    // meters vec3
   RPY = 4;                         // radians vec3
   Activated = 5;                   // True/False
-  Acceleration = 6;                // m/s2   vec3
-  Force = 7;                       // Newton vec3
-  DirectionalTorque = 8;           // Nm     vec3
-  AngularAcceleration = 9;         // rad/s2 vec3
-  DirectionalVelocity = 10;        // m/s    vec3
-  DirectionalAngularVelocity = 11; // rad/s2 vec3
+  Acceleration3D = 6;              // m/s2   vec3
+  Force1D = 12;                    // Newton
+  Force3D = 7;                     // Newton vec3
+  Torque3D = 8;                    // Nm     vec3
+  AngularAcceleration3D = 9;       // rad/s2 vec3
+  Velocity3D = 10;                 // m/s    vec3
+  AngularVelocity3D = 11;          // rad/s2 vec3
   Multiple = 15;                   // Multiple ValueType:s
 }
 
@@ -126,7 +127,7 @@ message ControlMessage {
     // + fewer bytes in message
     // NOTE: Next four repeats are mutually exclusive!
     repeated double angles = 1;            // Present in every ControlMessage. Deprecated - use values.
-    repeated double angleVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
+    repeated double angularVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
     repeated double torques = 3;           // Present in every ControlMessage. Deprecated - use values.
     repeated double values = 5;            // Present in every ControlMessage. Must be correct type according to handshake.
     map<string, bool> controlEvents = 4;   // Optionals, if missing, keep same value as before
@@ -140,7 +141,7 @@ SensorMessage example:
 
 - panda_2
   - angleSensors [1,2,3,4] size = #joints
-  - angleVelocitySensors ...
+  - angularVelocitySensors ...
   - torqueSensors ...
   ...
 
@@ -176,17 +177,18 @@ message SensorMessage {
   message Sensor {
     oneof value {
       double angle = 1;
-      double angleVelocity = 2;
-      double torque = 3;
+      double angularVelocity1d = 2;
+      double torque1d = 3;
       Vec3 position = 4;
       Vec3 rpy = 5;
       bool activated = 6;
-      Vec3 acceleration = 7;
-      Vec3 force = 8;
-      Vec3 directionalTorque = 9;
-      Vec3 angularAcceleration = 10;
-      Vec3 directionalVelocity = 12;
-      Vec3 directionalAngularVelocity = 13;
+      Vec3 acceleration3d = 7;
+      Vec3 force3d = 8;
+      Vec3 torque3d = 9;
+      Vec3 angularAcceleration3d = 10;
+      Vec3 velocity3d = 12;
+      Vec3 angularVelocity3d = 13;
+      double force1d = 14;
     }
   };
 
@@ -197,7 +199,7 @@ message SensorMessage {
   message Object {
     // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
     repeated double angleSensors = 1;
-    repeated double angleVelocitySensors = 2;
+    repeated double angularVelocitySensors = 2;
     repeated double torqueSensors = 3;
     repeated Vec3 forceSensors = 5;
     // Sensors on the object, order of ValueType defined in handshake.

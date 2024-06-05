@@ -17,9 +17,9 @@ def create_faked_controlmessage_for(robots: List[ClickRobot], add_control_event=
         controltype = MessageFactory.to_click_control_type(robot.controlType())
         if controltype == ValueType.Angle:
             control.angles.extend([x * 1.0 for x in range(1, robot.num_joints + 1)])
-        elif controltype == ValueType.AngleVelocity:
-            control.angleVelocities.extend([x * 2.0 for x in range(1, robot.num_joints + 1)])
-        elif controltype == ValueType.Torque:
+        elif controltype == ValueType.AngularVelocity1D:
+            control.angularVelocities.extend([x * 2.0 for x in range(1, robot.num_joints + 1)])
+        elif controltype == ValueType.Torque1D:
             control.torques.extend([x * 3.0 for x in range(1, robot.num_joints + 1)])
         else:
             raise Exception(f"Faking {robot.controlType()} has not been implemented")
@@ -68,20 +68,20 @@ class Test_handshake_message_from_objects:
     def test_that_generating_handshake_creates_correct_handshake_velocity_input(self, scene_velocityinput):
         robots = find_robots_in_scene(scene_velocityinput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        assert message.controlType == ValueType.AngleVelocity
+        assert message.controlType == ValueType.AngularVelocity1D
 
     def test_that_generating_handshake_creates_correct_handshake_force_input(self, scene_forceinput):
         robots = find_robots_in_scene(scene_forceinput)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        assert message.controlType == ValueType.Torque
+        assert message.controlType == ValueType.Torque1D
 
     def test_that_generating_handshake_creates_multiple_input_types(self, scene_position_velocity_force_input):
         robots = find_robots_in_scene(scene_position_velocity_force_input)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
         assert message.objects["robot1"].controlTypesInOrder[0] == ValueType.Angle
-        assert message.objects["robot1"].controlTypesInOrder[1] == ValueType.AngleVelocity
+        assert message.objects["robot1"].controlTypesInOrder[1] == ValueType.AngularVelocity1D
         assert message.objects["robot2"].controlTypesInOrder[0] == ValueType.Angle
-        assert message.objects["robot2"].controlTypesInOrder[1] == ValueType.Torque
+        assert message.objects["robot2"].controlTypesInOrder[1] == ValueType.Torque1D
 
     def test_that_handshake_with_multiple_input_types_has_no_robot_controltype(self, scene_position_velocity_force_input):
         robots = find_robots_in_scene(scene_position_velocity_force_input)
@@ -92,8 +92,8 @@ class Test_handshake_message_from_objects:
     def test_that_generating_handshake_creates_correct_handshake_sensor_output(self, sensor_scene):
         robots = find_robots_in_scene(sensor_scene)
         message = MessageFactory.handshake_message_from_objects(robots, 0.03)
-        assert ValueType.Force in message.objects["robot"].sensors["forceTorqueSensor"].types
-        assert ValueType.DirectionalTorque in message.objects["robot"].sensors["forceTorqueSensor"].types
+        assert ValueType.Force3D in message.objects["robot"].sensors["forceTorqueSensor"].types
+        assert ValueType.Torque3D in message.objects["robot"].sensors["forceTorqueSensor"].types
 
     def test_that_click_box_is_included_in_handshake(self, click_scene):
         objects = get_click_configuration(click_scene)
@@ -210,8 +210,8 @@ class Test_sensor_message_from_objects:
 
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
 
-        assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[0].force.arr == [0, 0, 0]
-        assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[1].directionalTorque.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[0].force3d.arr == [0, 0, 0]
+        assert message.objects["robot"].sensors["forceTorqueSensor"].sensor[1].torque3d.arr == [0, 0, 0]
 
     def test_that_drive_train_sensors_are_included_in_sensormessage(self, drive_train_scene):
         robots = find_robots_in_scene(drive_train_scene)
@@ -219,8 +219,8 @@ class Test_sensor_message_from_objects:
         message = MessageFactory.sensor_message_from_objects(robots, 1.0)
 
         assert message.objects["robot"].sensors["engineAngle"].sensor[0].angle == 0.0
-        assert message.objects["robot"].sensors["engineTorque"].sensor[0].torque == 0.0
-        assert message.objects["robot"].sensors["engineVelocity"].sensor[0].angleVelocity == 0.0
+        assert message.objects["robot"].sensors["engineTorque"].sensor[0].torque1d == 0.0
+        assert message.objects["robot"].sensors["engineVelocity"].sensor[0].angularVelocity1d == 0.0
 
 
 _handshake_facit = """messageType: HandshakeMessageType
@@ -235,8 +235,8 @@ objects {
     jointSensorsInOrder: "robot2_joint0"
     jointSensorsInOrder: "robot2_joint1"
     jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Torque
+    jointSensors: AngularVelocity1D
+    jointSensors: Torque1D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -255,8 +255,8 @@ objects {
     jointSensorsInOrder: "robot1_joint0"
     jointSensorsInOrder: "robot1_joint1"
     jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Torque
+    jointSensors: AngularVelocity1D
+    jointSensors: Torque1D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -277,8 +277,8 @@ objects {
   value {
     angleSensors: 0
     angleSensors: 0
-    angleVelocitySensors: 0
-    angleVelocitySensors: 0
+    angularVelocitySensors: 0
+    angularVelocitySensors: 0
     torqueSensors: 0
     torqueSensors: 0
     objectSensors {
@@ -302,8 +302,8 @@ objects {
   value {
     angleSensors: 0
     angleSensors: 0
-    angleVelocitySensors: 0
-    angleVelocitySensors: 0
+    angularVelocitySensors: 0
+    angularVelocitySensors: 0
     torqueSensors: 0
     torqueSensors: 0
     objectSensors {
@@ -333,8 +333,8 @@ objects {
   value {
     angleSensors: 0
     angleSensors: 0
-    angleVelocitySensors: 0
-    angleVelocitySensors: 0
+    angularVelocitySensors: 0
+    angularVelocitySensors: 0
     torqueSensors: 0
     torqueSensors: 0
     objectSensors {
@@ -355,10 +355,10 @@ objects {
       key: "engineVelocity"
       value {
         sensor {
-          angleVelocity: 0
+          angularVelocity1d: 0
         }
         sensor {
-          angleVelocity: 0
+          angularVelocity1d: 0
         }
       }
     }
@@ -366,10 +366,10 @@ objects {
       key: "engineTorque"
       value {
         sensor {
-          torque: 0
+          torque1d: 0
         }
         sensor {
-          torque: 0
+          torque1d: 0
         }
       }
     }

@@ -85,8 +85,8 @@ objects {
     controlsInOrder: "robot1_joint0"
     controlsInOrder: "robot1_joint1"
     jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Force
+    jointSensors: AngularVelocity
+    jointSensors: Force1D
     controlEvents {
       key: "gripper"
       value: Activated
@@ -154,15 +154,15 @@ objects {
     controlsInOrder: "robot_joint0"
     controlsInOrder: "robot_joint1"
     jointSensors: Angle
-    jointSensors: AngleVelocity
-    jointSensors: Force
+    jointSensors: AngularVelocity
+    jointSensors: Force1D
     sensors {
       key: "forceTorqueSensor"
       value {
-        types: Force
+        types: Force1D
       }
       value {
-        types: DirectionalTorque
+        types: Torque3D
       }
     }
     objectSensors: Position
@@ -183,8 +183,8 @@ objects {
   value {
     angleSensors: -0.0
     angleSensors: -0.0
-    angleVelocitySensors: 0.0
-    angleVelocitySensors: 0.0
+    angularVelocitySensors: 0.0
+    angularVelocitySensors: 0.0
     torqueSensors: 0.0
     torqueSensors: 0.0
     objectSensors {

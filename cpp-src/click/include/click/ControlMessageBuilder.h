@@ -31,7 +31,7 @@ namespace click
     public:
         /**
          * Add per joint values to the current object
-         * This method can always be used in place of withAngles, withAngleVelocities, or withTorques
+         * This method can always be used in place of withAngles, withAngularVelocities, or withTorques
          *
          * \return a Builder
          */
@@ -46,11 +46,11 @@ namespace click
         virtual AddControlEventBuilder *withAngles(std::vector<double> angles) = 0;
         /**
          * @deprecated use withValues
-         * Add angleVelocities to the current object
+         * Add angularVelocities to the current object
          *
          * \return a Builder
          */
-        virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles) = 0;
+        virtual AddControlEventBuilder *withAngularVelocities(std::vector<double> angles) = 0;
         /**
          * @deprecated use withValues
          * Add torques to the current object
@@ -99,7 +99,7 @@ namespace click
         virtual AddControlBuilder *object(std::string name);
         virtual AddControlEventBuilder *withAngles(std::vector<double> angles);
         virtual AddControlEventBuilder *withValues(std::vector<double> values);
-        virtual AddControlEventBuilder *withAngleVelocities(std::vector<double> angles);
+        virtual AddControlEventBuilder *withAngularVelocities(std::vector<double> angles);
         virtual AddControlEventBuilder *withTorques(std::vector<double> torques);
         virtual AddControlEventBuilder *withControlEvent(std::string name, bool activated);
         virtual std::unique_ptr<ControlMessage> build();

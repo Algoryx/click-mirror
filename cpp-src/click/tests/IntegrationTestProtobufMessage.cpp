@@ -22,7 +22,7 @@ SCENARIO("Protobuf sensormessage serialization from file", "[click]" ) {
             THEN("it should contain robot1 sensor values") {
 
                 REQUIRE(sensorMessage.objects().at("robot1").anglesensors().at(0) == 1.0);
-                REQUIRE(sensorMessage.objects().at("robot1").anglevelocitysensors().at(0) == 2.0);
+                REQUIRE(sensorMessage.objects().at("robot1").angularvelocitysensors().at(0) == 2.0);
                 REQUIRE(sensorMessage.objects().at("robot1").torquesensors().at(0) == 3.0);
                 REQUIRE_THAT(sensorMessage.DebugString(), ContainsSubstring("messageType: SensorMessageType"));
             }

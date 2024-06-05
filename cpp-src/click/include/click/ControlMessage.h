@@ -40,11 +40,11 @@ namespace click
      */
     std::vector<double> angles(const std::string& objectname) const;
     /**
-     * Get anglevelocities, if any, for the object with name objectname
+     * Get angularvelocities, if any, for the object with name objectname
      *
      * \return a Vector of angle velocitities
      */
-    std::vector<double> angleVelocities(const std::string& objectname) const;
+    std::vector<double> angularVelocities(const std::string& objectname) const;
     /**
      * Get torques, if any, for the object with name objectname
      *

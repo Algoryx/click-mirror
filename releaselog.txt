@@ -1,3 +1,16 @@
+0.4.0-SNAPSHOT
+- Renaming
+  - AngularVelocity --> AngularVelocity1D
+  - Torque --> Torque1D
+  - Acceleration --> Acceleration3D
+  - Force --> Force3D
+  - AngularAcceleration --> AngularAcceleration3D
+  - DirectionalVelocity --> Velocity3D
+  - DirectionalAngularVelocity --> AngularVelocity3D
+  - DirectionalTorque --> Torque3D
+- Introducing
+  - Force1D
+
 0.3.2
 - Bump Python protobuf to 5.26.1
 - Add support for DirectionalVelocity and DirectionalAngularVelocity

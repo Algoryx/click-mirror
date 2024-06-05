@@ -20,7 +20,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
 }
 
 inline vector<double> angles = double_vector_from({1, 2});
-inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
+inline vector<double> angularVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
 std::chrono::microseconds recv_total;
@@ -95,8 +95,8 @@ std::unique_ptr<SensorMessage> build_sensor_message() {
             ->withAngularVelocities(values)
             ->withTorques(values)
             ->withSensor("external_1")
-                ->withForce({4, 4.1, 4.2})
-                ->withAngularAcceleration({5, 5.1, 5.2})
+                ->withForce3d({4, 4.1, 4.2})
+                ->withAngularAcceleration3d({5, 5.1, 5.2})
         ->object("box")
             ->withPosition({1.0, 2.0, 3.0})
             ->withRPY({4.0, 5.0, 6.0})

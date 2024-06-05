@@ -18,7 +18,7 @@ std::vector<double> SensorMessage::angles(const std::string& objectname) const
 
 std::vector<double> SensorMessage::angularVelocities(const std::string& objectname) const
 {
-  auto vec = this->sensorMess->objects().at(objectname).anglevelocitysensors();
+  auto vec = this->sensorMess->objects().at(objectname).angularvelocitysensors();
   return std::vector<double>(vec.begin(), vec.end());
 }
 
@@ -71,9 +71,9 @@ std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const s
   auto target = res.begin();
   for (auto& sensor : this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor())
   {
-    if (sensor.has_acceleration()) {
-      copy_n(sensor.acceleration(), target->value.acceleration);
-      target->type = click::ValueType::Acceleration;
+    if (sensor.has_acceleration3d()) {
+      copy_n(sensor.acceleration3d(), target->value.acceleration3d);
+      target->type = click::ValueType::Acceleration3D;
     }
     else if (sensor.has_activated()) {
       target->value.activated = sensor.activated();
@@ -83,21 +83,21 @@ std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const s
       target->value.angle = sensor.angle();
       target->type = click::ValueType::Angle;
     }
-    else if (sensor.has_anglevelocity()) {
-      target->value.angularVelocity = sensor.anglevelocity();
-      target->type = click::ValueType::AngularVelocity;
+    else if (sensor.has_angularvelocity1d()) {
+      target->value.angularVelocity1d = sensor.angularvelocity1d();
+      target->type = click::ValueType::AngularVelocity1D;
     }
-    else if (sensor.has_angularacceleration()) {
-      copy_n(sensor.angularacceleration(), target->value.angularAcceleration);
-      target->type = click::ValueType::AngularAcceleration;
+    else if (sensor.has_angularacceleration3d()) {
+      copy_n(sensor.angularacceleration3d(), target->value.angularAcceleration3d);
+      target->type = click::ValueType::AngularAcceleration3D;
     }
-    else if (sensor.has_directionaltorque()) {
-      copy_n(sensor.directionaltorque(), target->value.directionalTorque);
-      target->type = click::ValueType::DirectionalTorque;
+    else if (sensor.has_torque3d()) {
+      copy_n(sensor.torque3d(), target->value.torque3d);
+      target->type = click::ValueType::Torque3D;
     }
-    else if (sensor.has_force()) {
-      copy_n(sensor.force(), target->value.force);
-      target->type = click::ValueType::Force;
+    else if (sensor.has_force3d()) {
+      copy_n(sensor.force3d(), target->value.force3d);
+      target->type = click::ValueType::Force3D;
     }
     else if (sensor.has_position()) {
       copy_n(sensor.position(), target->value.position);
@@ -107,17 +107,17 @@ std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const s
       copy_n(sensor.rpy(), target->value.rpy);
       target->type = click::ValueType::RPY;
     }
-    else if (sensor.has_torque()) {
-      target->value.torque = sensor.torque();
-      target->type = click::ValueType::Torque;
+    else if (sensor.has_torque1d()) {
+      target->value.torque1d = sensor.torque1d();
+      target->type = click::ValueType::Torque1D;
     }
-    else if (sensor.has_directionalvelocity()) {
-      copy_n(sensor.directionalvelocity(), target->value.directionalVelocity);
-      target->type = click::ValueType::DirectionalVelocity;
+    else if (sensor.has_velocity3d()) {
+      copy_n(sensor.velocity3d(), target->value.velocity3d);
+      target->type = click::ValueType::Velocity3D;
     }
-    else if (sensor.has_directionalangularvelocity()) {
-      copy_n(sensor.directionalangularvelocity(), target->value.directionalAngularVelocity);
-      target->type = click::ValueType::DirectionalAngularVelocity;
+    else if (sensor.has_angularvelocity3d()) {
+      copy_n(sensor.angularvelocity3d(), target->value.angularVelocity3d);
+      target->type = click::ValueType::AngularVelocity3D;
     }
     else
       throw std::runtime_error("Return not implemented for " + sensor.DebugString());
@@ -129,14 +129,14 @@ std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const s
 Vec3 SensorMessage::sensorVec3(const std::string& objectname, const std::string& sensorname, int idx) const
 {
   auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
-  if (sensor.has_acceleration())
-    return createFrom(sensor.acceleration());
-  else if (sensor.has_angularacceleration())
-    return createFrom(sensor.angularacceleration());
-  else if (sensor.has_directionaltorque())
-    return createFrom(sensor.directionaltorque());
-  else if (sensor.has_force())
-    return createFrom(sensor.force());
+  if (sensor.has_acceleration3d())
+    return createFrom(sensor.acceleration3d());
+  else if (sensor.has_angularacceleration3d())
+    return createFrom(sensor.angularacceleration3d());
+  else if (sensor.has_torque3d())
+    return createFrom(sensor.torque3d());
+  else if (sensor.has_force3d())
+    return createFrom(sensor.force3d());
   else if (sensor.has_position())
     return createFrom(sensor.position());
   else if (sensor.has_rpy())
@@ -150,10 +150,10 @@ double SensorMessage::sensorDouble(const std::string& objectname, const std::str
   auto& sensor = this->sensorMess->objects().at(objectname).sensors().at(sensorname).sensor().at(idx);
   if (sensor.has_angle())
     return sensor.angle();
-  else if (sensor.has_anglevelocity())
-    return sensor.anglevelocity();
-  else if (sensor.has_torque())
-    return sensor.torque();
+  else if (sensor.has_angularvelocity1d())
+    return sensor.angularvelocity1d();
+  else if (sensor.has_torque1d())
+    return sensor.torque1d();
   else
     throw std::runtime_error("Not a double: " + sensor.DebugString());
 }
