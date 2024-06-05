@@ -42,7 +42,7 @@ def test_create_handshake_from_robot():
         if len(robot.angle_sensors) > 0:
             jointsensors.append(ValueType.Angle)
         if len(robot.velocity_sensors) > 0:
-            jointsensors.append(ValueType.AngularVelocity)
+            jointsensors.append(ValueType.AngularVelocity1D)
         if len(robot.torque_sensors) > 0:
             jointsensors.append(ValueType.Force3D)
         object.jointSensors.extend(jointsensors)
@@ -57,7 +57,7 @@ def create_control_fake_for(robots: List[ClickRobot]):
         control = control_m.objects[robot.name]
         if robot.control == ValueType.Angle:
             control.angles.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
-        elif robot.control == ValueType.AngularVelocity:
+        elif robot.control == ValueType.AngularVelocity1D:
             control.angularVelocities.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
         else:
             control.torques.extend([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0])
@@ -80,7 +80,7 @@ def test_update_robots_from_controlmessage():
         control = control_m.objects[robot.name]
         if robot.control == ValueType.Angle:
             set_from(robot.input_signals, control.angles)
-        elif robot.control == ValueType.AngularVelocity:
+        elif robot.control == ValueType.AngularVelocity1D:
             set_from(robot.input_signals, control.angularVelocities)
         else:
             set_from(robot.input_signals, control.torques)
@@ -135,7 +135,7 @@ objects {
     jointSensorsInOrder: "joint6"
     jointSensorsInOrder: "joint7"
     jointSensors: Angle
-    jointSensors: AngularVelocity
+    jointSensors: AngularVelocity1D
     jointSensors: Force3D
     controlEvents {
       key: "gripper"
