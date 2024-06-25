@@ -230,10 +230,6 @@ objects {
   value {
     controlsInOrder: "robot2_joint0"
     controlsInOrder: "robot2_joint1"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: Angle
-    jointSensorsInOrder: "robot2_joint0"
-    jointSensorsInOrder: "robot2_joint1"
     jointSensors: Angle
     jointSensors: AngularVelocity1D
     jointSensors: Torque1D
@@ -243,6 +239,10 @@ objects {
     }
     objectSensors: Position
     objectSensors: RPY
+    jointSensorsInOrder: "robot2_joint0"
+    jointSensorsInOrder: "robot2_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Angle
   }
 }
 objects {
@@ -250,10 +250,6 @@ objects {
   value {
     controlsInOrder: "robot1_joint0"
     controlsInOrder: "robot1_joint1"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: Angle
-    jointSensorsInOrder: "robot1_joint0"
-    jointSensorsInOrder: "robot1_joint1"
     jointSensors: Angle
     jointSensors: AngularVelocity1D
     jointSensors: Torque1D
@@ -263,6 +259,10 @@ objects {
     }
     objectSensors: Position
     objectSensors: RPY
+    jointSensorsInOrder: "robot1_joint0"
+    jointSensorsInOrder: "robot1_joint1"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Angle
   }
 }
 simSettings {

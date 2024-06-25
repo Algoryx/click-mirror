@@ -127,13 +127,6 @@ objects {
     controlsInOrder: "joint5"
     controlsInOrder: "joint6"
     controlsInOrder: "joint7"
-    jointSensorsInOrder: "joint1"
-    jointSensorsInOrder: "joint2"
-    jointSensorsInOrder: "joint3"
-    jointSensorsInOrder: "joint4"
-    jointSensorsInOrder: "joint5"
-    jointSensorsInOrder: "joint6"
-    jointSensorsInOrder: "joint7"
     jointSensors: Angle
     jointSensors: AngularVelocity1D
     jointSensors: Force3D
@@ -141,6 +134,13 @@ objects {
       key: "gripper"
       value: Activated
     }
+    jointSensorsInOrder: "joint1"
+    jointSensorsInOrder: "joint2"
+    jointSensorsInOrder: "joint3"
+    jointSensorsInOrder: "joint4"
+    jointSensorsInOrder: "joint5"
+    jointSensorsInOrder: "joint6"
+    jointSensorsInOrder: "joint7"
   }
 }
 """
