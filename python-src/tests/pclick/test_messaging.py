@@ -74,10 +74,6 @@ objects {
   value {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
-    controlTypesInOrder: Angle
-    controlTypesInOrder: Torque1D
-    jointSensorsInOrder: "joint1"
-    jointSensorsInOrder: "joint2"
     jointSensors: Angle
     jointSensors: AngularVelocity1D
     jointSensors: Torque1D
@@ -93,6 +89,10 @@ objects {
       }
     }
     objectSensors: Position
+    jointSensorsInOrder: "joint1"
+    jointSensorsInOrder: "joint2"
+    controlTypesInOrder: Angle
+    controlTypesInOrder: Torque1D
   }
 }
 """
