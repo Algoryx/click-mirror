@@ -61,7 +61,7 @@ message SensorRequestMessage {
 - Objects:
   - panda_2
     - Joints
-      - controlType: angles/velocities/torques          // one only - defined in brick
+      - controlType: angles/velocities/torques          // one only - defined in OpenPLX
       - controlsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
       - jointSensorsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
       - jointSensors: Angle, Velocity, Torque
@@ -151,7 +151,7 @@ SensorMessage example:
     - external_imu --> Sensors
     # not in urdf file, not officically supported
     # controller (mc-rtc) typically has additional file
-    # --> add in Brick, send it in handshake
+    # --> add in OpenPLX, send it in handshake
   ...
 - box
   - objectSensors

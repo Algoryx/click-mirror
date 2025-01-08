@@ -7,7 +7,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 
 project(click VERSION 0.5.0
-    DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using Brick"
+    DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
 set(CMAKE_DEBUG_POSTFIX "-d")

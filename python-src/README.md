@@ -1,12 +1,12 @@
 # Click
 
-The main idea behind click is to enable a non-Brick controller talking to a Brick enabled [AGX Dynamics](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by Brick.
-The name comes from the sound two Bricks makes when connected.
+The main idea behind click is to enable a non-OpenPLX controller talking to a OpenPLX enabled [AGX Dynamics](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by OpenPLX.
+
 
 There are three main considerations
 
 1. How the controller can send controls and receive sensor values in a similar fashion regardless of environment, ie real or sim.
-2. How Brick adds sensors or topology on top of urdf, and how this is communicated to the controller.
+2. How OpenPLX adds sensors or topology on top of urdf, and how this is communicated to the controller.
 3. How to communicate controls and sensors in an effective way.
 
 The current solution is to introduce a Handshake, which enables the simulation to tell the controller what to expect in terms of how to control and what sensor data is being sent.
