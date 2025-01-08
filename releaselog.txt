@@ -1,3 +1,7 @@
+0.5.0
+- Remove agxclick
+- Bump pyzmq to 26.2.0
+
 0.4.1
 - Bump protobuf to 5.27.0
 

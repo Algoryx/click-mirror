@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pclick"
-version = "0.4.1"
+version = "0.5.0"
 description = "Controller to AGX Dynamics messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
