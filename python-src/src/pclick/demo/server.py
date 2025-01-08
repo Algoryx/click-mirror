@@ -38,8 +38,7 @@ def main():
     if args.trace_sizes:
         server.size_collector = SizeCollectorChanges()
 
-    # Note: Below code uses the protobuf API directly, we recommend using the higher level agxclick ClickObject and ClickRobot instead
-    # if possible - to protect client code from future protocol changes.
+    # Note: Below code uses the protobuf API directly, a future version might wrap this in a higher level API.
     while True:
 
         request = server.recv()

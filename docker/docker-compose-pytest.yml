@@ -4,12 +4,11 @@ version: "3"
 services:
   pytest:
     image: registry.algoryx.se/algoryx/external/click/docker-ci-agx:0.0.4
-    build:  
+    build:
       dockerfile: Dockerfile.CI-agx
     working_dir: "/click"
     command: bash -c \
-      "cd agxclick && \
-       poetry add --editable ../python-src && \
+      "cd python-src && \
        poetry install && \
        echo RUN poetry run pytest && \
        bash"

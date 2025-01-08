@@ -10,11 +10,10 @@ Click implements C++ and Python clients. Additional language support can be adde
 
 There are currently three main parts of click
 
-- [agxclick](agxclick/README.md) - a Simulation application using pclick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
 - [click](cpp-src) - C++ click library with a democlient.
 - [pclick](python-src/README.md) - Python click library with a demo client and demo server
 
-The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without agxclick, but the real benefit of Brick integration comes with agxclick.
+The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without OpenPLX, but the real benefit of Brick integration comes with OpenPLX.
 
 ## Introduction
 
@@ -116,8 +115,6 @@ After that, the simulation is stepped once per message, except after a ResetMess
 
 ## Installing
 
-- Python, all platforms: Go to [agxclick](agxclick/README.md#install) for python install instructions. If you only want click and not agxclick, then do:
-
 ```bash
 pip install pclick
 ```
@@ -134,7 +131,6 @@ apt-get install -yf /tmp/click-shared-focal-amd64.deb
 
 ## Running Click democlient and demoserver
 
-**Go to [agxclick](agxclick/README.md#Usage%20Examples) for brick model examples.**
 After installing (or building from source as specified below), run these commands in separate prompts:
 
 ```bash
@@ -202,8 +198,6 @@ rm -rf * .github.conan.cmake
 
 ### Build and test python pclick from source
 
-NOTE: Read [agxclick](agxclick/README.md) to build and test agxclick
-
 ```bash
 # Install click locally
 pip3 install -e python-src
@@ -256,9 +250,6 @@ Steps:
 
 1. Update version in files below. Suggestion: Search and Replace old version for new.
     - README.md
-    - agxclick/pyproject.toml
-    - agxclick/README.md
-    - agxclick/README-pypi.md
     - cpp-src/CMakeLists.txt
     - cpp-src/conanfile.py
     - cpp-src/click/conan/CMakeLists.txt
@@ -267,11 +258,6 @@ Steps:
 3. Push to branch and do MR
 4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.4.1; git push origin 0.4.1`.
 5. When built, binary artifacts:s are available in the [Package Registry](https://git.algoryx.se/algoryx/external/click/-/packages) and python artifacts at [pypi.org](pypi.org).
-
-## Build pipeline dependencies - updating agxBrick version
-
-agxclick tests uses the generic Docker Image `registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:latest`.
-Therefore when raising minimum required agxBrick version, [agxBrick needs to be updated in the upstream](https://git.algoryx.se/algoryx/external/agx-docker) as well in order for tests to run.
 
 ## License
 
