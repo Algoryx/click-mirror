@@ -1,6 +1,6 @@
 # Click
 
-The main idea behind click is to enable a non-OpenPLX controller talking to a OpenPLX enabled [AGX Dynamics](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by OpenPLX.
+The main idea behind click is to enable a non-OpenPLX controller talking to an OpenPLX enabled [AGX Dynamics](https://www.algoryx.se/agx-dynamics/) Simulation in a way configurable by OpenPLX.
 
 
 There are three main considerations

@@ -2,13 +2,13 @@
 
 ## Why Click?
 
-If you are using OpenPLX to express your Robot Physics, Click adds the low latency communication you need to let your controller control your robots in the simulation like they were real robots. Click automatically finds your robots in a OpenPLX scene and allows controller environments to send and receive signals without forcing your controller to depend on OpenPLX. If you want to receive updates on additional objects, you add a Click configuration to OpenPLX, pointing to which objects should be communicated.
+If you are using OpenPLX to express your Robot Physics, Click adds the low latency communication you need to let your controller control your robots in the simulation like they were real robots. Click automatically finds your robots in an OpenPLX scene and allows the controller environments to send and receive signals without forcing your controller to depend on OpenPLX. If you want to receive updates on additional objects, you add just add outputs to OpenPLX, pointing to which objects should be communicated.
 
 Click implements C++ and Python clients. Additional language support can be added using protobuf code generation tooling.
 
 ## Click parts
 
-There are currently three main parts of click
+There are currently two main parts of click
 
 - [click](cpp-src) - C++ click library with a democlient.
 - [pclick](python-src/README.md) - Python click library with a demo client and demo server
