@@ -1,5 +1,5 @@
 #include <fstream>
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/MessageSerializer.h>
 #include <click/HandshakeMessage.h>
 #include "TestPaths.h"
@@ -40,7 +40,7 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
 
             THEN("it should contain controls types in order")
             {
-                vector<ValueType> expected = {ValueType::Angle, ValueType::Torque};
+                vector<ValueType> expected = {ValueType::Angle, ValueType::Torque1D};
                 REQUIRE_THAT(handshakeMessage->controlTypesInOrder("robot"), Equals(expected));
             }
 
@@ -52,13 +52,13 @@ SCENARIO("HandshakeMessage deserialization from file", "[click]")
 
             THEN("it should contain controlsensors")
             {
-                vector<ValueType> expected = {ValueType::Angle, ValueType::AngularVelocity, ValueType::Torque};
+                vector<ValueType> expected = {ValueType::Angle, ValueType::AngularVelocity1D, ValueType::Torque1D};
                 REQUIRE_THAT(handshakeMessage->jointSensors("robot"), Equals(expected));
             }
 
             THEN("it should contain sensors")
             {
-                vector<ValueType> expected = {ValueType::Force, ValueType::AngularAcceleration};
+                vector<ValueType> expected = {ValueType::Force3D, ValueType::AngularAcceleration3D};
                 REQUIRE_THAT(handshakeMessage->sensors("robot", "external_1"), Equals(expected));
             }
 

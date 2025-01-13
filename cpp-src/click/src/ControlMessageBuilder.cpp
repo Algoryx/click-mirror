@@ -29,9 +29,9 @@ AddControlEventBuilder *ControlMessageBuilderImpl::withValues(vector<double> val
     currObject->mutable_values()->Assign(values.begin(), values.end());
     return this;
 }
-AddControlEventBuilder *ControlMessageBuilderImpl::withAngleVelocities(vector<double> angles)
+AddControlEventBuilder *ControlMessageBuilderImpl::withAngularVelocities(vector<double> angles)
 {
-    currObject->mutable_anglevelocities()->Assign(angles.begin(), angles.end());
+    currObject->mutable_angularvelocities()->Assign(angles.begin(), angles.end());
     return this;
 }
 AddControlEventBuilder *ControlMessageBuilderImpl::withTorques(vector<double> torques)

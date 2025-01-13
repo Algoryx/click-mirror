@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pclick"
-version = "0.2.2"
+version = "0.5.0"
 description = "Controller to AGX Dynamics messaging"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
@@ -11,9 +11,9 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.8 <3.11"
-protobuf = "3.20.3"
-pyzmq = "22.3.0"
+python = ">=3.8"
+protobuf = "5.27.0"
+pyzmq = "26.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

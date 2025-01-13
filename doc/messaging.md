@@ -36,9 +36,9 @@ See [Current protobuf schema](../protobuf-src/Messaging.proto) for overview exam
   - L-GPL licence with link exception
   - Support for IPC communication
 - Handshake vs configuration file
-  - Using brick on controller side
+  - Using OpenPLX on controller side
     - Adds unwanted effort and binary size
-    - Impose using brick instead of urdf
+    - Impose using OpenPLX instead of urdf
   - Starting with a handshake as opposed to a configuration file.
     - Reading another configuration file which also needs to be shared is more complex.
 - Protobuf vs flatbuffers

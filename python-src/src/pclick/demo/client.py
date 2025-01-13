@@ -28,8 +28,8 @@ def parse_args():
                         help=f'Send sensor request message')
     parser.add_argument('--controlmessage', metavar='<value>', type=str, default=None,
                         help=f'send controlmessage with control values set to <value>. Overrides --handshake-init. Examples --controlmessage robot1:0,0;panda2:1,1')
-    parser.add_argument('--controltype', metavar='<value>', choices=["Angle", "AngleVelocity", "Torque"], default=None,
-                        help=f'How to interpret controlmessage values, ie Angle(radians), AngleVelocity(radians/sec), or Torque(Nm). Default is to interpret each value individually')
+    parser.add_argument('--controltype', metavar='<value>', choices=["Angle", "AngularVelocity1D", "Torque1D"], default=None,
+                        help=f'How to interpret controlmessage values, ie Angle(radians), AngularVelocity(radians/sec), or Torque(Nm). Default is to interpret each value individually')
     parser.add_argument('--errormessage', dest='errormessage', action="store_true",
                         help=f'Send error message')
     parser.add_argument('--resetmessage', dest='resetmessage', action="store_true",
@@ -39,10 +39,10 @@ def parse_args():
     return parser.parse_args()
 
 
-def send_errormessage(socket):
+def send_errormessage(client: Client):
     message = MessageFactory.create_errormessage()
     print("Sending errormessage")
-    socket.send(message)
+    client.send(message)
 
 def handler(signum, frame):
     os._exit(0)
@@ -73,9 +73,9 @@ if args.controlmessage:
             robot.values.extend(arr)
         elif args.controltype.lower() == "angle":
             robot.angles.extend(arr)
-        elif args.controltype.lower() == "anglevelocity":
-            robot.angleVelocities.extend(arr)
-        elif args.controltype.lower() == "torque":
+        elif args.controltype.lower() == "angularvelocity1D":
+            robot.angularVelocities.extend(arr)
+        elif args.controltype.lower() == "torque1d":
             robot.torques.extend(arr)
     print(f"Sending {str(message)}")
     client.send(message)
@@ -89,6 +89,8 @@ elif args.sensorrequest:
     client.send(message)
 elif args.errormessage:
     send_errormessage(client)
+    client.stop()
+    os._exit(0)
 else:
     message = MessageFactory.create_handshake_init()
     print("Sending initiate handshake")

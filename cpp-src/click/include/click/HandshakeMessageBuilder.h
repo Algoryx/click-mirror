@@ -14,64 +14,64 @@ namespace protobuf {
 class AddRobotBuilder;
 class AddHandshakeSensorBuilder;
 
-class HandshakeMessageBuilder {
+class CLICK_EXPORT HandshakeMessageBuilder {
 
 public:
-    CLICK_EXPORT virtual std::unique_ptr<HandshakeMessage> build() = 0;
-    CLICK_EXPORT virtual HandshakeMessageBuilder* withSimulationSettings(const click::HandshakeMessage::SimulationSettings&  simulation_settings) = 0;
-    CLICK_EXPORT virtual HandshakeMessageBuilder* withControlType(const click::ValueType&  control_type) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withRobot(const std::string&  name) = 0;
-    CLICK_EXPORT virtual ~HandshakeMessageBuilder();
+    virtual std::unique_ptr<HandshakeMessage> build() = 0;
+    virtual HandshakeMessageBuilder* withSimulationSettings(const click::HandshakeMessage::SimulationSettings&  simulation_settings) = 0;
+    virtual HandshakeMessageBuilder* withControlType(const click::ValueType&  control_type) = 0;
+    virtual AddRobotBuilder* withRobot(const std::string&  name) = 0;
+    virtual ~HandshakeMessageBuilder();
 };
 
-class AddRobotBuilder {
+class CLICK_EXPORT AddRobotBuilder {
 
 public:
-    CLICK_EXPORT virtual std::unique_ptr<HandshakeMessage> build() = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withControlsInOrder(const std::vector<std::string>&  order) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withControlTypesInOrder(const std::vector<click::ValueType>&  order) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withJointSensorsInOrder(const std::vector<std::string>&  order) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withJointSensors(const std::vector<click::ValueType>&  order) = 0;
-    CLICK_EXPORT virtual AddHandshakeSensorBuilder* withSensor(const std::string&  name) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withControlEvent(const std::string&  name, const click::ValueType&  type) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withObjectSensors(std::vector<click::ValueType>&  order) = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withRobot(const std::string&  name) = 0;
-    CLICK_EXPORT virtual ~AddRobotBuilder();
+    virtual std::unique_ptr<HandshakeMessage> build() = 0;
+    virtual AddRobotBuilder* withControlsInOrder(const std::vector<std::string>&  order) = 0;
+    virtual AddRobotBuilder* withControlTypesInOrder(const std::vector<click::ValueType>&  order) = 0;
+    virtual AddRobotBuilder* withJointSensorsInOrder(const std::vector<std::string>&  order) = 0;
+    virtual AddRobotBuilder* withJointSensors(const std::vector<click::ValueType>&  order) = 0;
+    virtual AddHandshakeSensorBuilder* withSensor(const std::string&  name) = 0;
+    virtual AddRobotBuilder* withControlEvent(const std::string&  name, const click::ValueType&  type) = 0;
+    virtual AddRobotBuilder* withObjectSensors(std::vector<click::ValueType>&  order) = 0;
+    virtual AddRobotBuilder* withRobot(const std::string&  name) = 0;
+    virtual ~AddRobotBuilder();
 };
 
-class AddHandshakeSensorBuilder {
+class CLICK_EXPORT AddHandshakeSensorBuilder {
 
 public:
-    CLICK_EXPORT virtual std::unique_ptr<HandshakeMessage> build() = 0;
-    CLICK_EXPORT virtual AddRobotBuilder* withTypesInOrder(const std::vector<click::ValueType>&  order) = 0;
-    CLICK_EXPORT virtual ~AddHandshakeSensorBuilder();
+    virtual std::unique_ptr<HandshakeMessage> build() = 0;
+    virtual AddRobotBuilder* withTypesInOrder(const std::vector<click::ValueType>&  order) = 0;
+    virtual ~AddHandshakeSensorBuilder();
 };
 
-class HandshakeMessageBuilderImpl : public HandshakeMessageBuilder, AddRobotBuilder, AddHandshakeSensorBuilder {
+class CLICK_EXPORT HandshakeMessageBuilderImpl : public HandshakeMessageBuilder, AddRobotBuilder, AddHandshakeSensorBuilder {
 
 public:
-    CLICK_EXPORT std::unique_ptr<HandshakeMessage> build();
+    std::unique_ptr<HandshakeMessage> build();
     /**
      * Create a builder that creates a Message
      *
      * \return a Builder
      */
-    CLICK_EXPORT static std::unique_ptr<HandshakeMessageBuilder> builder();
+    static std::unique_ptr<HandshakeMessageBuilder> builder();
     // HandshakeMessageBuilder
-    CLICK_EXPORT virtual HandshakeMessageBuilder* withSimulationSettings(const click::HandshakeMessage::SimulationSettings&  simulation_settings);
-    CLICK_EXPORT virtual HandshakeMessageBuilder* withControlType(const click::ValueType&  control_type);
-    CLICK_EXPORT virtual AddRobotBuilder* withRobot(const std::string&  name);
+    virtual HandshakeMessageBuilder* withSimulationSettings(const click::HandshakeMessage::SimulationSettings&  simulation_settings);
+    virtual HandshakeMessageBuilder* withControlType(const click::ValueType&  control_type);
+    virtual AddRobotBuilder* withRobot(const std::string&  name);
     // AddRobotBuilder
-    CLICK_EXPORT virtual AddRobotBuilder* withControlsInOrder(const std::vector<std::string>&  order);
-    CLICK_EXPORT virtual AddRobotBuilder* withControlTypesInOrder(const std::vector<click::ValueType>&  order);
-    CLICK_EXPORT virtual AddRobotBuilder* withJointSensorsInOrder(const std::vector<std::string>&  order);
-    CLICK_EXPORT virtual AddRobotBuilder* withJointSensors(const std::vector<click::ValueType>&  order);
-    CLICK_EXPORT virtual AddHandshakeSensorBuilder* withSensor(const std::string&  name);
-    CLICK_EXPORT virtual AddRobotBuilder* withControlEvent(const std::string&  name, const click::ValueType&  type);
-    CLICK_EXPORT virtual AddRobotBuilder* withObjectSensors(std::vector<click::ValueType>&  order);
+    virtual AddRobotBuilder* withControlsInOrder(const std::vector<std::string>&  order);
+    virtual AddRobotBuilder* withControlTypesInOrder(const std::vector<click::ValueType>&  order);
+    virtual AddRobotBuilder* withJointSensorsInOrder(const std::vector<std::string>&  order);
+    virtual AddRobotBuilder* withJointSensors(const std::vector<click::ValueType>&  order);
+    virtual AddHandshakeSensorBuilder* withSensor(const std::string&  name);
+    virtual AddRobotBuilder* withControlEvent(const std::string&  name, const click::ValueType&  type);
+    virtual AddRobotBuilder* withObjectSensors(std::vector<click::ValueType>&  order);
     // AddHandshakeSensorBuilder
-    CLICK_EXPORT virtual AddRobotBuilder* withTypesInOrder(const std::vector<click::ValueType>&  order);
-    CLICK_EXPORT virtual ~HandshakeMessageBuilderImpl();
+    virtual AddRobotBuilder* withTypesInOrder(const std::vector<click::ValueType>&  order);
+    virtual ~HandshakeMessageBuilderImpl();
 
 private:
     HandshakeMessageBuilderImpl(std::unique_ptr<protobuf::HandshakeMessage> control_m);

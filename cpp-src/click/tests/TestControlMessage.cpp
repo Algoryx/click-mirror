@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/ControlMessage.h>
 #include <click/ControlMessageBuilder.h>
 #include <click/MessageSerializer.h>
@@ -18,7 +18,7 @@ SCENARIO("controlmessage serialization", "[click]")
     GIVEN("A controlmessage")
     {
         vector<double> angles = double_vector_from({1, 2, 3, 4, 5});
-        vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
+        vector<double> angularVelocities = double_vector_from({2, 3, 4, 5, 6});
         vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
         vector<double> values = double_vector_from({4, 5, 6, 7, 8});
 
@@ -31,6 +31,16 @@ SCENARIO("controlmessage serialization", "[click]")
                     ->withControlEvent("gripper2", false)
                 ->build();
 
+            THEN("it should have gripper and gripper2, not gripper 3")
+            {
+                REQUIRE(controlMessage->hasControlEvent("robot1", "gripper") == true);
+                REQUIRE(controlMessage->hasControlEvent("robot1", "gripper2") == true);
+                REQUIRE(controlMessage->hasControlEvent("robot1", "gripper3") == false);
+            }
+            THEN("it should not have robot2")
+            {
+                REQUIRE(controlMessage->hasControlEvent("robot2", "gripper") == false);
+            }
             THEN("it should have two grippers one activated and one not activated")
             {
                 REQUIRE(controlMessage->messageType() == MessageType::ControlMessageType);
@@ -61,7 +71,7 @@ SCENARIO("controlmessage serialization", "[click]")
                     ->withAngles(angles)
                     ->withControlEvent("gripper", true)
                 ->object("robot2")
-                    ->withAngleVelocities(angleVelocities)
+                    ->withAngularVelocities(angularVelocities)
                     ->withControlEvent("gripper", false)
                     ->withControlEvent("grupper", true)
                 ->object("robot3")
@@ -73,7 +83,7 @@ SCENARIO("controlmessage serialization", "[click]")
                 REQUIRE(controlMessage->messageType() == MessageType::ControlMessageType);
                 REQUIRE(controlMessage->controlEvent("robot1", "gripper"));
                 REQUIRE_THAT(controlMessage->angles("robot1"), Equals(angles));
-                REQUIRE_THAT(controlMessage->angleVelocities("robot2"), Equals(angleVelocities));
+                REQUIRE_THAT(controlMessage->angularVelocities("robot2"), Equals(angularVelocities));
                 REQUIRE_THAT(controlMessage->torques("robot3"), Equals(torques));
 
                 string control_facit =
@@ -95,11 +105,11 @@ SCENARIO("controlmessage serialization", "[click]")
                     "objects {\n"
                     "  key: \"robot2\"\n"
                     "  value {\n"
-                    "    angleVelocities: 2\n"
-                    "    angleVelocities: 3\n"
-                    "    angleVelocities: 4\n"
-                    "    angleVelocities: 5\n"
-                    "    angleVelocities: 6\n"
+                    "    angularVelocities: 2\n"
+                    "    angularVelocities: 3\n"
+                    "    angularVelocities: 4\n"
+                    "    angularVelocities: 5\n"
+                    "    angularVelocities: 6\n"
                     "    controlEvents {\n"
                     "      key: \"gripper\"\n"
                     "      value: false\n"

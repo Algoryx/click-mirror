@@ -27,8 +27,8 @@ std::vector<double> ControlMessage::values(const std::string& objectname) const 
   return std::vector<double>(arr.begin(), arr.end());
 }
 
-std::vector<double> ControlMessage::angleVelocities(const std::string& objectname) const {
-  google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).anglevelocities();
+std::vector<double> ControlMessage::angularVelocities(const std::string& objectname) const {
+  google::protobuf::RepeatedField<double> arr = this->control_m->objects().at(objectname).angularvelocities();
   return std::vector<double>(arr.begin(), arr.end());
 }
 
@@ -41,6 +41,11 @@ bool ControlMessage::controlEvent(const std::string& objectname, std::string con
   return this->control_m->objects().at(objectname).controlevents().at(controlname);
 }
 
+
+bool ControlMessage::hasControlEvent(const std::string & objectname, std::string controlname) const {
+  return this->control_m->objects().find(objectname) != this->control_m->objects().end()
+    && this->control_m->objects().at(objectname).controlevents().find(controlname) != this->control_m->objects().at(objectname).controlevents().end();
+}
 
 MessageType ControlMessage::messageType() const {
   return static_cast<MessageType>(control_m->messagetype());

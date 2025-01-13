@@ -2,29 +2,27 @@
 
 ## Why Click?
 
-If you are using Brick to express your Robot Physics in Yaml, Click adds the low latency communication you need to let your controller control your robots in the simulation like they were real robots. Click automatically finds your robots in a Brick scene and allows controller environments to send and receive signals without forcing your controller to depend on Brick. If you want receive updates on additional objects, you add a Click configuration to Brick, pointing to which objects should be communicated.
+If you are using OpenPLX to express your Robot Physics, Click adds the low latency communication you need to let your controller control your robots in the simulation like they were real robots. Click automatically finds your robots in an OpenPLX scene and allows the controller environments to send and receive signals without forcing your controller to depend on OpenPLX. If you want to receive updates on additional objects, you add just add outputs to OpenPLX, pointing to which objects should be communicated.
 
 Click implements C++ and Python clients. Additional language support can be added using protobuf code generation tooling.
 
 ## Click parts
 
-There are currently three main parts of click
+There are currently two main parts of click
 
-- [agxclick](agxclick/README.md) - a Simulation application using pclick, AGX and agxBrick that implements Click out of the box for a Brick model containing Robot(s).
 - [click](cpp-src) - C++ click library with a democlient.
 - [pclick](python-src/README.md) - Python click library with a demo client and demo server
 
-The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without agxclick, but the real benefit of Brick integration comes with agxclick.
+The Click library implements creating, sending, receiving and interpreting messages across multiple platforms. Click can be used without OpenPLX.
 
 ## Introduction
 
-The main idea behind click is to enable a non-Brick controller talking to a Brick enabled AGX Simulation in way configurable by Brick.
-The name comes from the sound two Bricks makes when connected.
+The main idea behind click is to enable a non-OpenPLX controller talking to an OpenPLX enabled AGX Simulation in way configurable by OpenPLX.
 
 There are three main considerations
 
 1. How the controller can send controls and receive sensor values in a similar fashion regardless of environment, ie real or sim.
-2. How Brick adds sensors or topology on top of urdf, and how this is communicated to the controller.
+2. How OpenPLX adds sensors or topology on top of urdf, and how this is communicated to the controller.
 3. How to communicate controls and sensors in an effective way.
 
 The current solution is to introduce a Handshake, which enables the simulation to tell the controller what to expect in terms of how to control and what sensor data is being sent.
@@ -96,7 +94,7 @@ The HandshakeMessage contains both
 
 Using ControlType per joint is preferred, but ControlType per scene is still supported but only **when all joint input signals are the same type**
 The server can always send ValueType.Multiple as ControlType, meaning client must check the Control Type of every joint.
-The server may (for backward compatibility) send ValueType.Angle, ValueType.AngleVelocity or ValueType.Torque if all joints have that same Control Type.
+The server may (for backward compatibility) send ValueType.Angle, ValueType.AngularVelocity or ValueType.Torque1D if all joints have that same Control Type.
 
 Also see ControlMessage below!
 
@@ -106,8 +104,8 @@ The ControlMessage contains mutually exclusive
 
 - values - meaning each value may be of different type as specified in handshake
 - angles (Deprecated) - meaning all values are Angle values as specified in handshake
-- angleVelocities (Deprecated) - meaning all values are AngleVelocitiy values as specified in handshake
-- torques (Deprecated) - meaning all values are Torque values as specified in handshake
+- angularVelocities (Deprecated) - meaning all values are AngularVelocitiy1D values as specified in handshake
+- torques (Deprecated) - meaning all values are Torque1D values as specified in handshake
 
 ### Stepping the simulation
 
@@ -116,8 +114,6 @@ After that, the simulation is stepped once per message, except after a ResetMess
 
 ## Installing
 
-- Python, all platforms: Go to [agxclick](agxclick/README.md#install) for python install instructions. If you only want click and not agxclick, then do:
-
 ```bash
 pip install pclick
 ```
@@ -125,16 +121,15 @@ pip install pclick
 - Linux Ubuntu 20.04 C++ libraries and binaries (only available to registered users at git.algoryx.se for now):
 
 ```bash
-wget --header "DEPLOY-TOKEN: <SECRET>" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.2.2/click-shared-focal-amd64.deb"
+wget --header "DEPLOY-TOKEN: <SECRET>" -O /tmp/click-shared-focal-amd64.deb "https://git.algoryx.se/api/v4/projects/algoryx%2Fexternal%2Fclick/packages/generic/click/0.5.0/click-shared-focal-amd64.deb"
 apt-get install -yf /tmp/click-shared-focal-amd64.deb
 ```
 
 - Windows C++ libraries and binaries (only available to registered users at git.algoryx.se for now)
-  - [Download x64 zip](https://git.algoryx.se/api/v4/projects/262/packages/generic/click/0.2.2/click-x64-0.2.2.zip)
+  - [Download x64 zip](https://git.algoryx.se/api/v4/projects/262/packages/generic/click/0.5.0/click-x64-0.5.0.zip)
 
 ## Running Click democlient and demoserver
 
-**Go to [agxclick](agxclick/README.md#Usage%20Examples) for brick model examples.**  
 After installing (or building from source as specified below), run these commands in separate prompts:
 
 ```bash
@@ -202,8 +197,6 @@ rm -rf * .github.conan.cmake
 
 ### Build and test python pclick from source
 
-NOTE: Read [agxclick](agxclick/README.md) to build and test agxclick
-
 ```bash
 # Install click locally
 pip3 install -e python-src
@@ -254,16 +247,16 @@ Release tags are semver only, eg 0.1.2.
 
 Steps:
 
-1. Update version in agxclick/setup.py, python-src/setup.py, README.md. Suggestion: Search and Replace old version for new.
+1. Update version in files below. Suggestion: Search and Replace old version for new.
+    - README.md
+    - cpp-src/CMakeLists.txt
+    - cpp-src/conanfile.py
+    - cpp-src/click/conan/CMakeLists.txt
+    - python-src/pyproject.toml
 2. Update releaselog.txt
 3. Push to branch and do MR
-4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.2.2; git push origin 0.2.2`.
+4. When MR merged, [create a tag in web IDE](https://git.algoryx.se/algoryx/external/click/-/tags/new) or tag from main and push, eg `git tag 0.5.0; git push origin 0.5.0`.
 5. When built, binary artifacts:s are available in the [Package Registry](https://git.algoryx.se/algoryx/external/click/-/packages) and python artifacts at [pypi.org](pypi.org).
-
-## Build pipeline dependencies - updating agxBrick version
-
-agxclick tests uses the generic Docker Image `registry.algoryx.se/algoryx/external/agx-docker/agxbrick-minified:latest`.
-Therefore when raising minimum required agxBrick version, [agxBrick needs to be updated in the upstream](https://git.algoryx.se/algoryx/external/agx-docker) as well in order for tests to run.
 
 ## License
 

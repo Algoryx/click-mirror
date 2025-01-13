@@ -15,7 +15,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
 }
 
 inline vector<double> angles = double_vector_from({1, 2});
-inline vector<double> angleVelocities = double_vector_from({2, 3, 4, 5, 6});
+inline vector<double> angularVelocities = double_vector_from({2, 3, 4, 5, 6});
 inline vector<double> torques = double_vector_from({3, 4, 5, 6, 7});
 
 std::chrono::microseconds recv_total;
@@ -112,13 +112,14 @@ int main(int argc, char *argv[])
     reply = sendReceiveBlocking(client, *message);
 
     // Controlmessage
-    message = ControlMessageBuilderImpl::builder()
+    auto builder = ControlMessageBuilderImpl::builder();
+    click::AddControlEventBuilder * partial_builder = builder
         ->object("robot1")
             ->withAngles(angles)
-            ->withControlEvent("gripper", true)
-        ->object("robot2")
-            ->withAngles(angles)
-        ->build();
+            ->withControlEvent("gripper", true);
+    partial_builder = partial_builder->object("robot2")
+            ->withAngles(angles);
+    message = partial_builder->build();
 
     cout << "Sending "<< n << " messages" << endl;
     auto start = std::chrono::system_clock::now();

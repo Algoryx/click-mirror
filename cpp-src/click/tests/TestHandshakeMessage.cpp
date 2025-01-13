@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 #include <click/HandshakeMessage.h>
 #include <click/HandshakeMessageBuilder.h>
 #include <click/MessageSerializer.h>
@@ -14,7 +14,7 @@ inline vector<double> double_vector_from(initializer_list<double> doubles)
     return vector<double>(doubles);
 }
 
-// TODO: Implement this fully, only build() supported yet
+
 SCENARIO("handshake serialization", "[click]")
 {
     GIVEN("A handshake message")
@@ -22,14 +22,16 @@ SCENARIO("handshake serialization", "[click]")
        WHEN("it has been constructed")
         {
             std::vector<std::string> controls_in_order = {"joint1", "joint2"};
-            std::vector<click::ValueType> control_types_in_order = {click::ValueType::Angle, click::ValueType::AngularVelocity};
-            unique_ptr<HandshakeMessage> message = 
+            std::vector<click::ValueType> control_types_in_order = {click::ValueType::Angle, click::ValueType::AngularVelocity1D, click::ValueType::Force1D, click::ValueType::Torque1D};
+            unique_ptr<HandshakeMessage> message =
                 HandshakeMessageBuilderImpl::builder()
                 ->withSimulationSettings({1.0})
                 ->withControlType(click::ValueType::Multiple)
                 ->withRobot("robot1")
+                    // Inputs/Outputs:
                     ->withControlsInOrder(controls_in_order)
                     ->withControlTypesInOrder(control_types_in_order)
+                    // Outputs:
                     ->withJointSensorsInOrder(controls_in_order)
                     ->withJointSensors(control_types_in_order)
                     ->withSensor("sensor1")
@@ -41,7 +43,7 @@ SCENARIO("handshake serialization", "[click]")
                     ->withObjectSensors(control_types_in_order)
                 ->withRobot("robot2")
                 ->build();
-            
+
             THEN("it should match facit")
             {
                 std::string handshake_facit = R"(messageType: HandshakeMessageType
@@ -53,7 +55,9 @@ objects {
     controlsInOrder: "joint1"
     controlsInOrder: "joint2"
     jointSensors: Angle
-    jointSensors: AngleVelocity
+    jointSensors: AngularVelocity1D
+    jointSensors: Force1D
+    jointSensors: Torque1D
     controlEvents {
       key: "gripper1"
       value: Activated
@@ -66,22 +70,30 @@ objects {
       key: "sensor1"
       value {
         types: Angle
-        types: AngleVelocity
+        types: AngularVelocity1D
+        types: Force1D
+        types: Torque1D
       }
     }
     sensors {
       key: "sensor2"
       value {
         types: Angle
-        types: AngleVelocity
+        types: AngularVelocity1D
+        types: Force1D
+        types: Torque1D
       }
     }
     objectSensors: Angle
-    objectSensors: AngleVelocity
+    objectSensors: AngularVelocity1D
+    objectSensors: Force1D
+    objectSensors: Torque1D
     jointSensorsInOrder: "joint1"
     jointSensorsInOrder: "joint2"
     controlTypesInOrder: Angle
-    controlTypesInOrder: AngleVelocity
+    controlTypesInOrder: AngularVelocity1D
+    controlTypesInOrder: Force1D
+    controlTypesInOrder: Torque1D
   }
 }
 objects {

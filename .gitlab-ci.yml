@@ -49,32 +49,6 @@ build-docker-ci:
       - .gitlab-ci.yml
       - docker/Dockerfile.CI
 
-build-docker-ci-agx:
-  extends: .build-docker
-  image: docker:latest
-  stage: prebuild
-  script:
-    - cd docker
-    - export DOCKER_FILE=Dockerfile.CI-agx
-    - export IMAGE_NAME=docker-ci-agx
-    - export DOCKER_IMAGE_TAG=${CI_IMAGE_TAG}
-    - *build-and-push
-  only:
-    changes:
-      - .gitlab-ci.yml
-      - docker/Dockerfile.CI-agx
-
-
-# The license is copied from https://git.algoryx.se/algoryx/agx/-/blob/master/data/cfg/agx.lic to secret build variable agx_lic
-# If this job fails that means the license must be updated
-test-license:
-  extends: .run-in-docker
-  stage: prebuild
-  image: $CI_REGISTRY/algoryx/external/agx-docker/agxbrick-minified:latest
-  script:
-    - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
-    - agxViewer --agxOnly --stopAfterFrame 1
-
 
 build-cpp-lib-linux:
   extends: .run-in-docker
@@ -176,20 +150,6 @@ test-python-lib:
     reports:
       junit: pclick-junit.xml
 
-test-agxclick:
-  extends: .run-in-docker
-  stage: test
-  image: $CI_REGISTRY_IMAGE/docker-ci-agx:${CI_IMAGE_TAG}
-  script:
-    - cp ${agx_lic} ${AGX_DATA_DIR}/cfg/agx.lic
-    - cd agxclick
-    - (poetry add ../python-src && poetry install)
-    - poetry run pytest --junitxml=agxclick-junit.xml
-  artifacts:
-    when: always
-    reports:
-      junit: agxclick/agxclick-junit.xml
-
 .publish-python-lib:
   extends: .run-in-docker
   stage: publish
@@ -205,18 +165,13 @@ publish-pclick:
   variables:
     PYTHONDIR: python-src
 
-publish-agxclick:
-  extends: .publish-python-lib
-  variables:
-    PYTHONDIR: agxclick
-
 .build-test-cpp-lib-windows:
   stage: build
   tags:
     - windows
     - x64
     - vs2019
-  variables: 
+  variables:
     # Use project specific conan directory to cache between builds but not between projects
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
@@ -277,7 +232,7 @@ build-test-x64-cpp-lib-windows:
     - PACKAGE_VERSION=$CI_COMMIT_TAG
     - PACKAGE_NAME=$PACKAGE_UPLOAD_NAME-$PACKAGE_VERSION.zip
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
-    - zip -r $PACKAGE_NAME oos doc agxclick/examples agxclick/testdata LICENSE agxclick/README.md README.md
+    - zip -r $PACKAGE_NAME oos doc LICENSE README.md
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_NAME}"'
   only:

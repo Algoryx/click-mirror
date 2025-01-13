@@ -1,3 +1,43 @@
+0.5.0
+- Remove agxclick
+- Bump pyzmq to 26.2.0
+
+0.4.1
+- Bump protobuf to 5.27.0
+
+0.4.0
+- Renaming
+  - AngularVelocity --> AngularVelocity1D
+  - Torque --> Torque1D
+  - Acceleration --> Acceleration3D
+  - Force --> Force3D
+  - AngularAcceleration --> AngularAcceleration3D
+  - DirectionalVelocity --> Velocity3D
+  - DirectionalAngularVelocity --> AngularVelocity3D
+  - DirectionalTorque --> Torque3D
+- Introducing
+  - Force1D
+
+0.3.2
+- Bump Python protobuf to 5.26.1
+- Add support for DirectionalVelocity and DirectionalAngularVelocity
+
+0.3.1
+- Introduce ControlMessage::hasControlEvent
+
+0.3.0
+- Depends on agxBrick 0.6.0 and therefore AGX 2.37.1.0
+
+0.2.5
+- Python democlient makes sure message sent when sending errormessage
+
+0.2.4
+- Python democlient does not wait for reply after sending errormessage.
+
+0.2.3
+- Adds simulated time to C++ SensorMessageBuilder
+- Opens upper version for pclick
+
 0.2.2
 - Adds HandshakeBuilder for C++
 
@@ -43,7 +83,7 @@
 
 0.1.34
 - Add terminate() to Client and documentation for when "WSASTARTUP not yet performed" assertion occurs.
-- Add --addr flag to ClickApplication to enable using ipc or different port than default one(5555). 
+- Add --addr flag to ClickApplication to enable using ipc or different port than default one(5555).
 
 0.1.33
 - Add retrieval of simulated time to SensorMessage API

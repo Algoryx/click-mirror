@@ -2,7 +2,6 @@
     "cmake.sourceDirectory": "${workspaceFolder}/cpp-src",
     "python.analysis.extraPaths": [
         "./python-src/src",
-        "./agxclick/src"
     ],
     "files.insertFinalNewline": true,
     "python.linting.pycodestyleEnabled": true,
@@ -15,7 +14,6 @@
     ],
     "python.testing.pytestArgs": [
         "python-src/tests",
-        "agxclick/tests"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
@@ -118,6 +116,8 @@
         "forward_list": "cpp",
         "numbers": "cpp",
         "span": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "__memory": "cpp",
+        "format": "cpp"
     }
 }

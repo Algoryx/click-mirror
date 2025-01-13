@@ -13,17 +13,20 @@ enum MessageType {
 }
 
 enum ValueType {
-  Angle = 0;               // radians
-  AngleVelocity = 1;       // radians/sec
-  Torque = 2;              // Nm
-  Position = 3;            // meters vec3
-  RPY = 4;                 // radians vec3
-  Activated = 5;           // True/False
-  Acceleration = 6;        // m/s2   vec3
-  Force = 7;               // Newton vec3
-  DirectionalTorque = 8;   // Nm     vec3
-  AngularAcceleration = 9; // rad/s2 vec3
-  Multiple = 15;           // Multiple ValueType:s
+  Angle = 0;                       // radians
+  AngularVelocity1D = 1;           // radians/sec
+  Torque1D = 2;                    // Nm
+  Position = 3;                    // meters vec3
+  RPY = 4;                         // radians vec3
+  Activated = 5;                   // True/False
+  Acceleration3D = 6;              // m/s2   vec3
+  Force1D = 12;                    // Newton
+  Force3D = 7;                     // Newton vec3
+  Torque3D = 8;                    // Nm     vec3
+  AngularAcceleration3D = 9;       // rad/s2 vec3
+  Velocity3D = 10;                 // m/s    vec3
+  AngularVelocity3D = 11;          // rad/s2 vec3
+  Multiple = 15;                   // Multiple ValueType:s
 }
 
 message Message {
@@ -58,14 +61,14 @@ message SensorRequestMessage {
 - Objects:
   - panda_2
     - Joints
-      - controlType: angles/velocities/torques          // one only - defined in brick
+      - controlType: angles/velocities/torques          // one only - defined in OpenPLX
       - controlsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
       - jointSensorsInOrder: joint1, joint2, ..., joint7    // Defined order of joints in subsequent messages
       - jointSensors: Angle, Velocity, Torque
       - controlEvents:
         - gripper -> Activated
-      - Sensors: 
-        - external --> 
+      - Sensors:
+        - external -->
           - Sensors: Force, AngularAcceleration
   - panda_tool
     ...
@@ -81,7 +84,7 @@ message HandshakeMessage {
   message Sensors {
     repeated ValueType types = 1;
   }
-    
+
   message Object {
     repeated string controlsInOrder = 1;       // The controls (joints) in the order they are expected in every ControlMessage
     repeated ValueType controlTypesInOrder = 8;   // The controlTypes of each control in controlsInorder in the same order
@@ -97,7 +100,7 @@ message HandshakeMessage {
   message SimulationSettings {
     double timeStep = 1;                       // Timestep of the simulation
   };
-  
+
   ValueType controlType = 3;                  // Which controltype is going to be used for joints, ie angles/velocities/torques. Deprecated - use controlTypesInOrder
   map<string, Object> objects = 4;            // Key is name of object/robot
   SimulationSettings simSettings = 5;
@@ -115,16 +118,16 @@ message HandshakeMessage {
 */
 
 message ControlMessage {
-  MessageType messageType = 1;  
+  MessageType messageType = 1;
 
-  message Object { 
+  message Object {
     // - not clear by spec that is mutually exclusive
     // - needs controlEvent type anyway probably(?)
     // + can copy vectors more effectively, ie together with extend instead of individually
     // + fewer bytes in message
     // NOTE: Next four repeats are mutually exclusive!
     repeated double angles = 1;            // Present in every ControlMessage. Deprecated - use values.
-    repeated double angleVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
+    repeated double angularVelocities = 2;   // Present in every ControlMessage. Deprecated - use values.
     repeated double torques = 3;           // Present in every ControlMessage. Deprecated - use values.
     repeated double values = 5;            // Present in every ControlMessage. Must be correct type according to handshake.
     map<string, bool> controlEvents = 4;   // Optionals, if missing, keep same value as before
@@ -138,7 +141,7 @@ SensorMessage example:
 
 - panda_2
   - angleSensors [1,2,3,4] size = #joints
-  - angleVelocitySensors ...
+  - angularVelocitySensors ...
   - torqueSensors ...
   ...
 
@@ -148,7 +151,7 @@ SensorMessage example:
     - external_imu --> Sensors
     # not in urdf file, not officically supported
     # controller (mc-rtc) typically has additional file
-    # --> add in Brick, send it in handshake
+    # --> add in OpenPLX, send it in handshake
   ...
 - box
   - objectSensors
@@ -163,7 +166,7 @@ message SensorMessage {
   message Vec3 {
     repeated double arr = 1;
   }
-  
+
   // This is 1 byte longer than Vec3
   // message XYZ {
   //   double x = 1;
@@ -174,26 +177,29 @@ message SensorMessage {
   message Sensor {
     oneof value {
       double angle = 1;
-      double angleVelocity = 2;
-      double torque = 3;
+      double angularVelocity1d = 2;
+      double torque1d = 3;
       Vec3 position = 4;
       Vec3 rpy = 5;
       bool activated = 6;
-      Vec3 acceleration = 7;
-      Vec3 force = 8;
-      Vec3 directionalTorque = 9;
-      Vec3 angularAcceleration = 10;
+      Vec3 acceleration3d = 7;
+      Vec3 force3d = 8;
+      Vec3 torque3d = 9;
+      Vec3 angularAcceleration3d = 10;
+      Vec3 velocity3d = 12;
+      Vec3 angularVelocity3d = 13;
+      double force1d = 14;
     }
   };
 
   message Sensors {
     repeated Sensor sensor = 1;
   }
-  
+
   message Object {
     // Sensors on joints, each present if defined in jointSensors handshake, order and size from jointSensorsInOrder in handshake.
     repeated double angleSensors = 1;
-    repeated double angleVelocitySensors = 2;
+    repeated double angularVelocitySensors = 2;
     repeated double torqueSensors = 3;
     repeated Vec3 forceSensors = 5;
     // Sensors on the object, order of ValueType defined in handshake.

@@ -4,7 +4,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.2.2"
+    version = "0.5.0"
 
     # Optional metadata
     license = "Apache License Version 2.0"
@@ -33,7 +33,7 @@ class ClickConan(ConanFile):
         self.copy("Messaging.pb.cc", src="../../oos/protobuf-gen/", dst="src", keep_path=False)
 
     def requirements(self):
-        self.requires("protobuf/3.21.9", private=False)
+        self.requires("protobuf/5.27.0", private=False)
         self.requires("zmqpp/4.2.0", private=False)
 
     def config_options(self):
