@@ -182,6 +182,10 @@ publish-pclick:
     - cmake -D CMAKE_BUILD_TYPE=Release .
     - cmake --build . --target INSTALL --config Release
     - bin/click-tests --reporter junit --out win-catch2-junit.xml
+    # Make sure conan create builds
+    - cd ../cpp-src/click
+    - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=16
+
   artifacts:
     paths:
       - oos/install

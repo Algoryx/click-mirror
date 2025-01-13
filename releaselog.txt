@@ -1,3 +1,7 @@
+0.5.1
+- Use libsodium/1.0.18 on Macos
+- Use default cmake generator on Windows
+
 0.5.0
 - Remove agxclick
 - Bump pyzmq to 26.2.0
