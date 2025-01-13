@@ -17,7 +17,7 @@ The Click library implements creating, sending, receiving and interpreting messa
 
 ## Introduction
 
-The main idea behind click is to enable a non-OpenPLX controller talking to a OpenPLX enabled AGX Simulation in way configurable by OpenPLX.
+The main idea behind click is to enable a non-OpenPLX controller talking to an OpenPLX enabled AGX Simulation in way configurable by OpenPLX.
 
 There are three main considerations
 
