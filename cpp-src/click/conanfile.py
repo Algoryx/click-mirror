@@ -1,3 +1,4 @@
+import sys
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 
@@ -34,6 +35,9 @@ class ClickConan(ConanFile):
 
     def requirements(self):
         self.requires("protobuf/5.27.0", private=False)
+        if sys.platform == 'darwin':
+            # Hardcode libsodium version used by click->zmq as workaround for clang16 not compiling libsodium as of 2024-09-17
+            self.requires("libsodium/1.0.18", private=False)
         self.requires("zmqpp/4.2.0", private=False)
 
     def config_options(self):
