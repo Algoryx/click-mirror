@@ -175,7 +175,6 @@ publish-pclick:
     # Use project specific conan directory to cache between builds but not between projects
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
-    - 'echo CONAN_USER_HOME: ${CONAN_USER_HOME}'
     - mkdir oos
     - cd oos
     - cmake -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=./install -G "Visual Studio 16 2019" -A $TARGET_ARCH $EXTRA_PARAMS ../cpp-src

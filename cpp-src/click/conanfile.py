@@ -48,7 +48,9 @@ class ClickConan(ConanFile):
         cmake_layout(self)
 
     def generate(self):
-        tc = CMakeToolchain(self, generator="Ninja")
+        tc = CMakeToolchain(self)
+        if sys.platform in ('darwin', 'linux'):
+            tc.generator="Ninja"
         tc.generate()
 
     def build(self):

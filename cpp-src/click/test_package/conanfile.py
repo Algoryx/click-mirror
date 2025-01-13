@@ -1,7 +1,8 @@
 import os
+import sys
 
 from conan import ConanFile
-from conan.tools.cmake import CMake, cmake_layout
+from conan.tools.cmake import CMake, cmake_layout, CMakeToolchain
 from conan.tools.build import cross_building
 
 
@@ -14,6 +15,12 @@ class ClickTestConan(ConanFile):
     default_options = {"shared": False, "fPIC": True}
     apply_env = False
     test_type = "explicit"
+
+    def generate(self):
+        tc = CMakeToolchain(self)
+        if sys.platform in ('darwin', 'linux'):
+            tc.generator="Ninja"
+        tc.generate()
 
     def requirements(self):
         self.requires(self.tested_reference_str)
