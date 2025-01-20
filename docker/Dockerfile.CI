@@ -2,8 +2,9 @@
 # When changing this file, you also need to update CI_IMAGE_TAG in .gitlab-ci.yml to isolate the
 # changes to the current branch, and have it follow the merge into main.
 # Without it, the different branches will create different CI images affecting all builds.
-ARG UBUNTU_VERSION=20.04
+ARG UBUNTU_VERSION
 FROM ubuntu:${UBUNTU_VERSION}
+ARG UBUNTU_VERSION
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -qy \
