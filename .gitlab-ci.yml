@@ -34,21 +34,16 @@ stages:
   - docker push $DOCKER_IMAGE
 
 
-build-docker-ci:
+build-docker-ci-20.04:
   extends: .build-docker
   image: docker:latest
   stage: prebuild
+  variables:
+    UBUNTU_VERSION: 20.04
   script:
     - cd docker
     - export DOCKER_FILE=Dockerfile.CI
     - export IMAGE_NAME=docker-ci
-    - export UBUNTU_VERSION=20.04
-    - export DOCKER_IMAGE_TAG=${UBUNTU_VERSION}_${CI_IMAGE_TAG}
-    - *build-and-push
-    - export UBUNTU_VERSION=22.04
-    - export DOCKER_IMAGE_TAG=${UBUNTU_VERSION}_${CI_IMAGE_TAG}
-    - *build-and-push
-    - export UBUNTU_VERSION=24.04
     - export DOCKER_IMAGE_TAG=${UBUNTU_VERSION}_${CI_IMAGE_TAG}
     - *build-and-push
   only:
@@ -56,6 +51,15 @@ build-docker-ci:
       - .gitlab-ci.yml
       - docker/Dockerfile.CI
 
+build-docker-ci-22.04:
+  extends: build-docker-ci-20.04
+  variables:
+    UBUNTU_VERSION: 22.04
+
+build-docker-ci-24.04:
+  extends: build-docker-ci-20.04
+  variables:
+    UBUNTU_VERSION: 24.04
 
 build-cpp-lib-linux-20.04:
   extends: .run-in-docker
