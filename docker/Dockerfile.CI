@@ -14,9 +14,11 @@ RUN apt-get update && \
 # Store github host key so we can easily push there
 RUN mkdir /root/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
-# https://apt.kitware.com/ is to enable using newer cmake versions (20.04 version is too old for latest protobuf)
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null && \
-  echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+RUN if [ "$UBUNTU_VERSION" = "20.04" ]; then \
+      # Enable using newer cmake versions (20.04 default cmake version is too old for latest protobuf)
+      wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null && \
+      echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null; \
+    fi
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -qy \
@@ -32,4 +34,3 @@ VOLUME [ "/root/.conan/data" ]
 RUN conan remote add algoryx https://conan.algoryx.se --insert
 RUN conan profile new --detect default
 RUN conan profile update settings.compiler.libcxx=libstdc++11 default
-
