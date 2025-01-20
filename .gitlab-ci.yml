@@ -48,7 +48,7 @@ build-docker-ci-20.04:
     - *build-and-push
   only:
     changes:
-      - .gitlab-ci.yml
+      # - .gitlab-ci.yml
       - docker/Dockerfile.CI
 
 build-docker-ci-22.04:
@@ -173,7 +173,7 @@ test-shared-cpp-lib-linux-20.04:
     - conan profile update settings.os.version=11.0 default
     - conan remote add algoryx https://conan.algoryx.se --force
 
-mac-arm-conan-build:
+mac-arm-conan-create:
   stage: build
   extends: .conan-on-mac
   tags:
@@ -182,10 +182,29 @@ mac-arm-conan-build:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default
 
-intel-arm-conan-build:
-  extends: mac-arm-conan-build
+intel-arm-conan-create:
+  extends: mac-arm-conan-create
   tags:
     - mac-intel
+
+win-vs2019-conan-create:
+  stage: build
+  tags:
+    - windows
+    - x64
+    - vs2019
+  variables:
+    # Use project specific conan directory to cache between builds but not between projects
+    CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+  script:
+    - cd cpp-src/click
+    - conan create . algoryx/stable -pr:b=default
+
+win-vs2022-conan-create:
+  extends: win-vs2019-conan-create
+  tags:
+    - vs2022
+
 
 # End of Conan builds
 
