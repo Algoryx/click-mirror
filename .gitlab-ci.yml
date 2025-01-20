@@ -140,7 +140,7 @@ test-shared-cpp-lib-linux-20.04:
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default
+    - conan create . algoryx/stable -pr:b=default --build=missing
   except:
     - tags
 
@@ -180,7 +180,7 @@ mac-arm-conan-create:
     - mac-arm
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default
+    - conan create . algoryx/stable -pr:b=default --build=missing
 
 intel-arm-conan-create:
   extends: mac-arm-conan-create
@@ -198,7 +198,7 @@ win-vs2019-conan-create:
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default
+    - conan create . algoryx/stable -pr:b=default --build=missing
 
 win-vs2022-conan-create:
   extends: win-vs2019-conan-create
