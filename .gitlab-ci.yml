@@ -158,7 +158,7 @@ publish-cpp-lib-linux:
   variables:
     PACKAGE_UPLOAD_NAME: click-static-focal-amd64.deb
   needs:
-    - job: build-cpp-lib-linux
+    - job: build-cpp-lib-linux-20.04
       artifacts: true
 
 publish-shared-cpp-lib-linux:
@@ -166,7 +166,7 @@ publish-shared-cpp-lib-linux:
   variables:
     PACKAGE_UPLOAD_NAME: click-shared-focal-amd64.deb
   needs:
-    - job: build-shared-cpp-lib-linux
+    - job: build-shared-cpp-lib-linux-20.04
       artifacts: true
 
 test-python-lib:
