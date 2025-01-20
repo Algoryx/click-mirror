@@ -132,6 +132,8 @@ test-shared-cpp-lib-linux-20.04:
   only:
     - tags
 
+# Conan builds
+
 .conan-create-ubuntu:
   extends: .run-in-docker
   stage: build
@@ -156,6 +158,36 @@ test-shared-cpp-lib-linux-20.04:
   extends: .conan-create-ubuntu
   variables:
     UBUNTU_VERSION: 24.04
+
+.conan-on-mac:
+  variables:
+    CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+  before_script:
+    - conan profile show default || conan profile new --detect default
+    - conan profile update env.CC="ccache clang" default
+    - conan profile update env.CXX="ccache clang++" default
+    - conan profile update settings.compiler=apple-clang default
+    - conan profile update settings.compiler.version=13 default
+    - conan profile update settings.compiler.libcxx=libc++ default
+    # We support 11.0+
+    - conan profile update settings.os.version=11.0 default
+    - conan remote add algoryx https://conan.algoryx.se --force
+
+mac-arm-conan-build:
+  stage: build
+  extends: .conan-on-mac
+  tags:
+    - mac-arm
+  script:
+    - cd cpp-src/click
+    - conan create . algoryx/stable -pr:b=default
+
+intel-arm-conan-build:
+  extends: mac-arm-conan-build
+  tags:
+    - mac-intel
+
+# End of Conan builds
 
 publish-cpp-lib-linux:
   extends: .publish-cpp-lib-linux
@@ -235,32 +267,6 @@ build-test-x64-cpp-lib-windows:
   variables:
     TARGET_ARCH: "x64"
     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
-
-# ABB No longer needs win32, so disable and remove after 2024-06
-# build-test-static-Win32-cpp-lib-windows:
-#   tags:
-#     - win32
-#     - vs2019
-#   extends: .build-test-cpp-lib-windows
-#   variables:
-#     TARGET_ARCH: "Win32"
-
-# build-test-dynamic-Win32-cpp-lib-windows:
-#   tags:
-#     - win32
-#     - vs2019
-#   extends: .build-test-cpp-lib-windows
-#   variables:
-#     TARGET_ARCH: "Win32"
-#     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
-
-# publish-dynamic-Win32-cpp-lib-windows:
-#   extends: .publish-cpp-lib-windows
-#   variables:
-#     PACKAGE_UPLOAD_NAME: click-win32
-#   needs:
-#     - job: build-test-dynamic-Win32-cpp-lib-windows
-#       artifacts: true
 
 .publish-cpp-lib-windows:
   extends: .run-in-docker
