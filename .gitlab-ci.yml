@@ -105,7 +105,7 @@ test-shared-cpp-lib-linux-20.04:
   variables:
     LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/oos/install/lib"
   needs:
-    - job: build-shared-cpp-lib-linux
+    - job: build-shared-cpp-lib-linux-20.04
       artifacts: true
 
 .publish-cpp-lib-linux:
