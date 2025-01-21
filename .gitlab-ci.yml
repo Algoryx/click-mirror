@@ -139,8 +139,6 @@ test-shared-cpp-lib-linux-20.04:
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
   script:
-    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -G Ninja cpp-src
-    - cmake --build oos --target clickprotobuf --config Release
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
   except:
@@ -181,8 +179,6 @@ mac-arm-conan1-create:
   tags:
     - mac-arm
   script:
-    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -G Ninja cpp-src
-    - cmake --build oos --target clickprotobuf --config Release
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
 
@@ -203,8 +199,6 @@ win-vs2019-conan1-create:
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: "16"
   script:
-    - cmake -B oos -D CMAKE_BUILD_TYPE=Release -G "${GENERATOR}" cpp-src
-    - cmake --build oos --target clickprotobuf --config Release
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
