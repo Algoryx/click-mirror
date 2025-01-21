@@ -1,44 +1,37 @@
-import sys
 from conan import ConanFile
-from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
-
+from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
+from conan.tools.files import copy
 
 class ClickConan(ConanFile):
     name = "click"
     version = "0.5.1"
 
-    # Optional metadata
-    license = "Apache License Version 2.0"
+    license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
     url = "https://github.com/algoryx/click-mirror"
     description = "Click adds the low latency communication you need to let your controller control your robots in an Algoryx Dynamics simulation like if they were real robots."
     topics = ("networking", "robotics", "simulation")
 
-    # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
-    # Should be enabled with -o:b shared=True, but it isn't - must set default_options.shared to True so skipping for now
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    generators = "cmake_find_package"
-
     def export_sources(self):
-        # Sources are located in the same place as this recipe, copy them to the recipe
-        self.copy("CMakeLists.txt", src="conan", keep_path=False)
-        self.copy("ClickConfig.cmake")
-        self.copy("shared_conf/*")
-        self.copy("src/*")
-        self.copy("include/*")
+        copy(self, "CMakeLists.txt", src="conan", dst=self.export_sources_folder)
+        copy(self, "ClickConfig.cmake", src=".", dst=self.export_sources_folder)
+        copy(self, "shared_conf/*", src=".", dst=self.export_sources_folder)
+        copy(self, "src/*", src=".", dst=self.export_sources_folder)
+        copy(self, "include/*", src=".", dst=self.export_sources_folder)
         # For now, we copy the generated protobuf sources from oos directory - should be it's own recipe later
-        self.copy("Messaging.pb.h", src="../../oos/protobuf-gen/", dst="include", keep_path=False)
-        self.copy("Messaging.pb.cc", src="../../oos/protobuf-gen/", dst="src", keep_path=False)
+        copy(self, "Messaging.pb.h", src="../../oos/protobuf-gen/", dst=f"{self.export_sources_folder}/include", keep_path=False)
+        copy(self, "Messaging.pb.cc", src="../../oos/protobuf-gen/", dst=f"{self.export_sources_folder}/src", keep_path=False)
 
     def requirements(self):
-        self.requires("protobuf/5.27.0", private=False)
-        if sys.platform == 'darwin':
+        self.requires("protobuf/5.27.0", visible=True)
+        if self.settings.os == "Macos":
             # Hardcode libsodium version used by click->zmq as workaround for clang16 not compiling libsodium as of 2024-09-17
-            self.requires("libsodium/1.0.18", private=False)
-        self.requires("zmqpp/4.2.0", private=False)
+            self.requires("libsodium/1.0.18", override=True)
+        self.requires("zmqpp/4.2.0", visible=True)
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -49,9 +42,12 @@ class ClickConan(ConanFile):
 
     def generate(self):
         tc = CMakeToolchain(self)
-        if sys.platform in ('darwin', 'linux'):
-            tc.generator="Ninja"
+        if self.settings.os in ("Macos", "Linux"):
+            tc.generator = "Ninja"
         tc.generate()
+
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def build(self):
         cmake = CMake(self)
@@ -63,7 +59,7 @@ class ClickConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        postfix = ""
-        if self.settings.build_type == "Debug":
-            postfix += "-d"
+        postfix = "_d" if self.settings.build_type == "Debug" else ""
         self.cpp_info.libs = ["click" + postfix]
+        self.cpp_info.includedirs = ["include"]
+        self.cpp_info.libdirs = ["lib"]

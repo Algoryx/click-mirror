@@ -134,7 +134,7 @@ test-shared-cpp-lib-linux-20.04:
 
 # Conan builds
 
-.conan-create-ubuntu:
+.conan1-create-ubuntu:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
@@ -146,18 +146,18 @@ test-shared-cpp-lib-linux-20.04:
   except:
     - tags
 
-20.04-conan-create:
-  extends: .conan-create-ubuntu
+20.04-conan1-create:
+  extends: .conan1-create-ubuntu
   variables:
     UBUNTU_VERSION: 20.04
 
-22.04-conan-create:
-  extends: .conan-create-ubuntu
+22.04-conan1-create:
+  extends: .conan1-create-ubuntu
   variables:
     UBUNTU_VERSION: 22.04
 
-24.04-conan-create:
-  extends: .conan-create-ubuntu
+24.04-conan1-create:
+  extends: .conan1-create-ubuntu
   variables:
     UBUNTU_VERSION: 24.04
 
@@ -175,7 +175,7 @@ test-shared-cpp-lib-linux-20.04:
     - conan profile update settings.os.version=11.0 default
     - conan remote add algoryx https://conan.algoryx.se --force
 
-mac-arm-conan-create:
+mac-arm-conan1-create:
   stage: build
   extends: .conan-on-mac
   tags:
@@ -186,12 +186,12 @@ mac-arm-conan-create:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
 
-intel-arm-conan-create:
-  extends: mac-arm-conan-create
+intel-arm-conan1-create:
+  extends: mac-arm-conan1-create
   tags:
     - mac-intel
 
-win-vs2019-conan-create:
+win-vs2019-conan1-create:
   stage: build
   tags:
     - windows
@@ -208,8 +208,8 @@ win-vs2019-conan-create:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
-win-vs2022-conan-create:
-  extends: win-vs2019-conan-create
+win-vs2022-conan1-create:
+  extends: win-vs2019-conan1-create
   variables:
     # Use project specific conan directory to cache between builds but not between projects
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
