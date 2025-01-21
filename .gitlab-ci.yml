@@ -255,7 +255,7 @@ win-vs2022-conan1-create:
 
 .conan2-on-mac:
   variables:
-    CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   before_script:
     - python3 -m venv venv
     - source venv/bin/activate
@@ -295,19 +295,15 @@ win-vs2019-conan2-create:
     - vs2019
   variables:
     # Use project specific conan directory to cache between builds but not between projects
-    CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: "16"
   script:
     - python -m venv venv
-    - |
-      call venv/Scripts/activate
-      set CONAN_USER_HOME=${CONAN_USER_HOME}
-      set GENERATOR=${GENERATOR}
-      set COMPILER_VERSION=${COMPILER_VERSION}
+    - .\venv\Scripts\activate
     - pip install conan>=2
     - conan --version
-    - echo ${CONAN_USER_HOME}
+    - echo ${CONAN_HOME}
     - conan profile detect --force
     - cmake -B oos -D CMAKE_BUILD_TYPE=Release -G "${GENERATOR}" cpp-src
     - cmake --build oos --target clickprotobuf --config Release
@@ -318,7 +314,7 @@ win-vs2022-conan2-create:
   extends: win-vs2019-conan2-create
   variables:
     # Use project specific conan directory to cache between builds but not between projects
-    CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
     GENERATOR: "Visual Studio 17 2022"
     COMPILER_VERSION: "17"
   tags:
