@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "conan2"
+version = "0.0.1"
+description = "Access to conan 2"
+authors = ["Algoryx Simulation <contact@algoryx.se>"]
+license = "Apache-2.0"
+repository = "https://github.com/algoryx/click-mirror"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+conan = ">=2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
