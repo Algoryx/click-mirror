@@ -226,13 +226,12 @@ win-vs2022-conan1-create:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
-  script:
+  before_script:
     - python3 -m venv venv
     - source venv/bin/activate
     - pip3 install conan>=2
     - conan profile show || conan profile detect --force
-    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -G Ninja cpp-src
-    - cmake --build oos --target clickprotobuf --config Release
+  script:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
   except:
@@ -277,8 +276,6 @@ mac-arm-conan2-create:
   tags:
     - mac-arm
   script:
-    - cmake -B oos -DCMAKE_BUILD_TYPE=Release -G Ninja cpp-src
-    - cmake --build oos --target clickprotobuf --config Release
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
 
@@ -298,15 +295,14 @@ win-vs2019-conan2-create:
     CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: "16"
-  script:
+  before_script:
     - python -m venv venv
     - .\venv\Scripts\activate
     - pip install conan>=2
     - conan --version
     - echo ${CONAN_HOME}
     - conan profile detect --force
-    - cmake -B oos -D CMAKE_BUILD_TYPE=Release -G "${GENERATOR}" cpp-src
-    - cmake --build oos --target clickprotobuf --config Release
+  script:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
