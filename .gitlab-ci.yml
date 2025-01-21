@@ -233,7 +233,7 @@ win-vs2022-conan1-create:
     - conan profile show || conan profile detect --force
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing
+    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
   except:
     - tags
 
@@ -277,7 +277,7 @@ mac-arm-conan2-create:
     - mac-arm
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing
+    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
 
 intel-arm-conan2-create:
   extends: mac-arm-conan2-create
@@ -304,7 +304,7 @@ win-vs2019-conan2-create:
     - conan profile detect --force
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
+    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
 win-vs2022-conan2-create:
   extends: win-vs2019-conan2-create
