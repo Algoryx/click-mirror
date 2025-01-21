@@ -8,6 +8,9 @@ stages:
   variables:
     CI_IMAGE_TAG: 0.0.5
 
+variables:
+  PACKAGE_VERSION: $CI_COMMIT_TAG
+
 .run-in-docker:
   extends: .docker-vars
   tags:
@@ -117,7 +120,6 @@ test-shared-cpp-lib-linux-20.04:
   stage: publish
   image: $CI_REGISTRY_IMAGE/docker-ci:20.04_${CI_IMAGE_TAG}
   script:
-    - PACKAGE_VERSION=$CI_COMMIT_TAG
     - grep "click VERSION $PACKAGE_VERSION" cpp-src/CMakeLists.txt
     - cd oos
     - PACKAGE_NAME=`ls click-*.deb`
@@ -202,7 +204,8 @@ win-vs2019-conan1-create:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
-win-vs2022-conan1-create:
+# Disabled for now, works with conan 2 but not conan 1 for libsodium
+.win-vs2022-conan1-create:
   extends: win-vs2019-conan1-create
   variables:
     # Use project specific conan directory to cache between builds but not between projects
@@ -225,9 +228,12 @@ win-vs2022-conan1-create:
     - source venv/bin/activate
     - pip3 install conan>=2
     - conan profile show || conan profile detect --force
+    - conan remote add algoryx https://conan.algoryx.se --force
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
+    - echo $CONAN_PASSWORD | conan remote login algoryx $CONAN_USERNAME -p
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
   except:
     - tags
 
@@ -257,9 +263,6 @@ win-vs2022-conan1-create:
     # conan2 does not support profile update
     # - conan profile update env.CC="ccache clang" default
     # - conan profile update env.CXX="ccache clang++" default
-    # - conan profile update settings.compiler=apple-clang default
-    # - conan profile update settings.compiler.version=13 default
-    # - conan profile update settings.compiler.libcxx=libc++ default
     # We support 11.0+
     # - conan profile update settings.os.version=11.0 default
     - conan remote add algoryx https://conan.algoryx.se --force
@@ -272,6 +275,8 @@ mac-arm-conan2-create:
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
+    - echo $CONAN_PASSWORD | conan remote login algoryx $CONAN_USERNAME
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
 
 intel-arm-conan2-create:
   extends: mac-arm-conan2-create
@@ -296,9 +301,12 @@ win-vs2019-conan2-create:
     - conan --version
     - echo ${CONAN_HOME}
     - conan profile detect --force
+    - conan remote add algoryx https://conan.algoryx.se --force
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
+    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
 
 win-vs2022-conan2-create:
   extends: win-vs2019-conan2-create
