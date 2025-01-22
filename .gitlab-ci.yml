@@ -229,6 +229,7 @@ win-vs2019-conan1-create:
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True
+    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True -s build_type=Debug
   only:
     - branches
 
@@ -252,8 +253,8 @@ win-vs2019-conan1-create:
   after_script:
     - echo $CONAN_PASSWORD | conan remote login algoryx $CONAN_USERNAME -p
     - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
-  only:
-    - tags
+  # only:
+  #   - tags
 
 20.04-conan2-publish:
   extends: .ubuntu-conan2-publish

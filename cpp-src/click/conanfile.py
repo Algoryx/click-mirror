@@ -9,7 +9,7 @@ class ClickConan(ConanFile):
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
     url = "https://github.com/algoryx/click-mirror"
-    description = "Click adds the low latency communication you need to let your controller control your robots in an Algoryx Dynamics simulation like if they were real robots."
+    description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
 
     settings = "os", "compiler", "build_type", "arch"
