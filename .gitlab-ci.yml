@@ -52,7 +52,7 @@ build-docker-ci-20.04:
     - *build-and-push
   only:
     changes:
-      - .gitlab-ci.yml
+      # - .gitlab-ci.yml
       - docker/Dockerfile.CI
 
 build-docker-ci-22.04:
@@ -334,8 +334,6 @@ win-vs2019-conan2-create:
     - python -m venv venv
     - .\venv\Scripts\activate
     - pip install conan>=2
-    - conan --version
-    - echo ${CONAN_HOME}
     - conan profile detect --force
     - conan remote add algoryx https://conan.algoryx.se --force
   script:
