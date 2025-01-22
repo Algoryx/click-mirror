@@ -11,6 +11,7 @@ class ClickConan(ConanFile):
     url = "https://github.com/algoryx/click-mirror"
     description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
+    revision_mode = "scm"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
