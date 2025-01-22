@@ -321,9 +321,10 @@ mac-arm-conan2-publish:
   tags:
     - mac-arm
 
-.conan-create-shared-win: &conan-create-shared-win
+.conan-create-win: &conan-create-win
   - cd cpp-src/click
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True -s compiler.version=${COMPILER_VERSION}
+  # - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True -s compiler.version=${COMPILER_VERSION}
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
 win-vs2019-conan2-create:
   stage: build
@@ -343,7 +344,7 @@ win-vs2019-conan2-create:
     - conan profile detect --force
     - conan remote add algoryx https://conan.algoryx.se --force
   script:
-    - *conan-create-shared-win
+    - *conan-create-win
   only:
     - branches
 
@@ -360,7 +361,7 @@ win-vs2022-conan2-create:
 win-vs2019-conan2-publish:
   extends: win-vs2019-conan2-create
   script:
-    - *conan-create-shared-win
+    - *conan-create-win
     - *conan-login-and-upload
   only:
     - tags
@@ -368,7 +369,7 @@ win-vs2019-conan2-publish:
 win-vs2022-conan2-publish:
   extends: win-vs2022-conan2-create
   script:
-    - *conan-create-shared-win
+    - *conan-create-win
     - *conan-login-and-upload
   only:
     - tags
