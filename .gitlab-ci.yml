@@ -141,7 +141,7 @@ test-shared-cpp-lib-linux-20.04:
   script:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
-  only:
+  except:
     - tags
 
 20.04-conan1-create:
@@ -172,7 +172,7 @@ test-shared-cpp-lib-linux-20.04:
     # We support 11.0+
     - conan profile update settings.os.version=11.0 default
     - conan remote add algoryx https://conan.algoryx.se --force
-  only:
+  except:
     - tags
 
 mac-arm-conan1-create:
@@ -184,7 +184,7 @@ mac-arm-conan1-create:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing
 
-intel-arm-conan1-create:
+mac-intel-conan1-create:
   extends: mac-arm-conan1-create
   tags:
     - mac-intel
@@ -203,7 +203,7 @@ win-vs2019-conan1-create:
   script:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
-  only:
+  except:
     - tags
 
 # Disabled for now, works with conan 2 but not conan 1 for libsodium
@@ -221,7 +221,7 @@ win-vs2019-conan1-create:
 
 # Conan 2 builds
 
-.conan2-create-ubuntu:
+.ubuntu-conan2-create:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
@@ -234,27 +234,48 @@ win-vs2019-conan1-create:
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
+  only:
+    - branches
+
+20.04-conan2-create:
+  extends: .ubuntu-conan2-create
+  variables:
+    UBUNTU_VERSION: 20.04
+
+22.04-conan2-create:
+  extends: .ubuntu-conan2-create
+  variables:
+    UBUNTU_VERSION: 22.04
+
+24.04-conan2-create:
+  extends: .ubuntu-conan2-create
+  variables:
+    UBUNTU_VERSION: 24.04
+
+.ubuntu-conan2-publish:
+  extends: .ubuntu-conan2-create
+  after_script:
     - echo $CONAN_PASSWORD | conan remote login algoryx $CONAN_USERNAME -p
     - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
   only:
     - tags
 
-20.04-conan2-create:
-  extends: .conan2-create-ubuntu
+20.04-conan2-publish:
+  extends: .ubuntu-conan2-publish
   variables:
     UBUNTU_VERSION: 20.04
 
-22.04-conan2-create:
-  extends: .conan2-create-ubuntu
+22.04-conan2-publish:
+  extends: .ubuntu-conan2-publish
   variables:
     UBUNTU_VERSION: 22.04
 
-24.04-conan2-create:
-  extends: .conan2-create-ubuntu
+24.04-conan2-publish:
+  extends: .ubuntu-conan2-publish
   variables:
     UBUNTU_VERSION: 24.04
 
-.conan2-on-mac:
+.macos-conan2-create:
   variables:
     CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   before_script:
@@ -269,23 +290,34 @@ win-vs2019-conan1-create:
     # - conan profile update settings.os.version=11.0 default
     - conan remote add algoryx https://conan.algoryx.se --force
   only:
-    - tags
+    - branches
 
 mac-arm-conan2-create:
   stage: build
-  extends: .conan2-on-mac
+  extends: .macos-conan2-create
   tags:
     - mac-arm
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
-    - echo $CONAN_PASSWORD | conan remote login algoryx $CONAN_USERNAME
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
 
-intel-arm-conan2-create:
+mac-intel-conan2-create:
   extends: mac-arm-conan2-create
   tags:
     - mac-intel
+
+.macos-conan2-publish:
+  extends: mac-arm-conan2-create
+  after_script:
+    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  only:
+    - tags
+
+mac-arm-conan2-publish:
+  extends: .macos-conan2-publish
+  tags:
+    - mac-arm
 
 win-vs2019-conan2-create:
   stage: build
@@ -309,10 +341,8 @@ win-vs2019-conan2-create:
   script:
     - cd cpp-src/click
     - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
-    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
   only:
-    - tags
+    - branches
 
 win-vs2022-conan2-create:
   extends: win-vs2019-conan2-create
@@ -323,6 +353,22 @@ win-vs2022-conan2-create:
     COMPILER_VERSION: 193 # 17
   tags:
     - vs2022
+
+win-vs2019-conan2-publish:
+  extends: win-vs2019-conan2-create
+  after_script:
+    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  only:
+    - tags
+
+win-vs2022-conan2-publish:
+  extends: win-vs2022-conan2-create
+  after_script:
+    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
+    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  only:
+    - tags
 
 # End of Conan 2 builds
 
