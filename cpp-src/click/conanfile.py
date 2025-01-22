@@ -11,6 +11,7 @@ class ClickConan(ConanFile):
     url = "https://github.com/algoryx/click-mirror"
     description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
+    # For unknown cause, the recipe hash differs on e.g. Linux and MacOS, so use SCM revision mode instead
     revision_mode = "scm"
 
     settings = "os", "compiler", "build_type", "arch"
@@ -34,6 +35,10 @@ class ClickConan(ConanFile):
     def config_options(self):
         if self.settings.os == "Windows":
             del self.options.fPIC
+
+    def configure(self):
+        if self.options.shared:
+            self.options.rm_safe("fPIC")
 
     def layout(self):
         cmake_layout(self)

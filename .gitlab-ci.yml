@@ -260,8 +260,8 @@ win-vs2019-conan1-create:
   script:
     - *conan-create-shared
     - *conan-login-and-upload
-  # only:
-  #   - tags
+  only:
+    - tags
 
 20.04-conan2-publish:
   extends: .ubuntu-conan2-publish
