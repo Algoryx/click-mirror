@@ -277,7 +277,7 @@ win-vs2019-conan1-create:
 
 .macos-conan2-create:
   variables:
-    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG/.conan2
   before_script:
     - python3 -m venv venv
     - source venv/bin/activate
@@ -327,7 +327,7 @@ win-vs2019-conan2-create:
     - vs2019
   variables:
     # Use project specific conan directory to cache between builds but not between projects
-    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG/.conan2
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: 192 # 16
   before_script:
@@ -348,7 +348,7 @@ win-vs2022-conan2-create:
   extends: win-vs2019-conan2-create
   variables:
     # Use project specific conan directory to cache between builds but not between projects
-    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
+    CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG/.conan2
     GENERATOR: "Visual Studio 17 2022"
     COMPILER_VERSION: 193 # 17
   tags:
