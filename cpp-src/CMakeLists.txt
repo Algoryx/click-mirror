@@ -10,7 +10,7 @@ project(click VERSION 0.5.2
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
-set(CMAKE_DEBUG_POSTFIX "-d")
+set(CMAKE_DEBUG_POSTFIX "d")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 #message("modpath: ${CMAKE_MODULE_PATH}")

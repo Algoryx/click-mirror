@@ -8,7 +8,7 @@ project(click VERSION 0.5.2
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
-set(CMAKE_DEBUG_POSTFIX "-d")
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # Conan is supposed to set CMAKE_MODULE_PATH but doesn't
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")

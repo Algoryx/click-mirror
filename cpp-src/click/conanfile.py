@@ -56,7 +56,7 @@ class ClickConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        postfix = "_d" if self.settings.build_type == "Debug" else ""
+        postfix = "d" if self.settings.build_type == "Debug" else ""
         self.cpp_info.libs = ["click" + postfix]
         self.cpp_info.includedirs = ["include"]
         self.cpp_info.libdirs = ["lib"]
