@@ -46,4 +46,4 @@ class ClickTestConan(ConanFile):
     def test(self):
         if not cross_building(self):
             cmd = os.path.join(self.cpp.build.bindirs[0], "example")
-            self.run(cmd)
+            self.run(cmd, env="conanrun")
