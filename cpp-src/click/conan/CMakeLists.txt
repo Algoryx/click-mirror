@@ -4,11 +4,11 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.5.2
+project(click VERSION 0.5.3
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
-set(CMAKE_DEBUG_POSTFIX "-d")
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # Conan is supposed to set CMAKE_MODULE_PATH but doesn't
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")

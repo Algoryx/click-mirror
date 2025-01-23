@@ -4,13 +4,15 @@ from conan.tools.files import copy
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.2"
+    version = "0.5.3"
 
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
     url = "https://github.com/algoryx/click-mirror"
-    description = "Click adds the low latency communication you need to let your controller control your robots in an Algoryx Dynamics simulation like if they were real robots."
+    description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
+    # For unknown cause, the recipe hash differs on e.g. Linux and MacOS, so use SCM revision mode instead
+    revision_mode = "scm"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
@@ -34,6 +36,10 @@ class ClickConan(ConanFile):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
+    def configure(self):
+        if self.options.shared:
+            self.options.rm_safe("fPIC")
+
     def layout(self):
         cmake_layout(self)
 
@@ -56,7 +62,7 @@ class ClickConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        postfix = "_d" if self.settings.build_type == "Debug" else ""
+        postfix = "d" if self.settings.build_type == "Debug" else ""
         self.cpp_info.libs = ["click" + postfix]
         self.cpp_info.includedirs = ["include"]
         self.cpp_info.libdirs = ["lib"]

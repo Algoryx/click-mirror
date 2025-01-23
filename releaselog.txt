@@ -1,3 +1,6 @@
+0.5.3
+- Support conan shared packages on Linux
+
 0.5.2
 - Support conan 2
 

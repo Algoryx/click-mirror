@@ -124,11 +124,6 @@ test-shared-cpp-lib-linux-20.04:
     - echo Publishing $PACKAGE_NAME as ${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME} and latest/${PACKAGE_UPLOAD_NAME}
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/${PACKAGE_VERSION}/${PACKAGE_UPLOAD_NAME}"'
     - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $PACKAGE_NAME "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/click/latest/${PACKAGE_UPLOAD_NAME}"'
-    # Publish click to conan.algoryx.se
-    - cd ../cpp-src/click
-    - conan create . algoryx/stable -pr:b=default
-    - conan user $CONAN_USERNAME -p $CONAN_PASSWORD -r algoryx
-    - conan upload --all click/${PACKAGE_VERSION}@algoryx/stable
   only:
     - tags
 
@@ -140,7 +135,7 @@ test-shared-cpp-lib-linux-20.04:
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing
+    - conan create . algoryx/stable -pr:b=default --build=missing -o shared=True
   except:
     - tags
 
@@ -182,7 +177,7 @@ mac-arm-conan1-create:
     - mac-arm
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing
+    - conan create . algoryx/stable -pr:b=default --build=missing -o shared=True
 
 mac-intel-conan1-create:
   extends: mac-arm-conan1-create
@@ -202,7 +197,7 @@ win-vs2019-conan1-create:
     COMPILER_VERSION: "16"
   script:
     - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
+    - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION} -o shared=True
   except:
     - tags
 
@@ -221,19 +216,23 @@ win-vs2019-conan1-create:
 
 # Conan 2 builds
 
+.conan-create-shared: &conan-create-shared
+  - cd cpp-src/click
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True -s build_type=Debug
+
 .ubuntu-conan2-create:
   extends: .run-in-docker
   stage: build
   image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
   before_script:
-    - python3 -m venv venv
-    - source venv/bin/activate
-    - pip3 install conan>=2
+    - python3 -m venv buildenv
+    - source buildenv/bin/activate
+    - pip3 install "conan>=2"
     - conan profile show || conan profile detect --force
     - conan remote add algoryx https://conan.algoryx.se --force
   script:
-    - cd cpp-src/click
-    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
+    - *conan-create-shared
   only:
     - branches
 
@@ -252,11 +251,15 @@ win-vs2019-conan1-create:
   variables:
     UBUNTU_VERSION: 24.04
 
+.conan-login-and-upload: &conan-login-and-upload
+  - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
+  - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+
 .ubuntu-conan2-publish:
   extends: .ubuntu-conan2-create
-  after_script:
-    - echo $CONAN_PASSWORD | conan remote login algoryx $CONAN_USERNAME -p
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  script:
+    - *conan-create-shared
+    - *conan-login-and-upload
   only:
     - tags
 
@@ -279,9 +282,9 @@ win-vs2019-conan1-create:
   variables:
     CONAN_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG/.conan2
   before_script:
-    - python3 -m venv venv
-    - source venv/bin/activate
-    - pip3 install conan>=2
+    - python3 -m venv buildenv
+    - source buildenv/bin/activate
+    - pip3 install "conan>=2"
     - conan profile show || conan profile detect --force
     # conan2 does not support profile update
     # - conan profile update env.CC="ccache clang" default
@@ -298,8 +301,7 @@ mac-arm-conan2-create:
   tags:
     - mac-arm
   script:
-    - cd cpp-src/click
-    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing
+    - *conan-create-shared
 
 mac-intel-conan2-create:
   extends: mac-arm-conan2-create
@@ -308,9 +310,9 @@ mac-intel-conan2-create:
 
 .macos-conan2-publish:
   extends: mac-arm-conan2-create
-  after_script:
-    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  script:
+    - *conan-create-shared
+    - *conan-login-and-upload
   only:
     - tags
 
@@ -318,6 +320,11 @@ mac-arm-conan2-publish:
   extends: .macos-conan2-publish
   tags:
     - mac-arm
+
+.conan-create-win: &conan-create-win
+  - cd cpp-src/click
+  # - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o shared=True -s compiler.version=${COMPILER_VERSION}
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
 
 win-vs2019-conan2-create:
   stage: build
@@ -331,14 +338,13 @@ win-vs2019-conan2-create:
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: 192 # 16
   before_script:
-    - python -m venv venv
-    - .\venv\Scripts\activate
-    - pip install conan>=2
+    - python -m venv buildenv
+    - .\buildenv\Scripts\activate
+    - pip install "conan>=2"
     - conan profile detect --force
     - conan remote add algoryx https://conan.algoryx.se --force
   script:
-    - cd cpp-src/click
-    - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION}
+    - *conan-create-win
   only:
     - branches
 
@@ -354,17 +360,17 @@ win-vs2022-conan2-create:
 
 win-vs2019-conan2-publish:
   extends: win-vs2019-conan2-create
-  after_script:
-    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  script:
+    - *conan-create-win
+    - *conan-login-and-upload
   only:
     - tags
 
 win-vs2022-conan2-publish:
   extends: win-vs2022-conan2-create
-  after_script:
-    - conan remote login algoryx $CONAN_USERNAME -p $CONAN_PASSWORD
-    - conan upload click/${PACKAGE_VERSION}@algoryx/stable --remote algoryx
+  script:
+    - *conan-create-win
+    - *conan-login-and-upload
   only:
     - tags
 
@@ -426,9 +432,6 @@ publish-pclick:
     - cmake -D CMAKE_BUILD_TYPE=Release oos
     - cmake --build oos --target INSTALL --config Release
     - oos/bin/click-tests --reporter junit --out win-catch2-junit.xml
-    # Make sure conan create builds
-    - cd cpp-src/click
-    - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=16
 
   artifacts:
     paths:
