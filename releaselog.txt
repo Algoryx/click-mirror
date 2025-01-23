@@ -1,3 +1,6 @@
+0.5.4
+- Support conan shared packages on Windows
+
 0.5.3
 - Support conan shared packages on Linux
 

@@ -4,7 +4,7 @@ from conan.tools.files import copy
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.3"
+    version = "0.5.4"
 
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
