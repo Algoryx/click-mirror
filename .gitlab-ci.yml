@@ -330,6 +330,7 @@ mac-arm-conan2-publish:
 .conan-create-win: &conan-create-win
   - cd cpp-src/click
   - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s compiler.version=${COMPILER_VERSION}
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s compiler.version=${COMPILER_VERSION} -s build_type=Debug
 
 win-vs2019-conan2-create:
   stage: build
