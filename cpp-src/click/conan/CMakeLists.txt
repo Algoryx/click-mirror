@@ -65,13 +65,32 @@ target_sources(click
  )
 if (BUILD_SHARED_LIBS)
     target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
+    # Workaround for broken transitive dependency from protobuf to abseil, e.g. abseil::abseil does not contain libraries
+    find_package(absl REQUIRED)
+    if(CMAKE_BUILD_TYPE)
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_UPPER)
+    else()
+        set(CMAKE_BUILD_TYPE_UPPER "RELEASE")
+    endif()
+    set(ABSEIL_LIB_MATCH "abseil_LIB_DIRS_${CMAKE_BUILD_TYPE_UPPER}")
+
+    if (WIN32)
+        set(ABSEIL_LINK_SUFFIX *_dll${CMAKE_IMPORT_LIBRARY_SUFFIX})
+    else()
+        set(ABSEIL_LINK_SUFFIX *.?${CMAKE_SHARED_LIBRARY_SUFFIX})
+    endif()
+    message(STATUS "ABSEIL_LIB_GLOB: ${${ABSEIL_LIB_MATCH}}/${ABSEIL_LINK_SUFFIX}")
+    file(GLOB ABSEIL_LIBRARIES ${${ABSEIL_LIB_MATCH}}/${ABSEIL_LINK_SUFFIX})
+    # message(STATUS "ABSEIL_LIBRARIES: ${ABSEIL_LIBRARIES}")
 endif()
 target_compile_features(click PRIVATE cxx_std_17)
+
 
 target_link_libraries(click
     PRIVATE
         zmqpp::zmqpp
         protobuf::protobuf
+        ${ABSEIL_LIBRARIES}
     )
 target_include_directories(click
     PUBLIC
