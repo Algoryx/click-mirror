@@ -295,8 +295,6 @@ win-vs2019-conan1-create:
     # conan2 does not support profile update
     # - conan profile update env.CC="ccache clang" default
     # - conan profile update env.CXX="ccache clang++" default
-    # We support 11.0+
-    # - conan profile update settings.os.version=11.0 default
     - conan remote add algoryx https://conan.algoryx.se --force
   only:
     - branches
@@ -331,7 +329,7 @@ mac-arm-conan2-publish:
     - mac-arm
 
 .conan-create-win: &conan-create-win
-  - export CONAN_EXTRA_FLAGS="-s compiler.version=${COMPILER_VERSION}"
+  - set "CONAN_EXTRA_FLAGS=-s compiler.version=%COMPILER_VERSION%"
   - *conan-create-shared
 
 win-vs2019-conan2-create:
