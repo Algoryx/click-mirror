@@ -195,6 +195,8 @@ win-vs2019-conan1-create:
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: "16"
+  before_script:
+    - conan remote add algoryx https://conan.algoryx.se --force
   script:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION} -o "*:shared=True"
