@@ -223,8 +223,8 @@ win-vs2019-conan1-create:
 
 .conan-create-shared: &conan-create-shared
   - cd cpp-src/click
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True"
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s build_type=Debug
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" ${CONAN_EXTRA_FLAGS}
+  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s build_type=Debug ${CONAN_EXTRA_FLAGS}
 
 .ubuntu-conan2-create:
   extends: .run-in-docker
@@ -307,6 +307,7 @@ mac-arm-conan2-create:
   tags:
     - mac-arm
   script:
+    - export CONAN_EXTRA_FLAGS="-s os.version=11.0"
     - *conan-login
     - *conan-create-shared
 
@@ -330,9 +331,8 @@ mac-arm-conan2-publish:
     - mac-arm
 
 .conan-create-win: &conan-create-win
-  - cd cpp-src/click
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s compiler.version=${COMPILER_VERSION}
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s compiler.version=${COMPILER_VERSION} -s build_type=Debug
+  - export CONAN_EXTRA_FLAGS="-s compiler.version=${COMPILER_VERSION}"
+  - *conan-create-shared
 
 win-vs2019-conan2-create:
   stage: build
