@@ -12,7 +12,7 @@ class ClickConan(ConanFile):
     url = "https://github.com/algoryx/click-mirror"
     description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
-    # For unknown cause, the recipe hash differs on e.g. Linux and MacOS, so use SCM revision mode instead
+    # To solve revision constency across OS:s (Win CRLF vs *nix LF) we use SCM revision mode
     revision_mode = "scm"
 
     settings = "os", "compiler", "build_type", "arch"
