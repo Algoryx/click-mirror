@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
+from conan.tools.scm import Version
 
 class ClickConan(ConanFile):
     name = "click"
@@ -63,3 +64,8 @@ class ClickConan(ConanFile):
         self.cpp_info.libs = ["click" + postfix]
         self.cpp_info.includedirs = ["include"]
         self.cpp_info.libdirs = ["lib"]
+
+    def package_id(self):
+        if self.info.settings.compiler == "apple-clang" and Version(str(self.info.settings.compiler.version)) >= "7.0":
+            self.info.settings.compiler.version = "AppleClang above 7.0"
+            del self.info.settings.os.version
