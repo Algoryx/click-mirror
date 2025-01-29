@@ -1,22 +1,13 @@
 # Conan usage
 
-## Create click in local conan cache
+## Create click in local conan 2 cache on Macos with shared libraries
 
 ```bash
-conan create .
+conan create . --channel "stable" --user algoryx -pr:b=default -o "*:shared=True" -s build_type=Release -s os.version=11.0
 ```
 
-## Upload click to conan.io
+## Upload click to conan
 
 ```bash
 conan upload click/<version>/algoryx/stable
-```
-
-## Install Find* for conan dependencies defined in conanfile.py
-
-NOTE: This needs to be done before running cmake
-
-```bash
-cd oos
-conan install ..
 ```

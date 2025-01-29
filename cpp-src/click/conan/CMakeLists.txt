@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.5.3
+project(click VERSION 0.5.4
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
@@ -65,13 +65,39 @@ target_sources(click
  )
 if (BUILD_SHARED_LIBS)
     target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
+    # Workaround for broken transitive dependency from protobuf to abseil, e.g. abseil::abseil does not contain libraries
+    find_package(absl REQUIRED)
+
+    if (WIN32)
+        if (abseil_LIB_DIRS_RELEASE)
+            set(ABSEIL_LIB_MATCH abseil_LIB_DIRS_RELEASE)
+            set(ABSEIL_LINK_SUFFIX *_dll${CMAKE_IMPORT_LIBRARY_SUFFIX})
+        elseif(abseil_LIB_DIRS_DEBUG)
+            set(ABSEIL_LIB_MATCH abseil_LIB_DIRS_DEBUG)
+            set(ABSEIL_LINK_SUFFIX *_dlld${CMAKE_IMPORT_LIBRARY_SUFFIX})
+        else()
+            message(FATAL_ERROR "Unknown build type, no abseil libraries found")
+        endif()
+    else()
+        if(NOT CMAKE_BUILD_TYPE)
+            message(FATAL_ERROR "Unknown build type, no abseil libraries found")
+        endif()
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_UPPER)
+        set(ABSEIL_LIB_MATCH "abseil_LIB_DIRS_${CMAKE_BUILD_TYPE_UPPER}")
+        set(ABSEIL_LINK_SUFFIX *.?${CMAKE_SHARED_LIBRARY_SUFFIX}) # Only match versioned libraries
+    endif()
+    message(STATUS "ABSEIL_LIB_GLOB: ${${ABSEIL_LIB_MATCH}}/${ABSEIL_LINK_SUFFIX}")
+    file(GLOB ABSEIL_LIBRARIES ${${ABSEIL_LIB_MATCH}}/${ABSEIL_LINK_SUFFIX})
+    message(STATUS "ABSEIL_LIBRARIES: ${ABSEIL_LIBRARIES}")
 endif()
 target_compile_features(click PRIVATE cxx_std_17)
+
 
 target_link_libraries(click
     PRIVATE
         zmqpp::zmqpp
         protobuf::protobuf
+        ${ABSEIL_LIBRARIES}
     )
 target_include_directories(click
     PUBLIC

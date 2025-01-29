@@ -1,10 +1,11 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
+from conan.tools.scm import Version
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.3"
+    version = "0.5.4"
 
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
@@ -26,11 +27,8 @@ class ClickConan(ConanFile):
         copy(self, "include/*", src=".", dst=self.export_sources_folder)
 
     def requirements(self):
-        self.requires("protobuf/5.27.0", visible=True)
-        if self.settings.os == "Macos":
-            # Hardcode libsodium version used by click->zmq as workaround for clang16 not compiling libsodium as of 2024-09-17
-            self.requires("libsodium/1.0.18", override=True)
-        self.requires("zmqpp/4.2.0", visible=True)
+        self.requires("protobuf/5.27.0@algoryx/stable", visible=True)
+        self.requires("zmqpp/4.2.0@algoryx/stable", visible=True)
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -66,3 +64,8 @@ class ClickConan(ConanFile):
         self.cpp_info.libs = ["click" + postfix]
         self.cpp_info.includedirs = ["include"]
         self.cpp_info.libdirs = ["lib"]
+
+    def package_id(self):
+        if self.info.settings.compiler == "apple-clang" and Version(str(self.info.settings.compiler.version)) >= "7.0":
+            self.info.settings.compiler.version = "AppleClang above 7.0"
+            del self.info.settings.os.version
