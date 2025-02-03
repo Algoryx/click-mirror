@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.5.4
+project(click VERSION 0.5.5
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
@@ -14,6 +14,7 @@ set(CMAKE_DEBUG_POSTFIX "d")
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")
 find_package(zmqpp REQUIRED)
 find_package(Protobuf REQUIRED)
+
 
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
@@ -104,6 +105,15 @@ target_include_directories(click
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/click>
 )
+if (WIN32)
+    set_target_properties(click PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+        WINDOWS_EXPORT_ALL_SYMBOLS ON
+    )
+else()
+    set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
+    set_target_properties(click PROPERTIES INSTALL_RPATH_USE_ORIGIN TRUE)
+endif()
 
 
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
