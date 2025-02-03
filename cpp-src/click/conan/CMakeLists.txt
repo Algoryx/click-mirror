@@ -105,8 +105,15 @@ target_include_directories(click
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/click>
 )
-set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
-set_target_properties(click PROPERTIES INSTALL_RPATH_USE_ORIGIN TRUE)
+if (WIN32)
+    set_target_properties(click PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+        WINDOWS_EXPORT_ALL_SYMBOLS ON
+    )
+else()
+    set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
+    set_target_properties(click PROPERTIES INSTALL_RPATH_USE_ORIGIN TRUE)
+endif()
 
 
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
