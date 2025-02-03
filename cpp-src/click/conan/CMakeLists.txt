@@ -15,6 +15,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")
 find_package(zmqpp REQUIRED)
 find_package(Protobuf REQUIRED)
 
+
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
     include/click/Server.h
@@ -104,6 +105,8 @@ target_include_directories(click
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/click>
 )
+set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
+set_target_properties(click PROPERTIES INSTALL_RPATH_USE_ORIGIN TRUE)
 
 
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
