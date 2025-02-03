@@ -1,3 +1,7 @@
+0.5.5
+- Export all symbols on Windows
+- Add $ORIGIN rpath for conan create
+
 0.5.4
 - Support conan shared packages on Windows
 
