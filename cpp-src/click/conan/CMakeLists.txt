@@ -113,7 +113,6 @@ if (WIN32)
 endif()
 if (UNIX AND NOT APPLE)
     set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
-    set_target_properties(click PROPERTIES INSTALL_RPATH_USE_ORIGIN TRUE)
 endif()
 
 
