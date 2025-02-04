@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.5.5
+project(click VERSION 0.5.6
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
@@ -110,7 +110,8 @@ if (WIN32)
         POSITION_INDEPENDENT_CODE ON
         WINDOWS_EXPORT_ALL_SYMBOLS ON
     )
-else()
+endif()
+if (UNIX AND NOT APPLE)
     set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
     set_target_properties(click PROPERTIES INSTALL_RPATH_USE_ORIGIN TRUE)
 endif()

@@ -5,7 +5,7 @@ from conan.tools.scm import Version
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.5"
+    version = "0.5.6"
 
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
@@ -13,7 +13,7 @@ class ClickConan(ConanFile):
     description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
     # To solve revision constency across OS:s (Win CRLF vs *nix LF) we use SCM revision mode
-    # revision_mode = "scm"
+    revision_mode = "scm"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
