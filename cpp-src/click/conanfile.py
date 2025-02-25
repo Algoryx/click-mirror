@@ -27,7 +27,9 @@ class ClickConan(ConanFile):
         copy(self, "include/*", src=".", dst=self.export_sources_folder)
 
     def requirements(self):
-        self.requires("protobuf/5.27.0@algoryx/stable", visible=True)
+        # TODO: Create protobuf/3.21.12@algoryx/stable if this goes through pipeline
+        # self.requires("protobuf/3.21.12@algoryx/stable", visible=True)
+        self.requires("protobuf/3.21.12", visible=True)
         self.requires("zmqpp/4.2.0@algoryx/stable", visible=True)
 
     def config_options(self):

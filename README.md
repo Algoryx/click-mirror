@@ -214,7 +214,7 @@ The generated protobuf python code is committed in git repo.
 It is created as part of c++ build, but can be created by running protoc as below.
 
 ```bash
-protoc -I=protobuf-src --python_out=python-src/src Messaging.proto
+protoc -I=protobuf-src --python_out=python-src/src/pclick Messaging.proto
 ```
 
 ### Build pip archive
