@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "conan2"
+name = "conan1"
 version = "0.0.1"
-description = "Access to conan 2"
+description = "Access to conan 1"
 authors = ["Algoryx Simulation <contact@algoryx.se>"]
 license = "Apache-2.0"
 repository = "https://github.com/algoryx/click-mirror"
