@@ -12,7 +12,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.8"
-protobuf = "3.21.12"
+# 4.21.12 is compatible with protobuf 3.21.12
+protobuf = "4.21.12"
 pyzmq = "26.2.0"
 
 [tool.poetry.dev-dependencies]
