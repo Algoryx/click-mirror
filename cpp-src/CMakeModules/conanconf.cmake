@@ -33,12 +33,12 @@ endif()
 
 conan_cmake_configure(
   REQUIRES
-    protobuf/5.27.0
+    protobuf/3.21.12@algoryx/stable
     ${LIBSODIUM_DEPENDENCY}
     zmqpp/4.2.0
     argparse/2.9
   BUILD_REQUIRES
-    protobuf/5.27.0
+    protobuf/3.21.12@algoryx/stable
     catch2/3.5.3
   GENERATORS
     cmake
