@@ -28,7 +28,7 @@ class ClickConan(ConanFile):
 
     def requirements(self):
         self.requires("protobuf/5.27.0@algoryx/stable", visible=True)
-        self.requires("zmqpp/4.2.0@algoryx/stable", visible=True)
+        self.requires("cppzmq/4.10.0", visible=True)
 
     def config_options(self):
         if self.settings.os == "Windows":
