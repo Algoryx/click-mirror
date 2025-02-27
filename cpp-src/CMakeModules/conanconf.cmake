@@ -26,10 +26,16 @@ endif()
 
 include(${CONAN_CMAKE_LOCAL_FILE})
 
+if (APPLE)
+  # Hardcode libsodium version used by click->zmq as workaround for clang16 not compiling libsodium as of 2024-09-17
+  set(LIBSODIUM_DEPENDENCY libsodium/1.0.18)
+endif()
+
 conan_cmake_configure(
   REQUIRES
     protobuf/5.27.0
     cppzmq/4.10.0
+    ${LIBSODIUM_DEPENDENCY}
     argparse/2.9
   BUILD_REQUIRES
     protobuf/5.27.0

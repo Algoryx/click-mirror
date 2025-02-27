@@ -1,51 +1,54 @@
 from conan import ConanFile
-from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
-
+from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
+from conan.tools.files import copy
+from conan.tools.scm import Version
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.0"
+    version = "0.5.6"
 
-    # Optional metadata
-    license = "Apache License Version 2.0"
+    license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
     url = "https://github.com/algoryx/click-mirror"
-    description = "Click adds the low latency communication you need to let your controller control your robots in an Algoryx Dynamics simulation like if they were real robots."
+    description = "Click adds low latency communication for controllers communicating with an Algoryx Dynamics simulation."
     topics = ("networking", "robotics", "simulation")
+    # To solve revision constency across OS:s (Win CRLF vs *nix LF) we use SCM revision mode
+    revision_mode = "scm"
 
-    # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
-    # Should be enabled with -o:b shared=True, but it isn't - must set default_options.shared to True so skipping for now
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    generators = "cmake_find_package"
-
     def export_sources(self):
-        # Sources are located in the same place as this recipe, copy them to the recipe
-        self.copy("CMakeLists.txt", src="conan", keep_path=False)
-        self.copy("ClickConfig.cmake")
-        self.copy("shared_conf/*")
-        self.copy("src/*")
-        self.copy("include/*")
-        # For now, we copy the generated protobuf sources from oos directory - should be it's own recipe later
-        self.copy("Messaging.pb.h", src="../../oos/protobuf-gen/", dst="include", keep_path=False)
-        self.copy("Messaging.pb.cc", src="../../oos/protobuf-gen/", dst="src", keep_path=False)
+        copy(self, "CMakeLists.txt", src="conan", dst=self.export_sources_folder)
+        copy(self, "ClickConfig.cmake", src=".", dst=self.export_sources_folder)
+        copy(self, "shared_conf/*", src=".", dst=self.export_sources_folder)
+        copy(self, "src/*", src=".", dst=self.export_sources_folder)
+        copy(self, "include/*", src=".", dst=self.export_sources_folder)
 
     def requirements(self):
-        self.requires("protobuf/5.27.0", private=False)
-        self.requires("zmqpp/4.2.0", private=False)
+        self.requires("protobuf/5.27.0@algoryx/stable", visible=True)
+        self.requires("zmqpp/4.2.0@algoryx/stable", visible=True)
 
     def config_options(self):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
+    def configure(self):
+        if self.options.shared:
+            self.options.rm_safe("fPIC")
+
     def layout(self):
         cmake_layout(self)
 
     def generate(self):
-        tc = CMakeToolchain(self, generator="Ninja")
+        tc = CMakeToolchain(self)
+        if self.settings.os in ("Macos", "Linux"):
+            tc.generator = "Ninja"
         tc.generate()
+
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def build(self):
         cmake = CMake(self)
@@ -57,7 +60,12 @@ class ClickConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        postfix = ""
-        if self.settings.build_type == "Debug":
-            postfix += "-d"
+        postfix = "d" if self.settings.build_type == "Debug" else ""
         self.cpp_info.libs = ["click" + postfix]
+        self.cpp_info.includedirs = ["include"]
+        self.cpp_info.libdirs = ["lib"]
+
+    def package_id(self):
+        if self.info.settings.compiler == "apple-clang" and Version(str(self.info.settings.compiler.version)) >= "7.0":
+            self.info.settings.compiler.version = "AppleClang above 7.0"
+            del self.info.settings.os.version

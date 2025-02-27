@@ -1,10 +1,25 @@
-version: "3"
 services:
-  click:
+  click-ci-20.04:
     build:
       context: .
       dockerfile: Dockerfile.CI
-    image: registry.algoryx.se/algoryx/external/click/docker-ci:0.0.4
+      args:
+        - UBUNTU_VERSION=20.04
+    image: registry.algoryx.se/algoryx/external/click/docker-ci:20.04_0.0.5
+    working_dir: "/click"
+    command: ${CMD:-"bash"}
+    volumes:
+      - ../:/click
+    ports:
+      # Enable outside access to zmq server
+      - "5555:5555"
+  click-ci-22.04:
+    build:
+      context: .
+      dockerfile: Dockerfile.CI
+      args:
+        - UBUNTU_VERSION=22.04
+    image: registry.algoryx.se/algoryx/external/click/docker-ci:22.04_0.0.5
     working_dir: "/click"
     command: ${CMD:-"bash"}
     volumes:

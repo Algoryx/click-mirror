@@ -4,16 +4,17 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.5.0
+project(click VERSION 0.5.6
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
-set(CMAKE_DEBUG_POSTFIX "-d")
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # Conan is supposed to set CMAKE_MODULE_PATH but doesn't
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")
 find_package(zmqpp REQUIRED)
 find_package(Protobuf REQUIRED)
+
 
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
@@ -65,19 +66,54 @@ target_sources(click
  )
 if (BUILD_SHARED_LIBS)
     target_compile_definitions(click PRIVATE BUILD_SHARED_LIBS)
+    # Workaround for broken transitive dependency from protobuf to abseil, e.g. abseil::abseil does not contain libraries
+    find_package(absl REQUIRED)
+
+    if (WIN32)
+        if (abseil_LIB_DIRS_RELEASE)
+            set(ABSEIL_LIB_MATCH abseil_LIB_DIRS_RELEASE)
+            set(ABSEIL_LINK_SUFFIX *_dll${CMAKE_IMPORT_LIBRARY_SUFFIX})
+        elseif(abseil_LIB_DIRS_DEBUG)
+            set(ABSEIL_LIB_MATCH abseil_LIB_DIRS_DEBUG)
+            set(ABSEIL_LINK_SUFFIX *_dlld${CMAKE_IMPORT_LIBRARY_SUFFIX})
+        else()
+            message(FATAL_ERROR "Unknown build type, no abseil libraries found")
+        endif()
+    else()
+        if(NOT CMAKE_BUILD_TYPE)
+            message(FATAL_ERROR "Unknown build type, no abseil libraries found")
+        endif()
+        string(TOUPPER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_UPPER)
+        set(ABSEIL_LIB_MATCH "abseil_LIB_DIRS_${CMAKE_BUILD_TYPE_UPPER}")
+        set(ABSEIL_LINK_SUFFIX *.?${CMAKE_SHARED_LIBRARY_SUFFIX}) # Only match versioned libraries
+    endif()
+    message(STATUS "ABSEIL_LIB_GLOB: ${${ABSEIL_LIB_MATCH}}/${ABSEIL_LINK_SUFFIX}")
+    file(GLOB ABSEIL_LIBRARIES ${${ABSEIL_LIB_MATCH}}/${ABSEIL_LINK_SUFFIX})
+    message(STATUS "ABSEIL_LIBRARIES: ${ABSEIL_LIBRARIES}")
 endif()
 target_compile_features(click PRIVATE cxx_std_17)
+
 
 target_link_libraries(click
     PRIVATE
         zmqpp::zmqpp
         protobuf::protobuf
+        ${ABSEIL_LIBRARIES}
     )
 target_include_directories(click
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/click>
 )
+if (WIN32)
+    set_target_properties(click PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+        WINDOWS_EXPORT_ALL_SYMBOLS ON
+    )
+endif()
+if (UNIX AND NOT APPLE)
+    set_target_properties(click PROPERTIES INSTALL_RPATH "$ORIGIN")
+endif()
 
 
 # From https://www.youtube.com/watch?v=bsXLMQ6WgIk 38:54
