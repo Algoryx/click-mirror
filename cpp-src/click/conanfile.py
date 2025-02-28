@@ -5,7 +5,7 @@ from conan.tools.scm import Version
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.6"
+    version = "0.5.7"
 
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
@@ -16,8 +16,13 @@ class ClickConan(ConanFile):
     revision_mode = "scm"
 
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True}
+    options = {
+        "shared": [True, False],
+        "fPIC": [True, False],
+        "with_protobuf": [True, False],
+        "with_libzmq": [True, False]
+    }
+    default_options = {"shared": False, "fPIC": True, "with_protobuf": True, "with_libzmq": True}
 
     def export_sources(self):
         copy(self, "CMakeLists.txt", src="conan", dst=self.export_sources_folder)
@@ -27,8 +32,10 @@ class ClickConan(ConanFile):
         copy(self, "include/*", src=".", dst=self.export_sources_folder)
 
     def requirements(self):
-        self.requires("protobuf/5.27.0@algoryx/stable", visible=True)
-        self.requires("cppzmq/4.10.0", visible=True)
+        if self.options.with_protobuf:
+            self.requires("protobuf/3.21.12@algoryx/stable", visible=True)
+        if self.options.with_libzmq:
+            self.requires("cppzmq/4.10.0@algoryx/stable", visible=True)
 
     def config_options(self):
         if self.settings.os == "Windows":
