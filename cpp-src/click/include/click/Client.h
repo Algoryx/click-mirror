@@ -5,9 +5,9 @@
 #include <string>
 #include <memory>
 
-namespace zmqpp {
-  class socket;
-  class context;
+namespace zmq {
+  class socket_t;
+  class context_t;
 }
 
 namespace click {
@@ -92,7 +92,7 @@ class CLICK_EXPORT Client
     ~Client();
 
   private:
-    std::unique_ptr<zmqpp::socket> m_socket;
-    std::unique_ptr<zmqpp::context> m_context;
+    std::unique_ptr<zmq::socket_t> m_socket;
+    std::unique_ptr<zmq::context_t> m_context;
   };
 }

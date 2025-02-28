@@ -1,4 +1,4 @@
-find_package(zmqpp REQUIRED)
+find_package(cppzmq REQUIRED)
 
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
@@ -54,7 +54,7 @@ target_compile_features(click PRIVATE cxx_std_17)
   
 target_link_libraries(click
     PRIVATE
-        zmqpp::zmqpp
+        cppzmq
         clickprotobuf
 )
 target_include_directories(click 

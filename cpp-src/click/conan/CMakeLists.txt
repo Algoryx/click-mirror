@@ -12,7 +12,7 @@ set(CMAKE_DEBUG_POSTFIX "d")
 
 # Conan is supposed to set CMAKE_MODULE_PATH but doesn't
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")
-find_package(zmqpp REQUIRED)
+find_package(cppzmq REQUIRED)
 find_package(Protobuf REQUIRED)
 
 
@@ -72,7 +72,7 @@ target_compile_features(click PRIVATE cxx_std_17)
 
 target_link_libraries(click
     PRIVATE
-        zmqpp::zmqpp
+        cppzmq
         protobuf::protobuf
         ${ABSEIL_LIBRARIES}
     )
