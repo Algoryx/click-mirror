@@ -1,4 +1,4 @@
-0.5.7-SNAPSHOT
+0.5.7
 - Revert protobuf to 3.21.12 to be Ubuntu 20.04 compatible
 
 0.5.6
