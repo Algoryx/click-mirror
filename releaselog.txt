@@ -1,3 +1,6 @@
+0.5.8
+- Switch out zmqpp for header only cppzmq 4.10.0
+
 0.5.7
 - Revert protobuf to 3.21.12 to be Ubuntu 20.04 compatible
 
