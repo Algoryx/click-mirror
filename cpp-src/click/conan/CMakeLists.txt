@@ -13,8 +13,6 @@ set(CMAKE_DEBUG_POSTFIX "d")
 # Conan is supposed to set CMAKE_MODULE_PATH but doesn't
 set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR};${CMAKE_MODULE_PATH}")
 find_package(cppzmq REQUIRED)
-find_package(Protobuf REQUIRED)
-
 
 set(PUBLIC_INCLUDE_SOURCES
     include/click/Client.h
@@ -69,11 +67,17 @@ if (BUILD_SHARED_LIBS)
 endif()
 target_compile_features(click PRIVATE cxx_std_17)
 
+find_package(Protobuf REQUIRED)
+if(TARGET protobuf::protobuf)
+    set(PROTOBUF_TARGET protobuf::protobuf)
+else()
+    set(PROTOBUF_TARGET protobuf::libprotobuf)
+endif()
 
 target_link_libraries(click
     PRIVATE
         cppzmq
-        protobuf::protobuf
+        ${PROTOBUF_TARGET}
         ${ABSEIL_LIBRARIES}
     )
 target_include_directories(click
