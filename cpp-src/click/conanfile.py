@@ -5,7 +5,7 @@ from conan.tools.scm import Version
 
 class ClickConan(ConanFile):
     name = "click"
-    version = "0.5.8"
+    version = "0.5.9"
 
     license = "Apache-2.0"
     author = "Algoryx Simulation <contact@algoryx.se>"
