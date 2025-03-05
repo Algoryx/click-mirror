@@ -10,7 +10,7 @@
 using namespace click;
 using namespace std;
 
-Server::Server()
+Server::Server(size_t bufsize) : m_bufsize(bufsize)
 {
   // Verify protobuf version
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -65,18 +65,18 @@ unique_ptr<Message> Server::receive(bool block)
   if (block)
     recv_flags = zmq::recv_flags::none;
 
-  zmq::mutable_buffer buf;
+  std::string bytes(m_bufsize, '\0');
+  zmq::mutable_buffer buf(bytes.data(), bytes.size());
   auto status = m_socket->recv(buf, recv_flags);
 
   if (status.has_value()) {
-    string bytes;
-    bytes.copy(static_cast<char*>(buf.data()), buf.size());
     MessageSerializer serializer;
     m_send_is_next_action = true;
     return serializer.fromBytes(bytes);
   }
-  else
+  else {
     return unique_ptr<Message>();
+  }
 }
 
 unique_ptr<Message> Server::blocking_receive()
