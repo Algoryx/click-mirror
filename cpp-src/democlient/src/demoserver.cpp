@@ -131,14 +131,19 @@ int main(int argc, char *argv[])
         switch(reply->messageType()) {
             case MessageType::HandshakeInitMessageType:
                 if(trace)
-                    std::cerr <<  "Got handshakeinit message: " << std::endl;
+                    std::cerr <<  "Got handshakeinit message" << std::endl;
                 server.send(*HandshakeMessageBuilderImpl::builder()->build());
                 break;
             case MessageType::ControlMessageType: {
                 if(trace)
-                    std::cerr <<  "Got control message: " << std::endl;
+                    std::cerr <<  "Got control message:" << reply->debugString() << std::endl;
                 server.send(*sensor_message);
                 break;
+            }
+            case MessageType::ErrorMessageType: {
+                if(trace)
+                    std::cerr <<  "Got error message, shutting down" << std::endl;
+                return 0;
             }
             default:
                 if(trace)
