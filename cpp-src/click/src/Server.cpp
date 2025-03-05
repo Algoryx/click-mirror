@@ -69,6 +69,9 @@ unique_ptr<Message> Server::receive(bool block)
   zmq::mutable_buffer buf(bytes.data(), bytes.size());
   auto status = m_socket->recv(buf, recv_flags);
 
+  if (status.has_value() && status.value().truncated()) {
+    throw std::runtime_error("Server.cpp: Message was too large for buffer of size " + std::to_string(m_bufsize) + " bytes. Please increase the buffer size.");
+  }
   if (status.has_value()) {
     MessageSerializer serializer;
     m_send_is_next_action = true;
