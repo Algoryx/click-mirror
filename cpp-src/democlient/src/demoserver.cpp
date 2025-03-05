@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
                 break;
             case MessageType::ControlMessageType: {
                 if(trace)
-                    std::cerr <<  "Got control message" << std::endl;
+                    std::cerr <<  "Got control message:" << reply->debugString() << std::endl;
                 server.send(*sensor_message);
                 break;
             }

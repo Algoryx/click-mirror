@@ -10,7 +10,7 @@
 using namespace click;
 using namespace std;
 
-Server::Server(size_t bufsize) : m_bufsize(bufsize)
+Server::Server()
 {
   // Verify protobuf version
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -32,9 +32,9 @@ bool Server::send(const std::string& bytes) {
 }
 
 bool Server::receive_bytes(std::string& responseBytes) {
-  zmq::mutable_buffer buf;
-  auto res = m_socket->recv(buf, zmq::recv_flags::dontwait);
-  responseBytes.copy(static_cast<char*>(buf.data()), buf.size());
+  zmq::message_t msg;
+  auto res = m_socket->recv(msg, zmq::recv_flags::dontwait);
+  responseBytes.copy(static_cast<char*>(msg.data()), msg.size());
   if (res.has_value())
     m_send_is_next_action = true;
   return res.has_value();
@@ -65,16 +65,13 @@ unique_ptr<Message> Server::receive(bool block)
   if (block)
     recv_flags = zmq::recv_flags::none;
 
-  std::string bytes(m_bufsize, '\0');
-  zmq::mutable_buffer buf(bytes.data(), bytes.size());
-  auto status = m_socket->recv(buf, recv_flags);
+  zmq::message_t msg;
+  auto status = m_socket->recv(msg, recv_flags);
 
-  if (status.has_value() && status.value().truncated()) {
-    throw std::runtime_error("Server.cpp: Message was too large for buffer of size " + std::to_string(m_bufsize) + " bytes. Please increase the buffer size.");
-  }
   if (status.has_value()) {
     MessageSerializer serializer;
     m_send_is_next_action = true;
+    std::string bytes(static_cast<char*>(msg.data()), msg.size());
     return serializer.fromBytes(bytes);
   }
   else {

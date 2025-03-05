@@ -22,7 +22,7 @@ namespace click {
 class CLICK_EXPORT Server
 {
   public:
-    Server(size_t bufsize = 32768);
+    Server();
 
     /**
      * Bind server to an endpoint so that client can connect to it.
@@ -105,6 +105,5 @@ class CLICK_EXPORT Server
     std::unique_ptr<zmq::socket_t> m_socket;
     std::unique_ptr<zmq::context_t> m_context;
     bool m_send_is_next_action = false;
-    size_t m_bufsize;
   };
 }
