@@ -22,7 +22,7 @@ namespace click {
 class CLICK_EXPORT Server
 {
   public:
-    Server(size_t bufsize = 8192);
+    Server(size_t bufsize = 32768);
 
     /**
      * Bind server to an endpoint so that client can connect to it.
