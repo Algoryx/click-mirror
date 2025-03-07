@@ -94,7 +94,6 @@ build-shared-cpp-lib-linux-20.04:
   stage: test
   script:
     - oos/bin/click-tests --reporter junit --out catch2-junit.xml
-
   artifacts:
     when: always
     reports:
@@ -105,6 +104,19 @@ test-cpp-lib-linux-20.04:
   needs:
     - job: build-cpp-lib-linux-20.04
       artifacts: true
+
+integration-test-cpp-lib-linux-20.04:
+  extends: .test-cpp-lib-linux-20.04
+  script:
+     - cd python-src
+     - (poetry install && poetry run pytest ../integration-tests --junitxml=../click-integration-junit.xml)
+  needs:
+    - job: build-cpp-lib-linux-20.04
+      artifacts: true
+  artifacts:
+    when: always
+    reports:
+      junit: click-integration-junit.xml
 
 test-shared-cpp-lib-linux-20.04:
   extends: .test-cpp-lib-linux-20.04
@@ -439,7 +451,6 @@ publish-pclick:
     - cmake -D CMAKE_BUILD_TYPE=Release oos
     - cmake --build oos --target INSTALL --config Release
     - oos/bin/click-tests --reporter junit --out win-catch2-junit.xml
-
   artifacts:
     paths:
       - oos/install
