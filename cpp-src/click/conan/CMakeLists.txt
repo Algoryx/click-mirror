@@ -68,16 +68,13 @@ endif()
 target_compile_features(click PRIVATE cxx_std_17)
 
 find_package(Protobuf REQUIRED)
-if(TARGET protobuf::protobuf)
-    set(PROTOBUF_TARGET protobuf::protobuf)
-else()
-    set(PROTOBUF_TARGET protobuf::libprotobuf)
-endif()
 
 target_link_libraries(click
     PRIVATE
         cppzmq
-        ${PROTOBUF_TARGET}
+        # Fix cppzmq transitive dependency, result: dynamic link
+        libzmq
+        protobuf::libprotobuf
         ${ABSEIL_LIBRARIES}
     )
 target_include_directories(click
