@@ -1,3 +1,6 @@
+0.5.12
+- Support both static and dynamic linking to libzmq
+
 0.5.11
 - Fix conan so that libzmq is listed in dynamic click library.
 
