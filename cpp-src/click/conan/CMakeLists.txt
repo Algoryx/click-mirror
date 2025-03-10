@@ -4,7 +4,7 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
     cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
-project(click VERSION 0.5.11
+project(click VERSION 0.5.12
     DESCRIPTION "Messaging Library and tooling for effective communication between a controller and AGX Dynamics using OpenPLX"
     LANGUAGES CXX)
 
@@ -71,9 +71,7 @@ find_package(Protobuf REQUIRED)
 
 target_link_libraries(click
     PRIVATE
-        cppzmq
-        # Fix cppzmq transitive dependency, result: dynamic link
-        libzmq
+        cppzmq cppzmq-static
         protobuf::libprotobuf
         ${ABSEIL_LIBRARIES}
     )
