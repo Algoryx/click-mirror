@@ -1,3 +1,6 @@
+0.5.11
+- Fix conan so that libzmq is listed in dynamic click library.
+
 0.5.10
 - Fix Server::receive() bug introduced in 0.5.8 with cppzmq.
 
