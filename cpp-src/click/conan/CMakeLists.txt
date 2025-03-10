@@ -71,9 +71,7 @@ find_package(Protobuf REQUIRED)
 
 target_link_libraries(click
     PRIVATE
-        cppzmq
-        # Fix cppzmq transitive dependency, result: dynamic link
-        libzmq
+        cppzmq cppzmq-static
         protobuf::libprotobuf
         ${ABSEIL_LIBRARIES}
     )
