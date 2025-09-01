@@ -154,6 +154,11 @@ This section and below are for developers developing Click
 - [Current protobuf schema](protobuf-src/Messaging.proto)
 - [Technology choices etc](doc/messaging.md)
 
+### Conan usage
+
+To build click and democlient you need Conan 1 installed.
+We are in the process of migrating to Conan 2, but for now only cpp-src/click support Conan 2, so that you may use click as both a Conan 1 or Conan 2 dependency.
+
 ### Build, test, and install click c++ library from source on Linux/OSX
 
 NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install.
