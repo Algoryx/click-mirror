@@ -196,6 +196,13 @@ mac-intel-conan1-create:
   tags:
     - mac-intel
 
+.conan1-install: &conan1-install
+  - python -m venv buildenv
+  - .\buildenv\Scripts\activate
+  - pip install "conan<2"
+  - conan remote add algoryx https://conan.algoryx.se --force
+  - conan profile detect --force
+
 win-vs2019-conan1-create:
   stage: build
   tags:
@@ -208,10 +215,7 @@ win-vs2019-conan1-create:
     GENERATOR: "Visual Studio 16 2019"
     COMPILER_VERSION: "16"
   before_script:
-    - python3 -m venv buildenv
-    - source buildenv/bin/activate
-    - pip3 install "conan<2"
-    - conan remote add algoryx https://conan.algoryx.se --force
+    - *conan1-install
   script:
     - cd cpp-src/click
     - conan create . algoryx/stable -pr:b=default --build=missing -s compiler.version=${COMPILER_VERSION} -o "*:shared=True"
@@ -449,10 +453,7 @@ publish-pclick:
     # Use project specific conan directory to cache between builds but not between projects
     CONAN_USER_HOME: $CI_BUILDS_DIR/conan-ci/$CI_PROJECT_PATH_SLUG
   script:
-    - python3 -m venv buildenv
-    - source buildenv/bin/activate
-    - pip3 install "conan<2"
-    - conan remote add algoryx https://conan.algoryx.se --force
+    - *conan1-install
     - cmake -B oos -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=oos/install -G "Visual Studio 16 2019" -A $TARGET_ARCH $EXTRA_PARAMS cpp-src
     - cmake --build oos --target INSTALL --config Debug
     - cmake -D CMAKE_BUILD_TYPE=Release oos
