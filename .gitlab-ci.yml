@@ -201,7 +201,6 @@ mac-intel-conan1-create:
   - .\buildenv\Scripts\activate
   - pip install "conan<2"
   - conan remote add algoryx https://conan.algoryx.se --force
-  - conan profile detect --force
 
 win-vs2019-conan1-create:
   stage: build
