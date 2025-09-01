@@ -32,10 +32,16 @@ class ClickConan(ConanFile):
         copy(self, "include/*", src=".", dst=self.export_sources_folder)
 
     def requirements(self):
+        # Infer dependency user and channel from click user and channel
+        if self.user and self.channel:
+            user_channel = f"@{self.user}/{self.channel}"
+        else:
+            user_channel = ""  # Conan Center - no user/channel
+
         if self.options.with_protobuf:
-            self.requires("protobuf/3.21.12@algoryx/stable", visible=True)
+            self.requires(f"protobuf/3.21.12{user_channel}", visible=True)
         if self.options.with_libzmq:
-            self.requires("cppzmq/4.10.0@algoryx/stable", visible=True)
+            self.requires(f"cppzmq/4.10.0{user_channel}", visible=True)
 
     def config_options(self):
         if self.settings.os == "Windows":
