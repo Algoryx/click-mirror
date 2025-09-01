@@ -159,6 +159,8 @@ This section and below are for developers developing Click
 To build click and democlient you need Conan 1 installed.
 We are in the process of migrating to Conan 2, but for now only cpp-src/click support Conan 2, so that you may use click as both a Conan 1 or Conan 2 dependency.
 
+NOTE: If you do not have access to the algoryx/stable channel, set the cmake option CONAN_CENTER_DEPENDENCIES=True, eg. `cmake -DCONAN_CENTER_DEPENDENCIES=True` to use conan center instead.
+
 ### Build, test, and install click c++ library from source on Linux/OSX
 
 NOTE: -DCMAKE_INSTALL_PREFIX=install makes install in build/install.
