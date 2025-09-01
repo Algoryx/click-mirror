@@ -21,9 +21,11 @@ RUN if [ "$UBUNTU_VERSION" = "20.04" ]; then \
       echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null; \
     fi
 
+# We need backward compatible cmake version, so use latest 3.31 since 4.x has stopped supporting cmake <3.10
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -qy \
-  cmake && \
+  cmake=3.31.8-0kitware1ubuntu20.04.1 \
+  cmake-data=3.31.8-0kitware1ubuntu20.04.1 && \
   rm -rf /var/lib/apt/lists/*
 # TODO: Upgrade to use conan 2.0, needs profile etc
 RUN pipx ensurepath
