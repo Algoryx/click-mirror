@@ -464,7 +464,7 @@ publish-pclick:
       - oos/bin
     when: always
     reports:
-      junit: oos/win-catch2-junit.xml
+      junit: win-catch2-junit.xml
 
 
 build-test-x64-cpp-lib-windows:
