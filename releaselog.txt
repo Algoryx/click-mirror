@@ -1,3 +1,7 @@
+0.5.13
+- Fix C++ Client Bug: Did not receive any data. Missing test added.
+- Update README with Conan instructions.
+
 0.5.12
 - Support both static and dynamic linking to libzmq
 
