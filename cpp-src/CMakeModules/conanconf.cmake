@@ -26,6 +26,14 @@ endif()
 
 include(${CONAN_CMAKE_LOCAL_FILE})
 
+# CMake options to override protobuf user and channel
+option(CONAN_CENTER_DEPENDENCIES "Override protobuf user/channel (format: user/channel)" "")
+
+# Set default protobuf user/channel if not overridden
+if(NOT CONAN_CENTER_DEPENDENCIES)
+  set(PROTOBUF_USER_CHANNEL "algoryx/stable")
+endif()
+
 if (APPLE)
   # Hardcode libsodium version used by click->zmq as workaround for clang16 not compiling libsodium as of 2024-09-17
   set(LIBSODIUM_DEPENDENCY libsodium/1.0.18)
@@ -33,12 +41,12 @@ endif()
 
 conan_cmake_configure(
   REQUIRES
-    protobuf/3.21.12@algoryx/stable
+    protobuf/3.21.12@${PROTOBUF_USER_CHANNEL}
     cppzmq/4.10.0
     ${LIBSODIUM_DEPENDENCY}
     argparse/2.9
   BUILD_REQUIRES
-    protobuf/3.21.12@algoryx/stable
+    protobuf/3.21.12@${PROTOBUF_USER_CHANNEL}
     catch2/3.5.3
   GENERATORS
     cmake
