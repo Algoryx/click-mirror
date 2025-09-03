@@ -17,9 +17,9 @@ using namespace click;
 
 SCENARIO("Client-Server integration test", "[click]")
 {
-// #if defined(_WIN32)
-//     CATCH_SKIP("Skipping Client-Server integration test on Windows.");
-// #endif
+#if defined(_WIN32)
+    CATCH_SKIP("Skipping Client-Server integration test on Windows, ipc is not supported there.");
+#endif
     GIVEN("A client and a server")
     {
         WHEN("Sending a HandshakeInitMessage")
