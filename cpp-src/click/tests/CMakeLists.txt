@@ -16,6 +16,7 @@ target_sources(click-tests
         IntegrationtestSensorMessage.cpp
         IntegrationtestHandshakeMessage.cpp
         IntegrationTestProtobufMessage.cpp
+        IntegrationTestClientServer.cpp
     )
 target_compile_features(click-tests PRIVATE cxx_std_17)
 target_link_libraries(click-tests
