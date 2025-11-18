@@ -5,8 +5,9 @@ set(CONAN_CMAKE_LOCAL_FILE ${CMAKE_BINARY_DIR}/conan.cmake)
 set(CONAN_CMAKE_MASTER_FILE ${CMAKE_BINARY_DIR}/.github.conan.cmake)
 
 if(NOT EXISTS ${CONAN_CMAKE_MASTER_FILE})
-  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+  # Use develop branch of cmake-conan, master is not longer updated because conan 1 is deprecated
+  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan/develop")
+  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/develop/conan.cmake"
                 "${CONAN_CMAKE_MASTER_FILE}" STATUS CONAN_CMAKE_DOWNLOAD_STATUS
                 TLS_VERIFY ON)
 
