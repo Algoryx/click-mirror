@@ -1,3 +1,7 @@
+0.5.14
+- Use protobuf with zlib patch
+- Drop support of Ubuntu 20.04
+
 0.5.13
 - Fix C++ Client Bug: Did not receive any data. Missing test added.
 - Update README with Conan instructions.
