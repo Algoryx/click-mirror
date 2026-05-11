@@ -414,6 +414,8 @@ test-python-lib:
     when: always
     reports:
       junit: pclick-junit.xml
+  variables:
+    UBUNTU_VERSION: 22.04
 
 .publish-python-lib:
   extends: .run-in-docker
