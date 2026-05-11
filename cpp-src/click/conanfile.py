@@ -38,8 +38,10 @@ class ClickConan(ConanFile):
         else:
             user_channel = ""  # Conan Center - no user/channel
 
+        protobuf_patch = "-zlib.1" if self.user == "algoryx" else ""
+
         if self.options.with_protobuf:
-            self.requires(f"protobuf/3.21.12{user_channel}", visible=True)
+            self.requires(f"protobuf/3.21.12{protobuf_patch}{user_channel}", visible=True)
         if self.options.with_libzmq:
             self.requires(f"cppzmq/4.10.0{user_channel}", visible=True)
 
