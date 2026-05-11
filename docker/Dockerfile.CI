@@ -6,9 +6,11 @@ ARG UBUNTU_VERSION
 FROM ubuntu:${UBUNTU_VERSION}
 ARG UBUNTU_VERSION
 
+# pkg-config and zlib1g-dev are required as of zlib/1.3.1-external when building internally
+# as the conan recipe will try to find a system installation of zlib using pkg-config on ubuntu
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -qy \
-  curl wget apt-transport-https gpg \
+  curl wget apt-transport-https gpg pkg-config zlib1g-dev \
   gcc python3-pip python3-venv pipx ninja-build tzdata git git-lfs zip && \
   rm -rf /var/lib/apt/lists/*
 
@@ -23,13 +25,7 @@ RUN if [ "$UBUNTU_VERSION" = "20.04" ]; then \
 
 # We need backward compatible cmake version, so use latest 3.31 since 4.x has stopped supporting cmake <3.10
 RUN apt-get update && \
-  if [ "$UBUNTU_VERSION" = "20.04" ]; then \
-    DEBIAN_FRONTEND=noninteractive apt-get install -qy \
-    cmake=3.31.8-0kitware1ubuntu20.04.1 \
-    cmake-data=3.31.8-0kitware1ubuntu20.04.1; \
-  else \
-    DEBIAN_FRONTEND=noninteractive apt-get install -qy cmake; \
-  fi && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -qy cmake; \
   rm -rf /var/lib/apt/lists/*
 # TODO: Upgrade to use conan 2.0, needs profile etc
 RUN pipx ensurepath

@@ -6,14 +6,14 @@ stages:
 
 .docker-vars:
   variables:
-    CI_IMAGE_TAG: 0.0.5
+    CI_IMAGE_TAG: 0.0.6
 
 variables:
   PACKAGE_VERSION: $CI_COMMIT_TAG
 
 .run-in-docker:
   extends: .docker-vars
-  image: $CI_REGISTRY_IMAGE/docker-ci:20.04_${CI_IMAGE_TAG}
+  image: $CI_REGISTRY_IMAGE/docker-ci:${UBUNTU_VERSION}_${CI_IMAGE_TAG}
   tags:
     - linux
     - docker
@@ -38,12 +38,10 @@ variables:
   - docker push $DOCKER_IMAGE
 
 
-build-docker-ci-20.04:
+.build-docker-ci-base:
   extends: .build-docker
   image: docker:latest
   stage: prebuild
-  variables:
-    UBUNTU_VERSION: 20.04
   script:
     - cd docker
     - export DOCKER_FILE=Dockerfile.CI
@@ -56,16 +54,16 @@ build-docker-ci-20.04:
       - docker/Dockerfile.CI
 
 build-docker-ci-22.04:
-  extends: build-docker-ci-20.04
+  extends: .build-docker-ci-base
   variables:
     UBUNTU_VERSION: 22.04
 
 build-docker-ci-24.04:
-  extends: build-docker-ci-20.04
+  extends: .build-docker-ci-base
   variables:
     UBUNTU_VERSION: 24.04
 
-build-cpp-lib-linux-20.04:
+build-cpp-lib-linux:
   extends: .run-in-docker
   stage: build
   script:
@@ -83,13 +81,15 @@ build-cpp-lib-linux-20.04:
       - oos/bin
       - oos/click*Linux.deb
       - oos/protobuf-gen/Messaging*
+  variables:
+    UBUNTU_VERSION: 22.04
 
-build-shared-cpp-lib-linux-20.04:
-  extends: build-cpp-lib-linux-20.04
+build-shared-cpp-lib-linux:
+  extends: build-cpp-lib-linux
   variables:
     EXTRA_PARAMS: "-DBUILD_SHARED_LIBS=ON"
 
-.test-cpp-lib-linux-20.04:
+.test-cpp-lib-linux:
   extends: .run-in-docker
   stage: test
   script:
@@ -98,32 +98,34 @@ build-shared-cpp-lib-linux-20.04:
     when: always
     reports:
       junit: catch2-junit.xml
+  variables:
+    UBUNTU_VERSION: 22.04
 
-test-cpp-lib-linux-20.04:
-  extends: .test-cpp-lib-linux-20.04
+test-cpp-lib-linux:
+  extends: .test-cpp-lib-linux
   needs:
-    - job: build-cpp-lib-linux-20.04
+    - job: build-cpp-lib-linux
       artifacts: true
 
-integration-test-cpp-lib-linux-20.04:
-  extends: .test-cpp-lib-linux-20.04
+integration-test-cpp-lib-linux:
+  extends: .test-cpp-lib-linux
   script:
      - cd python-src
      - (poetry install && poetry run pytest ../integration-tests --junitxml=../click-integration-junit.xml)
   needs:
-    - job: build-cpp-lib-linux-20.04
+    - job: build-cpp-lib-linux
       artifacts: true
   artifacts:
     when: always
     reports:
       junit: click-integration-junit.xml
 
-test-shared-cpp-lib-linux-20.04:
-  extends: .test-cpp-lib-linux-20.04
+test-shared-cpp-lib-linux:
+  extends: .test-cpp-lib-linux
   variables:
     LD_LIBRARY_PATH: "${CI_PROJECT_DIR}/oos/install/lib"
   needs:
-    - job: build-shared-cpp-lib-linux-20.04
+    - job: build-shared-cpp-lib-linux
       artifacts: true
 
 .publish-cpp-lib-linux:
@@ -150,11 +152,6 @@ test-shared-cpp-lib-linux-20.04:
     - conan create . algoryx/stable -pr:b=default --build=missing -o "*:shared=True"
   except:
     - tags
-
-20.04-conan1-create:
-  extends: .conan1-create-ubuntu
-  variables:
-    UBUNTU_VERSION: 20.04
 
 22.04-conan1-create:
   extends: .conan1-create-ubuntu
@@ -241,8 +238,8 @@ win-vs2019-conan1-create:
 
 .conan-create-shared: &conan-create-shared
   - cd cpp-src/click
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" ${CONAN_EXTRA_FLAGS}
-  - conan create . --channel "stable" --user algoryx -pr:b=default --build=missing -o "*:shared=True" -s build_type=Debug ${CONAN_EXTRA_FLAGS}
+  - conan create . --channel "stable" --user algoryx --update -pr:b=default --build=missing -o "*:shared=True" ${CONAN_EXTRA_FLAGS}
+  - conan create . --channel "stable" --user algoryx --update -pr:b=default --build=missing -o "*:shared=True" -s build_type=Debug ${CONAN_EXTRA_FLAGS}
 
 .ubuntu-conan2-create:
   extends: .run-in-docker
@@ -259,11 +256,6 @@ win-vs2019-conan1-create:
     - *conan-create-shared
   only:
     - branches
-
-20.04-conan2-create:
-  extends: .ubuntu-conan2-create
-  variables:
-    UBUNTU_VERSION: 20.04
 
 22.04-conan2-create:
   extends: .ubuntu-conan2-create
@@ -286,11 +278,6 @@ win-vs2019-conan1-create:
     - *conan-upload
   only:
     - tags
-
-20.04-conan2-publish:
-  extends: .ubuntu-conan2-publish
-  variables:
-    UBUNTU_VERSION: 20.04
 
 22.04-conan2-publish:
   extends: .ubuntu-conan2-publish
@@ -406,7 +393,7 @@ publish-cpp-lib-linux:
   variables:
     PACKAGE_UPLOAD_NAME: click-static-focal-amd64.deb
   needs:
-    - job: build-cpp-lib-linux-20.04
+    - job: build-cpp-lib-linux
       artifacts: true
 
 publish-shared-cpp-lib-linux:
@@ -414,7 +401,7 @@ publish-shared-cpp-lib-linux:
   variables:
     PACKAGE_UPLOAD_NAME: click-shared-focal-amd64.deb
   needs:
-    - job: build-shared-cpp-lib-linux-20.04
+    - job: build-shared-cpp-lib-linux
       artifacts: true
 
 test-python-lib:
@@ -427,6 +414,8 @@ test-python-lib:
     when: always
     reports:
       junit: pclick-junit.xml
+  variables:
+    UBUNTU_VERSION: 22.04
 
 .publish-python-lib:
   extends: .run-in-docker
