@@ -83,8 +83,6 @@ build-cpp-lib-linux:
       - oos/bin
       - oos/click*Linux.deb
       - oos/protobuf-gen/Messaging*
-  variables:
-    UBUNTU_VERSION: 22.04
 
 build-shared-cpp-lib-linux:
   extends: build-cpp-lib-linux
@@ -100,8 +98,6 @@ build-shared-cpp-lib-linux:
     when: always
     reports:
       junit: catch2-junit.xml
-  variables:
-    UBUNTU_VERSION: 22.04
 
 test-cpp-lib-linux:
   extends: .test-cpp-lib-linux
@@ -416,8 +412,6 @@ test-python-lib:
     when: always
     reports:
       junit: pclick-junit.xml
-  variables:
-    UBUNTU_VERSION: 22.04
 
 .publish-python-lib:
   extends: .run-in-docker
