@@ -20,6 +20,8 @@ variables:
 #  services:
     # configure a registry mirror https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
 #    - docker:dind
+  variables:
+    UBUNTU_VERSION: 22.04  # default version
 
 .build-docker:
   extends: .docker-vars
