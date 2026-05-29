@@ -76,6 +76,13 @@ AddSensorBuilder *click::SensorMessageBuilderImpl::withTorque1d(double torque)
     return this;
 }
 
+AddSensorBuilder *click::SensorMessageBuilderImpl::withForce1d(double force)
+{
+    auto sensor = m_curr_sensor->add_sensor();
+    sensor->set_force1d(force);
+    return this;
+}
+
 AddSensorBuilder *click::SensorMessageBuilderImpl::withPosition_(const Vec3& vec3)
 {
     auto sensor = m_curr_sensor->add_sensor();

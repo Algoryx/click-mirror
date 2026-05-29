@@ -35,6 +35,8 @@ namespace click
         virtual AddSensorValuesBuilder* withAngles(const std::vector<double>& angles) = 0;
         virtual AddSensorValuesBuilder* withAngularVelocities(const std::vector<double>& angles) = 0;
         virtual AddSensorValuesBuilder* withTorques(const std::vector<double>& torques) = 0;
+        // TODO: Do we need this also?
+        // virtual AddSensorValuesBuilder* withForces(const std::vector<double>& forces) = 0;
         virtual AddSensorValuesBuilder* withPosition(const Vec3& vec3) = 0;
         virtual AddSensorValuesBuilder* withRPY(const Vec3& vec3) = 0;
         virtual AddSensorBuilder* withSensor(const std::string& name) = 0;
@@ -48,6 +50,7 @@ namespace click
         virtual AddSensorBuilder* withAngle(double angle) = 0;
         virtual AddSensorBuilder* withAngularVelocity1d(double angular_velocity) = 0;
         virtual AddSensorBuilder* withTorque1d(double torque) = 0;
+        virtual AddSensorBuilder* withForce1d(double force) = 0;
         virtual AddSensorBuilder* withPosition_(const Vec3& position) = 0;
         virtual AddSensorBuilder* withRPY_(const Vec3& rpy) = 0;
         virtual AddSensorBuilder* withActivated(bool activated) = 0;
@@ -76,6 +79,7 @@ namespace click
         virtual AddSensorBuilder* withAngle(double angle);
         virtual AddSensorBuilder* withAngularVelocity1d(double angular_velocity);
         virtual AddSensorBuilder* withTorque1d(double torque);
+        virtual AddSensorBuilder* withForce1d(double force);
         virtual AddSensorBuilder* withPosition_(const Vec3& position);
         virtual AddSensorBuilder* withRPY_(const Vec3& rpy);
         virtual AddSensorBuilder* withActivated(bool activated);
