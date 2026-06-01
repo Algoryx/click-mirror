@@ -35,8 +35,6 @@ namespace click
         virtual AddSensorValuesBuilder* withAngles(const std::vector<double>& angles) = 0;
         virtual AddSensorValuesBuilder* withAngularVelocities(const std::vector<double>& angles) = 0;
         virtual AddSensorValuesBuilder* withTorques(const std::vector<double>& torques) = 0;
-        // TODO: Do we need this also?
-        // virtual AddSensorValuesBuilder* withForces(const std::vector<double>& forces) = 0;
         virtual AddSensorValuesBuilder* withPosition(const Vec3& vec3) = 0;
         virtual AddSensorValuesBuilder* withRPY(const Vec3& vec3) = 0;
         virtual AddSensorBuilder* withSensor(const std::string& name) = 0;
