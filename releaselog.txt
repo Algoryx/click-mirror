@@ -1,3 +1,6 @@
+0.5.15-SNAPSHOT
+- Add Sensor Force1D to SensorMessage
+
 0.5.14
 - Use protobuf with zlib patch
 - Drop support of Ubuntu 20.04
