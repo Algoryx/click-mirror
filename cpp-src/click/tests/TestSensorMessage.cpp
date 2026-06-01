@@ -56,6 +56,7 @@ SCENARIO("Sensormessage serialization", "[click]")
                         ->withTorque1d(9)
                         ->withVelocity3d({10, 10.1, 10.2})
                         ->withAngularVelocity3d({11, 11.1, 11.2})
+                        ->withForce1d(12)
                 ->build();
 
             THEN("it should have values")
@@ -86,6 +87,8 @@ SCENARIO("Sensormessage serialization", "[click]")
                 REQUIRE(sensor_vals[10].value.velocity3d == Vec3{10, 10.1, 10.2});
                 REQUIRE(sensor_vals[11].type == click::ValueType::AngularVelocity3D);
                 REQUIRE(sensor_vals[11].value.angularVelocity3d == Vec3{11, 11.1, 11.2});
+                REQUIRE(sensor_vals[12].type == click::ValueType::Force1D);
+                REQUIRE(sensor_vals[12].value.torque1d == 12);
             }
         }
         WHEN("adding a box with position and rpy")

@@ -23,7 +23,7 @@ namespace click
       Vec3 rpy;
       bool activated;
       Vec3 acceleration3d;
-      Vec3 force1d;
+      double force1d;
       Vec3 force3d;
       Vec3 torque3d;
       Vec3 angularAcceleration3d;

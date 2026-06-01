@@ -111,6 +111,10 @@ std::vector<Sensor> SensorMessage::sensor(const std::string& objectname, const s
       target->value.torque1d = sensor.torque1d();
       target->type = click::ValueType::Torque1D;
     }
+    else if (sensor.has_force1d()) {
+      target->value.force1d = sensor.force1d();
+      target->type = click::ValueType::Force1D;
+    }
     else if (sensor.has_velocity3d()) {
       copy_n(sensor.velocity3d(), target->value.velocity3d);
       target->type = click::ValueType::Velocity3D;
