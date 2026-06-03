@@ -1,4 +1,4 @@
-0.5.15-SNAPSHOT
+0.5.15
 - Add Sensor Force1D to SensorMessage
 
 0.5.14
